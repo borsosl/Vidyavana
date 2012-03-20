@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build" name="build runnable jar for ConvertEdFiles">
+    <target name="build">
+        <jar destfile="ConvertEdFiles.jar">
+            <manifest>
+                <attribute name="Main-Class" value="hu.vidyavana.convert.ed.ConvertEdFiles"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="../cls"/>
+        </jar>
+    </target>
+</project>
