@@ -38,18 +38,35 @@ public class EdFileProcessor
 	{
 		// convert ed encoding to unicode
 		StringBuffer sb = new StringBuffer();
-		for(int i=0; i<length; ++i)
+		for(int pos=0; pos<length; ++pos)
 		{
-			// byte is signed!
-			if(line[i]>=128)
+			int c = line[pos];
+			if(line[pos]>=128)
 			{
-				int c = EdCharacter.convert(line[i]);
+				c = EdCharacter.convert(c);
 				if(c != 0)
 					sb.append((char) c);
 			}
 			else
-				sb.append((char) line[i]);
+			{
+				if(c == '@' && pos==0)
+				{
+					String tagStr = sequenceToString(line, 1, length, (short) '=').trim().toLowerCase();
+					EdTags tag = EdTags.find(tagStr);
+				}
+				else
+					sb.append((char) line[pos]);
+			}
 		}
+	}
+
+
+	private String sequenceToString(short[] line, int pos, int length, short c)
+	{
+		StringBuilder sb = new StringBuilder();
+		while(pos < length && line[pos] != c)
+			sb.append((char) line[pos++]);
+		return sb.toString();
 	}
 
 

@@ -1,6 +1,6 @@
 package hu.vidyavana.convert.ed;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public enum EdTags
 {
@@ -177,7 +177,7 @@ public enum EdTags
 	xs_head_text("xs head text");
 
 	
-	public static HashMap<String, EdTags> map = new HashMap<>();
+	public static TreeMap<String, EdTags> map = new TreeMap<>();
 	static
 	{
 		for(EdTags edt : EdTags.values())
@@ -185,8 +185,15 @@ public enum EdTags
 	}
 	public final String tag;
 
+	
 	EdTags(String tag)
 	{
 		this.tag = tag;
+	}
+
+	
+	public static EdTags find(String tagStr)
+	{
+		return map.get(tagStr);
 	}
 }
