@@ -1,5 +1,6 @@
 package hu.vidyavana.convert.ed;
 
+import hu.vidyavana.convert.api.ParagraphClass;
 import java.util.TreeMap;
 
 public enum EdTags
@@ -183,12 +184,34 @@ public enum EdTags
 		for(EdTags edt : EdTags.values())
 			map.put(edt.tag, edt);
 	}
+
+	
 	public final String tag;
+	public final ParagraphClass cls;
+	public final String style;
 
 	
 	EdTags(String tag)
 	{
 		this.tag = tag;
+		cls = null;
+		style = null;
+	}
+
+	
+	EdTags(String tag, ParagraphClass cls)
+	{
+		this.tag = tag;
+		this.cls = cls;
+		style = null;
+	}
+
+	
+	EdTags(String tag, String style)
+	{
+		this.tag = tag;
+		this.style = style;
+		cls = null;
 	}
 
 	

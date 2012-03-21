@@ -1,13 +1,16 @@
 package hu.vidyavana.convert.api;
 
-import java.util.*;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Paragraph
 {
 	public String cls;
+	public ParagraphStyle style;
 	public Integer verse;
-	public StringBuffer sb = new StringBuffer();
+	public StringBuffer text = new StringBuffer();
 	public List<String> footnote = new ArrayList<String>();
 	
 	
@@ -18,7 +21,9 @@ public class Paragraph
 		
 		if(cls != null)
 			para.setAttribute("class", cls);
-		para.setTextContent(sb.toString());
+		if(style != null)
+			para.setAttribute("style", style.toString());
+		para.setTextContent(text.toString());
 	}
 
 }

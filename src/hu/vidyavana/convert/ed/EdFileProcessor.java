@@ -1,11 +1,26 @@
 package hu.vidyavana.convert.ed;
 
-import java.io.*;
+import hu.vidyavana.convert.api.Book;
+import hu.vidyavana.convert.api.Chapter;
+import hu.vidyavana.convert.api.Paragraph;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class EdFileProcessor
 {
+	private Book book;
+	private Chapter chapter;
+	private Paragraph para;
+	private int nextPos;
+
+
 	public void process(File ed, File xml) throws Exception
 	{
+		book = new Book();
+		chapter = new Chapter();
+		book.chapter.add(chapter);
 		readEdFile(ed);
 	}
 
@@ -19,16 +34,16 @@ public class EdFileProcessor
 		while(true)
 		{
 			int c = is.read();
-			if(c==10 || c<0)
+			if(c=='\n' || c<0)
 			{
-				while(ptr>0 && line[ptr-1]==32) --ptr;
+				while(ptr>0 && line[ptr-1]==' ') --ptr;
 				if(ptr > 0)
 					processLine(line, ptr);
 				if(c < 0) break;
 				ptr = 0;
 				continue;
 			}
-			if(c==13 || ptr==0 && c==32) continue;
+			if(c=='\r' || ptr==0 && (c==' ' || c=='\t')) continue;
 			line[ptr++] = (short) c;
 		}
 	}
@@ -36,26 +51,43 @@ public class EdFileProcessor
 	
 	private void processLine(short[] line, int length)
 	{
+		// empty line
+		if(length == 0)
+			return;
+
+		// new tag
+		nextPos = 0;
+		if(line[0] == '@')
+		{
+			String tagStr = sequenceToString(line, 1, length, (short) '=').trim().toLowerCase();
+			while(nextPos<length && line[nextPos]==' ') ++nextPos;
+			
+			EdTags tag = EdTags.find(tagStr);
+			
+			// TODO if it's an unhandled tag
+
+			// TODO if it's a marker tag
+
+			// it's a paragraph tag
+			para = new Paragraph();
+			chapter.para.add(para);
+		}
+		if(nextPos >= length)
+			return;
+
 		// convert ed encoding to unicode
-		StringBuffer sb = new StringBuffer();
-		for(int pos=0; pos<length; ++pos)
+		for(int pos=nextPos; pos<length; ++pos)
 		{
 			int c = line[pos];
 			if(line[pos]>=128)
 			{
 				c = EdCharacter.convert(c);
 				if(c != 0)
-					sb.append((char) c);
+					para.text.append((char) c);
 			}
 			else
 			{
-				if(c == '@' && pos==0)
-				{
-					String tagStr = sequenceToString(line, 1, length, (short) '=').trim().toLowerCase();
-					EdTags tag = EdTags.find(tagStr);
-				}
-				else
-					sb.append((char) line[pos]);
+				para.text.append((char) line[pos]);
 			}
 		}
 	}
@@ -66,6 +98,7 @@ public class EdFileProcessor
 		StringBuilder sb = new StringBuilder();
 		while(pos < length && line[pos] != c)
 			sb.append((char) line[pos++]);
+		nextPos = pos+1;
 		return sb.toString();
 	}
 
