@@ -36,7 +36,16 @@ public class ConvertEdFiles
 			File srcFile = new File(srcDir.getAbsolutePath() + "/" + fname);
 			File destFile = new File(destDir.getAbsolutePath() + "/" + fname + ".xml");
 			
-			new EdFileProcessor().process(srcFile, destFile);
+			try
+			{
+				System.out.println(srcFile.getName());
+				new EdFileProcessor().process(srcFile, destFile);
+			}
+			catch(IllegalStateException ex)
+			{
+				// this exception is used when we can go on to process the next files
+				System.out.println(ex.getMessage());
+			}
 		}
 		fileList.close();
 	}
