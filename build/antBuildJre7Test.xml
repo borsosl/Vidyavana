@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build" name="build runnable jar for Java 7 test">
+    <target name="build">
+        <jar destfile="Jre7Test.jar">
+            <manifest>
+                <attribute name="Main-Class" value="test.jre.Jre7Test"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="../cls" includes="**/Jre7Test*"/>
+        </jar>
+    </target>
+</project>
