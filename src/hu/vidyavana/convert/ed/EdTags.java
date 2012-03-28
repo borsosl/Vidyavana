@@ -5,6 +5,11 @@ import java.util.TreeMap;
 
 public enum EdTags
 {
+	// special markers for the program
+	unhandled(""),
+	continuing(""),
+
+	// normal ed tags
 	ac_bhakti("ac bhakti"),
 	asterisk("asterisk"),
 	benbo("benbo"),
@@ -178,17 +183,67 @@ public enum EdTags
 	xs_head_text("xs head text");
 
 	
+	private static EdTags[][] aliases = {
+		{chapter_title,
+			chapter_spec, chapter_more, chapter_nospa, ch_title_f, ch_title_f2, ch_title_fb, ch_title_fm,
+			ch_title_i, ds_title, intro, history},
+		{sanskrit,
+			bengali, sans_7p, sans_no_b},
+		{word_by_word,
+			w_by_w_nob, word_keep, word_n_b},
+		{purport,
+			biglet, biglet1, date_no_space, date_space, datesmal, dc_left_top, end, fl_body_1, footnote,
+			gl_first, gl_purp, introduction, keep_p_n, keep_p_p, notes, p_tab, prose_in_purp, small_foot,
+			wa_side, xs_head_text},
+		{purp_para,
+			dc_body_l, dc_body_r, dc_right_top, fl_body, glossary, italic_para, keep_pp_n, keep_pp_p,
+			pp_tab, para_2_orp, wa_body},
+		{purp_space,
+			asterisk},
+		{verse_in_purp,
+			ch_verse, long_verse, middel_long, sans_in_id, ver_in_purp1, verse_i_p_7p, uvaca_in_purp,
+			uvaca_on_top, verse_short, very_long},
+		{verse_uvaca,
+			uvaca_verse},
+		{center,
+			center_line, center_table, gloss_head, header, number, poem_nr, quote_center},
+		{right_align,
+			om_tat_sat, signature, ac_bhakti},
+		{subtitle,
+			subsub, subtit3, subtit4, subtit5, index_letter},
+		{quote,
+			sloka, poem, q_ind_s_pu, quote_ind_pu},
+		{quote_para,
+			q_ind_s_pa, quote_ind_pa},
+		{continuing,
+			mpurp, npurp, nnpurp, para_no_break, spurp, sspurp},
+		{unhandled,
+			benbo, benro, book_title, ch_line, chapter_head, /* dev...*/ eop, foot_line, lila, line,
+			pr_pic, /* push...*/ special, wa_number}};
+
+	
 	public static TreeMap<String, EdTags> map = new TreeMap<>();
 	static
 	{
 		for(EdTags edt : EdTags.values())
+		{
 			map.put(edt.tag, edt);
+			if(edt.tag.startsWith("dev") || edt.tag.startsWith("push"))
+				edt.aliasOf = unhandled;
+		}
+		for(EdTags[] ar : aliases)
+		{
+			EdTags root = ar[0];
+			for(int i=1; i<ar.length; ++i)
+				ar[i].aliasOf = root;
+		}
 	}
 
 	
 	public final String tag;
 	public final ParagraphClass cls;
 	public final String style;
+	public EdTags aliasOf;
 
 	
 	EdTags(String tag)

@@ -17,6 +17,7 @@ public class EdFileProcessor
 	private Book book;
 	private Chapter chapter;
 	private Paragraph para;
+	private EdTags currentTag;
 	private int nextPos;
 	private EdPreviousEntity prev;
 	private Stack<String> formatStack;
@@ -69,8 +70,8 @@ public class EdFileProcessor
 			String tagStr = sequenceToString(line, 1, length, (short) '=').trim().toLowerCase();
 			while(nextPos<length && line[nextPos]==' ') ++nextPos;
 			
-			EdTags tag = EdTags.find(tagStr);
-			if(tag == null)
+			currentTag = EdTags.find(tagStr);
+			if(currentTag == null)
 				throw new IllegalStateException(String.format("ERROR: Nem definialt tag '%s' a '%s' fajlban. Sor: %d.", tagStr, srcFileName, lineNumber));
 			
 			// TODO if it's an unhandled tag
@@ -120,6 +121,14 @@ public class EdFileProcessor
 						}
 						else
 						{
+							String num = number.toString();
+							if(processed == 'J')
+							{
+								if("2".equals(num))
+								{
+									
+								}
+							}
 							// TODO
 							processed = -1;
 							number = null;
@@ -130,6 +139,8 @@ public class EdFileProcessor
 					{
 						
 					}
+					
+					if(c == 'D') c = 'M';
 					
 					// M/MI
 					if(c == 'M')
@@ -178,20 +189,21 @@ public class EdFileProcessor
 							para.cls = "";	// TODO right align
 					}
 					
-					// számDT
 					else if(c == '~')
 					{
-						
+						para.text.append('\u2002');
+						prev = Space;
 					}
 					
 					else if(c == 'R')
 					{
-						
+						para.text.append("<br/>");
+						prev = Linebreak;
 					}
 					
 					else if(c == '-')
 					{
-						
+						prev = Hyphen;
 					}
 					
 					else if(c == '+')
@@ -201,25 +213,22 @@ public class EdFileProcessor
 					
 					else if(c == '|')
 					{
-						
+						prev = Microspace;
 					}
 					
 					else if(c == 'N')
 					{
-						
+						para.text.append('\u00a0');
+						prev = Space;
 					}
 					
 					else if(c == '_')
 					{
-						
+						para.text.append('\u2003');
+						prev = Space;
 					}
 					
 					else if(c == 'T')
-					{
-						
-					}
-					
-					else if(c == 'D')
 					{
 						
 					}
@@ -234,6 +243,10 @@ public class EdFileProcessor
 					
 					else if(c>='0' && c<='9')
 					{
+						// disregard, only expect this in script
+						if(!currentTag.name().startsWith("sans") && 
+							!currentTag.name().startsWith("ben"))
+								throw new IllegalStateException(String.format("ERROR: <\\d+> formazas a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
 					}
 					
 					
@@ -246,13 +259,22 @@ public class EdFileProcessor
 			}
 			
 			// convert ed encoding to unicode
-			else if(c>=128)
+			else if(c >= 128)
 			{
 				c = EdCharacter.convert(c);
 				if(c == 0)
 					throw new IllegalStateException(String.format("ERROR: Nem definialt karakterkod '%d' a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
 				para.text.append((char) c);
 				prev = Char;
+			}
+			
+			else if(c == 127)
+			{
+				int msp = 1;
+				while(++pos<length && line[pos]==127)
+					++msp;
+				para.text.append(' ');
+				prev = Microspace;
 			}
 
 			// store ascii characters
