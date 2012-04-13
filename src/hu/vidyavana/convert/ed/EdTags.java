@@ -6,6 +6,7 @@ import java.util.TreeMap;
 public enum EdTags
 {
 	// special markers for the program
+	info(""),
 	unhandled(""),
 	continuing(""),
 
@@ -123,6 +124,7 @@ public enum EdTags
 	q_ind_s_pu("q ind s pu"),
 	quote("quote"),
 	quote_center("quote center"),
+	// TODO
 	quote_in_purp("quote in purp"),
 	quote_ind_pa("quote ind pa"),
 	quote_ind_pu("quote ind pu"),
@@ -184,24 +186,28 @@ public enum EdTags
 
 	
 	private static EdTags[][] aliases = {
+		{konyvcim},
+		{chapter,
+			chapter_p1, chapter_p2, chapter_m1},
 		{chapter_title,
 			chapter_spec, chapter_more, chapter_nospa, ch_title_f, ch_title_f2, ch_title_fb, ch_title_fm,
-			ch_title_i, ds_title, intro, history},
+			ch_title_i, ds_title, intro, history, history_no},
 		{sanskrit,
-			bengali, sans_7p, sans_no_b},
+			bengali, long_verse, sans_7p, sans_no_b},
+		{prose},
 		{word_by_word,
 			w_by_w_nob, word_keep, word_n_b},
 		{purport,
 			biglet, biglet1, date_no_space, date_space, datesmal, dc_left_top, end, fl_body_1, footnote,
-			gl_first, gl_purp, introduction, keep_p_n, keep_p_p, notes, p_tab, prose_in_purp, small_foot,
-			wa_side, xs_head_text},
+			gl_first, gl_purp, introduction, keep_p_n, keep_p_p, notes, p_tab, prose_in_purp, purp_1orp,
+			purp_no_break, purp_small, small_foot, wa_side, xs_head_text},
 		{purp_para,
 			dc_body_l, dc_body_r, dc_right_top, fl_body, glossary, italic_para, keep_pp_n, keep_pp_p,
 			pp_tab, para_2_orp, wa_body},
 		{purp_space,
 			asterisk},
 		{verse_in_purp,
-			ch_verse, long_verse, middel_long, sans_in_id, ver_in_purp1, verse_i_p_7p, uvaca_in_purp,
+			ch_verse, middel_long, sans_in_id, ver_in_purp1, verse_i_p_7p, uvaca_in_purp,
 			uvaca_on_top, verse_short, very_long},
 		{verse_uvaca,
 			uvaca_verse},
@@ -215,10 +221,14 @@ public enum EdTags
 			sloka, poem, q_ind_s_pu, quote_ind_pu},
 		{quote_para,
 			q_ind_s_pa, quote_ind_pa},
+		{index_level_0,
+			index_level_1, index_level_2, index_level_3, xi0, xi0_first, xi0_last, xi1, xi1_last, xi2, xi2_last},
 		{continuing,
 			mpurp, npurp, nnpurp, para_no_break, spurp, sspurp},
+		{info,
+			book_title, lila, chaptno, chapter_head},
 		{unhandled,
-			benbo, benro, book_title, ch_line, chapter_head, /* dev...*/ eop, foot_line, lila, line,
+			benbo, benro, ch_line, /* dev...*/ eop, foot_line, line,
 			pr_pic, /* push...*/ special, wa_number}};
 
 	
