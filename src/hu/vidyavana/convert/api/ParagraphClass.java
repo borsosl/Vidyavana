@@ -24,5 +24,5 @@ public enum ParagraphClass
 	MegjegyzesKoveto,
 	MegjegyzesKozepen,
 	MegjegyzesJobbra,
-	TargymutatoBejegyzes
+	TargymutatoElem
 }

@@ -10,7 +10,7 @@ import org.w3c.dom.*;
 
 public class Book
 {
-	public String title;
+	public List<Paragraph> info = new ArrayList<Paragraph>();
 	public List<Chapter> chapter = new ArrayList<Chapter>();
 
 
@@ -23,13 +23,8 @@ public class Book
 		Element book = document.createElement("book");
 		document.appendChild(book);
 		
-		Element child;
-		if(title != null)
-		{
-			child = document.createElement("title");
-			child.setTextContent(title);
-			book.appendChild(child);
-		}
+		for(Paragraph inf : info)
+			inf.addToDocument(document, book);
 		for(Chapter ch : chapter)
 			ch.addToDocument(document, book);
 

@@ -1,13 +1,8 @@
 package hu.vidyavana.convert.ed;
 
 import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
-import hu.vidyavana.convert.api.Book;
-import hu.vidyavana.convert.api.Chapter;
-import hu.vidyavana.convert.api.Paragraph;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import hu.vidyavana.convert.api.*;
+import java.io.*;
 import java.util.Stack;
 
 public class EdFileProcessor
@@ -21,6 +16,7 @@ public class EdFileProcessor
 	private int nextPos;
 	private EdPreviousEntity prev;
 	private Stack<String> formatStack;
+	private boolean skippingUnhandledTag;
 
 
 	public void process(File ed, File xml) throws Exception
@@ -32,7 +28,12 @@ public class EdFileProcessor
 		book.chapter.add(chapter);
 		prev = Beginning;
 		formatStack = new Stack<>();
+		
 		readEdFile(ed);
+		
+		FileOutputStream out = new FileOutputStream(xml);
+		book.createDocument(out);
+		out.close();
 	}
 
 
@@ -67,6 +68,8 @@ public class EdFileProcessor
 		nextPos = 0;
 		if(line[0] == '@')
 		{
+			skippingUnhandledTag = false;
+			
 			String tagStr = sequenceToString(line, 1, length, (short) '=').trim().toLowerCase();
 			while(nextPos<length && line[nextPos]==' ') ++nextPos;
 			
@@ -74,16 +77,44 @@ public class EdFileProcessor
 			if(currentTag == null)
 				throw new IllegalStateException(String.format("ERROR: Nem definialt tag '%s' a '%s' fajlban. Sor: %d.", tagStr, srcFileName, lineNumber));
 			
-			// TODO if it's an unhandled tag
+			// if it's an unhandled tag
+			if(currentTag.alias == EdTags.unhandled)
+			{
+				skippingUnhandledTag = true;
+				return;
+			}
 
-			// TODO if it's a marker tag
-
-			// it's a paragraph tag
+			// info or content tags
 			para = new Paragraph();
-			chapter.para.add(para);
+			String tagName = currentTag.name();
+			switch(currentTag)
+			{
+				case book_title:
+					tagName = "title";
+					// no break!
+				case lila:
+					book.info.add(para);
+					break;
+				case chaptno:
+					tagName = "number";
+					chapter.info.add(para);
+					break;
+				case chapter_head:
+					tagName = "head";
+					chapter.info.add(para);
+					break;
+				case textno:
+					tagName = "text";
+					// no break!
+				default:
+					chapter.para.add(para);
+			}
+			if(currentTag.alias == EdTags.info)
+				para.tagName = tagName;
 			prev = Tag;
 		}
-		if(nextPos >= length)
+
+		if(skippingUnhandledTag || nextPos >= length)
 			return;
 
 		// microspace to start a line: prevent implied space
@@ -184,9 +215,9 @@ public class EdFileProcessor
 					{
 						int c2 = Character.toUpperCase(line[++pos]);
 						if(c2 == 'C')
-							para.cls = "";	// TODO center line
+							para.cls = ParagraphClass.Kozepen;
 						else if(c2 == 'R')
-							para.cls = "";	// TODO right align
+							para.cls = ParagraphClass.Jobbra;
 					}
 					
 					else if(c == '~')

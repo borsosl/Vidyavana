@@ -75,7 +75,7 @@ public enum EdTags
 	history("history"),
 	history_no("history no"),
 	index_letter("index letter"),
-	index_level_0("index level 0", TargymutatoBejegyzes),
+	index_level_0("index level 0", TargymutatoElem),
 	index_level_1("index level 1"),
 	index_level_2("index level 2"),
 	index_level_3("index level 3"),
@@ -244,13 +244,13 @@ public enum EdTags
 		{
 			map.put(edt.tag, edt);
 			if(edt.tag.startsWith("dev") || edt.tag.startsWith("push"))
-				edt.aliasOf = unhandled;
+				edt.alias = unhandled;
 		}
 		for(EdTags[] ar : aliases)
 		{
 			EdTags root = ar[0];
 			for(int i=1; i<ar.length; ++i)
-				ar[i].aliasOf = root;
+				ar[i].alias = root;
 		}
 	}
 
@@ -258,7 +258,7 @@ public enum EdTags
 	public final String tag;
 	public final ParagraphClass cls;
 	public final String style;
-	public EdTags aliasOf;
+	public EdTags alias;
 
 	
 	EdTags(String tag)
