@@ -31,9 +31,8 @@ public class EdFileProcessor
 		
 		readEdFile(ed);
 		
-		FileOutputStream out = new FileOutputStream(xml);
-		book.createDocument(out);
-		out.close();
+		xml.getParentFile().mkdirs();
+		book.writeToFile(xml);
 	}
 
 
@@ -96,7 +95,7 @@ public class EdFileProcessor
 					book.info.add(para);
 					break;
 				case chaptno:
-					tagName = "number";
+					tagName = "chapter_number";
 					chapter.info.add(para);
 					break;
 				case chapter_head:
@@ -104,13 +103,15 @@ public class EdFileProcessor
 					chapter.info.add(para);
 					break;
 				case textno:
-					tagName = "text";
+					tagName = "text_number";
 					// no break!
 				default:
 					chapter.para.add(para);
 			}
 			if(currentTag.alias == EdTags.info)
 				para.tagName = tagName;
+			else
+				para.cls = currentTag.cls;
 			prev = Tag;
 		}
 
@@ -304,7 +305,9 @@ public class EdFileProcessor
 				int msp = 1;
 				while(++pos<length && line[pos]==127)
 					++msp;
-				para.text.append(' ');
+				--pos;
+				if(msp > 2)
+					para.text.append(' ');
 				prev = Microspace;
 			}
 

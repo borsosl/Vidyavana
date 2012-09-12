@@ -1,8 +1,6 @@
 package hu.vidyavana.convert.ed;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 public class ConvertEdFiles
 {
@@ -23,8 +21,8 @@ public class ConvertEdFiles
 		}
 		BufferedReader fileList = new BufferedReader(new FileReader(args[0]));
 		
-		File srcDir = new File(fileList.readLine());
-		File destDir = new File(fileList.readLine());
+		int actualLineNum = 0;
+		File srcDir=null, destDir=null;
 		
 		while(true)
 		{
@@ -32,6 +30,18 @@ public class ConvertEdFiles
 			if(fname == null) break;
 			fname = fname.trim();
 			if(fname.length() == 0 || fname.charAt(0)=='#') continue;
+			++actualLineNum;
+			
+			if(actualLineNum == 1)
+			{
+				srcDir = new File(fname);
+				continue;
+			}
+			if(actualLineNum == 2)
+			{
+				destDir = new File(fname);
+				continue;
+			}
 			
 			File srcFile = new File(srcDir.getAbsolutePath() + "/" + fname);
 			File destFile = new File(destDir.getAbsolutePath() + "/" + fname + ".xml");

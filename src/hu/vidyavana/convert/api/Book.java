@@ -1,20 +1,20 @@
 package hu.vidyavana.convert.api;
 
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 
 public class Book
 {
+	public static int XML_LINE_LEN = 100;
+	public static String XML_INDENT = "  ";
+	
 	public List<Paragraph> info = new ArrayList<Paragraph>();
 	public List<Chapter> chapter = new ArrayList<Chapter>();
 
 
-	public void createDocument(OutputStream out) throws Exception
+	public Document createDocument() throws Exception
 	{
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
@@ -27,11 +27,33 @@ public class Book
 			inf.addToDocument(document, book);
 		for(Chapter ch : chapter)
 			ch.addToDocument(document, book);
-
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer transformer = tf.newTransformer();
-		DOMSource source = new DOMSource(document);
-		StreamResult result = new StreamResult(out);
-		transformer.transform(source, result);
+		
+		return document;
+	}
+	
+	
+	public void writeToFile(File xmlFile) throws IOException
+	{
+		Writer out = new OutputStreamWriter(new FileOutputStream(xmlFile), "UTF-8");
+		out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
+		out.write("<book>\r\n");
+		
+		for(Paragraph inf : info)
+			inf.writeToFile(out, 1);
+		for(Chapter ch : chapter)
+			ch.writeToFile(out, 1);
+		
+		out.write("</book>\r\n");
+		out.close();
+	}
+	
+	
+	public static void indent(Writer out, int indentLevel) throws IOException
+	{
+		while(indentLevel > 0)
+		{
+			out.write(XML_INDENT);
+			--indentLevel;
+		}
 	}
 }
