@@ -13,16 +13,31 @@ public enum ParagraphClass
 	Proza,
 	Szavak,
 	Forditas,
-	TorzsKezdet,
-	TorzsKoveto,
+	TorzsKezdet(true),
+	TorzsKoveto(true),
 	TorzsUvaca,
 	TorzsVers,
 	Hivatkozas,
 	Kozepen,
 	Jobbra,
 	MegjegyzesKezdet,
-	MegjegyzesKoveto,
+	MegjegyzesKoveto(true),
 	MegjegyzesKozepen,
 	MegjegyzesJobbra,
-	TargymutatoElem
+	TargymutatoElem;
+	
+	
+	public final boolean defaultIndent;
+
+	ParagraphClass()
+	{
+		this.defaultIndent = false;
+		
+	}
+
+	ParagraphClass(boolean defaultIndent)
+	{
+		this.defaultIndent = defaultIndent;
+		
+	}
 }

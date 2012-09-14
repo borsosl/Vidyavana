@@ -9,6 +9,7 @@ public class Paragraph
 	public String tagName;
 	public ParagraphClass cls;
 	public ParagraphStyle style;
+	public int indent;
 	public StringBuilder text = new StringBuilder();
 	public List<String> footnote = new ArrayList<String>();
 	

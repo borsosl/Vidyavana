@@ -223,8 +223,14 @@ public class EdFileProcessor
 					
 					else if(c == '~')
 					{
-						para.text.append('\u2002');
-						prev = Space;
+						// only count leading indent marks: they may only serve right alignment purposes
+						if(prev==Tag)
+							++para.indent;
+						else
+						{
+							para.text.append('\u2002');
+							prev = Space;
+						}
 					}
 					
 					else if(c == 'R')
@@ -290,16 +296,6 @@ public class EdFileProcessor
 					throw new IllegalStateException(String.format("ERROR: Hibas karakter formazas a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
 			}
 			
-			// convert ed encoding to unicode
-			else if(c >= 128)
-			{
-				c = EdCharacter.convert(c);
-				if(c == 0)
-					throw new IllegalStateException(String.format("ERROR: Nem definialt karakterkod '%d' a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
-				para.text.append((char) c);
-				prev = Char;
-			}
-			
 			else if(c == 127)
 			{
 				int msp = 1;
@@ -311,19 +307,57 @@ public class EdFileProcessor
 				prev = Microspace;
 			}
 
-			// store ascii characters
+			// printable characters
 			else
 			{
-				if(c == '"')
-					c = '”';
-				para.text.append((char) c);
+				// process first line indent
+				if(prev == Beginning && para.indent > 0)
+				{
+					// if style has 2 indents by default
+					if(para.cls != null && para.cls.defaultIndent && para.indent == 2)
+						para.indent = 0;
+					// if many indent marks start a paragraph
+					else if(para.indent > 4)
+					{
+						if(para.cls == ParagraphClass.TorzsKoveto)
+							para.cls = ParagraphClass.Jobbra;
+						else if(para.cls == ParagraphClass.MegjegyzesKoveto)
+							para.cls = ParagraphClass.MegjegyzesJobbra;
+						para.indent = 0;
+					}
+					// none of the above: store indent in extra style
+					if(para.indent > 0)
+					{
+						if(para.style == null)
+							para.style = new ParagraphStyle();
+						para.style.first = para.indent;
+					}
+				}
 				
-				if(c == ' ')
-					prev = Space;
-				else if(c == '-')
-					prev = Hyphen;
-				else
+				// convert ed encoding to unicode
+				if(c >= 128)
+				{
+					c = EdCharacter.convert(c);
+					if(c == 0)
+						throw new IllegalStateException(String.format("ERROR: Nem definialt karakterkod '%d' a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
+					para.text.append((char) c);
 					prev = Char;
+				}
+				
+				// plain ascii characters
+				else
+				{
+					if(c == '"')
+						c = '”';
+					para.text.append((char) c);
+					
+					if(c == ' ')
+						prev = Space;
+					else if(c == '-')
+						prev = Hyphen;
+					else
+						prev = Char;
+				}
 			}
 		}
 	}
