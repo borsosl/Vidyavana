@@ -5,8 +5,9 @@ import hu.vidyavana.convert.api.*;
 import java.io.*;
 import java.util.Stack;
 
-public class EdFileProcessor
+public class EdFileProcessor implements FileProcessor
 {
+	private File destDir;
 	private String srcFileName;
 	private int lineNumber;
 	private Book book;
@@ -19,9 +20,31 @@ public class EdFileProcessor
 	private boolean skippingUnhandledTag;
 
 
+	@Override
+	public void init(File srcDir, File destDir)
+	{
+		this.destDir = destDir;
+		destDir.mkdirs();
+	}
+
+
+	@Override
+	public void process(File srcFile, String fileName) throws Exception
+	{
+		srcFileName = fileName;
+		File destFile = new File(destDir.getAbsolutePath() + "/" + fileName + ".xml");
+		process(srcFile, destFile);
+	}
+
+
+	@Override
+	public void finish()
+	{
+	}
+
+
 	public void process(File ed, File xml) throws Exception
 	{
-		srcFileName = ed.getName();
 		lineNumber = 1;
 		book = new Book();
 		chapter = new Chapter();
@@ -31,7 +54,6 @@ public class EdFileProcessor
 		
 		readEdFile(ed);
 		
-		xml.getParentFile().mkdirs();
 		book.writeToFile(xml);
 	}
 
@@ -375,6 +397,6 @@ public class EdFileProcessor
 
 	public static void main(String[] args) throws Exception
 	{
-		new EdFileProcessor().process(new File("c:\\wk2\\Sastra\\BBT\\Text\\BG\\HUBG01XT.H23"), null);
+		new EdFileProcessor().process(new File("c:\\wk2\\Sastra\\BBT\\Text\\BG\\HUBG01XT.H23"), (File) null);
 	}
 }
