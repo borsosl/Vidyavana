@@ -1,0 +1,179 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+body
+{
+	margin: 1em;
+}
+
+.Konyvcim
+{
+	font-size: 130%;
+	text-align: center;
+	font-weight: bold;
+	margin-top: 2em;
+	margin-bottom: 1em;
+}
+
+.Kep
+{
+	width: 100%;
+	text-align: center;
+}
+
+.Ref, .Ref a
+{
+	height: 0;
+}
+
+.Fejezetszam
+{
+	margin-top: 2em;
+	margin-bottom: 1em;
+	font-size: 115%;
+	text-align: center;
+	font-weight: bold;
+}
+
+.Fejezetcim
+{
+	margin-top: 1.5em;
+	margin-bottom: 1em;
+	font-size: 120%;
+	text-align: center;
+	font-weight: bold;
+}
+
+.Szakaszcim
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+	text-align: center;
+	font-weight: bold;
+}
+
+.Alcim
+{
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
+.Versszam
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+	text-align: center;
+	font-weight: bold;
+}
+
+.Uvaca
+{
+	text-align: center;
+}
+
+.Vers
+{
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
+.Proza
+{
+	margin-bottom: 0.5em;
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.Szavak
+{
+	margin-top: 0.5em;
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.Forditas
+{
+	margin-top: 0.5em;
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.TorzsKezdet
+{
+	margin-top: 0.5em;
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.TorzsKoveto
+{
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.TorzsUvaca
+{
+	margin-top: 0.5em;
+	text-align: center;
+}
+
+.TorzsVers
+{
+	margin-top: 0.5em;
+	text-align: center;
+}
+
+.Hivatkozas
+{
+	text-align: right;
+}
+
+.Kozepen
+{
+	margin-top: 0.5em;
+	text-align: center;
+}
+
+.Jobbra
+{
+	text-align: right;
+}
+
+.MegjegyzesKezdet, .MegjegyzesKoveto, .MegjegyzesKozepen, .MegjegyzesJobbra
+{
+	margin-left: 3em;
+	margin-right: 3em;
+	font-size: 95%;
+}
+
+.MegjegyzesKezdet
+{
+	margin-top: 0.5em;
+	text-align: justify;
+}
+
+.MegjegyzesKoveto
+{
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.MegjegyzesKozepen
+{
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
+.MegjegyzesJobbra
+{
+	text-align: right;
+}
+
+.TargymutatoElem
+{
+}

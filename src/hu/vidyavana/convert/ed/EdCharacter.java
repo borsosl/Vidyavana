@@ -58,6 +58,8 @@ public class EdCharacter
 		0x99, 'Ṣ',
 		0x90, 'Ś',
 		0x97, 'Ṭ',
+		
+		0xc8, '×',
 
 		0xc0, '„',
 		0xc4, '–',

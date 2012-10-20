@@ -1,0 +1,3340 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" 
+                 "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+  <head>
+    <meta name="dtb:uid" content="urn:uuid:91-7149-052-3"/>
+    <meta name="dtb:depth" content="2"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>Śrīmad-Bhāgavatam, 1. ének</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="p1" playOrder="1">
+      <navLabel><text>Előszó</text></navLabel>
+      <content src="3s1h00pf.html"/>
+    </navPoint>
+    <navPoint id="p2" playOrder="2">
+      <navLabel><text>Az angol kiadás előszava</text></navLabel>
+      <content src="3s1h00fw.html"/>
+    </navPoint>
+    <navPoint id="p3" playOrder="3">
+      <navLabel><text>Bevezetés</text></navLabel>
+      <content src="3s1h00id.html"/>
+    </navPoint>
+    <navPoint id="p4" playOrder="4">
+      <navLabel><text>ELSŐ FEJEZET – A szentek kérdései</text></navLabel>
+      <content src="3s1h01xt.html"/>
+      <navPoint id="p5" playOrder="5">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p6" playOrder="6">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p7" playOrder="7">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p8" playOrder="8">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p9" playOrder="9">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p10" playOrder="10">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p11" playOrder="11">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p12" playOrder="12">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p13" playOrder="13">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p14" playOrder="14">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p15" playOrder="15">
+        <navLabel><text>11.VERS</text></navLabel>
+        <content src="3s1h01xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p16" playOrder="16">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p17" playOrder="17">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p18" playOrder="18">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p19" playOrder="19">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p20" playOrder="20">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p21" playOrder="21">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p22" playOrder="22">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p23" playOrder="23">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p24" playOrder="24">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p25" playOrder="25">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p26" playOrder="26">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p27" playOrder="27">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h01xt.html#t23"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p28" playOrder="28">
+      <navLabel><text>MÁSODIK FEJEZET – Isteni természet és isteni szolgálat</text></navLabel>
+      <content src="3s1h02xt.html"/>
+      <navPoint id="p29" playOrder="29">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p30" playOrder="30">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p31" playOrder="31">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p32" playOrder="32">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p33" playOrder="33">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p34" playOrder="34">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p35" playOrder="35">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p36" playOrder="36">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p37" playOrder="37">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p38" playOrder="38">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p39" playOrder="39">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p40" playOrder="40">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p41" playOrder="41">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p42" playOrder="42">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p43" playOrder="43">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p44" playOrder="44">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p45" playOrder="45">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p46" playOrder="46">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p47" playOrder="47">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p48" playOrder="48">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p49" playOrder="49">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p50" playOrder="50">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p51" playOrder="51">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p52" playOrder="52">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p53" playOrder="53">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p54" playOrder="54">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p55" playOrder="55">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p56" playOrder="56">
+        <navLabel><text>28. – 29. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p57" playOrder="57">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p58" playOrder="58">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p59" playOrder="59">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p60" playOrder="60">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p61" playOrder="61">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h02xt.html#t34"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p62" playOrder="62">
+      <navLabel><text>HARMADIK FEJEZET – Kṛṣṇa minden inkarnáció forrása</text></navLabel>
+      <content src="3s1h03xt.html"/>
+      <navPoint id="p63" playOrder="63">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p64" playOrder="64">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p65" playOrder="65">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p66" playOrder="66">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p67" playOrder="67">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p68" playOrder="68">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p69" playOrder="69">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p70" playOrder="70">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p71" playOrder="71">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p72" playOrder="72">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p73" playOrder="73">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p74" playOrder="74">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p75" playOrder="75">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p76" playOrder="76">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p77" playOrder="77">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p78" playOrder="78">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p79" playOrder="79">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p80" playOrder="80">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p81" playOrder="81">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t19."/>
+      </navPoint>
+      <navPoint id="p82" playOrder="82">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p83" playOrder="83">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p84" playOrder="84">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p85" playOrder="85">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p86" playOrder="86">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p87" playOrder="87">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p88" playOrder="88">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p89" playOrder="89">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p90" playOrder="90">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p91" playOrder="91">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p92" playOrder="92">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p93" playOrder="93">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p94" playOrder="94">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p95" playOrder="95">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p96" playOrder="96">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p97" playOrder="97">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p98" playOrder="98">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p99" playOrder="99">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p100" playOrder="100">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p101" playOrder="101">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p102" playOrder="102">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p103" playOrder="103">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p104" playOrder="104">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p105" playOrder="105">
+        <navLabel><text>43. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t43"/>
+      </navPoint>
+      <navPoint id="p106" playOrder="106">
+        <navLabel><text>44. VERS</text></navLabel>
+        <content src="3s1h03xt.html#t44"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p107" playOrder="107">
+      <navLabel><text>NEGYEDIK FEJEZET – Śrī Nārada megjelenése</text></navLabel>
+      <content src="3s1h04xt.html"/>
+      <navPoint id="p108" playOrder="108">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p109" playOrder="109">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p110" playOrder="110">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p111" playOrder="111">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p112" playOrder="112">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p113" playOrder="113">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p114" playOrder="114">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p115" playOrder="115">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p116" playOrder="116">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p117" playOrder="117">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p118" playOrder="118">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p119" playOrder="119">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p120" playOrder="120">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p121" playOrder="121">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p122" playOrder="122">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p123" playOrder="123">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p124" playOrder="124">
+        <navLabel><text>17. – 18. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p125" playOrder="125">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p126" playOrder="126">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p127" playOrder="127">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p128" playOrder="128">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p129" playOrder="129">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p130" playOrder="130">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p131" playOrder="131">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p132" playOrder="132">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p133" playOrder="133">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p134" playOrder="134">
+        <navLabel><text>28. – 29. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p135" playOrder="135">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p136" playOrder="136">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p137" playOrder="137">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p138" playOrder="138">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h04xt.html#t33"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p139" playOrder="139">
+      <navLabel><text>ÖTÖDIK FEJEZET – Nārada a Śrīmad-Bhāgavatamra tanítja Vyāsadevát</text></navLabel>
+      <content src="3s1h05xt.html"/>
+      <navPoint id="p140" playOrder="140">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p141" playOrder="141">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p142" playOrder="142">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p143" playOrder="143">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p144" playOrder="144">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p145" playOrder="145">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p146" playOrder="146">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p147" playOrder="147">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p148" playOrder="148">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p149" playOrder="149">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p150" playOrder="150">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p151" playOrder="151">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p152" playOrder="152">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p153" playOrder="153">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p154" playOrder="154">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p155" playOrder="155">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p156" playOrder="156">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p157" playOrder="157">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p158" playOrder="158">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p159" playOrder="159">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p160" playOrder="160">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p161" playOrder="161">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p162" playOrder="162">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p163" playOrder="163">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p164" playOrder="164">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p165" playOrder="165">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p166" playOrder="166">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p167" playOrder="167">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p168" playOrder="168">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p169" playOrder="169">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p170" playOrder="170">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p171" playOrder="171">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p172" playOrder="172">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p173" playOrder="173">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p174" playOrder="174">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p175" playOrder="175">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p176" playOrder="176">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p177" playOrder="177">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p178" playOrder="178">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p179" playOrder="179">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h05xt.html#t40"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p180" playOrder="180">
+      <navLabel><text>HATODIK FEJEZET – Nārada és Vyāsadeva beszélgetése</text></navLabel>
+      <content src="3s1h06xt.html"/>
+      <navPoint id="p181" playOrder="181">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p182" playOrder="182">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p183" playOrder="183">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p184" playOrder="184">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p185" playOrder="185">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p186" playOrder="186">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p187" playOrder="187">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p188" playOrder="188">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p189" playOrder="189">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p190" playOrder="190">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p191" playOrder="191">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p192" playOrder="192">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p193" playOrder="193">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p194" playOrder="194">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p195" playOrder="195">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p196" playOrder="196">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p197" playOrder="197">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p198" playOrder="198">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p199" playOrder="199">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p200" playOrder="200">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p201" playOrder="201">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p202" playOrder="202">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p203" playOrder="203">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p204" playOrder="204">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p205" playOrder="205">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p206" playOrder="206">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p207" playOrder="207">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p208" playOrder="208">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p209" playOrder="209">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p210" playOrder="210">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p211" playOrder="211">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p212" playOrder="212">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p213" playOrder="213">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p214" playOrder="214">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p215" playOrder="215">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p216" playOrder="216">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p217" playOrder="217">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p218" playOrder="218">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h06xt.html#t38"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p219" playOrder="219">
+      <navLabel><text>HETEDIK FEJEZET – Droṇa fiának bűnhődése</text></navLabel>
+      <content src="3s1h07xt.html"/>
+      <navPoint id="p220" playOrder="220">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p221" playOrder="221">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p222" playOrder="222">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p223" playOrder="223">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p224" playOrder="224">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p225" playOrder="225">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p226" playOrder="226">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p227" playOrder="227">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p228" playOrder="228">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p229" playOrder="229">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p230" playOrder="230">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p231" playOrder="231">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p232" playOrder="232">
+        <navLabel><text>13. – 14. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p233" playOrder="233">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p234" playOrder="234">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p235" playOrder="235">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p236" playOrder="236">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p237" playOrder="237">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p238" playOrder="238">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p239" playOrder="239">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p240" playOrder="240">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p241" playOrder="241">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p242" playOrder="242">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p243" playOrder="243">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p244" playOrder="244">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p245" playOrder="245">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p246" playOrder="246">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p247" playOrder="247">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p248" playOrder="248">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p249" playOrder="249">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p250" playOrder="250">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p251" playOrder="251">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p252" playOrder="252">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p253" playOrder="253">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p254" playOrder="254">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p255" playOrder="255">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p256" playOrder="256">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p257" playOrder="257">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p258" playOrder="258">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p259" playOrder="259">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p260" playOrder="260">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p261" playOrder="261">
+        <navLabel><text>43. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t43"/>
+      </navPoint>
+      <navPoint id="p262" playOrder="262">
+        <navLabel><text>44. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t44"/>
+      </navPoint>
+      <navPoint id="p263" playOrder="263">
+        <navLabel><text>45. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t45"/>
+      </navPoint>
+      <navPoint id="p264" playOrder="264">
+        <navLabel><text>46. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t46"/>
+      </navPoint>
+      <navPoint id="p265" playOrder="265">
+        <navLabel><text>47. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t47"/>
+      </navPoint>
+      <navPoint id="p266" playOrder="266">
+        <navLabel><text>48. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t48"/>
+      </navPoint>
+      <navPoint id="p267" playOrder="267">
+        <navLabel><text>49. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t49"/>
+      </navPoint>
+      <navPoint id="p268" playOrder="268">
+        <navLabel><text>50. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t50"/>
+      </navPoint>
+      <navPoint id="p269" playOrder="269">
+        <navLabel><text>51. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t51"/>
+      </navPoint>
+      <navPoint id="p270" playOrder="270">
+        <navLabel><text>52. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t52"/>
+      </navPoint>
+      <navPoint id="p271" playOrder="271">
+        <navLabel><text>53. – 54. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t54"/>
+      </navPoint>
+      <navPoint id="p272" playOrder="272">
+        <navLabel><text>55. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t55"/>
+      </navPoint>
+      <navPoint id="p273" playOrder="273">
+        <navLabel><text>56. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t56"/>
+      </navPoint>
+      <navPoint id="p274" playOrder="274">
+        <navLabel><text>57. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t57"/>
+      </navPoint>
+      <navPoint id="p275" playOrder="275">
+        <navLabel><text>58. VERS</text></navLabel>
+        <content src="3s1h07xt.html#t58"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p276" playOrder="276">
+      <navLabel><text>NYOLCADIK FEJEZET – Kuntī királynő imái és Parīkṣit megmenekülése</text></navLabel>
+      <content src="3s1h08xt.html"/>
+      <navPoint id="p277" playOrder="277">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p278" playOrder="278">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p279" playOrder="279">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p280" playOrder="280">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p281" playOrder="281">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p282" playOrder="282">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p283" playOrder="283">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p284" playOrder="284">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p285" playOrder="285">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p286" playOrder="286">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p287" playOrder="287">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p288" playOrder="288">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p289" playOrder="289">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p290" playOrder="290">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p291" playOrder="291">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p292" playOrder="292">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p293" playOrder="293">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p294" playOrder="294">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p295" playOrder="295">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p296" playOrder="296">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p297" playOrder="297">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p298" playOrder="298">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p299" playOrder="299">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p300" playOrder="300">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p301" playOrder="301">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p302" playOrder="302">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p303" playOrder="303">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p304" playOrder="304">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p305" playOrder="305">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p306" playOrder="306">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p307" playOrder="307">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p308" playOrder="308">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p309" playOrder="309">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p310" playOrder="310">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p311" playOrder="311">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p312" playOrder="312">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p313" playOrder="313">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p314" playOrder="314">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p315" playOrder="315">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p316" playOrder="316">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p317" playOrder="317">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p318" playOrder="318">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p319" playOrder="319">
+        <navLabel><text>43. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t43"/>
+      </navPoint>
+      <navPoint id="p320" playOrder="320">
+        <navLabel><text>44. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t44"/>
+      </navPoint>
+      <navPoint id="p321" playOrder="321">
+        <navLabel><text>45. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t45"/>
+      </navPoint>
+      <navPoint id="p322" playOrder="322">
+        <navLabel><text>46. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t46"/>
+      </navPoint>
+      <navPoint id="p323" playOrder="323">
+        <navLabel><text>47. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t47"/>
+      </navPoint>
+      <navPoint id="p324" playOrder="324">
+        <navLabel><text>48. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t48"/>
+      </navPoint>
+      <navPoint id="p325" playOrder="325">
+        <navLabel><text>49. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t49"/>
+      </navPoint>
+      <navPoint id="p326" playOrder="326">
+        <navLabel><text>50. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t50"/>
+      </navPoint>
+      <navPoint id="p327" playOrder="327">
+        <navLabel><text>51. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t51"/>
+      </navPoint>
+      <navPoint id="p328" playOrder="328">
+        <navLabel><text>52. VERS</text></navLabel>
+        <content src="3s1h08xt.html#t52"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p329" playOrder="329">
+      <navLabel><text>KILENCEDIK FEJEZET – Bhīṣmadeva eltávozása az Úr Kṛṣṇa jelenlétében</text></navLabel>
+      <content src="3s1h09xt.html"/>
+      <navPoint id="p330" playOrder="330">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p331" playOrder="331">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p332" playOrder="332">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p333" playOrder="333">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p334" playOrder="334">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p335" playOrder="335">
+        <navLabel><text>6. – 7. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p336" playOrder="336">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p337" playOrder="337">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p338" playOrder="338">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p339" playOrder="339">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p340" playOrder="340">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p341" playOrder="341">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p342" playOrder="342">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p343" playOrder="343">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p344" playOrder="344">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p345" playOrder="345">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p346" playOrder="346">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p347" playOrder="347">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p348" playOrder="348">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p349" playOrder="349">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p350" playOrder="350">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p351" playOrder="351">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p352" playOrder="352">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p353" playOrder="353">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p354" playOrder="354">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p355" playOrder="355">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p356" playOrder="356">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p357" playOrder="357">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p358" playOrder="358">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p359" playOrder="359">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p360" playOrder="360">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p361" playOrder="361">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p362" playOrder="362">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p363" playOrder="363">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p364" playOrder="364">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p365" playOrder="365">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p366" playOrder="366">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p367" playOrder="367">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p368" playOrder="368">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p369" playOrder="369">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p370" playOrder="370">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p371" playOrder="371">
+        <navLabel><text>43. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t43"/>
+      </navPoint>
+      <navPoint id="p372" playOrder="372">
+        <navLabel><text>44. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t44"/>
+      </navPoint>
+      <navPoint id="p373" playOrder="373">
+        <navLabel><text>45. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t45"/>
+      </navPoint>
+      <navPoint id="p374" playOrder="374">
+        <navLabel><text>46. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t46"/>
+      </navPoint>
+      <navPoint id="p375" playOrder="375">
+        <navLabel><text>47. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t47"/>
+      </navPoint>
+      <navPoint id="p376" playOrder="376">
+        <navLabel><text>48. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t48"/>
+      </navPoint>
+      <navPoint id="p377" playOrder="377">
+        <navLabel><text>49. VERS</text></navLabel>
+        <content src="3s1h09xt.html#t49"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p378" playOrder="378">
+      <navLabel><text>TIZEDIK FEJEZET – Az Úr Kṛṣṇa Dvārakāba indul</text></navLabel>
+      <content src="3s1h10xt.html"/>
+      <navPoint id="p379" playOrder="379">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p380" playOrder="380">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p381" playOrder="381">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p382" playOrder="382">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p383" playOrder="383">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p384" playOrder="384">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p385" playOrder="385">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p386" playOrder="386">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p387" playOrder="387">
+        <navLabel><text>9. – 10. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p388" playOrder="388">
+        <navLabel><text>11. – 12. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p389" playOrder="389">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p390" playOrder="390">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p391" playOrder="391">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p392" playOrder="392">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p393" playOrder="393">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p394" playOrder="394">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p395" playOrder="395">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p396" playOrder="396">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p397" playOrder="397">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p398" playOrder="398">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p399" playOrder="399">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p400" playOrder="400">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p401" playOrder="401">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p402" playOrder="402">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p403" playOrder="403">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p404" playOrder="404">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p405" playOrder="405">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p406" playOrder="406">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p407" playOrder="407">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p408" playOrder="408">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p409" playOrder="409">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p410" playOrder="410">
+        <navLabel><text>34. – 35. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p411" playOrder="411">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h10xt.html#t36"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p412" playOrder="412">
+      <navLabel><text>TIZENEGYEDIK FEJEZET – Az Úr Kṛṣṇa bevonul Dvārakāba</text></navLabel>
+      <content src="3s1h11xt.html"/>
+      <navPoint id="p413" playOrder="413">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p414" playOrder="414">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p415" playOrder="415">
+        <navLabel><text>3.VERS</text></navLabel>
+        <content src="3s1h11xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p416" playOrder="416">
+        <navLabel><text>4. – 5. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p417" playOrder="417">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p418" playOrder="418">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p419" playOrder="419">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p420" playOrder="420">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p421" playOrder="421">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p422" playOrder="422">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p423" playOrder="423">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p424" playOrder="424">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p425" playOrder="425">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p426" playOrder="426">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p427" playOrder="427">
+        <navLabel><text>16. – 17. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p428" playOrder="428">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p429" playOrder="429">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p430" playOrder="430">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p431" playOrder="431">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p432" playOrder="432">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p433" playOrder="433">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p434" playOrder="434">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p435" playOrder="435">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p436" playOrder="436">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p437" playOrder="437">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p438" playOrder="438">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p439" playOrder="439">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p440" playOrder="440">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p441" playOrder="441">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p442" playOrder="442">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p443" playOrder="443">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p444" playOrder="444">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p445" playOrder="445">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p446" playOrder="446">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p447" playOrder="447">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p448" playOrder="448">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p449" playOrder="449">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h11xt.html#t39"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p450" playOrder="450">
+      <navLabel><text>TIZENKETTEDIK FEJEZET – Parīkṣit király születése</text></navLabel>
+      <content src="3s1h12xt.html"/>
+      <navPoint id="p451" playOrder="451">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p452" playOrder="452">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p453" playOrder="453">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p454" playOrder="454">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p455" playOrder="455">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p456" playOrder="456">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p457" playOrder="457">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p458" playOrder="458">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p459" playOrder="459">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p460" playOrder="460">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p461" playOrder="461">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p462" playOrder="462">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p463" playOrder="463">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p464" playOrder="464">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p465" playOrder="465">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p466" playOrder="466">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p467" playOrder="467">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p468" playOrder="468">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p469" playOrder="469">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p470" playOrder="470">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p471" playOrder="471">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p472" playOrder="472">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p473" playOrder="473">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p474" playOrder="474">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p475" playOrder="475">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p476" playOrder="476">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p477" playOrder="477">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p478" playOrder="478">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p479" playOrder="479">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p480" playOrder="480">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p481" playOrder="481">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p482" playOrder="482">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p483" playOrder="483">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p484" playOrder="484">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p485" playOrder="485">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p486" playOrder="486">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h12xt.html#t36"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p487" playOrder="487">
+      <navLabel><text>TIZENHARMADIK FEJEZET – Dhṛtarāṣṭra elhagyja otthonát</text></navLabel>
+      <content src="3s1h13xt.html"/>
+      <navPoint id="p488" playOrder="488">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p489" playOrder="489">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p490" playOrder="490">
+        <navLabel><text>3. – 4. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p491" playOrder="491">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p492" playOrder="492">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p493" playOrder="493">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p494" playOrder="494">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p495" playOrder="495">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p496" playOrder="496">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p497" playOrder="497">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p498" playOrder="498">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p499" playOrder="499">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p500" playOrder="500">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p501" playOrder="501">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p502" playOrder="502">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p503" playOrder="503">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p504" playOrder="504">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p505" playOrder="505">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p506" playOrder="506">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p507" playOrder="507">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p508" playOrder="508">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p509" playOrder="509">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p510" playOrder="510">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p511" playOrder="511">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p512" playOrder="512">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p513" playOrder="513">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p514" playOrder="514">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p515" playOrder="515">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p516" playOrder="516">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p517" playOrder="517">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p518" playOrder="518">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p519" playOrder="519">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p520" playOrder="520">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p521" playOrder="521">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p522" playOrder="522">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p523" playOrder="523">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p524" playOrder="524">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p525" playOrder="525">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p526" playOrder="526">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p527" playOrder="527">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p528" playOrder="528">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p529" playOrder="529">
+        <navLabel><text>43.VERS</text></navLabel>
+        <content src="3s1h13xt.html#t43"/>
+      </navPoint>
+      <navPoint id="p530" playOrder="530">
+        <navLabel><text>44. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t44"/>
+      </navPoint>
+      <navPoint id="p531" playOrder="531">
+        <navLabel><text>45. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t45"/>
+      </navPoint>
+      <navPoint id="p532" playOrder="532">
+        <navLabel><text>46. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t46"/>
+      </navPoint>
+      <navPoint id="p533" playOrder="533">
+        <navLabel><text>47. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t47"/>
+      </navPoint>
+      <navPoint id="p534" playOrder="534">
+        <navLabel><text>48. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t48"/>
+      </navPoint>
+      <navPoint id="p535" playOrder="535">
+        <navLabel><text>49. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t49"/>
+      </navPoint>
+      <navPoint id="p536" playOrder="536">
+        <navLabel><text>50. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t50"/>
+      </navPoint>
+      <navPoint id="p537" playOrder="537">
+        <navLabel><text>51. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t51"/>
+      </navPoint>
+      <navPoint id="p538" playOrder="538">
+        <navLabel><text>52. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t52"/>
+      </navPoint>
+      <navPoint id="p539" playOrder="539">
+        <navLabel><text>53. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t53"/>
+      </navPoint>
+      <navPoint id="p540" playOrder="540">
+        <navLabel><text>54. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t54"/>
+      </navPoint>
+      <navPoint id="p541" playOrder="541">
+        <navLabel><text>55. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t55"/>
+      </navPoint>
+      <navPoint id="p542" playOrder="542">
+        <navLabel><text>56. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t56"/>
+      </navPoint>
+      <navPoint id="p543" playOrder="543">
+        <navLabel><text>57. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t57"/>
+      </navPoint>
+      <navPoint id="p544" playOrder="544">
+        <navLabel><text>58. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t58"/>
+      </navPoint>
+      <navPoint id="p545" playOrder="545">
+        <navLabel><text>59. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t59"/>
+      </navPoint>
+      <navPoint id="p546" playOrder="546">
+        <navLabel><text>60. VERS</text></navLabel>
+        <content src="3s1h13xt.html#t60"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p547" playOrder="547">
+      <navLabel><text>TIZENNEGYEDIK FEJEZET – Az Úr Kṛṣṇa eltávozása</text></navLabel>
+      <content src="3s1h14xt.html"/>
+      <navPoint id="p548" playOrder="548">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p549" playOrder="549">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p550" playOrder="550">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p551" playOrder="551">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p552" playOrder="552">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p553" playOrder="553">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p554" playOrder="554">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p555" playOrder="555">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p556" playOrder="556">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p557" playOrder="557">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p558" playOrder="558">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p559" playOrder="559">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p560" playOrder="560">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p561" playOrder="561">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p562" playOrder="562">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p563" playOrder="563">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p564" playOrder="564">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p565" playOrder="565">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p566" playOrder="566">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p567" playOrder="567">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p568" playOrder="568">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p569" playOrder="569">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p570" playOrder="570">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p571" playOrder="571">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p572" playOrder="572">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p573" playOrder="573">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p574" playOrder="574">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p575" playOrder="575">
+        <navLabel><text>28. – 29. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p576" playOrder="576">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p577" playOrder="577">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p578" playOrder="578">
+        <navLabel><text>32. – 33. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p579" playOrder="579">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p580" playOrder="580">
+        <navLabel><text>35. – 36. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p581" playOrder="581">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p582" playOrder="582">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p583" playOrder="583">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p584" playOrder="584">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p585" playOrder="585">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p586" playOrder="586">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p587" playOrder="587">
+        <navLabel><text>43. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t43"/>
+      </navPoint>
+      <navPoint id="p588" playOrder="588">
+        <navLabel><text>44. VERS</text></navLabel>
+        <content src="3s1h14xt.html#t44"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p589" playOrder="589">
+      <navLabel><text>TIZENÖTÖDIK FEJEZET – A Pāṇḍavák visszavonulnak</text></navLabel>
+      <content src="3s1h15xt.html"/>
+      <navPoint id="p590" playOrder="590">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t1."/>
+      </navPoint>
+      <navPoint id="p591" playOrder="591">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p592" playOrder="592">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p593" playOrder="593">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p594" playOrder="594">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p595" playOrder="595">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p596" playOrder="596">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p597" playOrder="597">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p598" playOrder="598">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p599" playOrder="599">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p600" playOrder="600">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p601" playOrder="601">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p602" playOrder="602">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p603" playOrder="603">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p604" playOrder="604">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p605" playOrder="605">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p606" playOrder="606">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p607" playOrder="607">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p608" playOrder="608">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p609" playOrder="609">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p610" playOrder="610">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p611" playOrder="611">
+        <navLabel><text>22. – 23. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p612" playOrder="612">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p613" playOrder="613">
+        <navLabel><text>25. – 26. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p614" playOrder="614">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p615" playOrder="615">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p616" playOrder="616">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p617" playOrder="617">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p618" playOrder="618">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p619" playOrder="619">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p620" playOrder="620">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p621" playOrder="621">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p622" playOrder="622">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p623" playOrder="623">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p624" playOrder="624">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p625" playOrder="625">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p626" playOrder="626">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p627" playOrder="627">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p628" playOrder="628">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p629" playOrder="629">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p630" playOrder="630">
+        <navLabel><text>43. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t43"/>
+      </navPoint>
+      <navPoint id="p631" playOrder="631">
+        <navLabel><text>44. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t44"/>
+      </navPoint>
+      <navPoint id="p632" playOrder="632">
+        <navLabel><text>45. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t45"/>
+      </navPoint>
+      <navPoint id="p633" playOrder="633">
+        <navLabel><text>46. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t46"/>
+      </navPoint>
+      <navPoint id="p634" playOrder="634">
+        <navLabel><text>47. – 48. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t48"/>
+      </navPoint>
+      <navPoint id="p635" playOrder="635">
+        <navLabel><text>49. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t49"/>
+      </navPoint>
+      <navPoint id="p636" playOrder="636">
+        <navLabel><text>50. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t50"/>
+      </navPoint>
+      <navPoint id="p637" playOrder="637">
+        <navLabel><text>51. VERS</text></navLabel>
+        <content src="3s1h15xt.html#t51"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p638" playOrder="638">
+      <navLabel><text>TIZENHATODIK FEJEZET – Hogyan fogadta Parīkṣit a Kali-korszakot?</text></navLabel>
+      <content src="3s1h16xt.html"/>
+      <navPoint id="p639" playOrder="639">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p640" playOrder="640">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p641" playOrder="641">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p642" playOrder="642">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p643" playOrder="643">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p644" playOrder="644">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p645" playOrder="645">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p646" playOrder="646">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p647" playOrder="647">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p648" playOrder="648">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p649" playOrder="649">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p650" playOrder="650">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p651" playOrder="651">
+        <navLabel><text>13. – 15. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p652" playOrder="652">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p653" playOrder="653">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p654" playOrder="654">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p655" playOrder="655">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p656" playOrder="656">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p657" playOrder="657">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p658" playOrder="658">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p659" playOrder="659">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p660" playOrder="660">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p661" playOrder="661">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p662" playOrder="662">
+        <navLabel><text>26. – 30. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p663" playOrder="663">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p664" playOrder="664">
+        <navLabel><text>32. – 33. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p665" playOrder="665">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p666" playOrder="666">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p667" playOrder="667">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h16xt.html#t36"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p668" playOrder="668">
+      <navLabel><text>TIZENHETEDIK FEJEZET – Kali büntetése és jutalma</text></navLabel>
+      <content src="3s1h17xt.html"/>
+      <navPoint id="p669" playOrder="669">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p670" playOrder="670">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p671" playOrder="671">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p672" playOrder="672">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p673" playOrder="673">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p674" playOrder="674">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p675" playOrder="675">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p676" playOrder="676">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p677" playOrder="677">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p678" playOrder="678">
+        <navLabel><text>10. – 11. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p679" playOrder="679">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p680" playOrder="680">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p681" playOrder="681">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p682" playOrder="682">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p683" playOrder="683">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p684" playOrder="684">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p685" playOrder="685">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p686" playOrder="686">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p687" playOrder="687">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p688" playOrder="688">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p689" playOrder="689">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p690" playOrder="690">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p691" playOrder="691">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p692" playOrder="692">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p693" playOrder="693">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p694" playOrder="694">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p695" playOrder="695">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p696" playOrder="696">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p697" playOrder="697">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p698" playOrder="698">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p699" playOrder="699">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p700" playOrder="700">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p701" playOrder="701">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p702" playOrder="702">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p703" playOrder="703">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p704" playOrder="704">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p705" playOrder="705">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p706" playOrder="706">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p707" playOrder="707">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p708" playOrder="708">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p709" playOrder="709">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p710" playOrder="710">
+        <navLabel><text>43. – 44. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t44"/>
+      </navPoint>
+      <navPoint id="p711" playOrder="711">
+        <navLabel><text>45. VERS</text></navLabel>
+        <content src="3s1h17xt.html#t45"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p712" playOrder="712">
+      <navLabel><text>TIZENNYOLCADIK FEJEZET – Egy brāhmaṇa fiú megátkozza Parīkṣit Mahārāját</text></navLabel>
+      <content src="3s1h18xt.html"/>
+      <navPoint id="p713" playOrder="713">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p714" playOrder="714">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p715" playOrder="715">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p716" playOrder="716">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p717" playOrder="717">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p718" playOrder="718">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p719" playOrder="719">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p720" playOrder="720">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p721" playOrder="721">
+        <navLabel><text>9. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t9"/>
+      </navPoint>
+      <navPoint id="p722" playOrder="722">
+        <navLabel><text>10. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p723" playOrder="723">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p724" playOrder="724">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p725" playOrder="725">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p726" playOrder="726">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p727" playOrder="727">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p728" playOrder="728">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p729" playOrder="729">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p730" playOrder="730">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p731" playOrder="731">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p732" playOrder="732">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p733" playOrder="733">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p734" playOrder="734">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p735" playOrder="735">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p736" playOrder="736">
+        <navLabel><text>24. – 25. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p737" playOrder="737">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p738" playOrder="738">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p739" playOrder="739">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p740" playOrder="740">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p741" playOrder="741">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p742" playOrder="742">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p743" playOrder="743">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p744" playOrder="744">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p745" playOrder="745">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p746" playOrder="746">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p747" playOrder="747">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p748" playOrder="748">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p749" playOrder="749">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p750" playOrder="750">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p751" playOrder="751">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t40"/>
+      </navPoint>
+      <navPoint id="p752" playOrder="752">
+        <navLabel><text>41. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t41"/>
+      </navPoint>
+      <navPoint id="p753" playOrder="753">
+        <navLabel><text>42. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t42"/>
+      </navPoint>
+      <navPoint id="p754" playOrder="754">
+        <navLabel><text>43. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t43"/>
+      </navPoint>
+      <navPoint id="p755" playOrder="755">
+        <navLabel><text>44. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t44"/>
+      </navPoint>
+      <navPoint id="p756" playOrder="756">
+        <navLabel><text>45. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t45"/>
+      </navPoint>
+      <navPoint id="p757" playOrder="757">
+        <navLabel><text>46. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t46"/>
+      </navPoint>
+      <navPoint id="p758" playOrder="758">
+        <navLabel><text>47. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t47"/>
+      </navPoint>
+      <navPoint id="p759" playOrder="759">
+        <navLabel><text>48. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t48"/>
+      </navPoint>
+      <navPoint id="p760" playOrder="760">
+        <navLabel><text>49. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t49"/>
+      </navPoint>
+      <navPoint id="p761" playOrder="761">
+        <navLabel><text>50. VERS</text></navLabel>
+        <content src="3s1h18xt.html#t50"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p762" playOrder="762">
+      <navLabel><text>TIZENKILENCEDIK FEJEZET – Śukadeva Gosvāmī megjelenése</text></navLabel>
+      <content src="3s1h19xt.html"/>
+      <navPoint id="p763" playOrder="763">
+        <navLabel><text>1. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t1"/>
+      </navPoint>
+      <navPoint id="p764" playOrder="764">
+        <navLabel><text>2. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t2"/>
+      </navPoint>
+      <navPoint id="p765" playOrder="765">
+        <navLabel><text>3. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t3"/>
+      </navPoint>
+      <navPoint id="p766" playOrder="766">
+        <navLabel><text>4. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t4"/>
+      </navPoint>
+      <navPoint id="p767" playOrder="767">
+        <navLabel><text>5. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t5"/>
+      </navPoint>
+      <navPoint id="p768" playOrder="768">
+        <navLabel><text>6. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t6"/>
+      </navPoint>
+      <navPoint id="p769" playOrder="769">
+        <navLabel><text>7. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t7"/>
+      </navPoint>
+      <navPoint id="p770" playOrder="770">
+        <navLabel><text>8. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t8"/>
+      </navPoint>
+      <navPoint id="p771" playOrder="771">
+        <navLabel><text>9. – 10. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t10"/>
+      </navPoint>
+      <navPoint id="p772" playOrder="772">
+        <navLabel><text>11. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t11"/>
+      </navPoint>
+      <navPoint id="p773" playOrder="773">
+        <navLabel><text>12. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t12"/>
+      </navPoint>
+      <navPoint id="p774" playOrder="774">
+        <navLabel><text>13. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t13"/>
+      </navPoint>
+      <navPoint id="p775" playOrder="775">
+        <navLabel><text>14. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t14"/>
+      </navPoint>
+      <navPoint id="p776" playOrder="776">
+        <navLabel><text>15. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t15"/>
+      </navPoint>
+      <navPoint id="p777" playOrder="777">
+        <navLabel><text>16. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t16"/>
+      </navPoint>
+      <navPoint id="p778" playOrder="778">
+        <navLabel><text>17. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t17"/>
+      </navPoint>
+      <navPoint id="p779" playOrder="779">
+        <navLabel><text>18. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t18"/>
+      </navPoint>
+      <navPoint id="p780" playOrder="780">
+        <navLabel><text>19. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t19"/>
+      </navPoint>
+      <navPoint id="p781" playOrder="781">
+        <navLabel><text>20. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t20"/>
+      </navPoint>
+      <navPoint id="p782" playOrder="782">
+        <navLabel><text>21. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t21"/>
+      </navPoint>
+      <navPoint id="p783" playOrder="783">
+        <navLabel><text>22. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t22"/>
+      </navPoint>
+      <navPoint id="p784" playOrder="784">
+        <navLabel><text>23. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t23"/>
+      </navPoint>
+      <navPoint id="p785" playOrder="785">
+        <navLabel><text>24. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t24"/>
+      </navPoint>
+      <navPoint id="p786" playOrder="786">
+        <navLabel><text>25. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t25"/>
+      </navPoint>
+      <navPoint id="p787" playOrder="787">
+        <navLabel><text>26. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t26"/>
+      </navPoint>
+      <navPoint id="p788" playOrder="788">
+        <navLabel><text>27. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t27"/>
+      </navPoint>
+      <navPoint id="p789" playOrder="789">
+        <navLabel><text>28. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t28"/>
+      </navPoint>
+      <navPoint id="p790" playOrder="790">
+        <navLabel><text>29. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t29"/>
+      </navPoint>
+      <navPoint id="p791" playOrder="791">
+        <navLabel><text>30. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t30"/>
+      </navPoint>
+      <navPoint id="p792" playOrder="792">
+        <navLabel><text>31. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t31"/>
+      </navPoint>
+      <navPoint id="p793" playOrder="793">
+        <navLabel><text>32. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t32"/>
+      </navPoint>
+      <navPoint id="p794" playOrder="794">
+        <navLabel><text>33. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t33"/>
+      </navPoint>
+      <navPoint id="p795" playOrder="795">
+        <navLabel><text>34. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t34"/>
+      </navPoint>
+      <navPoint id="p796" playOrder="796">
+        <navLabel><text>35. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t35"/>
+      </navPoint>
+      <navPoint id="p797" playOrder="797">
+        <navLabel><text>36. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t36"/>
+      </navPoint>
+      <navPoint id="p798" playOrder="798">
+        <navLabel><text>37. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t37"/>
+      </navPoint>
+      <navPoint id="p799" playOrder="799">
+        <navLabel><text>38. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t38"/>
+      </navPoint>
+      <navPoint id="p800" playOrder="800">
+        <navLabel><text>39. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t39"/>
+      </navPoint>
+      <navPoint id="p801" playOrder="801">
+        <navLabel><text>40. VERS</text></navLabel>
+        <content src="3s1h19xt.html#t40"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p802" playOrder="802">
+      <navLabel><text>Tárgymutató</text></navLabel>
+      <content src="1s1h00xi.html"/>
+      <navPoint id="p803" playOrder="803">
+        <navLabel><text>A</text></navLabel>
+        <content src="1s1h00xi.html#s1"/>
+      </navPoint>
+      <navPoint id="p804" playOrder="804">
+        <navLabel><text>B</text></navLabel>
+        <content src="1s1h00xi.html#s2"/>
+      </navPoint>
+      <navPoint id="p805" playOrder="805">
+        <navLabel><text>C</text></navLabel>
+        <content src="1s1h00xi.html#s3"/>
+      </navPoint>
+      <navPoint id="p806" playOrder="806">
+        <navLabel><text>Cs</text></navLabel>
+        <content src="1s1h00xi.html#s4"/>
+      </navPoint>
+      <navPoint id="p807" playOrder="807">
+        <navLabel><text>D</text></navLabel>
+        <content src="1s1h00xi.html#s5"/>
+      </navPoint>
+      <navPoint id="p808" playOrder="808">
+        <navLabel><text>E</text></navLabel>
+        <content src="1s1h00xi.html#s6"/>
+      </navPoint>
+      <navPoint id="p809" playOrder="809">
+        <navLabel><text>F</text></navLabel>
+        <content src="1s1h00xi.html#s7"/>
+      </navPoint>
+      <navPoint id="p810" playOrder="810">
+        <navLabel><text>G</text></navLabel>
+        <content src="1s1h00xi.html#s8"/>
+      </navPoint>
+      <navPoint id="p811" playOrder="811">
+        <navLabel><text>Gy</text></navLabel>
+        <content src="1s1h00xi.html#s9"/>
+      </navPoint>
+      <navPoint id="p812" playOrder="812">
+        <navLabel><text>H</text></navLabel>
+        <content src="1s1h00xi.html#s10"/>
+      </navPoint>
+      <navPoint id="p813" playOrder="813">
+        <navLabel><text>I</text></navLabel>
+        <content src="1s1h00xi.html#s11"/>
+      </navPoint>
+      <navPoint id="p814" playOrder="814">
+        <navLabel><text>J</text></navLabel>
+        <content src="1s1h00xi.html#s12"/>
+      </navPoint>
+      <navPoint id="p815" playOrder="815">
+        <navLabel><text>K</text></navLabel>
+        <content src="1s1h00xi.html#s13"/>
+      </navPoint>
+      <navPoint id="p816" playOrder="816">
+        <navLabel><text>L</text></navLabel>
+        <content src="1s1h00xi.html#s14"/>
+      </navPoint>
+      <navPoint id="p817" playOrder="817">
+        <navLabel><text>M</text></navLabel>
+        <content src="1s1h00xi.html#s15"/>
+      </navPoint>
+      <navPoint id="p818" playOrder="818">
+        <navLabel><text>N</text></navLabel>
+        <content src="1s1h00xi.html#s16"/>
+      </navPoint>
+      <navPoint id="p819" playOrder="819">
+        <navLabel><text>Ny</text></navLabel>
+        <content src="1s1h00xi.html#s17"/>
+      </navPoint>
+      <navPoint id="p820" playOrder="820">
+        <navLabel><text>O</text></navLabel>
+        <content src="1s1h00xi.html#s18"/>
+      </navPoint>
+      <navPoint id="p821" playOrder="821">
+        <navLabel><text>Ö</text></navLabel>
+        <content src="1s1h00xi.html#s19"/>
+      </navPoint>
+      <navPoint id="p822" playOrder="822">
+        <navLabel><text>P</text></navLabel>
+        <content src="1s1h00xi.html#s20"/>
+      </navPoint>
+      <navPoint id="p823" playOrder="823">
+        <navLabel><text>R</text></navLabel>
+        <content src="1s1h00xi.html#s21"/>
+      </navPoint>
+      <navPoint id="p824" playOrder="824">
+        <navLabel><text>S</text></navLabel>
+        <content src="1s1h00xi.html#s22"/>
+      </navPoint>
+      <navPoint id="p825" playOrder="825">
+        <navLabel><text>Sz</text></navLabel>
+        <content src="1s1h00xi.html#s23"/>
+      </navPoint>
+      <navPoint id="p826" playOrder="826">
+        <navLabel><text>T</text></navLabel>
+        <content src="1s1h00xi.html#s24"/>
+      </navPoint>
+      <navPoint id="p827" playOrder="827">
+        <navLabel><text>U</text></navLabel>
+        <content src="1s1h00xi.html#s25"/>
+      </navPoint>
+      <navPoint id="p828" playOrder="828">
+        <navLabel><text>Ü</text></navLabel>
+        <content src="1s1h00xi.html#s26"/>
+      </navPoint>
+      <navPoint id="p829" playOrder="829">
+        <navLabel><text>V</text></navLabel>
+        <content src="1s1h00xi.html#s27"/>
+      </navPoint>
+      <navPoint id="p830" playOrder="830">
+        <navLabel><text>Y</text></navLabel>
+        <content src="1s1h00xi.html#s28"/>
+      </navPoint>
+      <navPoint id="p831" playOrder="831">
+        <navLabel><text>Z</text></navLabel>
+        <content src="1s1h00xi.html#s29"/>
+      </navPoint>
+    </navPoint>
+  </navMap>
+</ncx>

@@ -36,6 +36,7 @@ public class Book
 	{
 		Writer out = new OutputStreamWriter(new FileOutputStream(xmlFile), "UTF-8");
 		out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
+		out.write("<?xml-stylesheet href=\"ed.xsl\" type=\"text/xsl\"?>\r\n");
 		out.write("<book>\r\n");
 		
 		for(Paragraph inf : info)

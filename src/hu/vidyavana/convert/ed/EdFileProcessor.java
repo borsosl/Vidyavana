@@ -3,6 +3,7 @@ package hu.vidyavana.convert.ed;
 import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
 import hu.vidyavana.convert.api.*;
 import java.io.*;
+import java.nio.file.*;
 import java.util.Stack;
 
 public class EdFileProcessor implements FileProcessor
@@ -14,17 +15,20 @@ public class EdFileProcessor implements FileProcessor
 	private Chapter chapter;
 	private Paragraph para;
 	private EdTags currentTag;
+	private EdTags currentAlias;
 	private int nextPos;
 	private EdPreviousEntity prev;
 	private Stack<String> formatStack;
 	private boolean skippingUnhandledTag;
+	private String ebookPath;
+	private int lastTextTag;
 
 
 	@Override
 	public void init(File srcDir, File destDir)
 	{
 		this.destDir = destDir;
-		destDir.mkdirs();
+		ebookPath = System.getProperty("ebook.path");
 	}
 
 
@@ -51,9 +55,20 @@ public class EdFileProcessor implements FileProcessor
 		book.chapter.add(chapter);
 		prev = Beginning;
 		formatStack = new Stack<>();
+		lastTextTag = -100;
 		
 		readEdFile(ed);
 		
+		File outDir = xml.getParentFile();
+		if(outDir.mkdirs() && ebookPath != null)
+		{
+			Files.copy(new File(ebookPath, "ed.xsl").toPath(),
+				new File(outDir, "ed.xsl").toPath(),
+				StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(new File(ebookPath, "ed.css").toPath(),
+				new File(outDir, "ed.css").toPath(),
+				StandardCopyOption.REPLACE_EXISTING);
+		}
 		book.writeToFile(xml);
 	}
 
@@ -80,6 +95,7 @@ public class EdFileProcessor implements FileProcessor
 			if(c=='\r' || ptr==0 && (c==' ' || c=='\t')) continue;
 			line[ptr++] = (short) c;
 		}
+		purgeFormatStack();
 	}
 	
 	
@@ -89,6 +105,7 @@ public class EdFileProcessor implements FileProcessor
 		nextPos = 0;
 		if(line[0] == '@')
 		{
+			purgeFormatStack();
 			skippingUnhandledTag = false;
 			
 			String tagStr = sequenceToString(line, 1, length, (short) '=').trim().toLowerCase();
@@ -97,9 +114,12 @@ public class EdFileProcessor implements FileProcessor
 			currentTag = EdTags.find(tagStr);
 			if(currentTag == null)
 				throw new IllegalStateException(String.format("ERROR: Nem definialt tag '%s' a '%s' fajlban. Sor: %d.", tagStr, srcFileName, lineNumber));
+			currentAlias = currentTag.alias;
+			if(currentAlias == null)
+				currentAlias = currentTag;
 			
 			// if it's an unhandled tag
-			if(currentTag.alias == EdTags.unhandled)
+			if(currentAlias == EdTags.unhandled)
 			{
 				skippingUnhandledTag = true;
 				return;
@@ -126,14 +146,26 @@ public class EdFileProcessor implements FileProcessor
 					break;
 				case textno:
 					tagName = "text_number";
-					// no break!
+					// text precedes textno with a max. of 1 tag in between
+					if(chapter.para.size()-lastTextTag < 2)
+					{
+						// insert text_number before text
+						chapter.para.add(lastTextTag-1, para);
+						break;
+					}
+					// no break: add text_number as last
 				default:
 					chapter.para.add(para);
 			}
-			if(currentTag.alias == EdTags.info)
+			// info is represented as xml tag
+			if(currentAlias == EdTags.info)
 				para.tagName = tagName;
+			// book text is p tag with a class attribute
 			else
-				para.cls = currentTag.cls;
+				para.cls = currentAlias.cls;
+			// remember position of text tag
+			if(currentAlias == EdTags.text)
+				lastTextTag = chapter.para.size();
 			prev = Tag;
 		}
 
@@ -152,6 +184,7 @@ public class EdFileProcessor implements FileProcessor
 		}
 
 		// iterate the characters of the line after the optional tag
+		int fontCode = 0;
 		for(int pos=nextPos; pos<length; ++pos)
 		{
 			int c = line[pos];
@@ -183,7 +216,11 @@ public class EdFileProcessor implements FileProcessor
 									
 								}
 							}
+							else if(processed == 'F')
+								fontCode = Integer.parseInt(num);
+							
 							// TODO
+							
 							processed = -1;
 							number = null;
 						}
@@ -191,7 +228,9 @@ public class EdFileProcessor implements FileProcessor
 					
 					if(c == '$')
 					{
-						
+						// TODO some are relavant 
+						while((c=line[pos]) != '>')
+							++pos;
 					}
 					
 					if(c == 'D') c = 'M';
@@ -207,8 +246,7 @@ public class EdFileProcessor implements FileProcessor
 							formatStack.push("</i>");
 						}
 						else
-							while(formatStack.size() > 0)
-								para.text.append(formatStack.pop());
+							purgeFormatStack();
 					}
 					
 					// B/BI/BR
@@ -359,9 +397,10 @@ public class EdFileProcessor implements FileProcessor
 				// convert ed encoding to unicode
 				if(c >= 128)
 				{
+					int savedCode = c;
 					c = EdCharacter.convert(c);
 					if(c == 0)
-						throw new IllegalStateException(String.format("ERROR: Nem definialt karakterkod '%d' a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
+						throw new IllegalStateException(String.format("ERROR: Nem definialt karakterkod '%d' a '%s' fajlban. Sor: %d.", savedCode, srcFileName, lineNumber));
 					para.text.append((char) c);
 					prev = Char;
 				}
@@ -392,6 +431,13 @@ public class EdFileProcessor implements FileProcessor
 			sb.append((char) line[pos++]);
 		nextPos = pos+1;
 		return sb.toString();
+	}
+
+
+	private void purgeFormatStack()
+	{
+		while(formatStack.size() > 0)
+			para.text.append(formatStack.pop());
 	}
 
 

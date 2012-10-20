@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" 
+            xmlns:dc="http://purl.org/dc/elements/1.1/" 
+            unique-identifier="ISBN" version="2.0">
+  <metadata>
+    <dc:title>Śrīmad-Bhāgavatam, 1. ének</dc:title>
+    <dc:creator>A.C. Bhaktivedanta Swami Prabhupāda</dc:creator>
+    <dc:publisher>Bhaktivedanta Book Trust</dc:publisher>
+    <dc:identifier id="ISBN">urn:uuid:91-7149-052-3</dc:identifier>
+    <dc:language>hu-HU</dc:language>
+    <meta name="cover" content="cover-image" /> 
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="css" href="stylesheet.css" media-type="text/css"/>
+    <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
+    <item id="cover-image" href="images/cover.jpg" media-type="image/jpg"/>
+    <item id="_3s1h00pf" href="3s1h00pf.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h00fw" href="3s1h00fw.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h00id" href="3s1h00id.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h01xt" href="3s1h01xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h02xt" href="3s1h02xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h03xt" href="3s1h03xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h04xt" href="3s1h04xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h05xt" href="3s1h05xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h06xt" href="3s1h06xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h07xt" href="3s1h07xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h08xt" href="3s1h08xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h09xt" href="3s1h09xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h10xt" href="3s1h10xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h11xt" href="3s1h11xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h12xt" href="3s1h12xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h13xt" href="3s1h13xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h14xt" href="3s1h14xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h15xt" href="3s1h15xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h16xt" href="3s1h16xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h17xt" href="3s1h17xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h18xt" href="3s1h18xt.html" media-type="application/xhtml+xml"/>
+    <item id="_3s1h19xt" href="3s1h19xt.html" media-type="application/xhtml+xml"/>
+    <item id="_1s1h00xi" href="1s1h00xi.html" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="cover"/>
+    <itemref idref="_3s1h00pf"/>
+    <itemref idref="_3s1h00fw"/>
+    <itemref idref="_3s1h00id"/>
+    <itemref idref="_3s1h01xt"/>
+    <itemref idref="_3s1h02xt"/>
+    <itemref idref="_3s1h03xt"/>
+    <itemref idref="_3s1h04xt"/>
+    <itemref idref="_3s1h05xt"/>
+    <itemref idref="_3s1h06xt"/>
+    <itemref idref="_3s1h07xt"/>
+    <itemref idref="_3s1h08xt"/>
+    <itemref idref="_3s1h09xt"/>
+    <itemref idref="_3s1h10xt"/>
+    <itemref idref="_3s1h11xt"/>
+    <itemref idref="_3s1h12xt"/>
+    <itemref idref="_3s1h13xt"/>
+    <itemref idref="_3s1h14xt"/>
+    <itemref idref="_3s1h15xt"/>
+    <itemref idref="_3s1h16xt"/>
+    <itemref idref="_3s1h17xt"/>
+    <itemref idref="_3s1h18xt"/>
+    <itemref idref="_3s1h19xt"/>
+    <itemref idref="_1s1h00xi"/>
+  </spine>
+  <guide>
+    <reference href="title.html" type="cover" title="Cover"/>
+  </guide>
+</package>
