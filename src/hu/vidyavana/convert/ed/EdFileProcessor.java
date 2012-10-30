@@ -166,6 +166,14 @@ public class EdFileProcessor implements FileProcessor
 			// remember position of text tag
 			if(currentAlias == EdTags.text)
 				lastTextTag = chapter.para.size();
+			// register index level
+			if(currentAlias == EdTags.index_level_0)
+			{
+				if(tagName.startsWith("index_level"))
+					para.indexLevel = Integer.parseInt(tagName.substring(12));
+				else if(tagName.startsWith("xi"))
+					para.indexLevel = Integer.parseInt(tagName.substring(2, 3));
+			}
 			prev = Tag;
 		}
 

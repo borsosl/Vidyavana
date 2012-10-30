@@ -24,7 +24,7 @@ public enum ParagraphClass
 	MegjegyzesKoveto(true),
 	MegjegyzesKozepen,
 	MegjegyzesJobbra,
-	TargymutatoElem;
+	Index;
 	
 	
 	public final boolean defaultIndent;

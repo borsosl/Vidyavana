@@ -9,6 +9,7 @@ public class Paragraph
 	public String tagName;
 	public ParagraphClass cls;
 	public ParagraphStyle style;
+	public int indexLevel;
 	public int indent;
 	public StringBuilder text = new StringBuilder();
 	public List<String> footnote = new ArrayList<String>();
@@ -47,6 +48,11 @@ public class Paragraph
 		{
 			out.write(" class=\"");
 			out.write(cls.toString());
+			if(cls == ParagraphClass.Index)
+			{
+				out.write(" in");
+				out.write('0'+indexLevel);
+			}
 			out.write('"');
 			len += cls.toString().length()+9;
 		}

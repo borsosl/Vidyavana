@@ -75,7 +75,7 @@ public enum EdTags
 	history("history"),
 	history_no("history no"),
 	index_letter("index letter"),
-	index_level_0("index level 0", TargymutatoElem),
+	index_level_0("index level 0", Index),
 	index_level_1("index level 1"),
 	index_level_2("index level 2"),
 	index_level_3("index level 3"),
