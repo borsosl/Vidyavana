@@ -43,12 +43,6 @@ body
 	margin-bottom: 1em;
 }
 
-.Kep
-{
-	width: 100%;
-	text-align: center;
-}
-
 .Ref, .Ref a
 {
 	height: 0;
@@ -227,4 +221,9 @@ body
 .in4
 {
 	margin-left: 7.2em;
+}
+
+.svg_wrapper
+{
+	text-align: center;
 }

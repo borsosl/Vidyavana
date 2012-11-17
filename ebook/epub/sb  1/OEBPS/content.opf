@@ -17,7 +17,7 @@
     <item id="font2" href="fonts/DejaVuSerif-Italic.ttf" media-type="font/truetype"/>
     <item id="font3" href="fonts/DejaVuSerif-Bold.ttf" media-type="font/truetype"/>
     <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
-    <item id="cover-image" href="images/cover.jpg" media-type="image/jpg"/>
+    <item id="cover-image" href="images/cover.jpg" media-type="image/jpeg"/>
     <item id="_3s1h00pf" href="3s1h00pf.html" media-type="application/xhtml+xml"/>
     <item id="_3s1h00fw" href="3s1h00fw.html" media-type="application/xhtml+xml"/>
     <item id="_3s1h00id" href="3s1h00id.html" media-type="application/xhtml+xml"/>
