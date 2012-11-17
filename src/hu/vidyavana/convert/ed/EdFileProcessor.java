@@ -4,12 +4,16 @@ import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
 import hu.vidyavana.convert.api.*;
 import java.io.*;
 import java.nio.file.*;
-import java.util.Stack;
+import java.util.*;
 
 public class EdFileProcessor implements FileProcessor
 {
 	private File destDir;
 	private String srcFileName;
+	private String ebookPath;
+	private boolean forEbook;
+	private List<String> manual;
+	
 	private int lineNumber;
 	private Book book;
 	private Chapter chapter;
@@ -20,8 +24,12 @@ public class EdFileProcessor implements FileProcessor
 	private EdPreviousEntity prev;
 	private Stack<String> formatStack;
 	private boolean skippingUnhandledTag;
-	private String ebookPath;
 	private int lastTextTag;
+	private int fontCode;
+	private int microspace;
+	private int emspace;
+	private boolean superscript;
+	private StringBuilder deferredMarkup;
 
 
 	@Override
@@ -29,6 +37,8 @@ public class EdFileProcessor implements FileProcessor
 	{
 		this.destDir = destDir;
 		ebookPath = System.getProperty("ebook.path");
+		forEbook = System.getProperty("for.ebook") != null;
+		manual = new ArrayList<String>();
 	}
 
 
@@ -38,12 +48,21 @@ public class EdFileProcessor implements FileProcessor
 		srcFileName = fileName;
 		File destFile = new File(destDir.getAbsolutePath() + "/" + fileName + ".xml");
 		process(srcFile, destFile);
+		
+		// reminders of manual work
+		if(fileName.toLowerCase().indexOf("hund28xt") != -1)
+			manual.add("hund28xt.h50: footnote to be merged!");
 	}
 
 
 	@Override
 	public void finish()
 	{
+		for(String m : manual)
+		{
+			System.out.print("!!! ");
+			System.out.println(m);
+		}
 	}
 
 
@@ -56,6 +75,7 @@ public class EdFileProcessor implements FileProcessor
 		prev = Beginning;
 		formatStack = new Stack<>();
 		lastTextTag = -100;
+		deferredMarkup = new StringBuilder();
 		
 		readEdFile(ed);
 		
@@ -105,6 +125,11 @@ public class EdFileProcessor implements FileProcessor
 		nextPos = 0;
 		if(line[0] == '@')
 		{
+			if(superscript)
+			{
+				para.text.append("</sup>");
+				superscript = false;
+			}
 			purgeFormatStack();
 			skippingUnhandledTag = false;
 			
@@ -157,23 +182,43 @@ public class EdFileProcessor implements FileProcessor
 				default:
 					chapter.para.add(para);
 			}
+
 			// info is represented as xml tag
 			if(currentAlias == EdTags.info)
 				para.tagName = tagName;
+
 			// book text is p tag with a class attribute
 			else
 				para.cls = currentAlias.cls;
-			// remember position of text tag
-			if(currentAlias == EdTags.text)
-				lastTextTag = chapter.para.size();
+			
+			// after footnote or any other quote para, following purp para is changed to purport for line spacing
+			if(currentAlias == EdTags.purp_para)
+			{
+				Paragraph prevPara = chapter.para.get(chapter.para.size()-2);
+				if(prevPara.cls != null && prevPara.cls.name().startsWith("Megjegyzes"))
+				{
+					currentTag = currentAlias = EdTags.purport;
+					para.cls = currentAlias.cls;
+				}
+			}
+
 			// register index level
-			if(currentAlias == EdTags.index_level_0)
+			else if(currentAlias == EdTags.index_level_0)
 			{
 				if(tagName.startsWith("index_level"))
 					para.indexLevel = Integer.parseInt(tagName.substring(12));
 				else if(tagName.startsWith("xi"))
 					para.indexLevel = Integer.parseInt(tagName.substring(2, 3));
 			}
+
+			// remember position of text tag
+			else if(currentAlias == EdTags.text)
+				lastTextTag = chapter.para.size();
+
+			// mark footnote paragraphs
+			else if(currentTag == EdTags.footnote || currentTag == EdTags.small_foot)
+				para.text.append("Lábjegyzet: ");
+
 			prev = Tag;
 		}
 
@@ -192,7 +237,9 @@ public class EdFileProcessor implements FileProcessor
 		}
 
 		// iterate the characters of the line after the optional tag
-		int fontCode = 0;
+		fontCode = 0;
+		microspace = 0;
+		emspace = 0;
 		for(int pos=nextPos; pos<length; ++pos)
 		{
 			int c = line[pos];
@@ -216,18 +263,26 @@ public class EdFileProcessor implements FileProcessor
 						}
 						else
 						{
-							String num = number.toString();
 							if(processed == 'J')
 							{
-								if("2".equals(num))
+								double num = Double.parseDouble(number.toString());
+								if(num > 200d)
 								{
-									
+									para.text.append("<sup>");
+									superscript = true;
+								}
+								else if(superscript)
+								{
+									para.text.append("</sup>");
+									superscript = false;
 								}
 							}
 							else if(processed == 'F')
-								fontCode = Integer.parseInt(num);
-							
-							// TODO
+							{
+								fontCode = Integer.parseInt(number.toString());
+								if(fontCode == 255)
+									fontCode = 0;
+							}
 							
 							processed = -1;
 							number = null;
@@ -236,9 +291,34 @@ public class EdFileProcessor implements FileProcessor
 					
 					if(c == '$')
 					{
-						// TODO some are relavant 
-						while((c=line[pos]) != '>')
-							++pos;
+						StringBuilder collect = new StringBuilder();
+						for(++pos; (c=line[pos]) != '>'; ++pos)
+							collect.append((char) c);
+						if(collect.charAt(0)=='!')
+						{
+							if(collect.length()==1)		// <$!>
+								prev = Linebreak;
+							else
+							{
+								int c1 = collect.charAt(1);
+								if(c1 == ' ')
+									prev = OptionalSpace;
+								else if(c1 == 'N')
+								{
+									if(prev == OptionalSpace)
+										prev = Char;
+								}
+								else if(c1 == '|')
+								{
+									para.text.append(' ');
+									prev = Space;
+								}
+								else if(c1 == 127)
+								{
+									microspace += collect.length()-1;
+								}
+							}
+						}
 					}
 					
 					if(c == 'D') c = 'M';
@@ -250,8 +330,14 @@ public class EdFileProcessor implements FileProcessor
 						if(c2 == 'I')
 						{
 							++pos;
-							para.text.append("<i>");
-							formatStack.push("</i>");
+							if(formatStack.size()==0 || !("</i>".equals(formatStack.peek())))
+							{
+								if(emspace > 0 || microspace > 0)
+									deferredMarkup.append("<i>");
+								else
+									para.text.append("<i>");
+								formatStack.push("</i>");
+							}
 						}
 						else
 							purgeFormatStack();
@@ -269,13 +355,18 @@ public class EdFileProcessor implements FileProcessor
 						}
 						else if(c2 == 'R')
 						{
-							// TODO
 							++pos;
 						}
 						else
 						{
-							para.text.append("<b>");
-							formatStack.push("</b>");
+							if(formatStack.size()==0 || !("</b>".equals(formatStack.peek())))
+							{
+								if(emspace > 0 || microspace > 0)
+									deferredMarkup.append("<b>");
+								else
+									para.text.append("<b>");
+								formatStack.push("</b>");
+							}
 						}
 					}
 					
@@ -291,20 +382,19 @@ public class EdFileProcessor implements FileProcessor
 					
 					else if(c == '~')
 					{
-						// only count leading indent marks: they may only serve right alignment purposes
-						if(prev==Tag)
-							++para.indent;
-						else
-						{
-							para.text.append('\u2002');
-							prev = Space;
-						}
+						// count and handle later: they may only serve right alignment purposes
+						++emspace;
 					}
 					
 					else if(c == 'R')
 					{
-						para.text.append("<br/>");
-						prev = Linebreak;
+						if(prev == OptionalSpace)
+							prev = Char;
+						else if(currentAlias != EdTags.chapter_title)
+						{
+							para.text.append("<br/>");
+							prev = Linebreak;
+						}
 					}
 					
 					else if(c == '-')
@@ -314,12 +404,17 @@ public class EdFileProcessor implements FileProcessor
 					
 					else if(c == '+')
 					{
-						
+						para.text.append("&tab_num;");
+						prev = Space;
 					}
 					
 					else if(c == '|')
 					{
-						prev = Microspace;
+						if(prev != Space)
+						{
+							para.text.append(' ');
+							prev = Space;
+						}
 					}
 					
 					else if(c == 'N')
@@ -336,7 +431,8 @@ public class EdFileProcessor implements FileProcessor
 					
 					else if(c == 'T')
 					{
-						
+						para.text.append("&tab;");
+						prev = Space;
 					}
 					
 					// numbered ones
@@ -355,7 +451,6 @@ public class EdFileProcessor implements FileProcessor
 								throw new IllegalStateException(String.format("ERROR: <\\d+> formazas a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
 					}
 					
-					
 					if(c == '>' || pos>=length)
 						break;
 				}
@@ -365,70 +460,68 @@ public class EdFileProcessor implements FileProcessor
 			}
 			
 			else if(c == 127)
-			{
-				int msp = 1;
-				while(++pos<length && line[pos]==127)
-					++msp;
-				--pos;
-				if(msp > 2)
-					para.text.append(' ');
-				prev = Microspace;
-			}
+				++microspace;
 
 			// printable characters
 			else
 			{
-				// process first line indent
-				if(prev == Beginning && para.indent > 0)
-				{
-					// if style has 2 indents by default
-					if(para.cls != null && para.cls.defaultIndent && para.indent == 2)
-						para.indent = 0;
-					// if many indent marks start a paragraph
-					else if(para.indent > 4)
-					{
-						if(para.cls == ParagraphClass.TorzsKoveto)
-							para.cls = ParagraphClass.Jobbra;
-						else if(para.cls == ParagraphClass.MegjegyzesKoveto)
-							para.cls = ParagraphClass.MegjegyzesJobbra;
-						para.indent = 0;
-					}
-					// none of the above: store indent in extra style
-					if(para.indent > 0)
-					{
-						if(para.style == null)
-							para.style = new ParagraphStyle();
-						para.style.first = para.indent;
-					}
-				}
+				postProcessCountedSymbols(line);
 				
 				// convert ed encoding to unicode
 				if(c >= 128)
 				{
-					int savedCode = c;
-					c = EdCharacter.convert(c);
-					if(c == 0)
-						throw new IllegalStateException(String.format("ERROR: Nem definialt karakterkod '%d' a '%s' fajlban. Sor: %d.", savedCode, srcFileName, lineNumber));
+					if(fontCode == 299)
+					{
+						if(c == 0x8a)
+							c = '+';
+					}
+					
+					if(c >= 128)
+					{
+						int savedCode = c;
+						c = EdCharacter.convert(c);
+						if(c == 0)
+							throw new IllegalStateException(String.format("ERROR: Nem definialt karakterkod '%d' a '%s' fajlban. Sor: %d.", savedCode, srcFileName, lineNumber));
+						if(c == '—' && prev == Space && currentAlias == EdTags.word_by_word)
+						{
+							// replace space with m dash in wbw
+							para.text.setCharAt(para.text.length()-1, (char) c);
+							prev = Dash;
+							continue;
+						}
+					}
+					
 					para.text.append((char) c);
-					prev = Char;
+					if(c == '–' || c=='—')
+						prev = Dash;
+					else
+						prev = Char;
 				}
 				
 				// plain ascii characters
 				else
 				{
-					if(c == '"')
-						c = '”';
-					para.text.append((char) c);
-					
 					if(c == ' ')
+					{
+						if(currentAlias == EdTags.word_by_word && prev == Dash)
+							continue;
 						prev = Space;
+					}
 					else if(c == '-')
 						prev = Hyphen;
+					else if(c == '"')
+					{
+						c = '”';
+						prev = Char;
+					}
 					else
 						prev = Char;
+
+					para.text.append((char) c);
 				}
 			}
 		}
+		postProcessCountedSymbols(line);
 	}
 
 
@@ -449,8 +542,77 @@ public class EdFileProcessor implements FileProcessor
 	}
 
 
-	public static void main(String[] args) throws Exception
+	private void postProcessCountedSymbols(short[] line)
 	{
-		new EdFileProcessor().process(new File("c:\\wk2\\Sastra\\BBT\\Text\\BG\\HUBG01XT.H23"), (File) null);
+		if(emspace > 0)
+		{
+			// process first line indent
+			if(prev == Tag)
+			{
+				// if style has 2 indents by default: disregard marks
+				if(para.cls != null && para.cls.defaultIndent)
+				{
+					emspace -= 2;
+					if(emspace < 0)
+						emspace = 0;
+				}
+				
+				// if many indent marks start a paragraph
+				else if(emspace > 4)
+				{
+					if(para.cls == ParagraphClass.TorzsKoveto)
+						para.cls = ParagraphClass.Jobbra;
+					else if(para.cls == ParagraphClass.MegjegyzesKoveto)
+						para.cls = ParagraphClass.MegjegyzesJobbra;
+					emspace = 0;
+				}
+			}
+			
+			if(forEbook && prev == Linebreak)
+				emspace = 0;
+
+			if(emspace > 3)
+			{
+				if(currentAlias == EdTags.word_by_word)
+					emspace = 2;
+				else if(currentTag == EdTags.footnote)
+					emspace = 0;
+				else if(currentTag != EdTags.bengali && currentTag != EdTags.center_line)
+				{
+					System.out.println("Tab line: " + sequenceToString(line, 0, 200, (short) '\r'));
+					para.text.append("&tab;");
+					emspace = 0;
+				}
+			}
+
+			while(emspace > 0)
+			{
+				para.text.append('\u2002');
+				--emspace;
+			}
+			prev = Space;
+
+			if(deferredMarkup.length() > 0)
+			{
+				para.text.append(deferredMarkup);
+				deferredMarkup.setLength(0);
+			}
+		}
+
+		else if(microspace > 0)
+		{
+			if(microspace >= 4 || microspace >= 2 && currentAlias != EdTags.word_by_word)
+			{
+				para.text.append(' ');
+			}
+			microspace = 0;
+			prev = Microspace;
+
+			if(deferredMarkup.length() > 0)
+			{
+				para.text.append(deferredMarkup);
+				deferredMarkup.setLength(0);
+			}
+		}
 	}
 }

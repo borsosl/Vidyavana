@@ -6,8 +6,9 @@ public enum EdPreviousEntity
 	Tag,
 	Char,
 	Space,
+	OptionalSpace,
 	Microspace,
 	Linebreak,
 	Dash,
-	Hyphen,
+	Hyphen
 }
