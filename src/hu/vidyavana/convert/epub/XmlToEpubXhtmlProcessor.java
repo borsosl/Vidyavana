@@ -7,7 +7,7 @@ import java.util.regex.*;
 
 public class XmlToEpubXhtmlProcessor implements FileProcessor
 {
-	public static Pattern TAG_NAME = Pattern.compile("^\\s*</?([^ >]+)");
+	public static Pattern TAG_NAME = Pattern.compile("^\\s*</?([^ >/]+)");
 	public static Pattern TEXT_NUMBER = Pattern.compile("<text_number>(.*)</text_number>");
 	public static Pattern CHAPTER = Pattern.compile("<p class=\"Fejezetszam\">(.*)</p>");
 	public static Pattern CHAPTER_TITLE = Pattern.compile("<p class=\"Fejezetcim\">(.*)</p>");
@@ -31,6 +31,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	private Stack<Level> levelStack;
 	private int maxNavigationLevel;
 	private int sectionCount;
+	private int genHash;
 
 
 	@Override
@@ -42,6 +43,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		navMap = new StringBuilder();
 		navPointCount = 0;
 		maxNavigationLevel = 0;
+		genHash = 0;
 	}
 
 
@@ -96,14 +98,15 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		out.write("    <link type=\"text/css\" rel=\"stylesheet\" media=\"all\" href=\"stylesheet.css\" />\r\n");
 		out.write("  </head>\r\n");
 		out.write("  <body>\r\n");
-		
+
 		chapter = null;
 		levelStack = new Stack<>();
 		levelStack.push(Level.Document);
 		sectionCount = 0;
 		String tagName = null;
-		String[] htmlTags = {"p", "b", "i"};
+		String[] htmlTags = {"p", "b", "i", "br"};
 		String textHash = "";
+		int paraSinceTextHash = 10;
 		while(true)
 		{
 			String line = in.readLine();
@@ -117,7 +120,10 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 				if(tag.equals(tagName))
 				{
 					if("p".equals(tag))
-						addNavigation(line, fileName, textHash, out);
+					{
+						++paraSinceTextHash;
+						addNavigation(line, fileName, textHash, paraSinceTextHash, out);
+					}
 
 					out.write(line);
 					out.write("\r\n");
@@ -133,6 +139,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 					out.write("    <div class=\"Ref\"><a id=\"");
 					out.write(textHash);
 					out.write("\"></a></div>\r\n");
+					paraSinceTextHash = 0;
 				}
 			}
 		}
@@ -148,7 +155,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	}
 
 
-	private void addNavigation(String line, String fileName, String textHash, Writer out) throws Exception
+	private void addNavigation(String line, String fileName, String textHash, int paraSinceTextHash, Writer out) throws Exception
 	{
 		Matcher m = CHAPTER.matcher(line);
 		if(m.find())
@@ -178,6 +185,15 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		if(m.find())
 		{
 			String text = inline(m.group(1));
+			// if the @textno is too far back to belong to this @text
+			if(paraSinceTextHash > 2)
+			{
+				++genHash;
+				textHash = "gen" + genHash;
+				out.write("    <div class=\"Ref\"><a id=\"");
+				out.write(textHash);
+				out.write("\"></a></div>\r\n");
+			}
 			addToNavMap(Level.Text, text, fileName+".html#"+textHash);
 			return;
 		}

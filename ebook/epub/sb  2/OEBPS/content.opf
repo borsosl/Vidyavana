@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" 
+            xmlns:dc="http://purl.org/dc/elements/1.1/" 
+            unique-identifier="ISBN" version="2.0">
+  <metadata>
+    <dc:title>Śrīmad-Bhāgavatam, 2. ének</dc:title>
+    <dc:creator>A.C. Bhaktivedanta Swami Prabhupāda</dc:creator>
+    <dc:publisher>Bhaktivedanta Book Trust</dc:publisher>
+    <dc:identifier id="ISBN">urn:uuid:91-7149-125-3</dc:identifier>
+    <dc:language>hu-HU</dc:language>
+    <meta name="cover" content="cover-image" /> 
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="css" href="stylesheet.css" media-type="text/css"/>
+    <item id="font1" href="fonts/DejaVuSerif.ttf" media-type="font/truetype"/>
+    <item id="font2" href="fonts/DejaVuSerif-Italic.ttf" media-type="font/truetype"/>
+    <item id="font3" href="fonts/DejaVuSerif-Bold.ttf" media-type="font/truetype"/>
+    <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
+    <item id="cover-image" href="images/cover.jpg" media-type="image/jpeg"/>
+    <item id="s2hu01xt" href="s2hu01xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu02xt" href="s2hu02xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu03xt" href="s2hu03xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu04xt" href="s2hu04xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu05xt" href="s2hu05xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu06xt" href="s2hu06xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu07xt" href="s2hu07xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu08xt" href="s2hu08xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu09xt" href="s2hu09xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu10xt" href="s2hu10xt.html" media-type="application/xhtml+xml"/>
+    <item id="s2hu00xi" href="s2hu00xi.html" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="cover"/>
+    <itemref idref="s2hu01xt"/>
+    <itemref idref="s2hu02xt"/>
+    <itemref idref="s2hu03xt"/>
+    <itemref idref="s2hu04xt"/>
+    <itemref idref="s2hu05xt"/>
+    <itemref idref="s2hu06xt"/>
+    <itemref idref="s2hu07xt"/>
+    <itemref idref="s2hu08xt"/>
+    <itemref idref="s2hu09xt"/>
+    <itemref idref="s2hu10xt"/>
+    <itemref idref="s2hu00xi"/>
+  </spine>
+  <guide>
+    <reference href="title.html" type="cover" title="Cover"/>
+  </guide>
+</package>
