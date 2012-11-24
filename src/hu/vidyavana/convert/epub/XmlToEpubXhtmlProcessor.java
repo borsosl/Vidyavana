@@ -15,6 +15,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	public static Pattern TEXT = Pattern.compile("<p class=\"Versszam\">(.*)</p>");
 	public static Pattern BR = Pattern.compile("\\s*<br\\s*/>\\s*");
 	public static Pattern B = Pattern.compile("</?b>");
+	public static Pattern INDENT = Pattern.compile("^\\s*");
 	
 	
 	enum Level
@@ -105,6 +106,10 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		sectionCount = 0;
 		String tagName = null;
 		String[] htmlTags = {"p", "b", "i", "br"};
+		boolean tagLine;
+		boolean writeCurrentTag = false;
+		boolean verseInPurp=false, verseRef=false;
+		ArrayList<String> verseBuffer = new ArrayList<>();
 		String textHash = "";
 		int paraSinceTextHash = 10;
 		while(true)
@@ -112,23 +117,70 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 			String line = in.readLine();
 			if(line == null)
 				break;
+			tagLine = false;
 			Matcher m = TAG_NAME.matcher(line);
 			if(m.find())
+			{
+				tagLine = true;
 				tagName = m.group(1);
-			
-			for(String tag: htmlTags)
-				if(tag.equals(tagName))
-				{
-					if("p".equals(tag))
+				writeCurrentTag = false;
+				for(String tag: htmlTags)
+					if(tag.equals(tagName))
 					{
-						++paraSinceTextHash;
-						addNavigation(line, fileName, textHash, paraSinceTextHash, out);
+						if("p".equals(tag))
+						{
+							++paraSinceTextHash;
+							addNavigation(line, fileName, textHash, paraSinceTextHash, out);
+							verseInPurp = line.indexOf("class=\"TorzsVers") > 0;
+							verseRef = line.indexOf("class=\"Hivatkozas") > 0;
+						}
+						writeCurrentTag = true;
+						break;
 					}
-
+			}
+			
+			if(writeCurrentTag)
+			{
+				String indent = null;
+				if(tagLine)
+				{
+					if(verseRef && verseBuffer.size()>0)
+					{
+						m = INDENT.matcher(verseBuffer.get(0));
+						m.find();
+						indent = m.group(); 
+						out.write(indent);
+						out.write("<div class=\"RefWrap1\"><div class=\"RefWrap2\">\r\n");
+					}
+					if(verseBuffer.size() > 0)
+					{
+						for(String v : verseBuffer)
+						{
+							if(indent != null)
+								out.write("  ");
+							out.write(v);
+							out.write("\r\n");
+						}
+						verseBuffer.clear();
+					}
+				}
+				if(verseInPurp)
+				{
+					verseBuffer.add(line);
+				}
+				else
+				{
+					if(indent != null)
+						out.write("  ");
 					out.write(line);
 					out.write("\r\n");
-					break;
 				}
+				if(indent != null)
+				{
+					out.write(indent);
+					out.write("</div></div>\r\n");
+				}
+			}
 			if("text_number".equals(tagName))
 			{
 				m = TEXT_NUMBER.matcher(line);
