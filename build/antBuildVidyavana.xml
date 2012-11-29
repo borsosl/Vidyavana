@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build" name="build runnable jar for Vidyavana UI">
+    <target name="build">
+        <jar destfile="Vidyavana.jar">
+            <manifest>
+                <attribute name="Main-Class" value="hu.vidyavana.ui.Main"/>
+                <attribute name="Class-Path" value=". lib/h2.jar"/>
+            </manifest>
+            <fileset dir="../cls" includes="hu/ resource/" excludes="**/convert/ed/ **/convert/epub/" />
+        </jar>
+    </target>
+</project>

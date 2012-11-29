@@ -1,17 +1,10 @@
 package hu.vidyavana.util;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 public class Log
 {
@@ -47,7 +40,8 @@ public class Log
 	
 	public static void error(String text, Throwable t)
 	{
-		logger.severe(text);
+		if(text != null)
+			logger.severe(text);
 		if(t != null)
 			logger.severe(stackTrace(t));
 	}
@@ -55,7 +49,8 @@ public class Log
 	
 	public static void warning(String text, Throwable t)
 	{
-		logger.warning(text);
+		if(text != null)
+			logger.warning(text);
 		if(t != null)
 			logger.warning(stackTrace(t));
 	}
@@ -79,7 +74,7 @@ public class Log
 
 class SimplerFormatter extends Formatter
 {
-	private static final MessageFormat messageFormat = new MessageFormat("[{0,date,MM-dd HH:mm:ss}]: {1}\n");
+	private static final MessageFormat messageFormat = new MessageFormat("[{0,date,MM-dd HH:mm:ss}]: {1}");
 
 
 	@Override
