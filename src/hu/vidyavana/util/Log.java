@@ -15,7 +15,7 @@ public class Log
 	{
 		try
 		{
-			URL url = Log.class.getResource("/resource/logging.properties");
+			URL url = Log.class.getResource("/hu/resource/logging.properties");
 			LogManager.getLogManager().readConfiguration(url.openStream());
 			
 			logger = Logger.getLogger("common");

@@ -9,7 +9,15 @@ import java.util.zip.*;
 
 public class ResourceUtil
 {
-	public static final Pattern SQL_PATH = Pattern.compile("^resource/dbmigrate/([^/]+)\\.sql");
+	public static final Pattern DBMIGRATE_JAR_PATH = Pattern.compile("^hu/resource/dbmigrate/([^/]+)\\.sql");
+	public static final String DBMIGRATE_FILE_PATH = "..\\src\\hu\\resource\\dbmigrate";
+
+	
+	public static InputStream getResource(String name)
+	{
+		return ResourceUtil.class.getResourceAsStream(name);
+	}
+
 	
 	public static boolean dbMigrationUsingJar(DatabaseMigration dbm)
 	{
@@ -62,7 +70,7 @@ public class ResourceUtil
 		while(entries.hasMoreElements())
 		{
 			ZipEntry ze = (ZipEntry) entries.nextElement();
-			Matcher m = SQL_PATH.matcher(ze.getName());
+			Matcher m = DBMIGRATE_JAR_PATH.matcher(ze.getName());
 			if(m.find())
 				entriesMap.put(m.group(1), ze);
 		}
@@ -72,7 +80,7 @@ public class ResourceUtil
 
 	public static boolean dbMigrationUsingFiles(DatabaseMigration dbm)
 	{
-		File dir = new File("..\\src\\resource\\dbmigrate");
+		File dir = new File(DBMIGRATE_FILE_PATH);
 		if(!dir.exists())
 			throw new RuntimeException("Az inditasi konyvtar nem a program konyvtara. Kerlek javitsd.");
 		

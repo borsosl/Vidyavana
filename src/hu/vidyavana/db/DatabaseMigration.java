@@ -1,6 +1,7 @@
 package hu.vidyavana.db;
 
 import hu.vidyavana.db.api.*;
+import java.io.File;
 import java.sql.*;
 
 public class DatabaseMigration
@@ -11,22 +12,27 @@ public class DatabaseMigration
 	
 	public DatabaseMigration()
 	{
-		try
+		if(new File("System.h2.db").exists())
 		{
-			Database.System.query("select db_migrate from settings", new ResultSetCallback()
+			try
 			{
-				@Override
-				public void useResultSet(ResultSet rs) throws SQLException
+				Database.System.query("select db_migrate from settings", new ResultSetCallback()
 				{
-					rs.next();
-					lastScript = rs.getString(1);
-				}
-			});
+					@Override
+					public void useResultSet(ResultSet rs) throws SQLException
+					{
+						rs.next();
+						lastScript = rs.getString(1);
+					}
+				});
+			}
+			catch(Exception e)
+			{
+				lastScript = "";
+			}
 		}
-		catch(Exception e)
-		{
+		else
 			lastScript = "";
-		}
 	}
 
 	

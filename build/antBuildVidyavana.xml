@@ -6,7 +6,7 @@
                 <attribute name="Main-Class" value="hu.vidyavana.ui.Main"/>
                 <attribute name="Class-Path" value=". lib/h2.jar"/>
             </manifest>
-            <fileset dir="../cls" includes="hu/ resource/" excludes="**/convert/ed/ **/convert/epub/" />
+            <fileset dir="../cls" includes="hu/" excludes="**/convert/ed/ **/convert/epub/" />
         </jar>
     </target>
 </project>
