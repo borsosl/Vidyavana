@@ -1,6 +1,7 @@
 package hu.vidyavana.ui;
 
-import hu.vidyavana.db.DatabaseMigration;
+import hu.vidyavana.db.*;
+import hu.vidyavana.db.api.Database;
 import hu.vidyavana.util.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ public class Main
 	public static final String PRIMARY_JAR_NAME = "Vidyavana.jar";
 	private JMenuBar menuBar;
 	private JToolBar toolBar;
+	public JFrame frame;
 
 
 	public static void main(String[] args)
@@ -35,6 +37,10 @@ public class Main
 			Log.error(null, t);
 			System.out.println(t.getMessage());
 			System.exit(1);
+		}
+		finally
+		{
+			Database.closeAll();
 		}
 	}
 
@@ -75,7 +81,7 @@ public class Main
 		//	    JButton exampleButton = new JButton(exampleAction);
 		//	    toolBar.add(exampleButton);
 
-		JFrame frame = new JFrame("Vidyavana");
+		frame = new JFrame("Vidyavana");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setJMenuBar(menuBar);
 		frame.getContentPane().add(toolBar, BorderLayout.NORTH);
@@ -98,11 +104,29 @@ public class Main
 	}
 
 
-	private final class AddBookAction extends AbstractAction
+	private final class UpdateBooksAction extends AbstractAction
 	{
-		public AddBookAction()
+		public UpdateBooksAction()
 		{
-			super("Add Book");
+			super("Update Books");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			UpdateBooks ub = new UpdateBooks();
+			ub.run();
+			JOptionPane.showMessageDialog(frame, "Új: "+ub.added+", módosítva: "+ub.updated,
+                "Eredmény", JOptionPane.PLAIN_MESSAGE);
+		}
+	}
+
+
+	private final class AddBooksAction extends AbstractAction
+	{
+		public AddBooksAction()
+		{
+			super("Add Books");
 		}
 
 		@Override
@@ -117,6 +141,7 @@ public class Main
 		JMenu dbMenuItem = new JMenu("Database");
 		menuBar.add(dbMenuItem);
 
-		dbMenuItem.add(new JMenuItem(new AddBookAction()));
+		dbMenuItem.add(new JMenuItem(new UpdateBooksAction()));
+		dbMenuItem.add(new JMenuItem(new AddBooksAction()));
 	}
 }
