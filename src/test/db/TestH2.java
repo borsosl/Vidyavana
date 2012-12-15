@@ -3,6 +3,7 @@ package test.db;
 import hu.vidyavana.db.api.*;
 import java.sql.*;
 
+@SuppressWarnings("unused")
 public class TestH2
 {
 	public static void main(String[] args)

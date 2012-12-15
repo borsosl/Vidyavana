@@ -1,6 +1,6 @@
 package hu.vidyavana.convert.api;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.*;
 import org.w3c.dom.*;
 
@@ -22,17 +22,19 @@ public class Chapter
 	}
 
 
-	public void writeToFile(Writer out, int indentLevel) throws IOException
+	public void writeToFile(WriterInfo writerInfo) throws IOException
 	{
-		Book.indent(out, indentLevel);
-		out.write("<chapter>\r\n");
+		Book.indent(writerInfo);
+		writerInfo.out.write("<chapter>\r\n");
 		
+		++writerInfo.indentLevel;
 		for(Paragraph inf : info)
-			inf.writeToFile(out, indentLevel+1);
+			inf.writeToFile(writerInfo);
 		for(Paragraph par : para)
-			par.writeToFile(out, indentLevel+1);
+			par.writeToFile(writerInfo);
+		--writerInfo.indentLevel;
 		
-		Book.indent(out, indentLevel);
-		out.write("</chapter>\r\n");
+		Book.indent(writerInfo);
+		writerInfo.out.write("</chapter>\r\n");
 	}
 }

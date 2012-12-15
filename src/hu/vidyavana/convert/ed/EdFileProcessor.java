@@ -10,6 +10,7 @@ public class EdFileProcessor implements FileProcessor
 {
 	private File destDir;
 	private String srcFileName;
+	private WriterInfo writerInfo;
 	private String ebookPath;
 	private boolean forEbook;
 	private List<String> manual;
@@ -36,6 +37,7 @@ public class EdFileProcessor implements FileProcessor
 	public void init(File srcDir, File destDir)
 	{
 		this.destDir = destDir;
+		writerInfo = new WriterInfo();
 		ebookPath = System.getProperty("ebook.path");
 		forEbook = System.getProperty("for.ebook") != null;
 		manual = new ArrayList<String>();
@@ -89,7 +91,8 @@ public class EdFileProcessor implements FileProcessor
 				new File(outDir, "ed.css").toPath(),
 				StandardCopyOption.REPLACE_EXISTING);
 		}
-		book.writeToFile(xml);
+		writerInfo.xmlFile = xml;
+		book.writeToFile(writerInfo);
 	}
 
 
@@ -499,7 +502,7 @@ public class EdFileProcessor implements FileProcessor
 				}
 				
 				// plain ascii characters
-				else
+				else if(c >= ' ')
 				{
 					if(c == ' ')
 					{

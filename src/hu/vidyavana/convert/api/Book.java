@@ -32,28 +32,31 @@ public class Book
 	}
 	
 	
-	public void writeToFile(File xmlFile) throws IOException
+	public void writeToFile(WriterInfo writerInfo) throws IOException
 	{
-		Writer out = new OutputStreamWriter(new FileOutputStream(xmlFile), "UTF-8");
+		Writer out = new OutputStreamWriter(new FileOutputStream(writerInfo.xmlFile), "UTF-8");
 		out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
 		out.write("<?xml-stylesheet href=\"ed.xsl\" type=\"text/xsl\"?>\r\n");
 		out.write("<book>\r\n");
 		
+		writerInfo.out = out;
+		writerInfo.indentLevel = 1;
 		for(Paragraph inf : info)
-			inf.writeToFile(out, 1);
+			inf.writeToFile(writerInfo);
 		for(Chapter ch : chapter)
-			ch.writeToFile(out, 1);
+			ch.writeToFile(writerInfo);
 		
 		out.write("</book>\r\n");
 		out.close();
 	}
 	
 	
-	public static void indent(Writer out, int indentLevel) throws IOException
+	public static void indent(WriterInfo writerInfo) throws IOException
 	{
+		int indentLevel = writerInfo.indentLevel;
 		while(indentLevel > 0)
 		{
-			out.write(XML_INDENT);
+			writerInfo.out.write(XML_INDENT);
 			--indentLevel;
 		}
 	}

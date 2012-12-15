@@ -36,10 +36,12 @@ public class Paragraph
 	}
 
 
-	public void writeToFile(Writer out, int indentLevel) throws IOException
+	public void writeToFile(WriterInfo writerInfo) throws IOException
 	{
+		Writer out = writerInfo.out;
 		if(tagName==null) tagName = "p";
-		Book.indent(out, indentLevel);
+		Book.indent(writerInfo);
+		int indentLevel = writerInfo.indentLevel;
 		int len = indentLevel * Book.XML_INDENT.length();
 		out.write('<');
 		out.write(tagName);
@@ -65,18 +67,20 @@ public class Paragraph
 		}
 		out.write('>');
 		++len;
-		writeText(out, text.toString(), indentLevel, len);
+		writeText(text.toString(), writerInfo, len);
 		if(footnote != null && footnote.size() > 0)
 		{
 			out.write("\r\n");
+			++writerInfo.indentLevel;
 			for(String fn : footnote)
 			{
-				Book.indent(out, indentLevel+1);
+				Book.indent(writerInfo);
 				out.write("<footnote>");
-				writeText(out, fn, indentLevel+1, (indentLevel+1) * Book.XML_INDENT.length()+10);
+				writeText(fn, writerInfo, (indentLevel+1) * Book.XML_INDENT.length()+10);
 				out.write("</footnote>\r\n");
 			}
-			Book.indent(out, indentLevel);
+			--writerInfo.indentLevel;
+			Book.indent(writerInfo);
 		}
 		out.write("</");
 		out.write(tagName);
@@ -84,7 +88,7 @@ public class Paragraph
 	}
 
 
-	private void writeText(Writer out, String txt, int indentLevel, int prefixLen) throws IOException
+	private void writeText(String txt, WriterInfo writerInfo, int prefixLen) throws IOException
 	{
 		int len = txt.length();
 		int start = 0;
@@ -95,12 +99,14 @@ public class Paragraph
 				end = len;
 			while(end < len && txt.charAt(end)!=' ')
 				++end;
-			out.write(txt.substring(start, end));
+			writerInfo.out.write(txt.substring(start, end));
 			if(end < len)
 			{
-				out.write("\r\n");
-				Book.indent(out, indentLevel+2);
-				prefixLen = (indentLevel+2) * Book.XML_INDENT.length();
+				writerInfo.indentLevel += 2;
+				writerInfo.out.write("\r\n");
+				Book.indent(writerInfo);
+				prefixLen = writerInfo.indentLevel * Book.XML_INDENT.length();
+				writerInfo.indentLevel -= 2;
 			}
 			start = end + 1;
 		}
