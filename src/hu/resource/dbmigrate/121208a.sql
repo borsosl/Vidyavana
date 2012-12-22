@@ -1,15 +1,17 @@
 create table settings (
-	db_migrate varchar(10)
+	db_migrate varchar(10),
+	books_version varchar(10)
 );
 
-insert into settings values ('0');
+insert into settings values ('0', '0');
 
 create table book (
 	id int primary key,
 	parent_id int,
 	system_priority int unique,
 	user_priority int unique,
-	title varchar(100) unique
+	title varchar(100) unique,
+	exist boolean default false
 );
 
 create index bup on book(user_priority);
@@ -19,7 +21,8 @@ create table contents (
 	book_toc_ordinal int,
 	book_para_ordinal int,
 	level int,
-	txt varchar(200),
+	division varchar(100),
+	title varchar(200),
 	primary key(book_id, book_toc_ordinal),
 	foreign key(book_id) references book(id)
 );

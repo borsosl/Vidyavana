@@ -12,7 +12,6 @@ public class EdFileProcessor implements FileProcessor
 	private String srcFileName;
 	private WriterInfo writerInfo;
 	private String ebookPath;
-	private boolean forEbook;
 	private List<String> manual;
 	
 	private int lineNumber;
@@ -38,9 +37,27 @@ public class EdFileProcessor implements FileProcessor
 	{
 		this.destDir = destDir;
 		writerInfo = new WriterInfo();
+		writerInfo.forEbook = !"false".equals(System.getProperty("for.ebook"));
 		ebookPath = System.getProperty("ebook.path");
-		forEbook = System.getProperty("for.ebook") != null;
 		manual = new ArrayList<String>();
+		
+		if(!writerInfo.forEbook)
+		{
+			// xml TOC file
+			try
+			{
+				File tocFile = new File(destDir.getAbsolutePath() + "/toc.xml");
+				Writer toc = writerInfo.toc = new OutputStreamWriter(new FileOutputStream(tocFile), "UTF-8");
+				toc.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
+				toc.write("<toc>\r\n");
+				toc.write("  <book_id>...</book_id>\r\n");
+				toc.write("  <entries>\r\n");
+			}
+			catch(IOException ex)
+			{
+				throw new RuntimeException("Error initializing TOC file.", ex);
+			}
+		}
 	}
 
 
@@ -60,6 +77,19 @@ public class EdFileProcessor implements FileProcessor
 	@Override
 	public void finish()
 	{
+		Writer toc = writerInfo.toc;
+		if(toc != null)
+			try
+			{
+				toc.write("  </entries>\r\n");
+				toc.write("</toc>\r\n");
+				toc.close();
+			}
+			catch(IOException ex)
+			{
+				throw new RuntimeException("Error closing TOC file.", ex);
+			}
+		
 		for(String m : manual)
 		{
 			System.out.print("!!! ");
@@ -128,6 +158,7 @@ public class EdFileProcessor implements FileProcessor
 		nextPos = 0;
 		if(line[0] == '@')
 		{
+			// close previous tag
 			if(superscript)
 			{
 				para.text.append("</sup>");
@@ -136,6 +167,7 @@ public class EdFileProcessor implements FileProcessor
 			purgeFormatStack();
 			skippingUnhandledTag = false;
 			
+			// start processing new tag
 			String tagStr = sequenceToString(line, 1, length, (short) '=').trim().toLowerCase();
 			while(nextPos<length && line[nextPos]==' ') ++nextPos;
 			
@@ -188,7 +220,10 @@ public class EdFileProcessor implements FileProcessor
 
 			// info is represented as xml tag
 			if(currentAlias == EdTags.info)
+			{
+				para.isInfo = true;
 				para.tagName = tagName;
+			}
 
 			// book text is p tag with a class attribute
 			else
@@ -214,8 +249,8 @@ public class EdFileProcessor implements FileProcessor
 					para.indexLevel = Integer.parseInt(tagName.substring(2, 3));
 			}
 
-			// remember position of text tag
-			else if(currentAlias == EdTags.text)
+			// remember position of text tag or chapter title tag
+			else if(currentAlias == EdTags.text || currentAlias == EdTags.chapter_title)
 				lastTextTag = chapter.para.size();
 
 			// mark footnote paragraphs
@@ -571,7 +606,7 @@ public class EdFileProcessor implements FileProcessor
 				}
 			}
 			
-			if(forEbook && prev == Linebreak)
+			if(writerInfo.forEbook && prev == Linebreak)
 				emspace = 0;
 
 			if(emspace > 3)

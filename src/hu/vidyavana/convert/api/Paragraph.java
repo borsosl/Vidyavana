@@ -6,6 +6,7 @@ import org.w3c.dom.*;
 
 public class Paragraph
 {
+	public boolean isInfo;
 	public String tagName;
 	public ParagraphClass cls;
 	public ParagraphStyle style;

@@ -21,4 +21,28 @@ public class XmlUtil
 			throw new RuntimeException("Unable to parse xml.", ex);
 		}
 	}
+	
+	
+	public static String noMarkup(String text)
+	{
+		StringBuilder sb = new StringBuilder(text.length());
+		boolean inMarkup = false;
+		for(int i=0, len=text.length(); i<len; ++i)
+		{
+			char c = text.charAt(i);
+			if(inMarkup)
+			{
+				if(c == '>')
+					inMarkup = false;
+			}
+			else
+			{
+				if(c == '<')
+					inMarkup = true;
+				else
+					sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
 }
