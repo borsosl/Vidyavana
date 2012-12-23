@@ -1,17 +1,13 @@
 package hu.vidyavana.db;
 
-import hu.vidyavana.db.api.*;
-import hu.vidyavana.ui.data.Book;
+import hu.vidyavana.ui.data.*;
 import hu.vidyavana.util.XmlUtil;
 import java.io.*;
-import java.sql.*;
-import java.util.*;
+import java.util.Map;
 import org.w3c.dom.*;
 
 public class UpdateBooks
 {
-	String dbVersion;
-	int maxUserPriority;
 	public int added, updated;
 	
 	
@@ -22,40 +18,15 @@ public class UpdateBooks
 		Element docElem = doc.getDocumentElement();
 		String xmlVersion = docElem.getElementsByTagName("version").item(0).getTextContent();
 		
-		Database.System.query("select books_version from settings", new ResultSetCallback()
-		{
-			@Override
-			public void useResultSet(ResultSet rs) throws SQLException
-			{
-				rs.next();
-				dbVersion = rs.getString(1);
-			}
-		});
-
-		if(xmlVersion.compareTo(dbVersion) > 0)
+		if(xmlVersion.compareTo(SettingsDao.getBooksVersion()) > 0)
 			updateDb(docElem, xmlVersion);
 	}
 
 
 	private void updateDb(Element docElem, String xmlVersion)
 	{
-		final Map<Integer, Book> bookMap = new HashMap<Integer, Book>();
-		maxUserPriority = 0;
-		Database.System.query("select * from book", new ResultSetCallback()
-		{
-			@Override
-			public void useResultSet(ResultSet rs) throws SQLException
-			{
-				while(rs.next())
-				{
-					Book book = new Book(rs);
-					bookMap.put(book.id, book);
-					if(book.userPriority > maxUserPriority)
-						maxUserPriority = book.userPriority;
-				}
-				super.useResultSet(rs);
-			}
-		});
+		final BookDao bookDao = new BookDao();
+		Map<Integer, Book> bookMap = bookDao.getAllBooks();
 
 		NodeList books = docElem.getElementsByTagName("book");
 		int len = books.getLength();
@@ -68,60 +39,37 @@ public class UpdateBooks
 			for(int j=0; j<len2; ++j)
 			{
 				Node n = children.item(j);
-				if("id".equals(n.getNodeName()))
-					xmlBook.id = Integer.parseInt(n.getTextContent());
+				if("title".equals(n.getNodeName()))
+					xmlBook.title = n.getTextContent().trim();
+				else if("id".equals(n.getNodeName()))
+					xmlBook.id = Integer.parseInt(n.getTextContent().trim());
 				else if("parent_id".equals(n.getNodeName()))
-					xmlBook.parentId = Integer.parseInt(n.getTextContent());
+					xmlBook.parentId = Integer.parseInt(n.getTextContent().trim());
 				else if("priority".equals(n.getNodeName()))
-					xmlBook.systemPriority = Integer.parseInt(n.getTextContent());
-				else if("title".equals(n.getNodeName()))
-					xmlBook.title = n.getTextContent();
+					xmlBook.systemPriority = Integer.parseInt(n.getTextContent().trim());
+				else if("version".equals(n.getNodeName()))
+					xmlBook.repoVersion = n.getTextContent().trim();
 			}
 			
 			Book dbBook = bookMap.get(xmlBook.id);
 			if(dbBook == null)
 			{
-				Database.System.wrapPreparedStatement("insert into book " +
-						"(id, parent_id, system_priority, user_priority, title) " +
-						"values (?,?,?,?,?)", new StatementCallback()
-				{
-					@Override
-					public void usePreparedStatement(PreparedStatement stmt) throws SQLException
-					{
-						stmt.setInt(1, xmlBook.id);
-						stmt.setInt(2, xmlBook.parentId);
-						stmt.setInt(3, xmlBook.systemPriority);
-						stmt.setInt(4, ++maxUserPriority);
-						stmt.setString(5, xmlBook.title);
-						stmt.executeUpdate();
-					}
-				});
+				bookDao.insertBook(xmlBook);
 				++added;
 			}
 			else
 			{
-				if(dbBook.parentId == xmlBook.parentId && dbBook.systemPriority == xmlBook.systemPriority
-					&& dbBook.title.equals(xmlBook.title))
+				if(dbBook.parentId == xmlBook.parentId
+					&& dbBook.title.equals(xmlBook.title)
+					&& dbBook.systemPriority == xmlBook.systemPriority
+					&& dbBook.repoVersion.equals(xmlBook.repoVersion))
 						continue;
 				
-				Database.System.wrapPreparedStatement("update book " +
-					"set parent_id=?, system_priority=?, title=? " +
-					"where id=?", new StatementCallback()
-				{
-					@Override
-					public void usePreparedStatement(PreparedStatement stmt) throws SQLException
-					{
-						stmt.setInt(1, xmlBook.parentId);
-						stmt.setInt(2, xmlBook.systemPriority);
-						stmt.setString(3, xmlBook.title);
-						stmt.setInt(4, xmlBook.id);
-						stmt.executeUpdate();
-					}
-				});
+				BookDao.updateBook(xmlBook);
 				++updated;
 			}
 		}
-		Database.System.execute("update settings set books_version='"+xmlVersion+"'");
+		SettingsDao.setBooksVersion(xmlVersion);
 	}
 
 

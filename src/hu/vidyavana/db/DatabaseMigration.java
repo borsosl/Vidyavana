@@ -1,8 +1,8 @@
 package hu.vidyavana.db;
 
-import hu.vidyavana.db.api.*;
+import hu.vidyavana.db.api.Database;
+import hu.vidyavana.ui.data.SettingsDao;
 import java.io.File;
-import java.sql.*;
 
 public class DatabaseMigration
 {
@@ -16,15 +16,7 @@ public class DatabaseMigration
 		{
 			try
 			{
-				Database.System.query("select db_migrate from settings", new ResultSetCallback()
-				{
-					@Override
-					public void useResultSet(ResultSet rs) throws SQLException
-					{
-						rs.next();
-						lastScript = rs.getString(1);
-					}
-				});
+				lastScript = SettingsDao.getDbMigrate();
 			}
 			catch(Exception e)
 			{
@@ -58,6 +50,6 @@ public class DatabaseMigration
 	public void updateSettings()
 	{
 		if(updateSettings)
-			Database.System.execute("update settings set db_migrate='"+lastScript+"'");
+			SettingsDao.setDbMigrate(lastScript);
 	}
 }

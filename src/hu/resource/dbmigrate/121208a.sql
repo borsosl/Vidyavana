@@ -8,10 +8,11 @@ insert into settings values ('0', '0');
 create table book (
 	id int primary key,
 	parent_id int,
+	title varchar(100) unique,
 	system_priority int unique,
 	user_priority int unique,
-	title varchar(100) unique,
-	exist boolean default false
+	repo_version varchar(10),
+	db_version varchar(10) default '0'
 );
 
 create index bup on book(user_priority);
