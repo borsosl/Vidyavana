@@ -1,8 +1,8 @@
 package hu.vidyavana.db;
 
-import hu.vidyavana.ui.data.*;
+import hu.vidyavana.db.data.*;
 import hu.vidyavana.util.XmlUtil;
-import java.io.*;
+import java.io.File;
 import java.util.Map;
 import org.w3c.dom.*;
 
@@ -25,18 +25,16 @@ public class UpdateBooks
 
 	private void updateDb(Element docElem, String xmlVersion)
 	{
-		final BookDao bookDao = new BookDao();
+		BookDao bookDao = new BookDao();
 		Map<Integer, Book> bookMap = bookDao.getAllBooks();
 
 		NodeList books = docElem.getElementsByTagName("book");
-		int len = books.getLength();
-		for(int i=0; i<len; ++i)
+		for(int i=0, len = books.getLength(); i<len; ++i)
 		{
 			Node book = books.item(i);
 			NodeList children = book.getChildNodes();
-			final Book xmlBook = new Book();
-			int len2 = children.getLength();
-			for(int j=0; j<len2; ++j)
+			Book xmlBook = new Book();
+			for(int j=0, len2 = children.getLength(); j<len2; ++j)
 			{
 				Node n = children.item(j);
 				if("title".equals(n.getNodeName()))
@@ -75,23 +73,6 @@ public class UpdateBooks
 
 	private String getBooksXml()
 	{
-		return readFromFile();
+		return XmlUtil.readFromFile(new File("system.books.xml"));
 	}
-
-
-	private String readFromFile()
-	{
-		try
-		{
-			Reader in = new InputStreamReader(new FileInputStream("system.books.xml"), "UTF-8");
-			char[] arr = new char[100000];
-			int len = in.read(arr);
-			return new String(arr, 0, len);
-		}
-		catch(IOException ex)
-		{
-			throw new RuntimeException("Unable to read books file.", ex);
-		}
-	}
-
 }

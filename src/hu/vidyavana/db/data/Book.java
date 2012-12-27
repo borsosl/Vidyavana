@@ -1,4 +1,4 @@
-package hu.vidyavana.ui.data;
+package hu.vidyavana.db.data;
 
 
 public class Book

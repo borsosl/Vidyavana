@@ -4,7 +4,7 @@ import hu.vidyavana.db.*;
 import hu.vidyavana.db.api.Database;
 import hu.vidyavana.util.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -82,7 +82,17 @@ public class Main
 		//	    toolBar.add(exampleButton);
 
 		frame = new JFrame("Vidyavana");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				Database.closeAll();
+				frame.dispose();
+				System.exit(0);
+			}
+		});
 		frame.setJMenuBar(menuBar);
 		frame.getContentPane().add(toolBar, BorderLayout.NORTH);
 		frame.setSize(1024, 600);
@@ -132,6 +142,7 @@ public class Main
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
+			new AddBook(3).run();
 		}
 	}
 

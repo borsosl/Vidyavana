@@ -14,7 +14,8 @@ public enum Database
 	{
 		Driver.load();
 	}
-
+	
+	
 	private Connection conn;
 	
 	
@@ -160,5 +161,14 @@ public enum Database
 				}
 			}
 		});
+	}
+	
+	
+	public static String quote(String str)
+	{
+		if(str.indexOf('\'') == -1)
+			return str;
+		
+		return str.replace("'", "''");
 	}
 }

@@ -41,6 +41,8 @@ public class Paragraph
 	{
 		Writer out = writerInfo.out;
 		if(tagName==null) tagName = "p";
+		if("p".equals(tagName))
+			++writerInfo.paraOrdinal;
 		Book.indent(writerInfo);
 		int indentLevel = writerInfo.indentLevel;
 		int len = indentLevel * Book.XML_INDENT.length();

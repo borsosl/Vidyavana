@@ -34,7 +34,6 @@ public class Chapter
 		for(Paragraph par : para)
 		{
 			par.writeToFile(writerInfo);
-			++writerInfo.paraOrdinal;
 			if(par.cls == ParagraphClass.Fejezetszam)
 				writerInfo.tocDivision = XmlUtil.noMarkup(par.text.toString().trim());
 			else if(par.cls == ParagraphClass.Fejezetcim)

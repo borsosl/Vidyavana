@@ -1,4 +1,4 @@
-package hu.vidyavana.ui.data;
+package hu.vidyavana.db.data;
 
 import hu.vidyavana.db.api.*;
 import java.sql.*;

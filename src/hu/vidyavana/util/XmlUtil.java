@@ -45,4 +45,20 @@ public class XmlUtil
 		}
 		return sb.toString();
 	}
+
+
+	public static String readFromFile(File file)
+	{
+		try
+		{
+			Reader in = new InputStreamReader(new FileInputStream(file), "UTF-8");
+			char[] arr = new char[(int) file.length()];
+			int len = in.read(arr);
+			return new String(arr, 0, len);
+		}
+		catch(IOException ex)
+		{
+			throw new RuntimeException("Unable to read file " + file.getName(), ex);
+		}
+	}
 }

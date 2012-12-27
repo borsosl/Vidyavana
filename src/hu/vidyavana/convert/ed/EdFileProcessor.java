@@ -4,6 +4,7 @@ import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
 import hu.vidyavana.convert.api.*;
 import java.io.*;
 import java.nio.file.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class EdFileProcessor implements FileProcessor
@@ -37,6 +38,7 @@ public class EdFileProcessor implements FileProcessor
 	{
 		this.destDir = destDir;
 		writerInfo = new WriterInfo();
+		writerInfo.fileNames = new ArrayList<>();
 		writerInfo.forEbook = !"false".equals(System.getProperty("for.ebook"));
 		ebookPath = System.getProperty("ebook.path");
 		manual = new ArrayList<String>();
@@ -50,7 +52,9 @@ public class EdFileProcessor implements FileProcessor
 				Writer toc = writerInfo.toc = new OutputStreamWriter(new FileOutputStream(tocFile), "UTF-8");
 				toc.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
 				toc.write("<toc>\r\n");
-				toc.write("  <book_id>...</book_id>\r\n");
+				toc.write("  <version>");
+				toc.write(new SimpleDateFormat("yyMMdd").format(new Date()));
+				toc.write("</version>\r\n");
 				toc.write("  <entries>\r\n");
 			}
 			catch(IOException ex)
@@ -82,6 +86,14 @@ public class EdFileProcessor implements FileProcessor
 			try
 			{
 				toc.write("  </entries>\r\n");
+				toc.write("  <files>\r\n");
+				for(String fname : writerInfo.fileNames)
+				{
+					toc.write("    <file>");
+					toc.write(fname);
+					toc.write("</file>\r\n");
+				}
+				toc.write("  </files>\r\n");
 				toc.write("</toc>\r\n");
 				toc.close();
 			}
@@ -122,6 +134,7 @@ public class EdFileProcessor implements FileProcessor
 				StandardCopyOption.REPLACE_EXISTING);
 		}
 		writerInfo.xmlFile = xml;
+		writerInfo.fileNames.add(xml.getName());
 		book.writeToFile(writerInfo);
 	}
 

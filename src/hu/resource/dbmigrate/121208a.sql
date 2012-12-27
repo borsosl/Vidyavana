@@ -19,11 +19,11 @@ create index bup on book(user_priority);
 
 create table contents (
 	book_id int,
-	book_toc_ordinal int,
-	book_para_ordinal int,
 	level int,
 	division varchar(100),
 	title varchar(200),
+	book_toc_ordinal int,
+	book_para_ordinal int,
 	primary key(book_id, book_toc_ordinal),
 	foreign key(book_id) references book(id)
 );
@@ -31,8 +31,8 @@ create table contents (
 create table para (
 	book_id int,
 	book_para_ordinal int,
-	abs_ordinal int unique,
-	style int,
+	abs_ordinal int default 0,
+	style int default 0,
 	txt text,
 	primary key(book_id, book_para_ordinal),
 	foreign key(book_id) references book(id)
