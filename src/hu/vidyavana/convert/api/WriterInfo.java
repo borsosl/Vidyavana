@@ -1,7 +1,7 @@
 package hu.vidyavana.convert.api;
 
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 public class WriterInfo
 {
@@ -16,4 +16,6 @@ public class WriterInfo
 	public String tocDivision;
 	public int tocOrdinal;
 	public int paraOrdinal;
+	
+	public TreeMap<String, Object> diacritics/* = new TreeMap<>()*/;		// uncomment for collect diacritics function
 }

@@ -1,7 +1,9 @@
 package hu.vidyavana.convert.api;
 
+import static hu.vidyavana.convert.api.ParagraphClass.*;
 import java.io.*;
 import java.util.*;
+import java.util.regex.*;
 import org.w3c.dom.*;
 
 public class Paragraph
@@ -93,6 +95,12 @@ public class Paragraph
 
 	private void writeText(String txt, WriterInfo writerInfo, int prefixLen) throws IOException
 	{
+		if(writerInfo.diacritics != null)
+		{
+			collectDiacritics(txt, writerInfo);
+			return;
+		}
+		
 		int len = txt.length();
 		int start = 0;
 		while(start < len)
@@ -112,6 +120,62 @@ public class Paragraph
 				writerInfo.indentLevel -= 2;
 			}
 			start = end + 1;
+		}
+	}
+
+
+	static Pattern WORD = Pattern.compile("[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰāīūḍḥḷḹṁṅṇñṛṝṣśṭĀĪŪḌḤḶḸṀṄṆÑṚṜṢŚṬ]+");
+	static Set<ParagraphClass> excludedClasses = new HashSet<>(Arrays.asList(new ParagraphClass[]{
+		Uvaca, Vers, Proza, Szavak, TorzsUvaca, TorzsVers, Kozepen, Index}));
+	
+	private void collectDiacritics(String txt, WriterInfo writerInfo)
+	{
+//		if(excludedClasses.contains(cls))
+//			return;
+		Matcher m = WORD.matcher(txt);
+		int ix = 0;
+		StringBuilder sb = new StringBuilder(200);
+		while(true)
+		{
+			if(m.find(ix))
+			{
+				String w = m.group().toLowerCase();
+				sb.setLength(0);
+				int len = w.length();
+				for(int j = 0; j < len; ++j)
+				{
+					char orig = w.charAt(j);
+					int latin = DiacriticToLatinPairs.convert(orig);
+					sb.append(latin == 0 ? (char) orig : (char) latin);
+				}
+				String latin = sb.toString().toLowerCase();
+				if(cls == Vers || cls == Proza || cls == TorzsVers || !latin.equals(w))
+				{
+					Object stored = writerInfo.diacritics.get(latin);
+					if(stored == null)
+					{
+						writerInfo.diacritics.put(latin, w);
+					}
+					else if(stored instanceof String)
+					{
+						if(!stored.equals(w))
+						{
+							TreeSet set = new TreeSet();
+							set.add(stored);
+							set.add(w);
+							writerInfo.diacritics.put(latin, set);
+						}
+					}
+					else
+					{
+						TreeSet set = (TreeSet) stored;
+						set.add(w);
+					}
+				}
+				ix = m.end();
+			}
+			else
+				break;
 		}
 	}
 

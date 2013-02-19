@@ -31,6 +31,7 @@ public class EdFileProcessor implements FileProcessor
 	private int emspace;
 	private boolean superscript;
 	private StringBuilder deferredMarkup;
+	private File tocFile;
 
 
 	@Override
@@ -48,7 +49,7 @@ public class EdFileProcessor implements FileProcessor
 			// xml TOC file
 			try
 			{
-				File tocFile = new File(destDir.getAbsolutePath() + "/toc.xml");
+				tocFile = new File(destDir.getAbsolutePath() + "/toc.xml");
 				Writer toc = writerInfo.toc = new OutputStreamWriter(new FileOutputStream(tocFile), "UTF-8");
 				toc.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
 				toc.write("<toc>\r\n");
@@ -85,6 +86,35 @@ public class EdFileProcessor implements FileProcessor
 		if(toc != null)
 			try
 			{
+				if(writerInfo.diacritics != null)
+				{
+					toc.close();
+					toc = writerInfo.toc = new OutputStreamWriter(new FileOutputStream(tocFile), "UTF-8");
+					for(Map.Entry<String, Object> e : writerInfo.diacritics.entrySet())
+					{
+						String value = "";
+						if(e.getValue() instanceof String)
+						{
+							value = (String) e.getValue();
+							if(e.getKey().equals(value))
+								continue;
+						}
+						else
+						{
+							TreeSet<String> set = (TreeSet) e.getValue();
+							for(String w : set)
+								value += w + '|';
+							value = value.substring(0, value.length()-1);
+						}
+						toc.write(e.getKey());
+						toc.write("=");
+						toc.write(value);
+						toc.write("\r\n");
+					}
+					toc.close();
+					return;
+				}
+				
 				toc.write("  </entries>\r\n");
 				toc.write("  <files>\r\n");
 				for(String fname : writerInfo.fileNames)
@@ -99,7 +129,7 @@ public class EdFileProcessor implements FileProcessor
 			}
 			catch(IOException ex)
 			{
-				throw new RuntimeException("Error closing TOC file.", ex);
+				throw new RuntimeException("Error writing TOC file.", ex);
 			}
 		
 		for(String m : manual)
