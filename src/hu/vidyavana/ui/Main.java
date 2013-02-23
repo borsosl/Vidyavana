@@ -13,6 +13,8 @@ import javax.swing.border.*;
 public class Main
 {
 	public static final String PRIMARY_JAR_NAME = "Vidyavana.jar";
+	public static Main instance;
+
 	private JMenuBar menuBar;
 	private JToolBar toolBar;
 	public JFrame frame;
@@ -20,7 +22,8 @@ public class Main
 
 	public static void main(String[] args)
 	{
-		new Main().main();
+		instance = new Main();
+		instance.main();
 	}
 
 
@@ -113,6 +116,12 @@ public class Main
 		}
 	}
 
+	
+	public static void messageBox(String msg, String caption)
+	{
+		JOptionPane.showMessageDialog(Main.instance.frame, msg, caption, JOptionPane.PLAIN_MESSAGE);
+	}
+
 
 	private final class UpdateBooksAction extends AbstractAction
 	{
@@ -126,8 +135,7 @@ public class Main
 		{
 			UpdateBooks ub = new UpdateBooks();
 			ub.run();
-			JOptionPane.showMessageDialog(frame, "Új: "+ub.added+", módosítva: "+ub.updated,
-                "Eredmény", JOptionPane.PLAIN_MESSAGE);
+			messageBox("Új: "+ub.added+", módosítva: "+ub.updated, "Eredmény");
 		}
 	}
 
@@ -142,7 +150,8 @@ public class Main
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			new AddBook(3).run();
+			int bookId = Integer.parseInt(System.getProperty("bookId"));
+			new AddBook(bookId).run();
 		}
 	}
 

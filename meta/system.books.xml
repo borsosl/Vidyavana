@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+  <version>121223</version>
+  <book>
+    <title>A Bhagavad-gītā úgy, ahogy van</title>
+    <id>1</id>
+    <priority>1</priority>
+    <version>0</version>
+  </book>
+  <book>
+    <title>Śrīmad-Bhāgavatam</title>
+    <id>2</id>
+    <priority>2</priority>
+    <version>0</version>
+  </book>
+  <book>
+    <title>1. ének</title>
+    <id>3</id>
+    <parent_id>2</parent_id>
+    <priority>3</priority>
+    <version>0</version>
+  </book>
+  <book>
+    <title>2. ének</title>
+    <id>4</id>
+    <parent_id>2</parent_id>
+    <priority>4</priority>
+    <version>0</version>
+  </book>
+</books>

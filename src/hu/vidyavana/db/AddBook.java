@@ -3,12 +3,15 @@ package hu.vidyavana.db;
 import hu.vidyavana.convert.api.ParagraphClass;
 import hu.vidyavana.db.data.*;
 import hu.vidyavana.util.XmlUtil;
-import java.io.File;
+import java.io.*;
 import java.util.*;
+import java.util.regex.*;
 import org.w3c.dom.*;
 
 public class AddBook
 {
+	public static Pattern XML_LINE = Pattern.compile("^\\s*(<p( class=\"(.*?)\")?.*?>)?(.*?)(</p>|$)");
+	
 	private int bookId;
 	private String bookPath;
 	private File bookDir;
@@ -92,27 +95,74 @@ public class AddBook
 		int bookParaOrdinal = 0;
 		for(String fname : bookFileNames)
 		{
-			Element docElem = getXmlRoot(fname);
-			NodeList paraElems = docElem.getElementsByTagName("p");
-			for(int i=0, len=paraElems.getLength(); i<len; ++i)
+			File f = new File(bookDir, fname);
+			BufferedReader in = null;
+			try
 			{
-				Element elem = (Element) paraElems.item(i);
-				String className = elem.getAttribute("class");
-				ParagraphClass cls;
-				try
+				in = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+				Para xmlPara = null;
+				StringBuilder paraSB = new StringBuilder(10000);
+				boolean inPara = false;
+				while(true)
 				{
-					cls = ParagraphClass.valueOf(className);
+					String line = in.readLine();
+					if(line == null)
+						break;
+					Matcher m = XML_LINE.matcher(line);
+					m.find();
+					if(m.group(1) != null)
+					{
+						if(inPara)
+							xmlPara.text = paraSB.toString();
+						
+						String className = m.group(3);
+						ParagraphClass cls;
+						try
+						{
+							cls = ParagraphClass.valueOf(className);
+						}
+						catch(Exception ex)
+						{
+							cls = ParagraphClass.TorzsKoveto;
+						}
+						
+						xmlPara = new Para();
+						xmlPara.bookParaOrdinal = ++bookParaOrdinal;
+						xmlPara.style = cls.code;
+						paras.add(xmlPara);
+						
+						String txt = m.group(4);
+						paraSB.setLength(0);
+						paraSB.append(txt);
+						
+						inPara = true;
+					}
+					else if(inPara)
+						paraSB.append(' ').append(m.group(4));
+
+					if(inPara)
+					{
+						inPara = m.group(5).length() == 0;
+						if(!inPara)
+							xmlPara.text = paraSB.toString();
+					}
 				}
-				catch(IllegalArgumentException ex)
-				{
-					cls = ParagraphClass.TorzsKoveto;
-				}
-				
-				Para xmlPara = new Para();
-				xmlPara.bookParaOrdinal = ++bookParaOrdinal;
-				xmlPara.style = cls.code;
-				xmlPara.text = elem.getTextContent();
-				paras.add(xmlPara);
+			}
+			catch(Exception ex)
+			{
+				throw new RuntimeException(ex);
+			}
+			finally
+			{
+				if(in != null)
+					try
+					{
+						in.close();
+					}
+					catch(IOException ex)
+					{
+						throw new RuntimeException(ex);
+					}
 			}
 		}
 		ParaDao.updateBookParagraphs(bookId, paras);
