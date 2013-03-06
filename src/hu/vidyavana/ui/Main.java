@@ -156,6 +156,22 @@ public class Main
 	}
 
 
+	private final class IndexAction extends AbstractAction
+	{
+		public IndexAction()
+		{
+			super("Indexing");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			int bookId = Integer.parseInt(System.getProperty("bookId"));
+			new IndexBook(bookId).run();
+		}
+	}
+
+
 	private void addDatabaseMenu()
 	{
 		JMenu dbMenuItem = new JMenu("Database");
@@ -163,5 +179,6 @@ public class Main
 
 		dbMenuItem.add(new JMenuItem(new UpdateBooksAction()));
 		dbMenuItem.add(new JMenuItem(new AddBooksAction()));
+		dbMenuItem.add(new JMenuItem(new IndexAction()));
 	}
 }

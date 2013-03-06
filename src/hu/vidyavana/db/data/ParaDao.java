@@ -1,6 +1,6 @@
 package hu.vidyavana.db.data;
 
-import hu.vidyavana.db.api.Database;
+import hu.vidyavana.db.api.*;
 import java.util.List;
 
 public class ParaDao
@@ -27,4 +27,11 @@ public class ParaDao
 		Database.System.execute("delete from para where book_id=" + bookId);
 	}
 
+	
+	public static void getBookParagraphs(int bookId, ResultSetCallback callback)
+	{
+		Database.System.query("select * from para" +
+				" where book_id=" + bookId +
+				" order by book_id, book_para_ordinal", callback);
+	}
 }

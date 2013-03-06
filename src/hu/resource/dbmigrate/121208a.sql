@@ -31,7 +31,6 @@ create table contents (
 create table para (
 	book_id int,
 	book_para_ordinal int,
-	abs_ordinal int default 0,
 	style int default 0,
 	txt text,
 	primary key(book_id, book_para_ordinal),
@@ -40,13 +39,15 @@ create table para (
 
 create table word (
 	word varchar(50) primary key,
-	alt_id int
+	id int auto_increment
 );
 
 create table occur (
-	word_alt_id int,
-	abs_ordinal int,
-	primary key(word_alt_id, abs_ordinal),
-	foreign key(word_alt_id) references word(alt_id),
-	foreign key(abs_ordinal) references para(abs_ordinal)
+	word_id int,
+	book_id int,
+	book_para_ordinal int,
+	primary key(word_id, book_id, book_para_ordinal)
+	-- intentionally leaving off foreign keys on big slow table
 );
+
+create index obi on occur(book_id);

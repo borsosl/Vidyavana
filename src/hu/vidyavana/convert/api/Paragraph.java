@@ -1,6 +1,7 @@
 package hu.vidyavana.convert.api;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
+import hu.vidyavana.db.IndexBook;
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
@@ -124,7 +125,6 @@ public class Paragraph
 	}
 
 
-	static Pattern WORD = Pattern.compile("[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰāīūḍḥḷḹṁṅṇñṛṝṣśṭĀĪŪḌḤḶḸṀṄṆÑṚṜṢŚṬ]+");
 	static Set<ParagraphClass> excludedClasses = new HashSet<>(Arrays.asList(new ParagraphClass[]{
 		Uvaca, Vers, Proza, Szavak, TorzsUvaca, TorzsVers, Kozepen, Index}));
 	
@@ -132,7 +132,7 @@ public class Paragraph
 	{
 //		if(excludedClasses.contains(cls))
 //			return;
-		Matcher m = WORD.matcher(txt);
+		Matcher m = IndexBook.WORD.matcher(txt);
 		int ix = 0;
 		StringBuilder sb = new StringBuilder(200);
 		while(true)
