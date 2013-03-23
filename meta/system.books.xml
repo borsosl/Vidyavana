@@ -1,30 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <books>
-  <version>121223</version>
+  <version>130310</version>
   <book>
     <title>A Bhagavad-gītā úgy, ahogy van</title>
     <id>1</id>
     <priority>1</priority>
-    <version>0</version>
   </book>
   <book>
     <title>Śrīmad-Bhāgavatam</title>
     <id>2</id>
     <priority>2</priority>
-    <version>0</version>
   </book>
   <book>
     <title>1. ének</title>
     <id>3</id>
     <parent_id>2</parent_id>
     <priority>3</priority>
-    <version>0</version>
   </book>
   <book>
     <title>2. ének</title>
     <id>4</id>
     <parent_id>2</parent_id>
     <priority>4</priority>
-    <version>0</version>
+  </book>
+  <book>
+    <title>3. ének</title>
+    <id>5</id>
+    <parent_id>2</parent_id>
+    <priority>5</priority>
+  </book>
+  <book>
+    <title>4. ének</title>
+    <id>6</id>
+    <parent_id>2</parent_id>
+    <priority>6</priority>
+  </book>
+  <book>
+    <title>5. ének</title>
+    <id>7</id>
+    <parent_id>2</parent_id>
+    <priority>7</priority>
+  </book>
+  <book>
+    <title>6. ének</title>
+    <id>8</id>
+    <parent_id>2</parent_id>
+    <priority>8</priority>
+  </book>
+  <book>
+    <title>7. ének</title>
+    <id>9</id>
+    <parent_id>2</parent_id>
+    <priority>9</priority>
+  </book>
+  <book>
+    <title>8. ének</title>
+    <id>10</id>
+    <parent_id>2</parent_id>
+    <priority>10</priority>
+  </book>
+  <book>
+    <title>9. ének</title>
+    <id>11</id>
+    <parent_id>2</parent_id>
+    <priority>11</priority>
+  </book>
+  <book>
+    <title>10. ének</title>
+    <id>12</id>
+    <parent_id>2</parent_id>
+    <priority>12</priority>
+  </book>
+  <book>
+    <title>Kṛṣṇa, az Istenség Legfelsőbb Személyisége</title>
+    <id>13</id>
+    <priority>13</priority>
+  </book>
+  <book>
+    <title>Śrī Caitanya-caritāmṛta</title>
+    <id>14</id>
+    <priority>14</priority>
+  </book>
+  <book>
+    <title>Ādi-līlā</title>
+    <id>15</id>
+    <parent_id>14</parent_id>
+    <priority>15</priority>
+  </book>
+  <book>
+    <title>Madhya-līlā</title>
+    <id>16</id>
+    <parent_id>14</parent_id>
+    <priority>16</priority>
+  </book>
+  <book>
+    <title>Antya-līlā</title>
+    <id>17</id>
+    <parent_id>14</parent_id>
+    <priority>17</priority>
   </book>
 </books>

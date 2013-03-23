@@ -2,15 +2,19 @@ package hu.vidyavana.ui;
 
 import hu.vidyavana.db.*;
 import hu.vidyavana.db.api.Database;
+import hu.vidyavana.db.data.SettingsDao;
 import hu.vidyavana.util.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.concurrent.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.*;
 
-public class Main
+public class Main implements UncaughtExceptionHandler
 {
 	public static final String PRIMARY_JAR_NAME = "Vidyavana.jar";
 	public static Main instance;
@@ -18,32 +22,84 @@ public class Main
 	private JMenuBar menuBar;
 	private JToolBar toolBar;
 	public JFrame frame;
+	public ExecutorService executor;
+	public String dbCreatedAt;
 
 
 	public static void main(String[] args)
 	{
-		instance = new Main();
-		instance.main();
+		try
+		{
+			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+			{
+				if("Nimbus".equals(info.getName()))
+				{
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		}
+		catch(Exception e)
+		{
+		}
+
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				instance = new Main();
+				instance.main();
+			}
+		});
 	}
 
 
-	private void main()
+	void main()
 	{
+		Thread.setDefaultUncaughtExceptionHandler(this);
+		System.setProperty("sun.awt.exception.handler", getClass().getName());
+
+		Runtime.getRuntime().addShutdownHook(new Thread()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					executor.shutdown();
+					executor.awaitTermination(5, TimeUnit.SECONDS);
+				}
+				catch(Exception ex)
+				{
+				}
+				Database.closeAll();
+				Log.close();
+			}
+		});
+
+		executor = Executors.newSingleThreadExecutor();
+		databaseMigration();
+		Encrypt.getInstance().init();
+		setLookAndFeel();
+		showWindow();
+	}
+
+
+	@Override
+	public void uncaughtException(Thread th, Throwable t)
+	{
+		Log.error(th.getName(), t);
+		while(t.getCause() != null && t.getCause() != t)
+			t = t.getCause();
+		String msg = t.getMessage();
 		try
 		{
-			databaseMigration();
-			setLookAndFeel();
-			showWindow();
+			messageBox(msg, "Hiba");
 		}
-		catch(Throwable t)
+		catch(Exception e)
 		{
-			Log.error(null, t);
-			System.out.println(t.getMessage());
-			System.exit(1);
-		}
-		finally
-		{
-			Database.closeAll();
+			System.out.println(msg);
 		}
 	}
 
@@ -53,10 +109,8 @@ public class Main
 		DatabaseMigration dbm = new DatabaseMigration();
 		if(!ResourceUtil.dbMigrationUsingJar(dbm))
 			if(!ResourceUtil.dbMigrationUsingFiles(dbm))
-			{
-				System.out.println("SQL file olvasasi hiba.");
-				System.exit(1);
-			}
+				throw new RuntimeException("SQL fájl olvasási hiba.");
+		dbCreatedAt = SettingsDao.getCreatedAt();
 	}
 
 
@@ -81,29 +135,27 @@ public class Main
 
 		toolBar = new JToolBar();
 		toolBar.setBorder(new EtchedBorder());
-		//	    JButton exampleButton = new JButton(exampleAction);
-		//	    toolBar.add(exampleButton);
+		toolBar.add(new JButton("Placeholder"));
 
-		frame = new JFrame("Vidyavana");
-		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				Database.closeAll();
-				frame.dispose();
-				System.exit(0);
-			}
-		});
-		frame.setJMenuBar(menuBar);
-		frame.getContentPane().add(toolBar, BorderLayout.NORTH);
-		frame.setSize(1024, 600);
-		frame.setVisible(true);
+		JTextArea textArea = new JTextArea();
+		textArea.setText("Text area");
+		textArea.setFont(new Font("Times", Font.PLAIN, 20));
+		textArea.setWrapStyleWord(true);
+		JScrollPane textPane = new JScrollPane();
+		textPane.setViewportView(textArea);
+
+		frame = new JFrame("Vidyāvana");
 		setIcon(frame);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setJMenuBar(menuBar);
+		frame.add(textPane);
+		frame.add(toolBar, BorderLayout.NORTH);
+		frame.setSize(1024, 600);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+		frame.setVisible(true);
 	}
 
-	
+
 	private void setIcon(JFrame frame)
 	{
 		try
@@ -116,59 +168,26 @@ public class Main
 		}
 	}
 
-	
-	public static void messageBox(String msg, String caption)
+
+	public static void messageBox(final String msg, final String caption)
+	{
+		if(SwingUtilities.isEventDispatchThread())
+			messageBoxOnSwingThread(msg, caption);
+		else
+			SwingUtilities.invokeLater(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					messageBoxOnSwingThread(msg, caption);
+				}
+			});
+	}
+
+
+	static void messageBoxOnSwingThread(String msg, String caption)
 	{
 		JOptionPane.showMessageDialog(Main.instance.frame, msg, caption, JOptionPane.PLAIN_MESSAGE);
-	}
-
-
-	private final class UpdateBooksAction extends AbstractAction
-	{
-		public UpdateBooksAction()
-		{
-			super("Update Books");
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			UpdateBooks ub = new UpdateBooks();
-			ub.run();
-			messageBox("Új: "+ub.added+", módosítva: "+ub.updated, "Eredmény");
-		}
-	}
-
-
-	private final class AddBooksAction extends AbstractAction
-	{
-		public AddBooksAction()
-		{
-			super("Add Books");
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			int bookId = Integer.parseInt(System.getProperty("bookId"));
-			new AddBook(bookId).run();
-		}
-	}
-
-
-	private final class IndexAction extends AbstractAction
-	{
-		public IndexAction()
-		{
-			super("Indexing");
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			int bookId = Integer.parseInt(System.getProperty("bookId"));
-			new IndexBook(bookId).run();
-		}
 	}
 
 
@@ -180,5 +199,85 @@ public class Main
 		dbMenuItem.add(new JMenuItem(new UpdateBooksAction()));
 		dbMenuItem.add(new JMenuItem(new AddBooksAction()));
 		dbMenuItem.add(new JMenuItem(new IndexAction()));
+	}
+
+
+	private final class UpdateBooksAction extends AbstractAction
+	{
+		public UpdateBooksAction()
+		{
+			super("Update Books");
+		}
+
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			executor.execute(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					UpdateBooks ub = new UpdateBooks();
+					ub.run();
+					messageBox("Új: " + ub.added + ", módosítva: " + ub.updated, "Eredmény");
+				}
+			});
+		}
+	}
+
+
+	private final class AddBooksAction extends AbstractAction
+	{
+		public AddBooksAction()
+		{
+			super("Add Books");
+		}
+
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			executor.execute(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					String[] paths = {};
+					for(int bookId = 1; bookId <= paths.length; ++bookId)
+					{
+						if(bookId == 2 || bookId == 14)
+							continue;
+						System.out.println(bookId);
+						new AddBook(bookId, paths[bookId - 1]).run();
+						new IndexBook(bookId).run();
+					}
+				}
+			});
+		}
+	}
+
+
+	private final class IndexAction extends AbstractAction
+	{
+		public IndexAction()
+		{
+			super("Indexing");
+		}
+
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			executor.execute(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					int bookId = Integer.parseInt(System.getProperty("bookId"));
+					new IndexBook(bookId).run();
+				}
+			});
+		}
 	}
 }

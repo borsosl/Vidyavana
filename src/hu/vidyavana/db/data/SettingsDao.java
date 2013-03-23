@@ -47,4 +47,20 @@ public class SettingsDao
 	{
 		Database.System.execute("update settings set books_version='" + version + "'");
 	}
+
+	
+	public static String getCreatedAt()
+	{
+		final String[] createdAt = new String[1];
+		Database.System.query("select created_at from settings", new ResultSetCallback()
+		{
+			@Override
+			public void useResultSet(ResultSet rs) throws SQLException
+			{
+				rs.next();
+				createdAt[0] = rs.getString(1);
+			}
+		});
+		return createdAt[0];
+	}
 }

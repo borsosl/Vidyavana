@@ -58,7 +58,7 @@ public class Log
 	
 	public static void info(String text)
 	{
-		logger.info(text);
+		logger.info(text + System.lineSeparator());
 	}
 	
 	
@@ -68,6 +68,15 @@ public class Log
 		PrintWriter pw = new PrintWriter(sw);
 		t.printStackTrace(pw);
 		return sw.getBuffer().toString();
+	}
+	
+	
+	public static void close()
+	{
+		for(Handler handler : logger.getHandlers())
+		{
+		    handler.close();
+		}
 	}
 }
 

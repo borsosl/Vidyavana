@@ -18,11 +18,11 @@ public class AddBook
 	private ArrayList<String> bookFileNames;
 
 	
-	public AddBook(int bookId)
+	public AddBook(int bookId, String bookPath)
 	{
 		this.bookId = bookId;
-		bookPath = System.getProperty("bookPath");
-		bookDir = new File(bookPath);
+		this.bookPath = bookPath;
+		bookDir = new File(this.bookPath);
 	}
 	
 	
