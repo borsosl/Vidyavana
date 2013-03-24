@@ -1,24 +1,49 @@
 package hu.vidyavana.db.data;
 
 import hu.vidyavana.db.api.*;
+import hu.vidyavana.util.Encrypt;
+import java.sql.*;
 import java.util.List;
 
 public class ParaDao
 {
-	public static void updateBookParagraphs(int bookId, List<Para> paras)
+	public static void updateBookParagraphs(final int bookId, List<Para> paras)
 	{
 		if(paras.size() == 0)
 			return;
 		deleteBookParagraphs(bookId);
-		StringBuilder sb = new StringBuilder(100 + paras.size() * 100);
-		sb.append("insert into para (book_id, book_para_ordinal, style, txt) values ");
-		for(Para p : paras)
+		try
 		{
-			sb.append('(').append(bookId).append(',').append(p.bookParaOrdinal).append(',')
-				.append(p.style).append(",'").append(Database.quote(p.text)).append("'),");
+			Database.System.autoCommit(false);
+			for(final Para p : paras)
+			{
+				Database.System.wrapPreparedStatement(
+					"insert into para (book_id, book_para_ordinal, style, txt) values (?,?,?,?)",
+					new StatementCallback()
+				{
+						@Override
+						public void usePreparedStatement(PreparedStatement stmt) throws SQLException
+						{
+							stmt.setInt(1, bookId);
+							stmt.setInt(2, p.bookParaOrdinal);
+							stmt.setInt(3, p.style);
+							stmt.setBytes(4, Encrypt.getInstance().encrypt(p.text));
+							stmt.executeUpdate();
+						}
+				});
+			}
+			Database.System.commit();
 		}
-		sb.setLength(sb.length()-1);
-		Database.System.execute(sb.toString());
+		catch(Exception ex)
+		{
+			Database.System.rollback();
+			throw ex;
+		}
+		finally
+		{
+			Database.System.autoCommit(true);			
+		}
+		
 	}
 
 	

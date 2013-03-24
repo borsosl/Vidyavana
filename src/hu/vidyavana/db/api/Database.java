@@ -164,6 +164,45 @@ public enum Database
 	}
 	
 	
+	public void autoCommit(boolean on)
+	{
+		try
+		{
+			connection().setAutoCommit(on);
+		}
+		catch(SQLException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	
+	public void commit()
+	{
+		try
+		{
+			connection().commit();
+		}
+		catch(SQLException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	
+	public void rollback()
+	{
+		try
+		{
+			connection().rollback();
+		}
+		catch(SQLException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	
 	public static String quote(String str)
 	{
 		if(str.indexOf('\'') == -1)

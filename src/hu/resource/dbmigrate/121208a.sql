@@ -33,7 +33,7 @@ create table para (
 	book_id int,
 	book_para_ordinal int,
 	style int default 0,
-	txt text,
+	txt blob,
 	primary key(book_id, book_para_ordinal),
 	foreign key(book_id) references book(id)
 );
