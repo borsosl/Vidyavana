@@ -5,8 +5,9 @@
             <manifest>
                 <attribute name="Main-Class" value="hu.vidyavana.ui.Main"/>
                 <attribute name="Class-Path" value=". lib/h2.jar"/>
+                <attribute name="SplashScreen-Image" value="hu/resource/image/Vidyavana-splash.jpg"/>
             </manifest>
-            <fileset dir="../cls" includes="hu/" excludes="**/convert/ed/ **/convert/epub/" />
+            <fileset dir="../cls" includes="hu/" excludes="**/.gitignore **/convert/ed/ **/convert/epub/" />
         </jar>
     </target>
 </project>

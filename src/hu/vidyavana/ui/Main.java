@@ -83,6 +83,16 @@ public class Main implements UncaughtExceptionHandler
 		Encrypt.getInstance().init();
 		setLookAndFeel();
 		showWindow();
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				SplashScreen sp = SplashScreen.getSplashScreen();
+				if(sp != null)
+					sp.close();
+			}
+		});
 	}
 
 
@@ -93,6 +103,8 @@ public class Main implements UncaughtExceptionHandler
 		while(t.getCause() != null && t.getCause() != t)
 			t = t.getCause();
 		String msg = t.getMessage();
+		if(msg == null || msg.isEmpty())
+			msg = t.getClass().getName();
 		try
 		{
 			messageBox(msg, "Hiba");
@@ -198,7 +210,7 @@ public class Main implements UncaughtExceptionHandler
 
 		dbMenuItem.add(new JMenuItem(new UpdateBooksAction()));
 		dbMenuItem.add(new JMenuItem(new AddBooksAction()));
-		dbMenuItem.add(new JMenuItem(new IndexAction()));
+		dbMenuItem.add(new JMenuItem(new TestAction()));
 	}
 
 
@@ -258,11 +270,11 @@ public class Main implements UncaughtExceptionHandler
 	}
 
 
-	private final class IndexAction extends AbstractAction
+	private final class TestAction extends AbstractAction
 	{
-		public IndexAction()
+		public TestAction()
 		{
-			super("Indexing");
+			super("Test code");
 		}
 
 
@@ -274,8 +286,6 @@ public class Main implements UncaughtExceptionHandler
 				@Override
 				public void run()
 				{
-					int bookId = Integer.parseInt(System.getProperty("bookId"));
-					new IndexBook(bookId).run();
 				}
 			});
 		}
