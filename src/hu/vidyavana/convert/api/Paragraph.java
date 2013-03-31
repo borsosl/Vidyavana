@@ -1,7 +1,6 @@
 package hu.vidyavana.convert.api;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
-import hu.vidyavana.db.IndexBook;
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
@@ -17,6 +16,7 @@ public class Paragraph
 	public int indent;
 	public StringBuilder text = new StringBuilder();
 	public List<String> footnote = new ArrayList<String>();
+	public static Pattern WORD = Pattern.compile("[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰāīūḍḥḷḹṁṅṇñṛṝṣśṭĀĪŪḌḤḶḸṀṄṆÑṚṜṢŚṬ]+");
 	
 	
 	public void addToDocument(Document doc, Element parent)
@@ -132,7 +132,7 @@ public class Paragraph
 	{
 //		if(excludedClasses.contains(cls))
 //			return;
-		Matcher m = IndexBook.WORD.matcher(txt);
+		Matcher m = Paragraph.WORD.matcher(txt);
 		int ix = 0;
 		StringBuilder sb = new StringBuilder(200);
 		while(true)
