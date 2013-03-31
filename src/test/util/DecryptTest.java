@@ -1,8 +1,7 @@
 package test.util;
 
-import hu.vidyavana.db.api.*;
+import hu.vidyavana.db.model.*;
 import hu.vidyavana.util.Encrypt;
-import java.sql.*;
 import java.util.*;
 
 public class DecryptTest
@@ -13,17 +12,9 @@ public class DecryptTest
 		enc.init();
 		final List<String> list = new ArrayList<String>(); 
 		long t1 = System.currentTimeMillis();
-		Database.System.query("select top 1000 txt from para", new ResultSetCallback()
-		{
-			@Override
-			public void useResultSet(ResultSet rs) throws SQLException
-			{
-				while(rs.next())
-				{
-					list.add(enc.decrypt(rs.getBytes(1)));
-				}
-			}
-		});
+		for(Para p : Para.pkIdx().entities(new BookOrdinalKey(1, 1), true, new BookOrdinalKey(1, 1000), true))
+			list.add(enc.decrypt(p.text));
+
 		System.out.println(list.get(100));
 		System.out.println(System.currentTimeMillis() - t1);
 	}

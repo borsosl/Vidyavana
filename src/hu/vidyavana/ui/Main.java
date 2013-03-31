@@ -1,55 +1,44 @@
 package hu.vidyavana.ui;
 
 import hu.vidyavana.db.*;
-import hu.vidyavana.db.api.Database;
-import hu.vidyavana.db.data.SettingsDao;
+import hu.vidyavana.db.api.*;
+import hu.vidyavana.db.model.Settings;
 import hu.vidyavana.util.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.Date;
 import java.util.concurrent.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.*;
+import org.apache.lucene.index.IndexWriter;
+import com.sleepycat.persist.EntityCursor;
 
 public class Main implements UncaughtExceptionHandler
 {
-	public static final String PRIMARY_JAR_NAME = "Vidyavana.jar";
-	public static Main instance;
+	public static Main inst;
+	public ExecutorService executor;
 
+	public JFrame frame;
 	private JMenuBar menuBar;
 	private JToolBar toolBar;
-	public JFrame frame;
-	public ExecutorService executor;
 	public String dbCreatedAt;
 
 
 	public static void main(String[] args)
 	{
-		try
-		{
-			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-			{
-				if("Nimbus".equals(info.getName()))
-				{
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		}
-		catch(Exception e)
-		{
-		}
+		setLookAndFeel();
 
 		SwingUtilities.invokeLater(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				instance = new Main();
-				instance.main();
+				inst = new Main();
+				inst.main();
 			}
 		});
 	}
@@ -73,7 +62,8 @@ public class Main implements UncaughtExceptionHandler
 				catch(Exception ex)
 				{
 				}
-				Database.closeAll();
+				Db.inst.close();
+				Lucene.inst.close();
 				Log.close();
 			}
 		});
@@ -81,7 +71,6 @@ public class Main implements UncaughtExceptionHandler
 		executor = Executors.newSingleThreadExecutor();
 		databaseMigration();
 		Encrypt.getInstance().init();
-		setLookAndFeel();
 		showWindow();
 		SwingUtilities.invokeLater(new Runnable()
 		{
@@ -118,21 +107,42 @@ public class Main implements UncaughtExceptionHandler
 
 	private void databaseMigration()
 	{
-		DatabaseMigration dbm = new DatabaseMigration();
-		if(!ResourceUtil.dbMigrationUsingJar(dbm))
-			if(!ResourceUtil.dbMigrationUsingFiles(dbm))
-				throw new RuntimeException("SQL fájl olvasási hiba.");
-		dbCreatedAt = SettingsDao.getCreatedAt();
+		Db.inst.open(false);
+		EntityCursor<Settings> c = Settings.pkIdx().entities();
+		Settings set = c.first();
+		c.close();
+		if(set != null)
+			dbCreatedAt = set.createdAt;
+		else
+		{
+			set = new Settings();
+			dbCreatedAt = set.createdAt = new Date().toString();
+			set.dbMigrate = "0";
+			set.booksVersion = "0";
+			Settings.pkIdx().put(set);
+		}
+		Db.inst.open(true);
 	}
 
 
-	private void setLookAndFeel()
+	private static void setLookAndFeel()
 	{
 		try
 		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			boolean hasNimbus = false;
+			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+			{
+				if("Nimbus".equals(info.getName()))
+				{
+					UIManager.setLookAndFeel(info.getClassName());
+					hasNimbus = true;
+					break;
+				}
+			}
+			if(!hasNimbus)
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}
-		catch(Exception ex)
+		catch(Exception e)
 		{
 		}
 	}
@@ -199,7 +209,7 @@ public class Main implements UncaughtExceptionHandler
 
 	static void messageBoxOnSwingThread(String msg, String caption)
 	{
-		JOptionPane.showMessageDialog(Main.instance.frame, msg, caption, JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(Main.inst.frame, msg, caption, JOptionPane.PLAIN_MESSAGE);
 	}
 
 
@@ -256,14 +266,15 @@ public class Main implements UncaughtExceptionHandler
 				public void run()
 				{
 					String[] paths = {};
+					IndexWriter writer = Lucene.inst.open().writer();
 					for(int bookId = 1; bookId <= paths.length; ++bookId)
 					{
 						if(bookId == 2 || bookId == 14)
 							continue;
 						System.out.println(bookId);
-						new AddBook(bookId, paths[bookId - 1]).run();
-						new IndexBook(bookId).run();
+						new AddBook(bookId, paths[bookId - 1], writer).run();
 					}
+					Lucene.inst.closeWriter();
 				}
 			});
 		}

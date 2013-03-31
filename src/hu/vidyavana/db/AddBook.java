@@ -1,12 +1,19 @@
 package hu.vidyavana.db;
 
 import hu.vidyavana.convert.api.ParagraphClass;
-import hu.vidyavana.db.data.*;
-import hu.vidyavana.util.XmlUtil;
+import hu.vidyavana.db.api.Db;
+import hu.vidyavana.db.model.*;
+import hu.vidyavana.util.*;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.regex.*;
+import org.apache.lucene.document.*;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.FieldInfo.IndexOptions;
+import org.apache.lucene.index.*;
 import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import com.sleepycat.persist.PrimaryIndex;
 
 public class AddBook
 {
@@ -15,21 +22,33 @@ public class AddBook
 	private int bookId;
 	private String bookPath;
 	private File bookDir;
+	private final IndexWriter iw;
+	private FieldType txtFieldType;
 	private ArrayList<String> bookFileNames;
 
 	
-	public AddBook(int bookId, String bookPath)
+	public AddBook(int bookId, String bookPath, IndexWriter writer)
 	{
 		this.bookId = bookId;
 		this.bookPath = bookPath;
-		bookDir = new File(this.bookPath);
+		bookDir = new File(bookPath);
+		this.iw = writer;
+		txtFieldType = new FieldType();
+		txtFieldType.setIndexed(true);
+		txtFieldType.setTokenized(true);
+		txtFieldType.setStored(false);
+		txtFieldType.setStoreTermVectors(false);
+		txtFieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
+		txtFieldType.freeze();
 	}
 	
 	
 	public void run()
 	{
+		Db.inst.open(false);
 		addToc();
 		addChapters();
+		Db.inst.open(true);
 	}
 
 
@@ -38,7 +57,9 @@ public class AddBook
 		Element docElem = getXmlRoot("toc.xml");
 		// String xmlVersion = docElem.getElementsByTagName("version").item(0).getTextContent();
 
-		List<Contents> contents = new ArrayList<>();
+		PrimaryIndex<BookOrdinalKey, Contents> idx =
+			Db.store().getPrimaryIndex(BookOrdinalKey.class, Contents.class);
+
 		NodeList entries = docElem.getElementsByTagName("entries");
 		if(entries.getLength() > 0)
 		{
@@ -49,28 +70,30 @@ public class AddBook
 				if(!"entry".equals(entry.getNodeName()))
 					continue;
 				NodeList children = entry.getChildNodes();
-				Contents xmlContents = new Contents();
+				int tocOrdinal = -1;
+				Contents contents = new Contents();
 				for(int j=0, len2 = children.getLength(); j<len2; ++j)
 				{
 					Node n = children.item(j);
 					String txt = n.getTextContent().trim();
 					if("level".equals(n.getNodeName()))
-						xmlContents.level = Integer.parseInt(txt);
+						contents.level = Integer.parseInt(txt);
 					else if("division".equals(n.getNodeName()))
-						xmlContents.division = txt;
+						contents.division = txt;
 					else if("title".equals(n.getNodeName()))
-						xmlContents.title = txt;
+						contents.title = txt;
 					else if("toc_ordinal".equals(n.getNodeName()))
-						xmlContents.bookTocOrdinal = Integer.parseInt(txt);
+						tocOrdinal = Integer.parseInt(txt);
 					else if("para_ordinal".equals(n.getNodeName()))
-						xmlContents.bookParaOrdinal = Integer.parseInt(txt);
+						contents.bookParaOrdinal = Integer.parseInt(txt);
 				}
-				if(xmlContents.title == null)
-					xmlContents.title = "";
-				contents.add(xmlContents);
+				contents.key = new BookOrdinalKey(bookId, tocOrdinal);
+				if(contents.title == null)
+					contents.title = "";
+				idx.put(contents);
 			}
 		}
-
+		
 		bookFileNames = new ArrayList<>();
 		NodeList files = docElem.getElementsByTagName("files");
 		if(files.getLength() > 0)
@@ -82,16 +105,15 @@ public class AddBook
 				if("file".equals(entry.getNodeName()))
 					bookFileNames.add(entry.getTextContent().trim());
 			}
-			
 		}
-		
-		ContentsDao.updateBookContents(bookId, contents);
 	}
 
 
 	private void addChapters()
 	{
-		List<Para> paras = new ArrayList<>();
+		PrimaryIndex<BookOrdinalKey, Para> idx =
+			Db.store().getPrimaryIndex(BookOrdinalKey.class, Para.class);
+
 		int bookParaOrdinal = 0;
 		for(String fname : bookFileNames)
 		{
@@ -100,7 +122,7 @@ public class AddBook
 			try
 			{
 				in = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-				Para xmlPara = null;
+				Para para = null;
 				StringBuilder paraSB = new StringBuilder(10000);
 				boolean inPara = false;
 				while(true)
@@ -113,7 +135,7 @@ public class AddBook
 					if(m.group(1) != null)
 					{
 						if(inPara)
-							xmlPara.text = paraSB.toString();
+							addPara(para, paraSB, idx);
 						
 						String className = m.group(3);
 						ParagraphClass cls;
@@ -126,10 +148,7 @@ public class AddBook
 							cls = ParagraphClass.TorzsKoveto;
 						}
 						
-						xmlPara = new Para();
-						xmlPara.bookParaOrdinal = ++bookParaOrdinal;
-						xmlPara.style = cls.code;
-						paras.add(xmlPara);
+						para = new Para(bookId, ++bookParaOrdinal, cls.code, null);
 						
 						String txt = m.group(4);
 						paraSB.setLength(0);
@@ -142,9 +161,10 @@ public class AddBook
 
 					if(inPara)
 					{
+						// if <p> is started or cont'd, look for </p>
 						inPara = m.group(5).length() == 0;
 						if(!inPara)
-							xmlPara.text = paraSB.toString();
+							addPara(para, paraSB, idx);
 					}
 				}
 			}
@@ -158,14 +178,35 @@ public class AddBook
 					try
 					{
 						in.close();
-					}
+				}
 					catch(IOException ex)
 					{
 						throw new RuntimeException(ex);
 					}
 			}
 		}
-		ParaDao.updateBookParagraphs(bookId, paras);
+	}
+
+
+	private void addPara(Para para, StringBuilder paraSB, PrimaryIndex<BookOrdinalKey, Para> idx)
+	{
+		String paraTxt = paraSB.toString();
+		para.text = Encrypt.getInstance().encrypt(paraTxt);
+		idx.put(para);
+		
+		org.apache.lucene.document.Document doc = new org.apache.lucene.document.Document();
+		doc.add(new IntField("bid", bookId, Store.YES));
+		doc.add(new IntField("ord", para.key.ordinal, Store.YES));
+		doc.add(new Field("text", paraTxt, txtFieldType));
+		try
+		{
+			// TODO transaction
+			iw.addDocument(doc);
+		}
+		catch(IOException ex)
+		{
+			throw new RuntimeException(ex);
+		}
 	}
 
 

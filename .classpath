@@ -2,6 +2,25 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/h2.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-analyzers-common.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/temp/lucene/docs/analyzers-common/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/lucene-core.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/temp/lucene/docs/core/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/lucene-queryparser.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/temp/lucene/docs/queryparser/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/berkeley-db.jar" sourcepath="c:/wk/prg/Java/vidyavana/museum/130326/src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/c:/wk/prg/Java/vidyavana/museum/130326/javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="cls"/>
 </classpath>

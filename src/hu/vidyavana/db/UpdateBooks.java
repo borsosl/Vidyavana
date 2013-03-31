@@ -1,14 +1,17 @@
 package hu.vidyavana.db;
 
-import hu.vidyavana.db.data.*;
+import hu.vidyavana.db.api.Db;
+import hu.vidyavana.db.model.*;
 import hu.vidyavana.util.XmlUtil;
 import java.io.File;
-import java.util.Map;
+import java.util.*;
 import org.w3c.dom.*;
+import com.sleepycat.persist.*;
 
 public class UpdateBooks
 {
 	public int added, updated;
+	private Settings set;
 	
 	
 	public void run()
@@ -17,16 +20,30 @@ public class UpdateBooks
 		Document doc = XmlUtil.domFromString(xml);
 		Element docElem = doc.getDocumentElement();
 		String xmlVersion = docElem.getElementsByTagName("version").item(0).getTextContent();
-		
-		if(xmlVersion.compareTo(SettingsDao.getBooksVersion()) > 0)
+
+		Db.inst.open(true);
+		EntityCursor<Settings> c = Settings.pkIdx().entities();
+		set = c.first();
+		c.close();
+		if(xmlVersion.compareTo(set.booksVersion) > 0)
 			updateDb(docElem, xmlVersion);
 	}
 
 
 	private void updateDb(Element docElem, String xmlVersion)
 	{
-		BookDao bookDao = new BookDao();
-		Map<Integer, Book> bookMap = bookDao.getAllBooks();
+		Db.inst.open(false);
+		PrimaryIndex<Integer, Book> idx = Book.pkIdx();
+		int maxUserPriority = 0;
+		Map<Integer, Book> bookMap = new HashMap<Integer, Book>();
+		EntityCursor<Book> c = idx.entities();
+		for(Book bk : c)
+		{
+			bookMap.put(bk.id, bk);
+			if(bk.userPriority > maxUserPriority)
+				maxUserPriority = bk.userPriority;
+		}
+		c.close();
 
 		NodeList books = docElem.getElementsByTagName("book");
 		for(int i=0, len = books.getLength(); i<len; ++i)
@@ -52,7 +69,8 @@ public class UpdateBooks
 			Book dbBook = bookMap.get(xmlBook.id);
 			if(dbBook == null)
 			{
-				bookDao.insertBook(xmlBook);
+				xmlBook.userPriority = ++maxUserPriority;
+				idx.put(xmlBook);
 				++added;
 			}
 			else
@@ -63,11 +81,13 @@ public class UpdateBooks
 					&& dbBook.repoVersion.equals(xmlBook.repoVersion))
 						continue;
 				
-				BookDao.updateBook(xmlBook);
+				idx.put(xmlBook);
 				++updated;
 			}
 		}
-		SettingsDao.setBooksVersion(xmlVersion);
+		
+		set.booksVersion = xmlVersion;
+		Settings.pkIdx().put(set);
 	}
 
 
