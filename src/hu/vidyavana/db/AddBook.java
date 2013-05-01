@@ -45,10 +45,10 @@ public class AddBook
 	
 	public void run()
 	{
-		Db.inst.open(false);
+		Db.openForWrite();
 		addToc();
 		addChapters();
-		Db.inst.open(true);
+		Db.openForRead();
 	}
 
 
@@ -57,9 +57,7 @@ public class AddBook
 		Element docElem = getXmlRoot("toc.xml");
 		// String xmlVersion = docElem.getElementsByTagName("version").item(0).getTextContent();
 
-		PrimaryIndex<BookOrdinalKey, Contents> idx =
-			Db.store().getPrimaryIndex(BookOrdinalKey.class, Contents.class);
-
+		PrimaryIndex<BookOrdinalKey, Contents> idx = Contents.pkIdx();
 		NodeList entries = docElem.getElementsByTagName("entries");
 		if(entries.getLength() > 0)
 		{
@@ -111,9 +109,7 @@ public class AddBook
 
 	private void addChapters()
 	{
-		PrimaryIndex<BookOrdinalKey, Para> idx =
-			Db.store().getPrimaryIndex(BookOrdinalKey.class, Para.class);
-
+		PrimaryIndex<BookOrdinalKey, Para> idx = Para.pkIdx();
 		int bookParaOrdinal = 0;
 		for(String fname : bookFileNames)
 		{

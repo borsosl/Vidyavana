@@ -13,6 +13,18 @@ public class Db
 	private EntityStore store;
 
 
+	public static void openForRead()
+	{
+		inst.open(true);
+	}
+	
+	
+	public static void openForWrite()
+	{
+		inst.open(false);
+	}
+
+
 	public void open(boolean readOnly)
 	{
 		if(store != null)
@@ -69,8 +81,8 @@ public class Db
 			}
 		}
 	}
-
-
+	
+	
 	public static Environment env()
 	{
 		return inst.env;

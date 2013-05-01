@@ -21,7 +21,7 @@ public class UpdateBooks
 		Element docElem = doc.getDocumentElement();
 		String xmlVersion = docElem.getElementsByTagName("version").item(0).getTextContent();
 
-		Db.inst.open(true);
+		Db.openForRead();
 		EntityCursor<Settings> c = Settings.pkIdx().entities();
 		set = c.first();
 		c.close();
@@ -32,7 +32,7 @@ public class UpdateBooks
 
 	private void updateDb(Element docElem, String xmlVersion)
 	{
-		Db.inst.open(false);
+		Db.openForWrite();
 		PrimaryIndex<Integer, Book> idx = Book.pkIdx();
 		int maxUserPriority = 0;
 		Map<Integer, Book> bookMap = new HashMap<Integer, Book>();

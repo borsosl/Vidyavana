@@ -107,7 +107,7 @@ public class Main implements UncaughtExceptionHandler
 
 	private void databaseMigration()
 	{
-		Db.inst.open(false);
+		Db.openForWrite();
 		EntityCursor<Settings> c = Settings.pkIdx().entities();
 		Settings set = c.first();
 		c.close();
@@ -121,7 +121,7 @@ public class Main implements UncaughtExceptionHandler
 			set.booksVersion = "0";
 			Settings.pkIdx().put(set);
 		}
-		Db.inst.open(true);
+		Db.openForRead();
 	}
 
 
