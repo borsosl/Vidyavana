@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" 
+            xmlns:dc="http://purl.org/dc/elements/1.1/" 
+            unique-identifier="ISBN" version="2.0">
+  <metadata>
+    <dc:title>Az önmegvalósítás tudománya</dc:title>
+    <dc:creator>A.C. Bhaktivedanta Swami Prabhupāda</dc:creator>
+    <dc:publisher>Bhaktivedanta Book Trust</dc:publisher>
+    <dc:identifier id="ISBN">urn:uuid:91-7149-327-1</dc:identifier>
+    <dc:language>hu-HU</dc:language>
+    <meta name="cover" content="cover-image" /> 
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="css" href="stylesheet.css" media-type="text/css"/>
+    <item id="font1" href="fonts/DejaVuSerif.ttf" media-type="font/truetype"/>
+    <item id="font2" href="fonts/DejaVuSerif-Italic.ttf" media-type="font/truetype"/>
+    <item id="font3" href="fonts/DejaVuSerif-Bold.ttf" media-type="font/truetype"/>
+    <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
+    <item id="cover-image" href="images/cover.jpg" media-type="image/jpeg"/>
+    <item id="huss00pf" href="huss00pf.html" media-type="application/xhtml+xml"/>
+    <item id="huss00id" href="huss00id.html" media-type="application/xhtml+xml"/>
+    <item id="huss01xt" href="huss01xt.html" media-type="application/xhtml+xml"/>
+    <item id="huss02xt" href="huss02xt.html" media-type="application/xhtml+xml"/>
+    <item id="huss03xt" href="huss03xt.html" media-type="application/xhtml+xml"/>
+    <item id="huss04xt" href="huss04xt.html" media-type="application/xhtml+xml"/>
+    <item id="huss05xt" href="huss05xt.html" media-type="application/xhtml+xml"/>
+    <item id="huss06xt" href="huss06xt.html" media-type="application/xhtml+xml"/>
+    <item id="huss07xt" href="huss07xt.html" media-type="application/xhtml+xml"/>
+    <item id="huss08xt" href="huss08xt.html" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="cover"/>
+    <itemref idref="huss00pf"/>
+    <itemref idref="huss00id"/>
+    <itemref idref="huss01xt"/>
+    <itemref idref="huss02xt"/>
+    <itemref idref="huss03xt"/>
+    <itemref idref="huss04xt"/>
+    <itemref idref="huss05xt"/>
+    <itemref idref="huss06xt"/>
+    <itemref idref="huss07xt"/>
+    <itemref idref="huss08xt"/>
+  </spine>
+  <guide>
+    <reference href="title.html" type="cover" title="Cover"/>
+  </guide>
+</package>

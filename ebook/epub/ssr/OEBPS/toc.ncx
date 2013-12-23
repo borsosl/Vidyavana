@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" 
+                 "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+  <head>
+    <meta name="dtb:uid" content="urn:uuid:91-7149-327-1"/>
+    <meta name="dtb:depth" content="2"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>Az önmegvalósítás tudománya</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="p1" playOrder="1">
+      <navLabel><text>Előszó</text></navLabel>
+      <content src="huss00pf.html"/>
+    </navPoint>
+    <navPoint id="p2" playOrder="2">
+      <navLabel><text>Bevezetés</text></navLabel>
+      <content src="huss00id.html"/>
+    </navPoint>
+    <navPoint id="p3" playOrder="3">
+      <navLabel><text>I. – <i>Az önvaló tudományának megismerése</i></text></navLabel>
+      <content src="huss01xt.html"/>
+      <navPoint id="p4" playOrder="4">
+        <navLabel><text>Az önvaló felfedezése</text></navLabel>
+        <content src="huss01xt.html#s1"/>
+      </navPoint>
+      <navPoint id="p5" playOrder="5">
+        <navLabel><text>Mi a Kṛṣṇa-tudat?</text></navLabel>
+        <content src="huss01xt.html#s2"/>
+      </navPoint>
+      <navPoint id="p6" playOrder="6">
+        <navLabel><text>Isten meghatározása</text></navLabel>
+        <content src="huss01xt.html#s3"/>
+      </navPoint>
+      <navPoint id="p7" playOrder="7">
+        <navLabel><text>Lélekvándorlás — s ami mögötte van</text></navLabel>
+        <content src="huss01xt.html#s4"/>
+      </navPoint>
+      <navPoint id="p8" playOrder="8">
+        <navLabel><text>Igazság és szépség</text></navLabel>
+        <content src="huss01xt.html#s5"/>
+      </navPoint>
+      <navPoint id="p9" playOrder="9">
+        <navLabel><text>Az elmúlás művészete</text></navLabel>
+        <content src="huss01xt.html#s6"/>
+      </navPoint>
+      <navPoint id="p10" playOrder="10">
+        <navLabel><text>Kutatás a lélek után</text></navLabel>
+        <content src="huss01xt.html#s7"/>
+      </navPoint>
+      <navPoint id="p11" playOrder="11">
+        <navLabel><text><i>Montreal Gazette:</i></text></navLabel>
+        <content src="huss01xt.html#s8"/>
+      </navPoint>
+      <navPoint id="p12" playOrder="12">
+        <navLabel><text>Egy szívsebész tudni akarja, mi a lélek</text></navLabel>
+        <content src="huss01xt.html#s9"/>
+      </navPoint>
+      <navPoint id="p13" playOrder="13">
+        <navLabel><text>Śrīla Prabhupāda a Védák bizonyítékait ismerteti</text></navLabel>
+        <content src="huss01xt.html#s10"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p14" playOrder="14">
+      <navLabel><text>II. – Lelki tanítómester választása</text></navLabel>
+      <content src="huss02xt.html"/>
+      <navPoint id="p15" playOrder="15">
+        <navLabel><text>Ki a guru?</text></navLabel>
+        <content src="huss02xt.html#s1"/>
+      </navPoint>
+      <navPoint id="p16" playOrder="16">
+        <navLabel><text>Szentek és szélhámosok</text></navLabel>
+        <content src="huss02xt.html#s2"/>
+      </navPoint>
+      <navPoint id="p17" playOrder="17">
+        <navLabel><text>A lelki tanítómester abszolút szükségessége</text></navLabel>
+        <content src="huss02xt.html#s3"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p18" playOrder="18">
+      <navLabel><text>III. – A gyökerek feltárása</text></navLabel>
+      <content src="huss03xt.html"/>
+      <navPoint id="p19" playOrder="19">
+        <navLabel><text>A Bhagavad-gītā halhatatlan nektárja</text></navLabel>
+        <content src="huss03xt.html#s1"/>
+      </navPoint>
+      <navPoint id="p20" playOrder="20">
+        <navLabel><text>A Kṛṣṇa-tudat írásos alapja</text></navLabel>
+        <content src="huss03xt.html#s2"/>
+      </navPoint>
+      <navPoint id="p21" playOrder="21">
+        <navLabel><text>Idézet a Los Angeles Times cikkéből</text></navLabel>
+        <content src="huss03xt.html#s3"/>
+      </navPoint>
+      <navPoint id="p22" playOrder="22">
+        <navLabel><text>Śrīla Prabhupāda levele a Los Angeles Timeshoz</text></navLabel>
+        <content src="huss03xt.html#s4"/>
+      </navPoint>
+      <navPoint id="p23" playOrder="23">
+        <navLabel><text>Levélváltás Śrīla Prabhupāda és Dr. Staal között</text></navLabel>
+        <content src="huss03xt.html#s5"/>
+      </navPoint>
+      <navPoint id="p24" playOrder="24">
+        <navLabel><text>Śrīla Prabhupāda végső jegyzete</text></navLabel>
+        <content src="huss03xt.html#s6"/>
+      </navPoint>
+      <navPoint id="p25" playOrder="25">
+        <navLabel><text>Kṛṣṇa-tudat: hindu kultusz vagy isteni kultúra?</text></navLabel>
+        <content src="huss03xt.html#s7"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p26" playOrder="26">
+      <navLabel><text>IV. – Kṛṣṇa és Krisztus megértése</text></navLabel>
+      <content src="huss04xt.html"/>
+      <navPoint id="p27" playOrder="27">
+        <navLabel><text>Kṛṣṇa, Christos, Krisztus</text></navLabel>
+        <content src="huss04xt.html#s1"/>
+      </navPoint>
+      <navPoint id="p28" playOrder="28">
+        <navLabel><text>Jézus Krisztus guru volt</text></navLabel>
+        <content src="huss04xt.html#s2"/>
+      </navPoint>
+      <navPoint id="p29" playOrder="29">
+        <navLabel><text>„Ne ölj!” vagy „Ne gyilkolj!”?</text></navLabel>
+        <content src="huss04xt.html#s3"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p30" playOrder="30">
+      <navLabel><text>V. – A yoga gyakorlása a modern korszakban</text></navLabel>
+      <content src="huss05xt.html"/>
+      <navPoint id="p31" playOrder="31">
+        <navLabel><text>Felsőbbrendű tudat</text></navLabel>
+        <content src="huss05xt.html#s1"/>
+      </navPoint>
+      <navPoint id="p32" playOrder="32">
+        <navLabel><text>Az Úr Caitanya megjelenése</text></navLabel>
+        <content src="huss05xt.html#s2"/>
+      </navPoint>
+      <navPoint id="p33" playOrder="33">
+        <navLabel><text>A Hare Kṛṣṇa mantra vibrálása</text></navLabel>
+        <content src="huss05xt.html#s3"/>
+      </navPoint>
+      <navPoint id="p34" playOrder="34">
+        <navLabel><text>Kṛṣṇa-tudat — yoga a modern korra</text></navLabel>
+        <content src="huss05xt.html#s4"/>
+      </navPoint>
+      <navPoint id="p35" playOrder="35">
+        <navLabel><text>Meditáció és belső önvaló</text></navLabel>
+        <content src="huss05xt.html#s5"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p36" playOrder="36">
+      <navLabel><text>VI. – Lelki megoldás anyagi problémákra</text></navLabel>
+      <content src="huss06xt.html"/>
+      <navPoint id="p37" playOrder="37">
+        <navLabel><text>Bűnözés: Miért van, s mit kell tennünk?</text></navLabel>
+        <content src="huss06xt.html#s1"/>
+      </navPoint>
+      <navPoint id="p38" playOrder="38">
+        <navLabel><text>Emberi társadalom vagy állati társadalom?</text></navLabel>
+        <content src="huss06xt.html#s2"/>
+      </navPoint>
+      <navPoint id="p39" playOrder="39">
+        <navLabel><text>Átmeneti és örök altruizmus</text></navLabel>
+        <content src="huss06xt.html#s3"/>
+      </navPoint>
+      <navPoint id="p40" playOrder="40">
+        <navLabel><text>Függőségi nyilatkozat: Istentől függünk</text></navLabel>
+        <content src="huss06xt.html#s4"/>
+      </navPoint>
+      <navPoint id="p41" playOrder="41">
+        <navLabel><text>A béke képlete</text></navLabel>
+        <content src="huss06xt.html#s5"/>
+      </navPoint>
+      <navPoint id="p42" playOrder="42">
+        <navLabel><text>Lelki kommunizmus</text></navLabel>
+        <content src="huss06xt.html#s6"/>
+      </navPoint>
+      <navPoint id="p43" playOrder="43">
+        <navLabel><text>A modern tudomány parányi világa</text></navLabel>
+        <content src="huss06xt.html#s7"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p44" playOrder="44">
+      <navLabel><text>VII. – A lelki határ felderítése</text></navLabel>
+      <content src="huss07xt.html"/>
+      <navPoint id="p45" playOrder="45">
+        <navLabel><text>Śrīla Prabhupāda megérkezik Amerikába</text></navLabel>
+        <content src="huss07xt.html#s1"/>
+      </navPoint>
+      <navPoint id="p46" playOrder="46">
+        <navLabel><text>Emeld nemzetedet a lelki szintre!</text></navLabel>
+        <content src="huss07xt.html#s2"/>
+      </navPoint>
+      <navPoint id="p47" playOrder="47">
+        <navLabel><text>A szentek könyörületessége</text></navLabel>
+        <content src="huss07xt.html#s3"/>
+      </navPoint>
+      <navPoint id="p48" playOrder="48">
+        <navLabel><text>Védekezés az illúzió ellen</text></navLabel>
+        <content src="huss07xt.html#s4"/>
+      </navPoint>
+      <navPoint id="p49" playOrder="49">
+        <navLabel><text>Tudatosság arról, ami a legjobb és leggyönyörűbb</text></navLabel>
+        <content src="huss07xt.html#s5"/>
+      </navPoint>
+    </navPoint>
+    <navPoint id="p50" playOrder="50">
+      <navLabel><text>VIII. – A tökéletesség elérése</text></navLabel>
+      <content src="huss08xt.html"/>
+      <navPoint id="p51" playOrder="51">
+        <navLabel><text>Az élet céljának megismerése</text></navLabel>
+        <content src="huss08xt.html#s1"/>
+      </navPoint>
+      <navPoint id="p52" playOrder="52">
+        <navLabel><text>A legmagasabb rendű szeretet</text></navLabel>
+        <content src="huss08xt.html#s2"/>
+      </navPoint>
+      <navPoint id="p53" playOrder="53">
+        <navLabel><text>Az önmegvalósítás tökéletessége</text></navLabel>
+        <content src="huss08xt.html#s3"/>
+      </navPoint>
+    </navPoint>
+  </navMap>
+</ncx>

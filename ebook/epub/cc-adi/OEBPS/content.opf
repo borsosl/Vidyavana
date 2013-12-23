@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" 
+            xmlns:dc="http://purl.org/dc/elements/1.1/" 
+            unique-identifier="ISBN" version="2.0">
+  <metadata>
+    <dc:title>Śrī Caitanya-caritāmṛta, Ādi-līlā</dc:title>
+    <dc:creator>A.C. Bhaktivedanta Swami Prabhupāda</dc:creator>
+    <dc:publisher>Bhaktivedanta Book Trust</dc:publisher>
+    <dc:identifier id="ISBN">urn:uuid:91-7149-292-5-1</dc:identifier>
+    <dc:language>hu-HU</dc:language>
+    <meta name="cover" content="cover-image" /> 
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="css" href="stylesheet.css" media-type="text/css"/>
+    <item id="font1" href="fonts/DejaVuSerif.ttf" media-type="font/truetype"/>
+    <item id="font2" href="fonts/DejaVuSerif-Italic.ttf" media-type="font/truetype"/>
+    <item id="font3" href="fonts/DejaVuSerif-Bold.ttf" media-type="font/truetype"/>
+    <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
+    <item id="cover-image" href="images/cover.jpg" media-type="image/jpeg"/>
+    <item id="huc101pf" href="huc101pf.html" media-type="application/xhtml+xml"/>
+    <item id="huc101id" href="huc101id.html" media-type="application/xhtml+xml"/>
+    <item id="huc101xt" href="huc101xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc102xt" href="huc102xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc103xt" href="huc103xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc104xt" href="huc104xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc105xt" href="huc105xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc106xt" href="huc106xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc107xt" href="huc107xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc108xt" href="huc108xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc109xt" href="huc109xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc110xt" href="huc110xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc111xt" href="huc111xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc112xt" href="huc112xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc113xt" href="huc113xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc114xt" href="huc114xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc115xt" href="huc115xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc116xt" href="huc116xt.html" media-type="application/xhtml+xml"/>
+    <item id="huc117xt" href="huc117xt.html" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="cover"/>
+    <itemref idref="huc101pf"/>
+    <itemref idref="huc101id"/>
+    <itemref idref="huc101xt"/>
+    <itemref idref="huc102xt"/>
+    <itemref idref="huc103xt"/>
+    <itemref idref="huc104xt"/>
+    <itemref idref="huc105xt"/>
+    <itemref idref="huc106xt"/>
+    <itemref idref="huc107xt"/>
+    <itemref idref="huc108xt"/>
+    <itemref idref="huc109xt"/>
+    <itemref idref="huc110xt"/>
+    <itemref idref="huc111xt"/>
+    <itemref idref="huc112xt"/>
+    <itemref idref="huc113xt"/>
+    <itemref idref="huc114xt"/>
+    <itemref idref="huc115xt"/>
+    <itemref idref="huc116xt"/>
+    <itemref idref="huc117xt"/>
+  </spine>
+  <guide>
+    <reference href="title.html" type="cover" title="Cover"/>
+  </guide>
+</package>

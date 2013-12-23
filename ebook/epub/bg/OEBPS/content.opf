@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" 
+            xmlns:dc="http://purl.org/dc/elements/1.1/" 
+            unique-identifier="ISBN" version="2.0">
+  <metadata>
+    <dc:title>A Bhagavad-gītā úgy, ahogy van</dc:title>
+    <dc:creator>A.C. Bhaktivedanta Swami Prabhupāda</dc:creator>
+    <dc:publisher>Bhaktivedanta Book Trust</dc:publisher>
+    <dc:identifier id="ISBN">urn:uuid:91-7149-194-5</dc:identifier>
+    <dc:language>hu-HU</dc:language>
+    <meta name="cover" content="cover-image" /> 
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="css" href="stylesheet.css" media-type="text/css"/>
+    <item id="font1" href="fonts/DejaVuSerif.ttf" media-type="font/truetype"/>
+    <item id="font2" href="fonts/DejaVuSerif-Italic.ttf" media-type="font/truetype"/>
+    <item id="font3" href="fonts/DejaVuSerif-Bold.ttf" media-type="font/truetype"/>
+    <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
+    <item id="cover-image" href="images/cover.jpg" media-type="image/jpeg"/>
+    <item id="hubg00fl" href="hubg00fl.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00pf" href="hubg00pf.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00id" href="hubg00id.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00ds" href="hubg00ds.html" media-type="application/xhtml+xml"/>
+    <item id="hubg01xt" href="hubg01xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg02xt" href="hubg02xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg03xt" href="hubg03xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg04xt" href="hubg04xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg05xt" href="hubg05xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg06xt" href="hubg06xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg07xt" href="hubg07xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg08xt" href="hubg08xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg09xt" href="hubg09xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg10xt" href="hubg10xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg11xt" href="hubg11xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg12xt" href="hubg12xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg13xt" href="hubg13xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg14xt" href="hubg14xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg15xt" href="hubg15xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg16xt" href="hubg16xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg17xt" href="hubg17xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg18xt" href="hubg18xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi" href="hubg00xi.html" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="cover"/>
+    <itemref idref="hubg00fl"/>
+    <itemref idref="hubg00pf"/>
+    <itemref idref="hubg00id"/>
+    <itemref idref="hubg00ds"/>
+    <itemref idref="hubg01xt"/>
+    <itemref idref="hubg02xt"/>
+    <itemref idref="hubg03xt"/>
+    <itemref idref="hubg04xt"/>
+    <itemref idref="hubg05xt"/>
+    <itemref idref="hubg06xt"/>
+    <itemref idref="hubg07xt"/>
+    <itemref idref="hubg08xt"/>
+    <itemref idref="hubg09xt"/>
+    <itemref idref="hubg10xt"/>
+    <itemref idref="hubg11xt"/>
+    <itemref idref="hubg12xt"/>
+    <itemref idref="hubg13xt"/>
+    <itemref idref="hubg14xt"/>
+    <itemref idref="hubg15xt"/>
+    <itemref idref="hubg16xt"/>
+    <itemref idref="hubg17xt"/>
+    <itemref idref="hubg18xt"/>
+    <itemref idref="hubg00xi"/>
+  </spine>
+  <guide>
+    <reference href="title.html" type="cover" title="Cover"/>
+  </guide>
+</package>
