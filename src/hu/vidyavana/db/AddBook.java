@@ -31,7 +31,7 @@ public class AddBook
 	{
 		this.bookId = bookId;
 		this.bookPath = bookPath;
-		bookDir = new File(bookPath);
+		bookDir = new File(this.bookPath);
 		this.iw = writer;
 		txtFieldType = new FieldType();
 		txtFieldType.setIndexed(true);

@@ -171,27 +171,29 @@ public class EdFileProcessor implements FileProcessor
 
 	private void readEdFile(File ed) throws Exception
 	{
-		InputStream is = new BufferedInputStream(new FileInputStream(ed));
-		// use short instead of byte to work around signed byte handling
-		short[] line = new short[1000];
-		int ptr = 0;
-		while(true)
+		try(InputStream is = new BufferedInputStream(new FileInputStream(ed)))
 		{
-			int c = is.read();
-			if(c=='\n' || c<0)
+			// use short instead of byte to work around signed byte handling
+			short[] line = new short[1000];
+			int ptr = 0;
+			while(true)
 			{
-				while(ptr>0 && line[ptr-1]==' ') --ptr;
-				if(ptr > 0)
-					processLine(line, ptr);
-				if(c < 0) break;
-				ptr = 0;
-				++lineNumber;
-				continue;
+				int c = is.read();
+				if(c=='\n' || c<0)
+				{
+					while(ptr>0 && line[ptr-1]==' ') --ptr;
+					if(ptr > 0)
+						processLine(line, ptr);
+					if(c < 0) break;
+					ptr = 0;
+					++lineNumber;
+					continue;
+				}
+				if(c=='\r' || ptr==0 && (c==' ' || c=='\t')) continue;
+				line[ptr++] = (short) c;
 			}
-			if(c=='\r' || ptr==0 && (c==' ' || c=='\t')) continue;
-			line[ptr++] = (short) c;
+			purgeFormatStack();
 		}
-		purgeFormatStack();
 	}
 	
 	
