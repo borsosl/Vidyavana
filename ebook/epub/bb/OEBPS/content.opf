@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" 
+            xmlns:dc="http://purl.org/dc/elements/1.1/" 
+            unique-identifier="ISBN" version="2.0">
+  <metadata>
+    <dc:title>Bṛhad-bhāgavatāmṛta</dc:title>
+    <dc:creator>Śrīla Sanātana Gosvāmī; Gopīparāṇadhana Dāsa</dc:creator>
+    <dc:publisher>Bhaktivedanta Book Trust</dc:publisher>
+    <dc:identifier id="ISBN">urn:uuid:08-9213-345-7</dc:identifier>
+    <dc:language>hu-HU</dc:language>
+    <meta name="cover" content="cover-image" /> 
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="css" href="stylesheet.css" media-type="text/css"/>
+    <item id="font1" href="fonts/DejaVuSerif.ttf" media-type="font/truetype"/>
+    <item id="font2" href="fonts/DejaVuSerif-Italic.ttf" media-type="font/truetype"/>
+    <item id="font3" href="fonts/DejaVuSerif-Bold.ttf" media-type="font/truetype"/>
+    <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
+    <item id="cover-image" href="images/cover.jpg" media-type="image/jpeg"/>
+    <item id="hubb00pf" href="hubb00pf.html" media-type="application/xhtml+xml"/>
+    <item id="hubb00id" href="hubb00id.html" media-type="application/xhtml+xml"/>
+    <item id="hubb01xt" href="hubb01xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubb02xt" href="hubb02xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubb03xt" href="hubb03xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubb04xt" href="hubb04xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubb05xt" href="hubb05xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubb06xt" href="hubb06xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubb07xt" href="hubb07xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubb99sa" href="hubb99sa.html" media-type="application/xhtml+xml"/>
+    <item id="hubb99ti" href="hubb99ti.html" media-type="application/xhtml+xml"/>
+    <item id="hubb99xi" href="hubb99xi.html" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="cover"/>
+    <itemref idref="hubb00pf"/>
+    <itemref idref="hubb00id"/>
+    <itemref idref="hubb01xt"/>
+    <itemref idref="hubb02xt"/>
+    <itemref idref="hubb03xt"/>
+    <itemref idref="hubb04xt"/>
+    <itemref idref="hubb05xt"/>
+    <itemref idref="hubb06xt"/>
+    <itemref idref="hubb07xt"/>
+    <itemref idref="hubb99sa"/>
+    <itemref idref="hubb99ti"/>
+    <itemref idref="hubb99xi"/>
+  </spine>
+  <guide>
+    <reference href="title.html" type="cover" title="Cover"/>
+  </guide>
+</package>

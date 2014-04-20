@@ -2,6 +2,7 @@ package hu.vidyavana.convert.ed;
 
 import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
 import hu.vidyavana.convert.api.*;
+import hu.vidyavana.convert.api.WriterInfo.SpecialFile;
 import java.io.*;
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
@@ -70,6 +71,7 @@ public class EdFileProcessor implements FileProcessor
 	public void process(File srcFile, String fileName) throws Exception
 	{
 		srcFileName = fileName;
+		writerInfo.specialFile = WriterInfo.SpecialFile.fnameMap.get(fileName);
 		File destFile = new File(destDir.getAbsolutePath() + "/" + fileName + ".xml");
 		process(srcFile, destFile);
 		
@@ -174,7 +176,7 @@ public class EdFileProcessor implements FileProcessor
 		try(InputStream is = new BufferedInputStream(new FileInputStream(ed)))
 		{
 			// use short instead of byte to work around signed byte handling
-			short[] line = new short[1000];
+			short[] line = new short[100000];
 			int ptr = 0;
 			while(true)
 			{
@@ -242,6 +244,7 @@ public class EdFileProcessor implements FileProcessor
 					book.info.add(para);
 					break;
 				case chaptno:
+				case chapt_no:
 					tagName = "chapter_number";
 					chapter.info.add(para);
 					break;
@@ -301,6 +304,9 @@ public class EdFileProcessor implements FileProcessor
 			// mark footnote paragraphs
 			else if(currentTag == EdTags.footnote || currentTag == EdTags.small_foot)
 				para.text.append("Lábjegyzet: ");
+			
+			else if(writerInfo.specialFile == SpecialFile.BG_PF && currentTag == EdTags.purport && line[nextPos]!='<')
+				para.cls = ParagraphClass.Balra;
 
 			prev = Tag;
 		}
@@ -473,7 +479,8 @@ public class EdFileProcessor implements FileProcessor
 					{
 						if(prev == OptionalSpace)
 							prev = Char;
-						else if(currentAlias != EdTags.chapter_title)
+						else if(currentAlias != EdTags.chapter_title &&
+							(writerInfo.specialFile != SpecialFile.BG_DS || currentTag != EdTags.dc_body_r))
 						{
 							para.text.append("<br/>");
 							prev = Linebreak;
@@ -487,7 +494,7 @@ public class EdFileProcessor implements FileProcessor
 					
 					else if(c == '+')
 					{
-						para.text.append("&tab_num;");
+						para.text.append("<!--num-tab-->");
 						prev = Space;
 					}
 					
@@ -514,7 +521,7 @@ public class EdFileProcessor implements FileProcessor
 					
 					else if(c == 'T')
 					{
-						para.text.append("&tab;");
+						para.text.append("<!--tab-->");
 						prev = Space;
 					}
 					
@@ -597,6 +604,11 @@ public class EdFileProcessor implements FileProcessor
 						c = '”';
 						prev = Char;
 					}
+					else if(c == '\'')
+					{
+						c = '’';
+						prev = Char;
+					}
 					else
 						prev = Char;
 
@@ -651,8 +663,8 @@ public class EdFileProcessor implements FileProcessor
 				}
 			}
 			
-			if(writerInfo.forEbook && prev == Linebreak)
-				emspace = 0;
+//			if(writerInfo.forEbook && prev == Linebreak)
+//				emspace = 0;
 
 			if(emspace > 3)
 			{
@@ -663,7 +675,7 @@ public class EdFileProcessor implements FileProcessor
 				else if(currentTag != EdTags.bengali && currentTag != EdTags.center_line)
 				{
 					System.out.println("Tab line: " + sequenceToString(line, 0, 200, (short) '\r'));
-					para.text.append("&tab;");
+					para.text.append("<!--tab-->");
 					emspace = 0;
 				}
 			}

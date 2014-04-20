@@ -20,6 +20,7 @@ public enum ParagraphClass
 	TorzsUvaca(14),
 	TorzsVers(15),
 	Hivatkozas(16),
+	Balra(24),
 	Kozepen(17),
 	Jobbra(18),
 	MegjegyzesKezdet(19),

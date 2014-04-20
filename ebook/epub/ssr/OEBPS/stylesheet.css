@@ -195,31 +195,36 @@ body
 
 .Index
 {
-	text-indent: -2.4em;
+	/* in0..in4 instead */
 }
 
 .in0
 {
+	text-indent: -2.4em;
 	margin-left: 2.4em;
 }
 
 .in1
 {
+	text-indent: -2.4em;
 	margin-left: 3.6em;
 }
 
 .in2
 {
+	text-indent: -2.4em;
 	margin-left: 4.8em;
 }
 
 .in3
 {
+	text-indent: -2.4em;
 	margin-left: 6em;
 }
 
 .in4
 {
+	text-indent: -2.4em;
 	margin-left: 7.2em;
 }
 
@@ -239,4 +244,3 @@ body
 {
 	display: inline-block;
 }
-

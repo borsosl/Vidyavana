@@ -11,8 +11,9 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	public static Pattern TEXT_NUMBER = Pattern.compile("<text_number>(.*)</text_number>");
 	public static Pattern CHAPTER = Pattern.compile("<p class=\"Fejezetszam\">(.*)</p>");
 	public static Pattern CHAPTER_TITLE = Pattern.compile("<p class=\"Fejezetcim\">(.*)</p>");
-	public static Pattern SECTION = Pattern.compile("<p class=\"Alcim\">(.*)</p>");
+	public static Pattern SECTION = Pattern.compile("<p class=\"(Szakaszcim|Alcim)\">(.*)</p>");
 	public static Pattern TEXT = Pattern.compile("<p class=\"Versszam\">(.*)</p>");
+	public static Pattern VERSE_BLOCK = Pattern.compile("class=\"(Uvaca|Vers|TorzsUvaca|TorzsVers|Hivatkozas)\"");
 	public static Pattern BR = Pattern.compile("\\s*<br\\s*/>\\s*");
 	public static Pattern B = Pattern.compile("</?b>");
 	public static Pattern INDENT = Pattern.compile("^\\s*");
@@ -108,7 +109,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		String[] htmlTags = {"p", "b", "i", "br"};
 		boolean tagLine;
 		boolean writeCurrentTag = false;
-		boolean verseInPurp=false, verseRef=false;
+		boolean verseBlock=false;
 		ArrayList<String> verseBuffer = new ArrayList<>();
 		String textHash = "";
 		int paraSinceTextHash = 10;
@@ -131,8 +132,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 						{
 							++paraSinceTextHash;
 							addNavigation(line, fileName, textHash, paraSinceTextHash, out);
-							verseInPurp = line.indexOf("class=\"TorzsVers") > 0;
-							verseRef = line.indexOf("class=\"Hivatkozas") > 0;
+							verseBlock = VERSE_BLOCK.matcher(line).find();
 						}
 						writeCurrentTag = true;
 						break;
@@ -144,16 +144,14 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 				String indent = null;
 				if(tagLine)
 				{
-					if(verseRef && verseBuffer.size()>0)
+					if(!verseBlock && verseBuffer.size()>0)
 					{
 						m = INDENT.matcher(verseBuffer.get(0));
 						m.find();
 						indent = m.group(); 
 						out.write(indent);
-						out.write("<div class=\"RefWrap1\"><div class=\"RefWrap2\">\r\n");
-					}
-					if(verseBuffer.size() > 0)
-					{
+						out.write("<div class=\"VsWrap1\"><div class=\"VsWrap2\">\r\n");
+
 						for(String v : verseBuffer)
 						{
 							if(indent != null)
@@ -162,23 +160,16 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 							out.write("\r\n");
 						}
 						verseBuffer.clear();
+						out.write(indent);
+						out.write("</div></div>\r\n");
 					}
 				}
-				if(verseInPurp)
-				{
+				if(verseBlock)
 					verseBuffer.add(line);
-				}
 				else
 				{
-					if(indent != null)
-						out.write("  ");
 					out.write(line);
 					out.write("\r\n");
-				}
-				if(indent != null)
-				{
-					out.write(indent);
-					out.write("</div></div>\r\n");
 				}
 			}
 			if("text_number".equals(tagName))
@@ -229,7 +220,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 			out.write("    <div class=\"Ref\"><a id=\"");
 			out.write(sectionStr);
 			out.write("\"></a></div>\r\n");
-			String sectionTitle = inline(m.group(1));
+			String sectionTitle = inline(m.group(2));
 			addToNavMap(Level.Section, sectionTitle, fileName+".html#"+sectionStr);
 			return;
 		}

@@ -55,12 +55,13 @@ public class Paragraph
 		if(cls != null)
 		{
 			out.write(" class=\"");
-			out.write(cls.toString());
 			if(cls == ParagraphClass.Index)
 			{
-				out.write(" in");
+				out.write("in");
 				out.write('0'+indexLevel);
 			}
+			else
+				out.write(cls.toString());
 			out.write('"');
 			len += cls.toString().length()+9;
 		}

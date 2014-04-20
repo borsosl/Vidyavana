@@ -1,5 +1,7 @@
 package hu.vidyavana.convert.ed;
 
+import java.util.*;
+
 
 public class EdCharacter
 {
@@ -74,8 +76,23 @@ public class EdCharacter
 		
 		// „“”‚‘’–—
 	};
+	
+	
+	public static enum UtfMarkers
+	{
+		Nbsp(-1),
+		Ellipsis(-2);
+		
+		public int code;
+
+		private UtfMarkers(int code)
+		{
+			this.code = code;
+		}
+	}
 
 	static int[] table = new int[128];
+	static Map<Integer, Integer> revTable;
 	
 	static
 	{
@@ -87,5 +104,33 @@ public class EdCharacter
 	public static int convert(int c)
 	{
 		return table[c-128];
+	}
+
+	
+	public static void initReverseConversion()
+	{
+		revTable = new HashMap<Integer, Integer>();
+		for(int i=0; i<pair.length; i+=2)
+			revTable.put(pair[i+1], pair[i]);
+	}
+
+	
+	public static int convertToEd(int c)
+	{
+		Integer k = revTable.get(c);
+		if(k == null)
+		{
+			if(c == '”')
+				k = (int) '"';
+			else if(c == '’')
+				k = (int) '\'';
+			else if(c == 160)
+				k = UtfMarkers.Nbsp.code;
+			else if(c == 8230)
+				k = UtfMarkers.Ellipsis.code;
+			else
+				throw new IllegalStateException("Unsupported character code: "+c);
+		}
+		return k;
 	}
 }
