@@ -111,7 +111,11 @@ public class EdCharacter
 	{
 		revTable = new HashMap<Integer, Integer>();
 		for(int i=0; i<pair.length; i+=2)
+		{
+			if(pair[i] == 0xc3)
+				break;
 			revTable.put(pair[i+1], pair[i]);
+		}
 	}
 
 	

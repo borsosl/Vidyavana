@@ -91,7 +91,7 @@ public class Utf8FileProcessor implements FileProcessor
 				}
 				if(!newline)
 					os.write(e);
-				if(newline || lineBreak)
+				if(newline || lineBreak || e==10)
 				{
 					os.write(13);
 					os.write(10);
