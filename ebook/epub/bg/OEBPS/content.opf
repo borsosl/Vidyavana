@@ -8,7 +8,7 @@
     <dc:publisher>Bhaktivedanta Book Trust</dc:publisher>
     <dc:identifier id="ISBN">urn:uuid:91-7149-194-5</dc:identifier>
     <dc:language>hu-HU</dc:language>
-    <meta name="cover" content="cover-image" /> 
+    <meta name="cover" content="cover-thumb" /> 
   </metadata>
   <manifest>
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
@@ -18,57 +18,137 @@
     <item id="font3" href="fonts/DejaVuSerif-Bold.ttf" media-type="font/truetype"/>
     <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
     <item id="cover-image" href="images/cover.jpg" media-type="image/jpeg"/>
+    <item id="cover-thumb" href="images/cover-thumb.jpg" media-type="image/jpeg"/>
+    <item id="contents" href="contents.html" media-type="application/xhtml+xml"/>
     <item id="hubg00fl" href="hubg00fl.html" media-type="application/xhtml+xml"/>
     <item id="hubg00pf" href="hubg00pf.html" media-type="application/xhtml+xml"/>
     <item id="hubg00id" href="hubg00id.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00id_1" href="hubg00id_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg00ds" href="hubg00ds.html" media-type="application/xhtml+xml"/>
     <item id="hubg01xt" href="hubg01xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg01xt_1" href="hubg01xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg02xt" href="hubg02xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg02xt_1" href="hubg02xt_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg02xt_2" href="hubg02xt_2.html" media-type="application/xhtml+xml"/>
+    <item id="hubg02xt_3" href="hubg02xt_3.html" media-type="application/xhtml+xml"/>
     <item id="hubg03xt" href="hubg03xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg03xt_1" href="hubg03xt_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg03xt_2" href="hubg03xt_2.html" media-type="application/xhtml+xml"/>
     <item id="hubg04xt" href="hubg04xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg04xt_1" href="hubg04xt_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg04xt_2" href="hubg04xt_2.html" media-type="application/xhtml+xml"/>
     <item id="hubg05xt" href="hubg05xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg05xt_1" href="hubg05xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg06xt" href="hubg06xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg06xt_1" href="hubg06xt_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg06xt_2" href="hubg06xt_2.html" media-type="application/xhtml+xml"/>
     <item id="hubg07xt" href="hubg07xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg07xt_1" href="hubg07xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg08xt" href="hubg08xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg08xt_1" href="hubg08xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg09xt" href="hubg09xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg09xt_1" href="hubg09xt_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg09xt_2" href="hubg09xt_2.html" media-type="application/xhtml+xml"/>
     <item id="hubg10xt" href="hubg10xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg10xt_1" href="hubg10xt_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg10xt_2" href="hubg10xt_2.html" media-type="application/xhtml+xml"/>
     <item id="hubg11xt" href="hubg11xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg11xt_1" href="hubg11xt_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg11xt_2" href="hubg11xt_2.html" media-type="application/xhtml+xml"/>
     <item id="hubg12xt" href="hubg12xt.html" media-type="application/xhtml+xml"/>
     <item id="hubg13xt" href="hubg13xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg13xt_1" href="hubg13xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg14xt" href="hubg14xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg14xt_1" href="hubg14xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg15xt" href="hubg15xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg15xt_1" href="hubg15xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg16xt" href="hubg16xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg16xt_1" href="hubg16xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg17xt" href="hubg17xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg17xt_1" href="hubg17xt_1.html" media-type="application/xhtml+xml"/>
     <item id="hubg18xt" href="hubg18xt.html" media-type="application/xhtml+xml"/>
+    <item id="hubg18xt_1" href="hubg18xt_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg18xt_2" href="hubg18xt_2.html" media-type="application/xhtml+xml"/>
     <item id="hubg00xi" href="hubg00xi.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_1" href="hubg00xi_1.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_2" href="hubg00xi_2.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_3" href="hubg00xi_3.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_4" href="hubg00xi_4.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_5" href="hubg00xi_5.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_6" href="hubg00xi_6.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_7" href="hubg00xi_7.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_8" href="hubg00xi_8.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_9" href="hubg00xi_9.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_10" href="hubg00xi_10.html" media-type="application/xhtml+xml"/>
+    <item id="hubg00xi_11" href="hubg00xi_11.html" media-type="application/xhtml+xml"/>
   </manifest>
   <spine toc="ncx">
     <itemref idref="cover"/>
+    <itemref idref="contents"/>
     <itemref idref="hubg00fl"/>
     <itemref idref="hubg00pf"/>
     <itemref idref="hubg00id"/>
+    <itemref idref="hubg00id_1"/>
     <itemref idref="hubg00ds"/>
     <itemref idref="hubg01xt"/>
+    <itemref idref="hubg01xt_1"/>
     <itemref idref="hubg02xt"/>
+    <itemref idref="hubg02xt_1"/>
+    <itemref idref="hubg02xt_2"/>
+    <itemref idref="hubg02xt_3"/>
     <itemref idref="hubg03xt"/>
+    <itemref idref="hubg03xt_1"/>
+    <itemref idref="hubg03xt_2"/>
     <itemref idref="hubg04xt"/>
+    <itemref idref="hubg04xt_1"/>
+    <itemref idref="hubg04xt_2"/>
     <itemref idref="hubg05xt"/>
+    <itemref idref="hubg05xt_1"/>
     <itemref idref="hubg06xt"/>
+    <itemref idref="hubg06xt_1"/>
+    <itemref idref="hubg06xt_2"/>
     <itemref idref="hubg07xt"/>
+    <itemref idref="hubg07xt_1"/>
     <itemref idref="hubg08xt"/>
+    <itemref idref="hubg08xt_1"/>
     <itemref idref="hubg09xt"/>
+    <itemref idref="hubg09xt_1"/>
+    <itemref idref="hubg09xt_2"/>
     <itemref idref="hubg10xt"/>
+    <itemref idref="hubg10xt_1"/>
+    <itemref idref="hubg10xt_2"/>
     <itemref idref="hubg11xt"/>
+    <itemref idref="hubg11xt_1"/>
+    <itemref idref="hubg11xt_2"/>
     <itemref idref="hubg12xt"/>
     <itemref idref="hubg13xt"/>
+    <itemref idref="hubg13xt_1"/>
     <itemref idref="hubg14xt"/>
+    <itemref idref="hubg14xt_1"/>
     <itemref idref="hubg15xt"/>
+    <itemref idref="hubg15xt_1"/>
     <itemref idref="hubg16xt"/>
+    <itemref idref="hubg16xt_1"/>
     <itemref idref="hubg17xt"/>
+    <itemref idref="hubg17xt_1"/>
     <itemref idref="hubg18xt"/>
+    <itemref idref="hubg18xt_1"/>
+    <itemref idref="hubg18xt_2"/>
     <itemref idref="hubg00xi"/>
+    <itemref idref="hubg00xi_1"/>
+    <itemref idref="hubg00xi_2"/>
+    <itemref idref="hubg00xi_3"/>
+    <itemref idref="hubg00xi_4"/>
+    <itemref idref="hubg00xi_5"/>
+    <itemref idref="hubg00xi_6"/>
+    <itemref idref="hubg00xi_7"/>
+    <itemref idref="hubg00xi_8"/>
+    <itemref idref="hubg00xi_9"/>
+    <itemref idref="hubg00xi_10"/>
+    <itemref idref="hubg00xi_11"/>
   </spine>
   <guide>
-    <reference href="title.html" type="cover" title="Cover"/>
+    <reference type="cover" title="Borító" href="title.html"/>
+    <reference type="toc" title="Tartalomjegyzék" href="contents.html"></reference>
   </guide>
 </package>
