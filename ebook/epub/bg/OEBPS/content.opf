@@ -8,7 +8,7 @@
     <dc:publisher>Bhaktivedanta Book Trust</dc:publisher>
     <dc:identifier id="ISBN">urn:uuid:91-7149-194-5</dc:identifier>
     <dc:language>hu-HU</dc:language>
-    <meta name="cover" content="cover-thumb" /> 
+    <meta name="cover" content="cover-image" /> 
   </metadata>
   <manifest>
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
@@ -18,7 +18,6 @@
     <item id="font3" href="fonts/DejaVuSerif-Bold.ttf" media-type="font/truetype"/>
     <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
     <item id="cover-image" href="images/cover.jpg" media-type="image/jpeg"/>
-    <item id="cover-thumb" href="images/cover-thumb.jpg" media-type="image/jpeg"/>
     <item id="contents" href="contents.html" media-type="application/xhtml+xml"/>
     <item id="hubg00fl" href="hubg00fl.html" media-type="application/xhtml+xml"/>
     <item id="hubg00pf" href="hubg00pf.html" media-type="application/xhtml+xml"/>

@@ -186,9 +186,9 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 							++paraSinceTextHash;
 							out = addNavigation(line, textHash, paraSinceTextHash, out);
 							verseBlock = VERSE_BLOCK.matcher(line).find();
+							out = nextFile(out, line);
 						}
 						writeCurrentTag = true;
-						out = nextFile(out, line);
 						break;
 					}
 			}
@@ -356,7 +356,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 			.append(title)
 			.append("</a>");
 		if(gap)
-			longContent.append("  \u2002");
+			longContent.append("\u2002\u2002");
 		longContent.append("\r\n");
 
 		prevNavLevel = newLevel;
