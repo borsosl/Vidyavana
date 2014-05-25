@@ -9,7 +9,7 @@ public enum EdTags
 	// special markers for the program
 	info(""),
 	unhandled(""),
-	continuing(""),
+	paraContAfterInitialLetter(""),
 
 	// normal ed tags
 	ac_bhakti("ac bhakti"),
@@ -210,7 +210,7 @@ public enum EdTags
 		{purport,
 			biglet, biglet1, date_no_space, date_space, datesmal, dc_left_top, end, fl_body_1, 
 			gl_first, gl_purp, introduction, keep_p_n, keep_p_p, notes, p_tab, prose_in_purp, purp_1orp,
-			purp_no_break, purp_small, wa_side, xi_head_text, xs_head_text},
+			purp_no_break, purp_small, wa_side, xi_head_text, xs_head_text, para_no_break},
 		{purp_para,
 			dc_body_l, dc_body_r, dc_right_top, fl_body, glossary, italic_para, keep_pp_n, keep_pp_p,
 			pp_tab, para_2_orp, wa_body},
@@ -237,8 +237,8 @@ public enum EdTags
 		{index_letter},
 		{index_level_0,
 			index_level_1, index_level_2, index_level_3, xi0, xi0_first, xi0_last, xi1, xi1_last, xi2, xi2_last},
-		{continuing,
-			mpurp, npurp, nnpurp, para_no_break, spurp, sspurp},
+		{paraContAfterInitialLetter,
+			mpurp, npurp, nnpurp, spurp, sspurp},
 		{info,
 			book_title, lila, chaptno, chapt_no, chapter_head, textno},
 		{unhandled,

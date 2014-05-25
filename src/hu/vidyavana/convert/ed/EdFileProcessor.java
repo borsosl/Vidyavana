@@ -77,7 +77,12 @@ public class EdFileProcessor implements FileProcessor
 		
 		// reminders of manual work
 		if(fileName.toLowerCase().indexOf("hund28xt") != -1)
+		{
+			manual.add("NOD: initials separate word in pf,1xt,3,7,8,10,11,17,20,21,26,30,32,36,38,45,46,48,51!");
 			manual.add("hund28xt.h50: footnote to be merged!");
+		}
+		else if(fileName.toLowerCase().indexOf("huc219xt") != -1)
+			manual.add("huc219xt.h60: para broken in two at footnote!");
 	}
 
 
@@ -231,84 +236,91 @@ public class EdFileProcessor implements FileProcessor
 				skippingUnhandledTag = true;
 				return;
 			}
-
-			// info or content tags
-			para = new Paragraph();
-			String tagName = currentTag.name();
-			switch(currentTag)
+			
+			if(currentAlias == EdTags.paraContAfterInitialLetter)
 			{
-				case book_title:
-					tagName = "title";
-					// no break!
-				case lila:
-					book.info.add(para);
-					break;
-				case chaptno:
-				case chapt_no:
-					tagName = "chapter_number";
-					chapter.info.add(para);
-					break;
-				case chapter_head:
-					tagName = "head";
-					chapter.info.add(para);
-					break;
-				case textno:
-					tagName = "text_number";
-					// text precedes textno with a max. of 1 tag in between
-					if(chapter.para.size()-lastTextTag < 2)
-					{
-						// insert text_number before text
-						chapter.para.add(lastTextTag-1, para);
-						break;
-					}
-					// no break: add text_number as last
-				default:
-					chapter.para.add(para);
+				prev = Hyphen;
 			}
-
-			// info is represented as xml tag
-			if(currentAlias == EdTags.info)
-			{
-				para.isInfo = true;
-				para.tagName = tagName;
-			}
-
-			// book text is p tag with a class attribute
 			else
-				para.cls = currentAlias.cls;
-			
-			// after footnote or any other quote para, following purp para is changed to purport for line spacing
-			if(currentAlias == EdTags.purp_para)
 			{
-				Paragraph prevPara = chapter.para.get(chapter.para.size()-2);
-				if(prevPara.cls != null && prevPara.cls.name().startsWith("Megjegyzes"))
+				// info or content tags
+				para = new Paragraph();
+				String tagName = currentTag.name();
+				switch(currentTag)
 				{
-					currentTag = currentAlias = EdTags.purport;
-					para.cls = currentAlias.cls;
+					case book_title:
+						tagName = "title";
+						// no break!
+					case lila:
+						book.info.add(para);
+						break;
+					case chaptno:
+					case chapt_no:
+						tagName = "chapter_number";
+						chapter.info.add(para);
+						break;
+					case chapter_head:
+						tagName = "head";
+						chapter.info.add(para);
+						break;
+					case textno:
+						tagName = "text_number";
+						// text precedes textno with a max. of 1 tag in between
+						if(chapter.para.size()-lastTextTag < 2)
+						{
+							// insert text_number before text
+							chapter.para.add(lastTextTag-1, para);
+							break;
+						}
+						// no break: add text_number as last
+					default:
+						chapter.para.add(para);
 				}
+	
+				// info is represented as xml tag
+				if(currentAlias == EdTags.info)
+				{
+					para.isInfo = true;
+					para.tagName = tagName;
+				}
+	
+				// book text is p tag with a class attribute
+				else
+					para.cls = currentAlias.cls;
+				
+				// after footnote or any other quote para, following purp para is changed to purport for line spacing
+				if(currentAlias == EdTags.purp_para)
+				{
+					Paragraph prevPara = chapter.para.get(chapter.para.size()-2);
+					if(prevPara.cls != null && prevPara.cls.name().startsWith("Megjegyzes"))
+					{
+						currentTag = currentAlias = EdTags.purport;
+						para.cls = currentAlias.cls;
+					}
+				}
+	
+				// register index level
+				else if(currentAlias == EdTags.index_level_0)
+				{
+					if(tagName.startsWith("index_level"))
+						para.indexLevel = Integer.parseInt(tagName.substring(12));
+					else if(tagName.startsWith("xi"))
+						para.indexLevel = Integer.parseInt(tagName.substring(2, 3));
+				}
+	
+				// remember position of text tag or chapter title tag
+				else if(currentAlias == EdTags.text || currentAlias == EdTags.chapter_title)
+					lastTextTag = chapter.para.size();
+	
+				// mark footnote paragraphs
+				else if(currentTag == EdTags.footnote || currentTag == EdTags.small_foot)
+					para.text.append("Lábjegyzet: ");
+				
+				else if(writerInfo.specialFile == SpecialFile.BG_PF && currentTag == EdTags.purport && line[nextPos]!='<')
+					para.cls = ParagraphClass.Balra;
+	
+				prev = Tag;
 			}
-
-			// register index level
-			else if(currentAlias == EdTags.index_level_0)
-			{
-				if(tagName.startsWith("index_level"))
-					para.indexLevel = Integer.parseInt(tagName.substring(12));
-				else if(tagName.startsWith("xi"))
-					para.indexLevel = Integer.parseInt(tagName.substring(2, 3));
-			}
-
-			// remember position of text tag or chapter title tag
-			else if(currentAlias == EdTags.text || currentAlias == EdTags.chapter_title)
-				lastTextTag = chapter.para.size();
-
-			// mark footnote paragraphs
-			else if(currentTag == EdTags.footnote || currentTag == EdTags.small_foot)
-				para.text.append("Lábjegyzet: ");
-			
-			else if(writerInfo.specialFile == SpecialFile.BG_PF && currentTag == EdTags.purport && line[nextPos]!='<')
-				para.cls = ParagraphClass.Balra;
-
-			prev = Tag;
 		}
 
 		if(skippingUnhandledTag || nextPos >= length)
