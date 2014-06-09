@@ -26,6 +26,7 @@ public class WriterInfo
 		}
 	}
 	
+	public File srcFile;
 	public File xmlFile;
 	public List<String> fileNames;
 	public boolean forEbook;
@@ -33,6 +34,8 @@ public class WriterInfo
 
 	public Writer out;
 	public int indentLevel;
+	public String line;
+	public int pos;
 	
 	public Writer toc;
 	public String tocDivision;

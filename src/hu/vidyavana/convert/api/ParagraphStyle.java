@@ -1,11 +1,17 @@
 package hu.vidyavana.convert.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParagraphStyle
 {
+	public String basedOn;
+	
 	// see enum
 	public Align align;
+	
+	// font name
+	public String font;
 	
 	// relative font size compared to user font setting. Percentage, 100=base font size
 	public Integer size;
@@ -56,5 +62,28 @@ public class ParagraphStyle
 		ParagraphStyle s = new ParagraphStyle();
 		// TODO parse
 		return s ;
+	}
+
+
+	public static ParagraphStyle clone(ParagraphStyle base)
+	{
+		ParagraphStyle res = new ParagraphStyle();
+		if(base != null)
+		{
+			res.align = base.align;
+			res.font = base.font;
+			res.size = base.size;
+			res.left = base.left;
+			res.right = base.right;
+			res.before = base.before;
+			res.after = base.after;
+			res.first = base.first;
+			res.hanging = base.hanging;
+			if(base.tabs == null)
+				res.tabs = new ArrayList<Integer>();
+			else
+				res.tabs = new ArrayList<Integer>(base.tabs);
+		}
+		return res;
 	}
 }
