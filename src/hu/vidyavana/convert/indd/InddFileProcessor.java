@@ -1,34 +1,23 @@
 package hu.vidyavana.convert.indd;
 
-import static hu.vidyavana.convert.ed.EdPreviousEntity.Beginning;
-import hu.vidyavana.convert.api.Book;
-import hu.vidyavana.convert.api.Chapter;
-import hu.vidyavana.convert.api.FileProcessor;
-import hu.vidyavana.convert.api.Paragraph;
-import hu.vidyavana.convert.api.ParagraphStyle;
-import hu.vidyavana.convert.api.WriterInfo;
+import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
+import hu.vidyavana.convert.api.*;
 import hu.vidyavana.convert.ed.EdPreviousEntity;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InddFileProcessor implements FileProcessor
 {
+	private Pattern sameStartAndEnd = Pattern.compile("^<([bi])>(.*)</\\1>$");
+	private Pattern hasCharStyle = Pattern.compile("<[bi]>");
+	private Pattern emptyStyle = Pattern.compile("<([bi])>(\\s*)</\\1>");
+	private Pattern spaceBeforeClosingTag = Pattern.compile("(\\s+)((</[bi]>)+)");
+
 	private File destDir;
 	private String destName;
 	private int fileIndex;
@@ -177,18 +166,27 @@ public class InddFileProcessor implements FileProcessor
 
 	private void newPara(String style)
 	{
-		if(para != null)
-		{
-			purgeFormatStack();
-			if(para.text.length() == 0)
-				return;
-		}
+		if(!endPara())
+			return;
 		para = new Paragraph();
 		para.style = ParagraphStyle.clone(styleSheet.get(style));
 		para.style.basedOn = style;
 		chapter.para.add(para);
 		text[0] = para.text;
 		paraStartPending = true;
+	}
+
+
+	private boolean endPara()
+	{
+		if(para != null)
+		{
+			purgeFormatStack();
+			cleanupPara();
+			if(para.text.length() == 0)
+				return false;
+		}
+		return true;
 	}
 
 
@@ -209,7 +207,8 @@ public class InddFileProcessor implements FileProcessor
 				++lineNumber;
 				processLine(line);
 			}
-			purgeFormatStack();
+			if(!endPara())
+				chapter.para.remove(chapter.para.size()-1);
 		}
 	}
 	
@@ -417,6 +416,82 @@ public class InddFileProcessor implements FileProcessor
 			para.text.append(formatStack.pop());
 	}
 
+
+	public void cleanupPara()
+	{
+		boolean change = false;
+		String txt = para.text.toString();
+		String txt2 = allTextSameStyle(txt);
+		if(txt2 != null)
+		{
+			change = true;
+			txt = txt2;
+		}
+		txt2 = emptyTextStyles(txt);
+		if(txt2 != null)
+		{
+			change = true;
+			txt = txt2;
+		}
+		txt2 = spaceBeforeClosingTag(txt);
+		if(txt2 != null)
+		{
+			change = true;
+			txt = txt2;
+		}
+		if(change)
+		{
+			para.text.setLength(0);
+			para.text.append(txt);
+		}
+	}
+
+
+	public String allTextSameStyle(String txt)
+	{
+		String orig = txt;
+		boolean trimmed = false;
+		while(true)
+		{
+			String txt2 = txt.trim();
+			if(txt != txt2)
+			{
+				txt = txt2;
+				trimmed = true;
+			}
+			Matcher m = sameStartAndEnd.matcher(txt);
+			if(m.find())
+				txt = m.replaceFirst(m.group(2));
+			else
+				break;
+		}
+		if(hasCharStyle.matcher(txt).find())
+			return trimmed ? orig.trim() : null;
+		if(orig == txt)
+			return null;
+		return txt;
+	}
+
+
+	public String emptyTextStyles(String txt)
+	{
+		Matcher m = emptyStyle.matcher(txt);
+		String txt2 = m.replaceAll("$2");
+		if(txt == txt2)
+			return null;
+		return txt2;
+	}
+
+
+	public String spaceBeforeClosingTag(String txt)
+	{
+		Matcher m = spaceBeforeClosingTag.matcher(txt);
+		String txt2 = m.replaceAll("$2$1");
+		if(txt == txt2)
+			return null;
+		return txt2;
+	}
+		
 
 	private void pos()
 	{

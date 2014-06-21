@@ -2,7 +2,6 @@ package hu.vidyavana.convert.indd;
 
 import hu.vidyavana.convert.api.DirFilesProcessor;
 import hu.vidyavana.convert.api.FileProcessor;
-import hu.vidyavana.convert.api.WriterInfo;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class CharacterMapManager
 {
 	public static final String DEFAULT_STYLENAME = "defaultStylename";
 	public static final String DEFAULT_TEXT = "defaultText";
-	static String cmProp = System.getProperty("cmapDir", "c:\\prg\\vidyavana\\meta\\cmap");
+	static String cmProp = System.getProperty("cmapDir", "c:\\Wk\\prg\\Java\\vidyavana\\meta\\cmap");
 	static String DEFAULT_TEXT_MAP_FILE = "eng1.cmap.txt";
 	static String DEFAULT_STYLENAME_MAP_FILE = "hun1.cmap.txt";
 	static File cmapDir = new File(cmProp);
