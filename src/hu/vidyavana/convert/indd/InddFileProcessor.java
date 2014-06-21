@@ -177,9 +177,12 @@ public class InddFileProcessor implements FileProcessor
 
 	private void newPara(String style)
 	{
-		purgeFormatStack();
-		if(para != null && para.text.length() == 0)
-			return;
+		if(para != null)
+		{
+			purgeFormatStack();
+			if(para.text.length() == 0)
+				return;
+		}
 		para = new Paragraph();
 		para.style = ParagraphStyle.clone(styleSheet.get(style));
 		para.style.basedOn = style;
@@ -193,6 +196,7 @@ public class InddFileProcessor implements FileProcessor
 	{
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(in), "UTF8")))
 		{
+			para = null;
 			lineNumber = 0;
 			lastTextTag = -100;
 			styleSheet = new HashMap<>();
@@ -294,6 +298,8 @@ public class InddFileProcessor implements FileProcessor
 				return;
 			if(tag.startsWith("cTypeface:"))
 			{
+				if(style == defineParaStyle)
+					return;
 				if(tag.endsWith(":") || tag.endsWith(":Roman"))
 					purgeFormatStack();
 				else if(tag.endsWith(":Italic"))
@@ -342,7 +348,7 @@ public class InddFileProcessor implements FileProcessor
 			text[textLevel] = new StringBuilder(textLevel<2 ? 10000 : 1000);
 		if(paraStartPending && textLevel == 0)
 		{
-			if(c==' ' || c==8195)
+			if(c==' ' || c=='\t' || c==8195)
 				return;
 			charMaps.selectFont(styleFont(para.style));
 			paraStartPending = false;
@@ -371,6 +377,15 @@ public class InddFileProcessor implements FileProcessor
 			}
 			else
 				c = ch;
+		}
+		else if(c == 10)
+		{
+			StringBuilder sb = text[textLevel];
+			char prev = sb.charAt(sb.length()-1);
+			if(prev != ' ')
+				c = ' ';
+			else
+				return;
 		}
 		text[textLevel].append((char) c);
 	}

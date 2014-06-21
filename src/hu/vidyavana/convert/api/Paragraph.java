@@ -67,10 +67,21 @@ public class Paragraph
 		}
 		if(style != null)
 		{
-			out.write(" style=\"");
-			out.write(style.toString());
-			out.write('"');
-			len += style.toString().length()+9;
+			if(cls == null && style.basedOn != null && !style.basedOn.isEmpty())
+			{
+				out.write(" class=\"");
+				out.write(style.basedOn);
+				out.write('"');
+				len += style.basedOn.length()+9;
+			}
+			String ss = style.toString();
+			if(!ss.isEmpty())
+			{
+				out.write(" style=\"");
+				out.write(ss);
+				out.write('"');
+				len += style.toString().length()+9;
+			}
 		}
 		out.write('>');
 		++len;
