@@ -43,12 +43,16 @@ public class InddFileProcessor implements FileProcessor
 	private boolean paraStartPending;
 	private Scanner scanner;
 	private File destFile;
+	private StringBuilder wordBuffer;
+	private ReverseHyphenate revHyphen;
+	private StyleMapping styleMap;
 
 
 	@Override
 	public void init(File srcDir, File destDir) throws Exception
 	{
 		this.destDir = destDir;
+		destDir.mkdirs();
 		writerInfo = new WriterInfo();
 		writerInfo.fileNames = new ArrayList<>();
 		// writerInfo.forEbook = !"false".equals(System.getProperty("for.ebook"));
@@ -58,6 +62,11 @@ public class InddFileProcessor implements FileProcessor
 		charMaps = new CharacterMapManager();
 		charMaps.init();
 		scanner = new Scanner(System.in);
+		wordBuffer = new StringBuilder();
+		revHyphen = new ReverseHyphenate(destDir);
+		revHyphen.init();
+		styleMap = new StyleMapping(destDir);
+		styleMap.init();
 		
 		if(!writerInfo.forEbook)
 		{
@@ -98,15 +107,16 @@ public class InddFileProcessor implements FileProcessor
 	{
 		endChapter();
 		charMaps.close();
+		revHyphen.close();
+		styleMap.close();
 
-		File outDir = destFile.getParentFile();
-		if(outDir.mkdirs() && ebookPath != null)
+		if(ebookPath != null)
 		{
 			Files.copy(new File(ebookPath, "ed.xsl").toPath(),
-				new File(outDir, "ed.xsl").toPath(),
+				new File(destDir, "ed.xsl").toPath(),
 				StandardCopyOption.REPLACE_EXISTING);
 			Files.copy(new File(ebookPath, "ed.css").toPath(),
-				new File(outDir, "ed.css").toPath(),
+				new File(destDir, "ed.css").toPath(),
 				StandardCopyOption.REPLACE_EXISTING);
 		}
 		
@@ -171,9 +181,11 @@ public class InddFileProcessor implements FileProcessor
 		para = new Paragraph();
 		para.style = ParagraphStyle.clone(styleSheet.get(style));
 		para.style.basedOn = style;
+		styleMap.convertStylename(style, para, scanner);
 		chapter.para.add(para);
 		text[0] = para.text;
 		paraStartPending = true;
+		wordBuffer.setLength(0);
 	}
 
 
@@ -181,12 +193,24 @@ public class InddFileProcessor implements FileProcessor
 	{
 		if(para != null)
 		{
+			endWord();
 			purgeFormatStack();
 			cleanupPara();
 			if(para.text.length() == 0)
 				return false;
 		}
 		return true;
+	}
+
+
+	private void endWord()
+	{
+		if(wordBuffer.length() > 0)
+		{
+			if(wordBuffer.length() > 3)
+				revHyphen.check(wordBuffer, para.text, scanner);
+			wordBuffer.setLength(0);
+		}
 	}
 
 
@@ -386,6 +410,15 @@ public class InddFileProcessor implements FileProcessor
 			else
 				return;
 		}
+		if(textLevel == 0)
+		{
+			boolean wordChar = Character.isAlphabetic(c)
+				|| c>=256 && c<400 || c>7600 && c<7800 || c=='-';
+			if(wordChar)
+				wordBuffer.append((char) c);
+			else
+				endWord();
+		}
 		text[textLevel].append((char) c);
 	}
 
@@ -412,6 +445,7 @@ public class InddFileProcessor implements FileProcessor
 
 	private void purgeFormatStack()
 	{
+		endWord();
 		while(formatStack.size() > 0)
 			para.text.append(formatStack.pop());
 	}
