@@ -1,7 +1,10 @@
 package hu.vidyavana.convert.indd;
 
+import static hu.vidyavana.convert.api.ParagraphClass.*;
+import hu.vidyavana.convert.api.Align;
 import hu.vidyavana.convert.api.Paragraph;
 import hu.vidyavana.convert.api.ParagraphClass;
+import hu.vidyavana.convert.api.ParagraphStyle;
 import java.io.*;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -14,12 +17,15 @@ public class StyleMapping
 	static Pattern pairs = Pattern.compile("^(.*?)\\t(.*)");
 
 	File destDir, file;
+	SpecificBook spec;
 	TreeMap<String, ParagraphClass> mapping;
 	boolean dirty;
 
-	public StyleMapping(File destDir)
+
+	public StyleMapping(File destDir, SpecificBook spec)
 	{
 		this.destDir = destDir;
+		this.spec = spec;
 		file = new File(destDir, "styleMapping.txt");
 	}
 
@@ -36,7 +42,12 @@ public class StyleMapping
 				ln = ln.trim();
 				Matcher m = pairs.matcher(ln);
 				if(m.find())
-					mapping.put(m.group(1), ParagraphClass.valueOf(m.group(2)));
+				{
+					String orig = m.group(1);
+					if(".".equals(orig))
+						orig = "";
+					mapping.put(orig, ParagraphClass.valueOf(m.group(2)));
+				}
 			}
 		}
 		catch(IOException e)
@@ -53,7 +64,12 @@ public class StyleMapping
 		{
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"));
 			for(Entry<String, ParagraphClass> e : mapping.entrySet())
-				bw.write(e.getKey()+"\t"+e.getValue().toString()+"\r\n");
+			{
+				String orig = e.getKey();
+				if("".equals(orig))
+					orig = ".";
+				bw.write(orig+"\t"+e.getValue().toString()+"\r\n");
+			}
 			bw.close();
 		}
 	}
@@ -72,8 +88,9 @@ public class StyleMapping
 	}
 
 
-	public void convertStylename(String orig, Paragraph para, Scanner scanner)
+	public void convertStylename(Paragraph para, Scanner scanner)
 	{
+		String orig = para.style.basedOn;
 		ParagraphClass cls = get(orig);
 		if(cls == null)
 		{
@@ -92,5 +109,98 @@ public class StyleMapping
 			put(orig, cls);
 		}
 		para.cls = cls;
+		generalStyleBasedMapping(para);
+		if(spec != null)
+			spec.run(para);
+	}
+
+	
+	private void generalStyleBasedMapping(Paragraph para)
+	{
+		if(para.cls != TorzsKoveto)
+			return;
+		ParagraphStyle ps = para.style;
+		if(ps.size != null)
+		{
+			if(ps.size > 3000)
+			{
+				if(para.text.length() > 3)
+					para.cls = Konyvcim;
+				else
+					// iniciale
+					para.cls = TorzsKezdet0Bek;
+			}
+			else if(ps.size > 2200)
+			{
+				if(para.text.length() < 5)
+					para.cls = FejezetszamNagy;
+			}
+			if(para.cls != TorzsKoveto)
+				return;
+		}
+		if(ps.bold != null && ps.bold)
+		{
+			if(para.cls != TorzsKoveto)
+				return;
+		}
+		if(ps.italic != null && ps.italic)
+		{
+			if(para.text.length() > 200)
+			{
+				if(ps.emptyRowsBefore > 0)
+					para.cls = TorzsKezdetDolt;
+				else
+					para.cls = TorzsKovetoDolt;
+			}
+			else
+			{
+				para.cls = TorzsVers;
+				if(ps.align != null && ps.align == Align.Center)
+				{
+					if(ps.emptyRowsBefore > 0)
+						para.cls = KozepenDolt;
+					else
+						para.cls = KozepenKovetoDolt;
+				}
+			}
+			if(para.cls != TorzsKoveto)
+				return;
+		}
+		if(ps.align != null)
+		{
+			if(ps.align == Align.Center)
+			{
+				if(para.text.length() < 4)
+					para.cls = TorzsVersszam;
+				else if(ps.emptyRowsBefore > 0)
+					para.cls = Kozepen;
+				else
+					para.cls = KozepenKoveto;
+			}
+			else if(ps.align == Align.Right)
+				para.cls = Hivatkozas;
+			if(para.cls != TorzsKoveto)
+				return;
+		}
+		if(ps.emptyRowsBefore > 0 || para.prev != null && 
+			para.prev.cls != TorzsKezdet && para.prev.cls != TorzsKoveto)
+		{
+			para.cls = TorzsKezdet;
+		}
+	}
+	
+	
+	public interface SpecificBook
+	{
+		void run(Paragraph para);
+	}
+	
+	
+	public static class VenuGita implements SpecificBook
+	{
+		@Override
+		public void run(Paragraph para)
+		{
+		}
 	}
 }

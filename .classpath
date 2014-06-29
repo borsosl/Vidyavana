@@ -22,5 +22,6 @@
 			<attribute name="javadoc_location" value="jar:file:/c:/wk/prg/Java/vidyavana/museum/130326/javadoc.zip!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="cls"/>
 </classpath>

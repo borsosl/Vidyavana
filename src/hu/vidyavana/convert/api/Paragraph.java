@@ -1,10 +1,13 @@
 package hu.vidyavana.convert.api;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
-import java.util.regex.*;
-import org.w3c.dom.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class Paragraph
 {
@@ -12,6 +15,7 @@ public class Paragraph
 	public String tagName;
 	public ParagraphClass cls;
 	public ParagraphStyle style;
+	public Paragraph prev;
 	public int indexLevel;
 	public int indent;
 	public StringBuilder text = new StringBuilder();
@@ -74,6 +78,7 @@ public class Paragraph
 				out.write('"');
 				len += style.basedOn.length()+9;
 			}
+			/*
 			String ss = style.toString();
 			if(!ss.isEmpty())
 			{
@@ -82,6 +87,7 @@ public class Paragraph
 				out.write('"');
 				len += style.toString().length()+9;
 			}
+			*/
 		}
 		out.write('>');
 		++len;

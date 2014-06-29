@@ -15,6 +15,9 @@ public class ParagraphStyle
 	
 	// relative font size compared to user font setting. Percentage, 100=base font size
 	public Integer size;
+
+	public Boolean bold;
+	public Boolean italic;
 	
 	// indents and pushes
 	// relative measurement compared to user font setting. 100=1 line.
@@ -27,6 +30,8 @@ public class ParagraphStyle
 	
 	// tabs in percentage of the screen width
 	public List<Integer> tabs;
+
+	public int emptyRowsBefore;
 	
 	
 	@Override
@@ -73,6 +78,8 @@ public class ParagraphStyle
 			res.align = base.align;
 			res.font = base.font;
 			res.size = base.size;
+			res.bold = base.bold;
+			res.italic = base.italic;
 			res.left = base.left;
 			res.right = base.right;
 			res.before = base.before;

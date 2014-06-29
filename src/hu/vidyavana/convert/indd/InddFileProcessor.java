@@ -1,8 +1,6 @@
 package hu.vidyavana.convert.indd;
 
-import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
 import hu.vidyavana.convert.api.*;
-import hu.vidyavana.convert.ed.EdPreviousEntity;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -13,10 +11,13 @@ import java.util.regex.Pattern;
 
 public class InddFileProcessor implements FileProcessor
 {
+	private static boolean skipConnect = false;
+
 	private Pattern sameStartAndEnd = Pattern.compile("^<([bi])>(.*)</\\1>$");
 	private Pattern hasCharStyle = Pattern.compile("<[bi]>");
 	private Pattern emptyStyle = Pattern.compile("<([bi])>(\\s*)</\\1>");
 	private Pattern spaceBeforeClosingTag = Pattern.compile("(\\s+)((</[bi]>)+)");
+	private Pattern styleOffOn = Pattern.compile("</([bi])>(\\s*)<\\1>");
 
 	private File destDir;
 	private String destName;
@@ -25,14 +26,12 @@ public class InddFileProcessor implements FileProcessor
 	private String ebookPath;
 	private List<String> manual;
 	
+	private int filePageNum, prevFilePageNum;
 	private int lineNumber;
 	private Book book;
 	private Chapter chapter;
 	private Paragraph para;
-	private EdPreviousEntity prev;
 	private Stack<String> formatStack;
-	private int lastTextTag;
-	private StringBuilder deferredMarkup;
 	private File tocFile;
 	private int textLevel;
 	private int flowLevel;
@@ -41,11 +40,14 @@ public class InddFileProcessor implements FileProcessor
 	private ParagraphStyle defineParaStyle;
 	private Map<String, ParagraphStyle> styleSheet;
 	private boolean paraStartPending;
+	private boolean continuingPara;
 	private Scanner scanner;
 	private File destFile;
 	private StringBuilder wordBuffer;
 	private ReverseHyphenate revHyphen;
 	private StyleMapping styleMap;
+	private int torzsVersLineNum;
+	private int emptyRowsBefore;
 
 
 	@Override
@@ -65,7 +67,7 @@ public class InddFileProcessor implements FileProcessor
 		wordBuffer = new StringBuilder();
 		revHyphen = new ReverseHyphenate(destDir);
 		revHyphen.init();
-		styleMap = new StyleMapping(destDir);
+		styleMap = new StyleMapping(destDir, new StyleMapping.VenuGita());
 		styleMap.init();
 		
 		if(!writerInfo.forEbook)
@@ -95,7 +97,26 @@ public class InddFileProcessor implements FileProcessor
 	public void process(File srcFile, String fileName) throws Exception
 	{
 		writerInfo.srcFile = srcFile;
+		para = null;
+		lineNumber = 0;
+		styleSheet = new HashMap<>();
+		textLevel = 0;
+		text = new StringBuilder[10];
+		filePageNum = fileName.indexOf('_');
+		if(filePageNum > -1)
+			filePageNum = Integer.valueOf(fileName.substring(0, filePageNum));
+		if(filePageNum != prevFilePageNum)
+		{
+			if(filePageNum-prevFilePageNum > 5)
+				startChapter();
+			else
+			{
+				newPara("UjOldal");
+				para.text.append("<!-- page break -->");
+			}
+		}
 		readFile(srcFile);
+		prevFilePageNum = filePageNum;
 		
 		// reminders of manual work
 		// if(fileName.toLowerCase().indexOf("hund28xt") != -1)...
@@ -155,7 +176,6 @@ public class InddFileProcessor implements FileProcessor
 		book = new Book();
 		chapter = new Chapter();
 		book.chapter.add(chapter);
-		prev = Beginning;
 		formatStack = new Stack<>();
 
 		++fileIndex;
@@ -176,12 +196,22 @@ public class InddFileProcessor implements FileProcessor
 
 	private void newPara(String style)
 	{
+		Paragraph prevPara = para;
 		if(!endPara())
-			return;
+		{
+			if(continuingPara)
+			{
+				continuingPara = false;
+				paraStartPending = true;
+				return;
+			}
+			prevPara = para.prev;
+			chapter.para.remove(chapter.para.size()-1);
+		}
 		para = new Paragraph();
 		para.style = ParagraphStyle.clone(styleSheet.get(style));
 		para.style.basedOn = style;
-		styleMap.convertStylename(style, para, scanner);
+		para.prev = prevPara;
 		chapter.para.add(para);
 		text[0] = para.text;
 		paraStartPending = true;
@@ -193,12 +223,52 @@ public class InddFileProcessor implements FileProcessor
 	{
 		if(para != null)
 		{
+			Paragraph prev = para.prev;
+			if(!skipConnect && prev != null && para.text.length() > 0 &&
+				(prev.cls == ParagraphClass.Fejezetcim || prev.cls == ParagraphClass.TorzsKezdet0Bek) && 
+				para.text.charAt(para.text.length()-1)!='.')
+			{
+				System.out.println("Connect paragraphs?");
+				if(para.text.length() < 30 && chapter.para.size() > 1)
+					System.out.println(chapter.para.get(chapter.para.size()-2).text);
+				System.out.println(para.text);
+				String s = scanner.next();
+				if(".".equals(s))
+				{
+					continuingPara = true;
+					char c = para.text.charAt(para.text.length()-1);
+					if(c != '-' && c != ' ')
+						para.text.append(' ');
+					return false;
+				}
+			}
+			para.style.emptyRowsBefore = emptyRowsBefore;
 			endWord();
 			purgeFormatStack();
 			cleanupPara();
+			styleMap.convertStylename(para, scanner);
 			if(para.text.length() == 0)
+			{
+				++emptyRowsBefore;
 				return false;
+			}
+			if(para.cls == ParagraphClass.TorzsVers)
+			{
+				if(prev != null && prev.cls == ParagraphClass.TorzsVers)
+				{
+					++torzsVersLineNum;
+					prev.text.append("<br/>");
+					if(torzsVersLineNum % 2 == 0)
+						prev.text.append("\u2002\u2002");
+					prev.text.append(para.text);
+					para.text.setLength(0);
+					return false;
+				}
+				else
+					torzsVersLineNum = 1;
+			}
 		}
+		emptyRowsBefore = 0;
 		return true;
 	}
 
@@ -218,13 +288,6 @@ public class InddFileProcessor implements FileProcessor
 	{
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(in), "UTF8")))
 		{
-			para = null;
-			lineNumber = 0;
-			lastTextTag = -100;
-			styleSheet = new HashMap<>();
-			deferredMarkup = new StringBuilder();
-			textLevel = 0;
-			text = new StringBuilder[10];
 			String line;
 			while((line = br.readLine()) != null)
 			{
@@ -322,12 +385,32 @@ public class InddFileProcessor implements FileProcessor
 			if(tag.startsWith("cTypeface:"))
 			{
 				if(style == defineParaStyle)
+				{
+					// modify style object
+					if(tag.endsWith(":Italic"))
+						style.italic = true;
+					else if(tag.endsWith(":Bold"))
+						style.bold = true;
+					else if(tag.endsWith(":Bold Italic"))
+					{
+						style.bold = true;
+						style.italic = true;
+					}
+					else if(!tag.endsWith(":") && !tag.endsWith(":Roman"))
+					{
+						pos();
+						throw new RuntimeException("Unknown typeface: " + tag);
+					}
 					return;
+				}
+				// add inline style
 				if(tag.endsWith(":") || tag.endsWith(":Roman"))
 					purgeFormatStack();
 				else if(tag.endsWith(":Italic"))
 				{
+					boolean psp = paraStartPending;
 					addChars("<i>");
+					paraStartPending = psp;
 					formatStack.push("</i>");
 				}
 				else if(tag.endsWith(":Bold"))
@@ -348,11 +431,54 @@ public class InddFileProcessor implements FileProcessor
 			}
 			else if(tag.startsWith("cFont:"))
 			{
-				style.font = tag.substring(6).trim();
-				if(style.font.isEmpty())
-					style.font = null;
-				if(style != defineParaStyle)
-					charMaps.selectFont(styleFont(style));
+				String font = tag.substring(6).trim();
+				if(font.length() > 0)
+				{
+					style.font = font;
+					if(style != defineParaStyle)
+						charMaps.selectFont(styleFont(style));
+				}
+			}
+			else if(tag.startsWith("cSize:"))
+			{
+				Integer val = val(tag);
+				if(val != null)
+					style.size = val;
+			}
+			else if(tag.startsWith("pTextAlignment:"))
+			{
+				if(tag.indexOf(":Justify") > -1)
+					style.align = Align.Justify;
+				else if(tag.endsWith(":Center"))
+					style.align = Align.Center;
+				else if(tag.endsWith(":Left"))
+					style.align = Align.Left;
+				else if(tag.endsWith(":Right"))
+					style.align = Align.Right;
+			}
+			else if(tag.startsWith("pSpaceBefore:"))
+			{
+				Integer val = val(tag);
+				if(val != null)
+					style.before = val;
+			}
+			else if(tag.startsWith("pLeftIndent:"))
+			{
+				Integer val = val(tag);
+				if(val != null)
+					style.left = val;
+			}
+			else if(tag.startsWith("pRightIndent:"))
+			{
+				Integer val = val(tag);
+				if(val != null)
+					style.right = val;
+			}
+			else if(tag.startsWith("pFirstLineIndent:"))
+			{
+				Integer val = val(tag);
+				if(val != null)
+					style.first = val;
 			}
 			else if(tag.startsWith("BasedOn:"))
 			{
@@ -365,13 +491,24 @@ public class InddFileProcessor implements FileProcessor
 	}
 
 
+	private Integer val(String tag)
+	{
+		int ix = tag.indexOf(':');
+		String num = tag.substring(ix+1);
+		if(num.isEmpty())
+			return null;
+		Double d = Double.valueOf(num);
+		return (int)(d*100);
+	}
+
+
 	private void addChar(int c)
 	{
 		if(text[textLevel] == null)
 			text[textLevel] = new StringBuilder(textLevel<2 ? 10000 : 1000);
 		if(paraStartPending && textLevel == 0)
 		{
-			if(c==' ' || c=='\t' || c==8195)
+			if(c==' ' || c=='\t' || c>=8192 && c<=8207)
 				return;
 			charMaps.selectFont(styleFont(para.style));
 			paraStartPending = false;
@@ -455,13 +592,19 @@ public class InddFileProcessor implements FileProcessor
 	{
 		boolean change = false;
 		String txt = para.text.toString();
-		String txt2 = allTextSameStyle(txt);
+		String txt2 = emptyTextStyles(txt);
 		if(txt2 != null)
 		{
 			change = true;
 			txt = txt2;
 		}
-		txt2 = emptyTextStyles(txt);
+		txt2 = styleOffOn(txt);
+		if(txt2 != null)
+		{
+			change = true;
+			txt = txt2;
+		}
+		txt2 = allTextSameStyle(txt);
 		if(txt2 != null)
 		{
 			change = true;
@@ -485,6 +628,8 @@ public class InddFileProcessor implements FileProcessor
 	{
 		String orig = txt;
 		boolean trimmed = false;
+		boolean bold = false;
+		boolean italic = false;
 		while(true)
 		{
 			String txt2 = txt.trim();
@@ -495,7 +640,13 @@ public class InddFileProcessor implements FileProcessor
 			}
 			Matcher m = sameStartAndEnd.matcher(txt);
 			if(m.find())
+			{
 				txt = m.replaceFirst(m.group(2));
+				if("b".equals(m.group(1)))
+					bold = true;
+				else if("i".equals(m.group(1)))
+					italic = true;
+			}
 			else
 				break;
 		}
@@ -503,7 +654,21 @@ public class InddFileProcessor implements FileProcessor
 			return trimmed ? orig.trim() : null;
 		if(orig == txt)
 			return null;
+		if(bold)
+			para.style.bold = true;
+		if(italic)
+			para.style.italic = true;
 		return txt;
+	}
+
+
+	public String styleOffOn(String txt)
+	{
+		Matcher m = styleOffOn.matcher(txt);
+		String txt2 = m.replaceAll("$2");
+		if(txt == txt2)
+			return null;
+		return txt2;
 	}
 
 
