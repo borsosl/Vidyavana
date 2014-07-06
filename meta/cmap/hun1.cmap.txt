@@ -1,4 +1,5 @@
 * Times CE Sanskrit
+* Arial Narrow
 132	8222		„
 133	8230		…
 145	8217		’

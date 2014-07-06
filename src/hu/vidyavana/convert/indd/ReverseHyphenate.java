@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class ReverseHyphenate
 {
 	static Pattern pairs = Pattern.compile("^(.*?)\\t(.*)");
-	static Pattern hyphen = Pattern.compile("-");
+	static Pattern hyphen = Pattern.compile("[-÷]");
 
 	File destDir, file;
 	TreeMap<String, String> mapping;
@@ -73,7 +73,12 @@ public class ReverseHyphenate
 
 	public void check(StringBuilder wordBuffer, StringBuilder paraBuffer, Scanner scanner)
 	{
-		int ix = wordBuffer.indexOf("-");
+		boolean optHyph = false;
+		int ix = wordBuffer.indexOf("÷");
+		if(ix > 0)
+			optHyph = true;
+		else
+			ix = wordBuffer.indexOf("-");
 		if(ix > 0)
 		{
 			int len = wordBuffer.length();
@@ -84,6 +89,8 @@ public class ReverseHyphenate
 			String mod = get(orig);
 			if(mod == null)
 			{
+				if(optHyph)
+					System.out.print("Opcionális ");
 				System.out.println("Elválasztás: "+orig);
 				String s = scanner.next();
 				if(".".equals(s))

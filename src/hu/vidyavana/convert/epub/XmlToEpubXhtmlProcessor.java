@@ -2,8 +2,11 @@ package hu.vidyavana.convert.epub;
 
 import hu.vidyavana.convert.api.FileProcessor;
 import java.io.*;
-import java.util.*;
-import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class XmlToEpubXhtmlProcessor implements FileProcessor
 {
@@ -159,7 +162,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		levelStack.push(Level.Document);
 		sectionCount = 0;
 		String tagName = null;
-		String[] htmlTags = {"p", "b", "i", "br"};
+		String[] htmlTags = {"p", "b", "i", "br", "div", "img", "table", "tr", "td"};
 		boolean tagLine;
 		boolean writeCurrentTag = false;
 		boolean verseBlock=false;
@@ -186,6 +189,8 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 							++paraSinceTextHash;
 							out = addNavigation(line, textHash, paraSinceTextHash, out);
 							verseBlock = VERSE_BLOCK.matcher(line).find();
+							if(verseBlock && verseBuffer.isEmpty() && line.indexOf("class=\"Hivatkozas") > -1)
+								verseBlock = false;
 							out = nextFile(out, line);
 						}
 						writeCurrentTag = true;

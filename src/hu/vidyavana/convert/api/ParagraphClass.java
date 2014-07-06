@@ -48,7 +48,11 @@ public enum ParagraphClass
 	Ures1(44),
 	Ures2(45),
 	Ures3(46),
-	UjOldal(47);
+	UjOldal(47),
+	Labjegyzet(48),
+	MegjegyzesKezdetDolt(49),
+	MegjegyzesKovetoDolt(50, true),
+	BehuzottFuggo(51);
 	
 	
 	private static Map<Integer, ParagraphClass> reverseMap = new HashMap<>();

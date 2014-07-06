@@ -154,7 +154,7 @@ public class StyleMapping
 			}
 			else
 			{
-				para.cls = TorzsVers;
+				//para.cls = TorzsVers;
 				if(ps.align != null && ps.align == Align.Center)
 				{
 					if(ps.emptyRowsBefore > 0)
