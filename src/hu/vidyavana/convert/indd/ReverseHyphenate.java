@@ -11,6 +11,7 @@ public class ReverseHyphenate
 {
 	static Pattern pairs = Pattern.compile("^(.*?)\\t(.*)");
 	static Pattern hyphen = Pattern.compile("[-÷]");
+	static Pattern multiHyphens = Pattern.compile("[-÷]{2,}");
 
 	File destDir, file;
 	TreeMap<String, String> mapping;
@@ -86,31 +87,39 @@ public class ReverseHyphenate
 				|| ix == len-2 && wordBuffer.charAt(wordBuffer.length()-1)=='e')
 				return;
 			String orig = wordBuffer.toString();
-			String mod = get(orig);
+			String simpler = multiHyphens.matcher(orig).replaceAll("÷");
+			String mod = get(simpler);
 			if(mod == null)
 			{
 				if(optHyph)
 					System.out.print("Opcionális ");
-				System.out.println("Elválasztás: "+orig);
+				System.out.println("Elválasztás: "+simpler);
 				String s = scanner.next();
 				if(".".equals(s))
 				{
-					mod = hyphen.matcher(orig).replaceAll("");
-					put(orig, mod);
+					mod = hyphen.matcher(simpler).replaceAll("");
+					put(simpler, mod);
 				}
 				else if("X".equals(s))
 					throw new RuntimeException("Hyphenate input aborted.");
 				else if(s.length()>1)
 				{
 					mod = s;
-					put(orig, mod);
+					put(simpler, mod);
 				}
 				else
-					put(orig, orig);
+					put(simpler, simpler);
 			}
 			if(mod != null)
 			{
-				paraBuffer.setLength(paraBuffer.length()-orig.length());
+				try
+				{
+					paraBuffer.setLength(paraBuffer.length()-orig.length());
+				}
+				catch(Exception ex)
+				{
+					System.out.println("Buffer error: "+paraBuffer.length());
+				}
 				paraBuffer.append(mod);
 			}
 		}

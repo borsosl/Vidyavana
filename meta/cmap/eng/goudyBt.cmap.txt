@@ -1,6 +1,8 @@
 * H\_Goudy Old Style BT
 * Goudy Old Style BT Sanskrit
 * Goudy Old Style Sanskrit
+* Goudy Old Style BT Sanskrit \(OTF\)
+* Goudy Old Style Sanskrit \(OTF\)
 161	363	¡	ū
 162	7779	¢	ṣ
 163	7751	£	ṇ
@@ -30,5 +32,6 @@
 251	369	û	ű
 252	252	ü	ü
 8211	8211	–	–
+8217	8217	’	’
 8221	8221	”	”
 8222	8222	„	„

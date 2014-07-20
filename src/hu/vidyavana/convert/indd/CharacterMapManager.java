@@ -14,9 +14,9 @@ public class CharacterMapManager
 {
 	public static final String DEFAULT_STYLENAME = "defaultStylename";
 	public static final String DEFAULT_TEXT = "defaultText";
-	static String cmProp = System.getProperty("cmapDir", "c:\\Wk\\prg\\Java\\vidyavana\\meta\\cmap");
-	static String DEFAULT_TEXT_MAP_FILE = "eng1.cmap.txt";
-	static String DEFAULT_STYLENAME_MAP_FILE = "hun1.cmap.txt";
+	static String cmProp = System.getProperty("cmapDir", "c:\\Wk\\prg\\Java\\vidyavana\\meta\\cmap\\eng");
+	static String DEFAULT_TEXT_MAP_FILE = "pala-vg.cmap.txt";
+	static String DEFAULT_STYLENAME_MAP_FILE = "hun-legacy-ce.cmap.txt";
 	static File cmapDir = new File(cmProp);
 
 	Map<String, CharacterMap> fontToCmap;

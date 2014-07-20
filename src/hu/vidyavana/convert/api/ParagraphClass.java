@@ -52,7 +52,15 @@ public enum ParagraphClass
 	Labjegyzet(48),
 	MegjegyzesKezdetDolt(49),
 	MegjegyzesKovetoDolt(50, true),
-	BehuzottFuggo(51);
+	MegjegyzesJobbraDolt(0),
+	BehuzottFuggo(51),
+	LabjegyzetKoveto(0),
+	LabjegyzetVersKoveto(0),
+	in0(0),
+	in1(0),
+	in2(0),
+	in3(0);
+	
 	
 	
 	private static Map<Integer, ParagraphClass> reverseMap = new HashMap<>();

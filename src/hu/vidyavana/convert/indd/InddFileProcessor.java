@@ -12,16 +12,20 @@ import java.util.regex.Pattern;
 public class InddFileProcessor implements FileProcessor
 {
 	// conversion phase settings
+	private static boolean skipHyphens = false;
+	private static boolean skipFootnotes = true;
 	private static boolean skipConnect = false;
-	private static boolean skipFootnotes = false;
 	
 	// book-specific settings
-	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{54,342,348,374,392,432}));
-	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{}));
+	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{}));
+	// NPH private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{54,342,348,374,392,432}));
+	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
 	private int chapterDigits = 2;
-	private String endNoteFileName = "22";
+	private String endNoteFileName = "99";
+	// NPH private String endNoteFileName = "22";
 	private Map<String, String> supPrefix = new HashMap<String, String>()
 	{{
+		/* NPH
 		put("00014_00065,00_00151,99.txt", "01");
 		put("00020_00064,01_00151,99.txt", "02");
 		put("00058_00065,00_00151,99.txt", "11");
@@ -40,6 +44,7 @@ public class InddFileProcessor implements FileProcessor
 		put("00348_00065,00_00151,99.txt", "42");
 		put("00370_00065,00_00151,99.txt", "44");
 		put("00374_00065,00_00151,99.txt", "45");
+		*/
 	}};
 	
 	public static String BR = "<br/>";
@@ -50,6 +55,7 @@ public class InddFileProcessor implements FileProcessor
 	private Pattern spaceBeforeClosingTag = Pattern.compile("(\\s+)((</[bi]>)+)");
 	private Pattern styleOffOn = Pattern.compile("</([bi])>(\\s*)<\\1>");
 	private Pattern startsWithNum = Pattern.compile("^\\d+\\.");
+	private Pattern multiWhite = Pattern.compile("[ \\t]{2,}");
 
 	private File destDir;
 	private String destName;
@@ -296,7 +302,7 @@ public class InddFileProcessor implements FileProcessor
 				}
 			}
 			para.style.emptyRowsBefore = emptyRowsBefore;
-			endWord();
+			endWord(13);
 			purgeFormatStack();
 			cleanupPara();
 			styleMap.convertStylename(para, scanner);
@@ -349,14 +355,20 @@ public class InddFileProcessor implements FileProcessor
 	}
 
 
-	private void endWord()
+	private boolean endWord(int c)
 	{
-		if(wordBuffer.length() > 0)
+		int len = wordBuffer.length();
+		if(len > 0)
 		{
-			if(wordBuffer.length() > 3)
+			if(!skipHyphens && len > 3)
+			{
+				if(c==' ' && wordBuffer.charAt(len-1)=='-' && wordBuffer.charAt(len-2)=='÷')
+					return false;
 				revHyphen.check(wordBuffer, para.text, scanner);
+			}
 			wordBuffer.setLength(0);
 		}
+		return true;
 	}
 
 
@@ -531,6 +543,14 @@ public class InddFileProcessor implements FileProcessor
 				else if(supScr && tag.endsWith("cPosition:"))
 					endSuperscript(null);
 			}
+			else if(tag.startsWith("FootnoteStart:"))
+			{
+				
+			}
+			else if(tag.startsWith("FootnoteEnd:"))
+			{
+				
+			}
 			else if(tag.startsWith("pTextAlignment:"))
 			{
 				if(tag.indexOf(":Justify") > -1)
@@ -649,10 +669,8 @@ public class InddFileProcessor implements FileProcessor
 		{
 			boolean wordChar = Character.isAlphabetic(c)
 				|| c>=256 && c<400 || c>7600 && c<7800 || c=='-' || c=='÷';
-			if(wordChar)
+			if(wordChar || !endWord(c))
 				wordBuffer.append((char) c);
-			else
-				endWord();
 			if(supScr)
 			{
 				if(c >= '*' && c <= 'z')
@@ -795,7 +813,7 @@ public class InddFileProcessor implements FileProcessor
 
 	private void purgeFormatStack()
 	{
-		endWord();
+		endWord(0);
 		while(formatStack.size() > 0)
 			para.text.append(formatStack.pop());
 	}
@@ -824,6 +842,12 @@ public class InddFileProcessor implements FileProcessor
 			txt = txt2;
 		}
 		txt2 = spaceBeforeClosingTag(txt);
+		if(txt2 != null)
+		{
+			change = true;
+			txt = txt2;
+		}
+		txt2 = multiWhite(txt);
 		if(txt2 != null)
 		{
 			change = true;
@@ -899,6 +923,16 @@ public class InddFileProcessor implements FileProcessor
 	{
 		Matcher m = spaceBeforeClosingTag.matcher(txt);
 		String txt2 = m.replaceAll("$2$1");
+		if(txt == txt2)
+			return null;
+		return txt2;
+	}
+
+
+	public String multiWhite(String txt)
+	{
+		Matcher m = multiWhite.matcher(txt);
+		String txt2 = m.replaceAll(" ");
 		if(txt == txt2)
 			return null;
 		return txt2;

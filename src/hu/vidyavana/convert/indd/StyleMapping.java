@@ -117,9 +117,14 @@ public class StyleMapping
 	
 	private void generalStyleBasedMapping(Paragraph para)
 	{
-		if(para.cls != TorzsKoveto)
-			return;
 		ParagraphStyle ps = para.style;
+		if(para.cls != TorzsKoveto)
+		{
+			// modification of specifically mapped styles
+			if(para.cls == in0 && ps.align != null && ps.align == Align.Center)
+				para.cls = Szakaszcim;
+			return;
+		}
 		if(ps.size != null)
 		{
 			if(ps.size > 3000)
@@ -154,7 +159,7 @@ public class StyleMapping
 			}
 			else
 			{
-				//para.cls = TorzsVers;
+				para.cls = TorzsVers;
 				if(ps.align != null && ps.align == Align.Center)
 				{
 					if(ps.emptyRowsBefore > 0)

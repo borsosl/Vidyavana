@@ -119,7 +119,8 @@ public class Paragraph
 			collectDiacritics(txt, writerInfo);
 			return;
 		}
-		
+
+		txt = txt.replace("&", "&amp;");
 		int len = txt.length();
 		int start = 0;
 		while(start < len)

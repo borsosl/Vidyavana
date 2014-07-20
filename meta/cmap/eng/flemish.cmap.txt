@@ -1,0 +1,5 @@
+* FlemishScript Sanskrit
+* FlemishScript Sanskrit \(OTF\)
+163	7751	£	ṇ
+166	299	¦	ī
+167	257	§	ā

@@ -42,7 +42,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	private String currentBaseFileName;
 	private String currentFileName;
 	private int currentFileIndex;
-	public int FILE_LENGTH_GOAL = 50000;
+	public int FILE_LENGTH_GOAL = 150_000;
 	private int fileTextLength;
 	private Level prevNavLevel;
 
@@ -162,7 +162,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		levelStack.push(Level.Document);
 		sectionCount = 0;
 		String tagName = null;
-		String[] htmlTags = {"p", "b", "i", "br", "div", "img", "table", "tr", "td"};
+		String[] htmlTags = {"p", "b", "i", "br", "div", "img", "table", "tr", "td", "a"};
 		boolean tagLine;
 		boolean writeCurrentTag = false;
 		boolean verseBlock=false;
