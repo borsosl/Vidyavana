@@ -13,18 +13,62 @@ public class InddFileProcessor implements FileProcessor
 {
 	// conversion phase settings
 	private static boolean skipHyphens = false;
-	private static boolean skipFootnotes = true;
-	private static boolean skipConnect = false;
+	private static boolean skipFootnotes = false;
+	private static boolean skipConnect = true;
 	
 	// book-specific settings
 	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{}));
-	// NPH private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{54,342,348,374,392,432}));
-	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
+	// NPH hun: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{54,342,348,374,392,432}));
+	// NPH eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{32,318,322,346,364}));
+	// KS eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{22,122,592,594,660,664}));
+	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{}));
+	// NPH hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
+	// KS eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,64,121,171,443,481,508}));
 	private int chapterDigits = 2;
 	private String endNoteFileName = "99";
-	// NPH private String endNoteFileName = "22";
+	// NPH: private String endNoteFileName = "22";
+	// KS: private String endNoteFileName = "19";
 	private Map<String, String> supPrefix = new HashMap<String, String>()
 	{{
+		/* KS eng
+		put("00012_00065,00_00151,99.txt", "01");
+		put("00018_00066,48_00151,99.txt", "02");
+		put("00022_00065,00_00151,99.txt", "03");
+		put("00090_00065,00_00151,99.txt", "1");
+		put("00124_00065,00_00151,99.txt", "2");
+		put("00152_00065,00_00151,99.txt", "3");
+		put("00184_00064,81_00151,99.txt", "4");
+		put("00218_00065,00_00151,99.txt", "5");
+		put("00258_00065,00_00151,99.txt", "6");
+		put("00294_00065,00_00151,99.txt", "7");
+		put("00330_00065,00_00151,99.txt", "8");
+		put("00372_00065,00_00151,99.txt", "9");
+		put("00416_00065,00_00151,99.txt", "A");
+		put("00454_00065,00_00151,99.txt", "B");
+		put("00500_00065,00_00151,99.txt", "C");
+		put("00548_00065,00_00151,99.txt", "E");
+		put("00590_00065,00_00151,99.txt", "M");
+
+		/* NPH eng
+		put("00014_00065,00_00151,99.txt", "01");
+		put("00000_00065,00_00016,00.txt", "02");
+		put("00036_00065,00_00151,99.txt", "11");
+		put("00060_00065,00_00151,99.txt", "12");
+		put("00080_00065,00_00151,99.txt", "13");
+		put("00108_00065,00_00151,99.txt", "14");
+		put("00130_00065,00_00151,99.txt", "15");
+		put("00164_00065,00_00151,99.txt", "21");
+		put("00190_00065,00_00151,99.txt", "22");
+		put("00214_00065,00_00151,99.txt", "23");
+		put("00244_00065,00_00151,99.txt", "31");
+		put("00264_00065,00_00151,99.txt", "32");
+		put("00286_00065,00_00151,99.txt", "33");
+		put("00302_00065,00_00151,99.txt", "34");
+		put("00318_00065,00_00151,99.txt", "41");
+		put("00322_00065,00_00151,99.txt", "42");
+		put("00342_00065,00_00151,99.txt", "44");
+		put("00346_00065,00_00151,99.txt", "45");
+
 		/* NPH
 		put("00014_00065,00_00151,99.txt", "01");
 		put("00020_00064,01_00151,99.txt", "02");
@@ -96,6 +140,7 @@ public class InddFileProcessor implements FileProcessor
 	private Map<String, String> endnoteFileNumMap = new HashMap<>();
 	private Map<Integer, String> endnoteLineToBackRefPrefixMap = new HashMap<>();
 	private String prevBackRefPrefix;
+	private int sameAnswerCounter;
 
 
 	@Override
@@ -158,7 +203,7 @@ public class InddFileProcessor implements FileProcessor
 		{
 			if((filePageNum-prevFilePageNum > 5 || forceNewFile.contains(filePageNum))
 				&& !noNewFile.contains(filePageNum))
-				startChapter();
+					startChapter();
 			else
 			{
 				newPara("UjOldal");
@@ -168,7 +213,7 @@ public class InddFileProcessor implements FileProcessor
 		String pref = supPrefix.get(fileName);
 		if(pref != null)
 		{
-			forwardRefPrefix = "f"+pref;
+			forwardRefPrefix = "e"+pref;
 			backRefPrefix = "b"+forwardRefPrefix;
 		}
 		else
@@ -475,9 +520,9 @@ public class InddFileProcessor implements FileProcessor
 				if(style == defineParaStyle)
 				{
 					// modify style object
-					if(tag.endsWith(":Italic"))
+					if(tag.endsWith(":Italic") || tag.endsWith(": Italic"))
 						style.italic = true;
-					else if(tag.endsWith(":Bold"))
+					else if(tag.endsWith(":Bold") || tag.endsWith(": Bold"))
 						style.bold = true;
 					else if(tag.endsWith(":Bold Italic") || tag.endsWith(":BoldItalic"))
 					{
@@ -494,14 +539,14 @@ public class InddFileProcessor implements FileProcessor
 				// add inline style
 				if(isNormalFont(tag))
 					purgeFormatStack();
-				else if(tag.endsWith(":Italic"))
+				else if(tag.endsWith(":Italic") || tag.endsWith(": Italic"))
 				{
 					boolean psp = paraStartPending;
 					addChars("<i>");
 					paraStartPending = psp;
 					formatStack.push("</i>");
 				}
-				else if(tag.endsWith(":Bold"))
+				else if(tag.endsWith(":Bold") || tag.endsWith(": Bold"))
 				{
 					addChars("<b>");
 					formatStack.push("</b>");
@@ -673,13 +718,19 @@ public class InddFileProcessor implements FileProcessor
 				wordBuffer.append((char) c);
 			if(supScr)
 			{
-				if(c >= '*' && c <= 'z')
+				if(c >= '*' && c <= '9')
 				{
 					supScrBuffer.append((char) c);
 					return;
 				}
 				else if(supScrBuffer.length() > 0)
 					endSuperscript(null);
+				else
+				{
+					System.out.print("False superscript at ");
+					pos();
+					supScr = false;
+				}
 			}
 		}
 		text[textLevel].append((char) c);
@@ -766,13 +817,28 @@ public class InddFileProcessor implements FileProcessor
 		backRefPrefix = endnoteLineToBackRefPrefixMap.get(filePageNum*10000+lineNumber);
 		if(backRefPrefix == null)
 		{
-			System.out.println("Notes section after: "
-				+ chapter.para.get(chapter.para.size()-2).text);
-			String s = scanner.next();
-			if("-".equals(s))
+			if(sameAnswerCounter > 0)
+			{
+				--sameAnswerCounter;
 				backRefPrefix = prevBackRefPrefix;
+			}
 			else
-				backRefPrefix = prevBackRefPrefix = "bf" + s;
+			{
+				System.out.println("Notes section after: "
+					+ chapter.para.get(chapter.para.size()-2).text);
+				String s = scanner.next();
+				if("X".equals(s))
+					throw new RuntimeException("Notes input aborted.");
+				else if("-".equals(s))
+					backRefPrefix = prevBackRefPrefix;
+				else if(s.startsWith("-"))
+				{
+					sameAnswerCounter = Integer.valueOf(s.substring(1));
+					backRefPrefix = prevBackRefPrefix;
+				}
+				else
+					backRefPrefix = prevBackRefPrefix = "be" + s;
+			}
 			endnoteLineToBackRefPrefixMap.put(filePageNum*10000+lineNumber, backRefPrefix);
 		}
 	}

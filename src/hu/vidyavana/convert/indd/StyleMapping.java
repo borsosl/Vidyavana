@@ -121,8 +121,17 @@ public class StyleMapping
 		if(para.cls != TorzsKoveto)
 		{
 			// modification of specifically mapped styles
-			if(para.cls == in0 && ps.align != null && ps.align == Align.Center)
+			if((para.cls == in0 || para.cls == Index) && ps.align == Align.Center)
 				para.cls = Szakaszcim;
+			if(para.cls == Fejezetszam || para.cls == Balra)
+			{
+				String upper = para.text.toString().toUpperCase();
+				if(upper.startsWith("CHAPTER") && upper.length()<30)
+				{
+					para.text.setLength(0);
+					para.text.append(upper);
+				}
+			}
 			return;
 		}
 		if(ps.size != null)

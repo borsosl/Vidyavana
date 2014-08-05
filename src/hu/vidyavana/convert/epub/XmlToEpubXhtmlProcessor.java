@@ -10,12 +10,16 @@ import java.util.regex.Pattern;
 
 public class XmlToEpubXhtmlProcessor implements FileProcessor
 {
+	public int FILE_LENGTH_GOAL = 50_000;
+	public boolean newFileAtSectionOnly = true;
+	public String[] breakOnlyFiles = {"02", "19", "22"};
+
 	public static Pattern TAG_NAME = Pattern.compile("^\\s*</?([^ >/]+)");
-	public static Pattern NEW_FILE_CLASS = Pattern.compile("\"(Versszam|Szakaszcim)\"");
+	public static Pattern NEW_FILE_CLASS = Pattern.compile("\"(Versszam|Szakaszcim|SzakaszcimBalra)\"");
 	public static Pattern TEXT_NUMBER = Pattern.compile("<text_number>(.*)</text_number>");
 	public static Pattern CHAPTER = Pattern.compile("<p class=\"Fejezetszam\">(.*)</p>");
 	public static Pattern CHAPTER_TITLE = Pattern.compile("<p class=\"Fejezetcim\">(.*)</p>");
-	public static Pattern SECTION = Pattern.compile("<p class=\"(Szakaszcim|Alcim)\">(.*)</p>");
+	public static Pattern SECTION = Pattern.compile("<p class=\"(Szakaszcim|SzakaszcimBalra|Alcim)\">(.*)</p>");
 	public static Pattern TEXT = Pattern.compile("<p class=\"Versszam\">(.*)</p>");
 	public static Pattern VERSE_BLOCK = Pattern.compile("class=\"(Uvaca|Vers|TorzsUvaca|TorzsVers|Hivatkozas)\"");
 	public static Pattern BR = Pattern.compile("\\s*<br\\s*/>\\s*");
@@ -42,7 +46,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	private String currentBaseFileName;
 	private String currentFileName;
 	private int currentFileIndex;
-	public int FILE_LENGTH_GOAL = 150_000;
+	private boolean thisFileBreakable;
 	private int fileTextLength;
 	private Level prevNavLevel;
 
@@ -58,6 +62,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		navPointCount = 0;
 		maxNavigationLevel = 0;
 		genHash = 0;
+		thisFileBreakable = breakOnlyFiles.length == 0;
 	}
 
 
@@ -70,6 +75,16 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 			fileName = fileName.substring(0, dot);
 		currentBaseFileName = fileName;
 		currentFileIndex = -1;
+		if(breakOnlyFiles.length > 0)
+		{
+			thisFileBreakable = false;
+			for(String f : breakOnlyFiles)
+				if(f.equals(currentBaseFileName))
+				{
+					thisFileBreakable = true;
+					break;
+				}
+		}
 		process(srcFile, startFile());
 	}
 
@@ -133,7 +148,9 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	
 	private Writer nextFile(Writer out, String line) throws Exception
 	{
-		boolean force = fileTextLength > FILE_LENGTH_GOAL * 3 / 2;
+		if(!thisFileBreakable)
+			return out;
+		boolean force = !newFileAtSectionOnly && fileTextLength > FILE_LENGTH_GOAL * 3 / 2;
 		if(force)
 			line = null;
 		

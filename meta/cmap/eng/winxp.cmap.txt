@@ -1,5 +1,6 @@
 * Courier New
 * Times New Roman
+* Times
 132	8222		„
 133	8230		…
 145	8216		’

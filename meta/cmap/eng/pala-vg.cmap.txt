@@ -1,5 +1,6 @@
-* Palatino Sanskrit Hu
-* Palatino Sanskrit Hu 2
+# VG only?
+#* Palatino Sanskrit Hu
+#* Palatino Sanskrit Hu 2
 131	7717		ḥ
 132	8222		„
 133	299		ī

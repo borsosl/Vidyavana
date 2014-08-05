@@ -44,6 +44,7 @@ public enum ParagraphClass
 	BalraKoveto(40),
 	BalraCim(41),
 	BalraCimBek(42),
+	BalraBek2(0),
 	Csillagok(43),
 	Ures1(44),
 	Ures2(45),
@@ -59,7 +60,8 @@ public enum ParagraphClass
 	in0(0),
 	in1(0),
 	in2(0),
-	in3(0);
+	in3(0),
+	SzakaszcimBalra(0);
 	
 	
 	
