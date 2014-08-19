@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 
 public class ParsedEpubToBalarama
 {
-	public static final String infn = "d:\\temp\\2\\Sarartha Darsini - Visvanath Cakravarti Thakur.html.trans";
-	public static final String outfn = "d:\\temp\\2\\Sarartha Darsini - Visvanath Cakravarti Thakur.html";
+	public static final String infn = "d:\\temp\\2\\Lord Caitanya's Associates.html.trans";
+	public static final String outfn = "d:\\temp\\2\\Lord Caitanya's Associates.html";
 	public Map<String, Integer> cmap = new LinkedHashMap<>();
 
 	
@@ -17,12 +17,20 @@ public class ParsedEpubToBalarama
 		balaramaFontMap();
 		try
 		{
-			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(infn), "8859_1"));
+			//BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(infn), "8859_1"));
+			BufferedInputStream in = new BufferedInputStream(new FileInputStream(infn));
 			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outfn));
+			StringBuilder sb = new StringBuilder(10000);
 			while(true)
 			{
-				String line = in.readLine();
-				if(line == null)
+				int c = in.read();
+				if(c != -1)
+					sb.append((char) c);
+				if(c != 10 && c != -1)
+					continue;
+				String line = sb.toString();
+				sb.setLength(0);
+				if(line.isEmpty() && c == -1)
 					break;
 				int pos = 0;
 				while(true)
@@ -45,8 +53,8 @@ public class ParsedEpubToBalarama
 					}
 				}
 				write(out, line, pos, line.length());
-				out.write(13);
-				out.write(10);
+				if(c == -1)
+					break;
 			}
 			in.close();
 			out.close();

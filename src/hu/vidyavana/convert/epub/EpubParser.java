@@ -19,8 +19,9 @@ import org.xml.sax.SAXException;
 
 public class EpubParser
 {
-	public static final String infn = "c:\\backup\\srsbooks\\Montano\\Sarartha Darsini - Visvanath Cakravarti Thakur.epub";
-	public static final String outfn = "c:\\backup\\srsbooks\\Montano\\Sarartha Darsini - Visvanath Cakravarti Thakur.html";
+	public static final String infn = "d:\\temp\\2\\Lord Caitanya's Associates.epub";
+	public static final String outfn = "d:\\temp\\2\\Lord Caitanya's Associates.html.trans";
+	public static final int BIGGEST_FILESIZE = 1_700_000;
 	static boolean markForFolio = false;
 	static boolean convertSanskrit = true;
 	
@@ -42,6 +43,8 @@ public class EpubParser
 			Matcher m = Pattern.compile("full-path=\"([^\"]+)\"").matcher(txt);
 			m.find();
 			String opfPath = m.group(1);
+			int ix = opfPath.lastIndexOf('/');
+			String opfRelPath = ix==-1 ? "" : opfPath.substring(0, ix+1);
 			zis = is();
 			txt = readText(zis, opfPath);
 			zis.close();
@@ -78,6 +81,7 @@ public class EpubParser
 					String href = it.getAttribute("href");
 					if(href == null)
 						continue;
+					href = opfRelPath+href;
 					System.out.println(href);
 					zis = is();
 					txt = readText(zis, href);
@@ -109,7 +113,7 @@ public class EpubParser
 				break;
 			if(e.getName().equals(path))
 			{
-				final byte[] inbuf = new byte[10000], outbuf = new byte[1000000];
+				final byte[] inbuf = new byte[10000], outbuf = new byte[BIGGEST_FILESIZE];
 				int ptr = 0;
 				int length;
 				while((length = zis.read(inbuf, 0, inbuf.length)) > 0)

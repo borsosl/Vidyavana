@@ -20,7 +20,7 @@ public class CharacterMapManager
 	static String DEFAULT_TEXT_MAP_FILE = "pala-sans-otf.cmap.txt";
 	static String DEFAULT_STYLENAME_MAP_FILE = "hun-legacy-ce.cmap.txt";
 //	static String DEFAULT_TEXT_MAP_FILE = "Balaram.cmap.txt";
-	static File cmapDir = new File(cmProp);
+	static File cmapDir;
 
 	Map<String, CharacterMap> fontToCmap;
 	List<CharacterMap> cmaps;
@@ -37,6 +37,7 @@ public class CharacterMapManager
 
 	public void init() throws Exception
 	{
+		cmapDir = new File(cmProp);
 		fontToCmap = new HashMap<>();
 		cmaps = new ArrayList<>();
 		new DirFilesProcessor().process(cmapDir.getAbsolutePath(), null, new FileProcessor()
