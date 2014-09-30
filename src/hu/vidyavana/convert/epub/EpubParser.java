@@ -1,6 +1,8 @@
 package hu.vidyavana.convert.epub;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -19,8 +21,8 @@ import org.xml.sax.SAXException;
 
 public class EpubParser
 {
-	public static final String infn = "d:\\temp\\2\\Lord Caitanya's Associates.epub";
-	public static final String outfn = "d:\\temp\\2\\Lord Caitanya's Associates.html.trans";
+	public static final String infn = "d:\\Temp\\2\\Amrita Vani.epub";
+	public static final String outfn = "d:\\Temp\\2\\Amrita Vani.html.trans";
 	public static final int BIGGEST_FILESIZE = 1_700_000;
 	static boolean markForFolio = false;
 	static boolean convertSanskrit = true;
@@ -33,7 +35,7 @@ public class EpubParser
 	}
 
 
-	private void process(HtmlContentAction action)
+	private void process(HtmlContentAction action) throws URISyntaxException
 	{
 		try
 		{
@@ -82,6 +84,8 @@ public class EpubParser
 					if(href == null)
 						continue;
 					href = opfRelPath+href;
+					URI uri = new URI(href);
+					href = uri.getPath();
 					System.out.println(href);
 					zis = is();
 					txt = readText(zis, href);
@@ -160,7 +164,7 @@ public class EpubParser
 	}
 
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		EpubMerge em = new EpubMerge();
 		em.init();
