@@ -1,21 +1,22 @@
 package hu.vidyavana.ui;
 
-import hu.vidyavana.db.*;
-import hu.vidyavana.db.api.*;
-import hu.vidyavana.db.model.Settings;
-import hu.vidyavana.util.*;
+import hu.vidyavana.db.AddBook;
+import hu.vidyavana.db.api.Lucene;
+import hu.vidyavana.util.Encrypt;
+import hu.vidyavana.util.Log;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.Date;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.border.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 import org.apache.lucene.index.IndexWriter;
-import com.sleepycat.persist.EntityCursor;
 
 public class Main implements UncaughtExceptionHandler
 {
@@ -62,7 +63,7 @@ public class Main implements UncaughtExceptionHandler
 				catch(Exception ex)
 				{
 				}
-				Db.inst.close();
+//				Db.inst.close();
 				Lucene.inst.close();
 				Log.close();
 			}
@@ -107,21 +108,21 @@ public class Main implements UncaughtExceptionHandler
 
 	private void databaseMigration()
 	{
-		Db.openForWrite();
-		EntityCursor<Settings> c = Settings.pkIdx().entities();
-		Settings set = c.first();
-		c.close();
-		if(set != null)
-			dbCreatedAt = set.createdAt;
-		else
-		{
-			set = new Settings();
-			dbCreatedAt = set.createdAt = new Date().toString();
-			set.dbMigrate = "0";
-			set.booksVersion = "0";
-			Settings.pkIdx().put(set);
-		}
-		Db.openForRead();
+//		Db.openForWrite();
+//		EntityCursor<Settings> c = Settings.pkIdx().entities();
+//		Settings set = c.first();
+//		c.close();
+//		if(set != null)
+//			dbCreatedAt = set.createdAt;
+//		else
+//		{
+//			set = new Settings();
+//			dbCreatedAt = set.createdAt = new Date().toString();
+//			set.dbMigrate = "0";
+//			set.booksVersion = "0";
+//			Settings.pkIdx().put(set);
+//		}
+//		Db.openForRead();
 	}
 
 
@@ -218,34 +219,8 @@ public class Main implements UncaughtExceptionHandler
 		JMenu dbMenuItem = new JMenu("Database");
 		menuBar.add(dbMenuItem);
 
-		dbMenuItem.add(new JMenuItem(new UpdateBooksAction()));
 		dbMenuItem.add(new JMenuItem(new AddBooksAction()));
 		dbMenuItem.add(new JMenuItem(new TestAction()));
-	}
-
-
-	private final class UpdateBooksAction extends AbstractAction
-	{
-		public UpdateBooksAction()
-		{
-			super("Update Books");
-		}
-
-
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			executor.execute(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					UpdateBooks ub = new UpdateBooks();
-					ub.run();
-					messageBox("Új: " + ub.added + ", módosítva: " + ub.updated, "Eredmény");
-				}
-			});
-		}
 	}
 
 
