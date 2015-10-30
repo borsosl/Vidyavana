@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 public class XmlToEpubXhtmlProcessor implements FileProcessor
 {
 	public int FILE_LENGTH_GOAL = 50_000;
-	public boolean newFileAtSectionOnly = true;
-	public String[] breakOnlyFiles = {"02", "19", "22"};
+	public boolean newFileAtSectionOnly = false;
+	public String[] breakOnlyFiles = {};
 
 	public static Pattern TAG_NAME = Pattern.compile("^\\s*</?([^ >/]+)");
 	public static Pattern NEW_FILE_CLASS = Pattern.compile("\"(Versszam|Szakaszcim|SzakaszcimBalra)\"");

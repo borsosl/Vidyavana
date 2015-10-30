@@ -1,6 +1,7 @@
 package hu.vidyavana.convert.ed;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class EdCharacter
@@ -56,7 +57,8 @@ public class EdCharacter
 		0x96, 'Ṇ',
 		0x9a, 'Ñ',
 		0x92, 'Ṛ',
-		0x9d, 'Ṝ',
+		// 0x9d, 'Ṝ',
+		0x9d, 'ṁ',
 		0x99, 'Ṣ',
 		0x90, 'Ś',
 		0x97, 'Ṭ',

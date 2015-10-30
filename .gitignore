@@ -1,7 +1,10 @@
+/.*/
 /cls
-/.classpath
 /runtime
 /museum
 /work
 /clsimport
 /srcimport
+/android/
+/server/app/WEB-INF/lib/
+X.*

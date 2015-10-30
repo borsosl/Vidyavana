@@ -12,18 +12,23 @@ import java.util.regex.Pattern;
 public class InddFileProcessor implements FileProcessor
 {
 	// conversion phase settings
-	private static boolean skipHyphens = false;
-	private static boolean skipFootnotes = false;
+	private static boolean skipHyphens = true;
+	private static boolean skipFootnotes = true;
 	private static boolean skipConnect = true;
 	
 	// book-specific settings
-	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{}));
+	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26}));
 	// NPH hun: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{54,342,348,374,392,432}));
 	// NPH eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{32,318,322,346,364}));
 	// KS eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{22,122,592,594,660,664}));
-	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{}));
+	// SBC eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26,28,646}));
+	// SG eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{162, 182, 228, 266}));
+	// SOI eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{14, 34, 44, 72, 78}));
+	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18}));
 	// NPH hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
 	// KS eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,64,121,171,443,481,508}));
+	// SBC eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{639}));
+	// SG eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{65}));
 	private int chapterDigits = 2;
 	private String endNoteFileName = "99";
 	// NPH: private String endNoteFileName = "22";
@@ -131,10 +136,15 @@ public class InddFileProcessor implements FileProcessor
 	private int torzsVersLineNum;
 	private int emptyRowsBefore;
 	private boolean verseBreak;
+	private boolean caps;
 	
 	// notes
 	private boolean supScr;
 	private StringBuilder supScrBuffer = new StringBuilder();
+	private boolean inFootnote;
+	private int fnCounter = 0;
+	private int currentFootnoteStart;
+	private StringBuilder footnoteBuffer = new StringBuilder();
 	private String forwardRefPrefix;
 	private String backRefPrefix;
 	private Map<String, String> endnoteFileNumMap = new HashMap<>();
@@ -293,6 +303,12 @@ public class InddFileProcessor implements FileProcessor
 
 	private void endChapter() throws IOException
 	{
+		if(footnoteBuffer.length() > 0)
+		{
+			chapter.footnotes = footnoteBuffer.toString();
+			footnoteBuffer.setLength(0);
+			fnCounter = 0;
+		}
 		if(book != null)
 			book.writeToFile(writerInfo);
 	}
@@ -319,6 +335,7 @@ public class InddFileProcessor implements FileProcessor
 		chapter.para.add(para);
 		text[0] = para.text;
 		paraStartPending = true;
+		caps = false;
 		wordBuffer.setLength(0);
 	}
 
@@ -490,6 +507,8 @@ public class InddFileProcessor implements FileProcessor
 		}
 		else if(tag.startsWith("ParaStyle:"))
 		{
+			if(inFootnote)
+				return;
 			charMaps.selectFont(CharacterMapManager.DEFAULT_STYLENAME);
 			String styleName = processLevel(tag.substring(10));
 			charMaps.selectFont(CharacterMapManager.DEFAULT_TEXT);
@@ -497,6 +516,8 @@ public class InddFileProcessor implements FileProcessor
 		}
 		else if(tag.startsWith("DefineParaStyle:"))
 		{
+			if(inFootnote)
+				return;
 			int eq = tag.indexOf('=');
 			if(eq < 0)
 				return;
@@ -562,6 +583,21 @@ public class InddFileProcessor implements FileProcessor
 					throw new RuntimeException("Unknown typeface: " + tag);
 				}
 			}
+			else if(tag.startsWith("CharStyle:"))
+			{
+				charMaps.selectFont(CharacterMapManager.DEFAULT_STYLENAME);
+				String styleName = processLevel(tag.substring(10));
+				charMaps.selectFont(CharacterMapManager.DEFAULT_TEXT);
+				if("dolt".equals(styleName))
+				{
+					boolean psp = paraStartPending;
+					addChars("<i>");
+					paraStartPending = psp;
+					formatStack.push("</i>");
+				}
+				else if(styleName.isEmpty())
+					purgeFormatStack();
+			}
 			else if(tag.startsWith("cFont:"))
 			{
 				String font = tag.substring(6).trim();
@@ -578,6 +614,13 @@ public class InddFileProcessor implements FileProcessor
 				if(val != null)
 					style.size = val;
 			}
+			else if(tag.startsWith("cCase:"))
+			{
+				if(textLevel==0 && (tag.endsWith(":All Caps") || tag.endsWith(":Small Caps")))
+					caps = true;
+				else if(tag.equals("cCase:"))
+					caps = false;
+			}
 			else if(tag.startsWith("cPosition:"))
 			{
 				if(tag.endsWith(":Superscript"))
@@ -590,12 +633,16 @@ public class InddFileProcessor implements FileProcessor
 			}
 			else if(tag.startsWith("FootnoteStart:"))
 			{
-				
+				inFootnote = true;
+				currentFootnoteStart = text[0].length();
 			}
 			else if(tag.startsWith("FootnoteEnd:"))
 			{
-				
+				endSuperscript(null);
+				inFootnote = false;
 			}
+			else if(inFootnote)
+				return;
 			else if(tag.startsWith("pTextAlignment:"))
 			{
 				if(tag.indexOf(":Justify") > -1)
@@ -716,7 +763,7 @@ public class InddFileProcessor implements FileProcessor
 				|| c>=256 && c<400 || c>7600 && c<7800 || c=='-' || c=='÷';
 			if(wordChar || !endWord(c))
 				wordBuffer.append((char) c);
-			if(supScr)
+			if(supScr && !inFootnote)
 			{
 				if(c >= '*' && c <= '9')
 				{
@@ -732,6 +779,8 @@ public class InddFileProcessor implements FileProcessor
 					supScr = false;
 				}
 			}
+			if(caps)
+				c = Character.toUpperCase(c);
 		}
 		text[textLevel].append((char) c);
 	}
@@ -752,6 +801,8 @@ public class InddFileProcessor implements FileProcessor
 				return style.font;
 			if(style.basedOn != null)
 				style = styleSheet.get(style.basedOn);
+			else
+				break;
 		}
 		return CharacterMapManager.DEFAULT_TEXT;
 	}
@@ -763,18 +814,30 @@ public class InddFileProcessor implements FileProcessor
 		if(skipFootnotes)
 			return;
 		String sup;
-		int dotIx;
-		if(paraBuf != null)
+		int dotIx = -1;
+		if(inFootnote)
+		{
+			sup = "" + (++fnCounter);
+			footnoteBuffer.append("    <p class=\"Labjegyzet\"><a id=\"f")
+				.append(sup)
+				.append("\" /><a href=\"#bf")
+				.append(sup)
+				.append("\">[")
+				.append(sup)
+				.append("]</a>")
+				.append(para.text.substring(currentFootnoteStart))
+				.append("</p>\r\n");
+			para.text.setLength(currentFootnoteStart);
+		}
+		else if(paraBuf != null)
 		{
 			dotIx = paraBuf.indexOf(".");
 			sup = paraBuf.substring(0, dotIx);
 			text[0] = new StringBuilder();
 		}
 		else
-		{
-			dotIx = -1;
 			sup = supScrBuffer.toString();
-		}
+
 		if(sup.isEmpty())
 			return;
 
@@ -782,7 +845,9 @@ public class InddFileProcessor implements FileProcessor
 		if(text[0].length()>0 && !isWhite(text[0].charAt(text[0].length()-1)))
 			text[0].append(' ');
 		text[0].append("<a id=\"");
-		if(forwardRefPrefix != null)
+		if(inFootnote)
+			text[0].append("bf").append(sup);
+		else if(forwardRefPrefix != null)
 		{
 			text[0].append(backRefPrefix).append(sup);
 			endnoteFileNumMap.put(backRefPrefix+sup, destName);
@@ -793,7 +858,9 @@ public class InddFileProcessor implements FileProcessor
 			text[0].append(backRefPrefix.substring(1)).append(sup);
 		}
 		text[0].append("\" /><a href=\"");
-		if(forwardRefPrefix != null)
+		if(inFootnote)
+			text[0].append("#f").append(sup);
+		else if(forwardRefPrefix != null)
 			text[0].append(endNoteFileName).append(".html#").append(forwardRefPrefix).append(sup);
 		else
 		{

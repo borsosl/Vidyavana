@@ -1,4 +1,5 @@
 * Palatino Sanskrit
+* Palatino Sanskrit \(TT\)
 128	257		ā
 129	7693		ḍ
 132	8222		„

@@ -4,7 +4,6 @@ import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
 import hu.vidyavana.convert.api.*;
 import hu.vidyavana.convert.api.WriterInfo.SpecialFile;
 import java.io.*;
-import java.nio.file.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -41,7 +40,7 @@ public class EdFileProcessor implements FileProcessor
 		this.destDir = destDir;
 		writerInfo = new WriterInfo();
 		writerInfo.fileNames = new ArrayList<>();
-		writerInfo.forEbook = !"false".equals(System.getProperty("for.ebook"));
+		//writerInfo.forEbook = !"false".equals(System.getProperty("for.ebook"));
 		ebookPath = System.getProperty("ebook.path");
 		manual = new ArrayList<String>();
 		
@@ -163,12 +162,14 @@ public class EdFileProcessor implements FileProcessor
 		File outDir = xml.getParentFile();
 		if(outDir.mkdirs() && ebookPath != null)
 		{
+			/*
 			Files.copy(new File(ebookPath, "ed.xsl").toPath(),
 				new File(outDir, "ed.xsl").toPath(),
 				StandardCopyOption.REPLACE_EXISTING);
 			Files.copy(new File(ebookPath, "ed.css").toPath(),
 				new File(outDir, "ed.css").toPath(),
 				StandardCopyOption.REPLACE_EXISTING);
+			 */
 		}
 		writerInfo.xmlFile = xml;
 		writerInfo.fileNames.add(xml.getName());

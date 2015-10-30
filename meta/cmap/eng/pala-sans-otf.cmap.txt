@@ -3,6 +3,10 @@
 * Helvetica
 * Arial Narrow \(OTF\)
 * Palatino Sanskrit Hu
+* Palatino Sanskrit Hu \(TT\)
+* Baskerville Sanskrit \(OTF\)
+* Baskerville Sanskrit
+* Dutch-801 Sanskrit \(OTF\)
 160	160	 	 
 161	363	¡	ū
 162	7779	¢	ṣ
