@@ -1,0 +1,381 @@
+p
+{
+	margin: 0;
+	padding: 0;
+}
+
+.Konyvcim
+{
+	font-size: 140%;
+	text-align: center !important;
+	font-weight: bold !important;
+	margin-top: 1em !important;
+	margin-bottom: 1em !important;
+}
+
+.Fejezetszam
+{
+	margin-top: 2em !important;
+	margin-bottom: 1em !important;
+	font-size: 115%;
+	text-align: center !important;
+}
+
+.FejezetszamNagy
+{
+	margin-top: 2em !important;
+	margin-bottom: 0.5em !important;
+	font-size: 140%;
+	font-weight: bold !important;
+	text-align: center !important;
+}
+
+.Fejezetcim
+{
+	margin-top: 1.5em !important;
+	margin-bottom: 1em !important;
+	font-size: 120%;
+	text-align: center !important;
+	font-weight: bold !important;
+}
+
+.Szakaszcim
+{
+	margin-top: 1em !important;
+	margin-bottom: 1em !important;
+	text-align: center !important;
+	font-weight: bold !important;
+}
+
+.Szakaszcim3
+{
+	margin-top: 3em !important;
+	margin-bottom: 1em !important;
+	text-align: center !important;
+	font-weight: bold !important;
+}
+
+.Alcim
+{
+	margin-top: 1em !important;
+	margin-bottom: 0.5em !important;
+	text-align: center !important;
+}
+
+.Alcim3
+{
+	margin-top: 3em !important;
+	margin-bottom: 0.5em !important;
+	text-align: center !important;
+}
+
+.Versszam
+{
+	margin-top: 1em !important;
+	margin-bottom: 1em !important;
+	text-align: center !important;
+	font-weight: bold !important;
+}
+
+.Uvaca
+{
+	text-align: center !important;
+	font-style: italic;
+}
+
+.Vers
+{
+	margin-bottom: 0.5em !important;
+	text-align: left !important;
+	font-style: italic;
+}
+
+.Uvaca + .Vers
+{
+	margin-top: 0 !important;
+}
+
+.Proza
+{
+	margin-bottom: 0.5em !important;
+	text-indent: 1.5em;
+	text-align: justify;
+	font-style: italic;
+}
+
+.Szavak
+{
+	margin-top: 0.5em !important;
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.Forditas
+{
+	margin-top: 0.5em !important;
+	text-indent: 1.5em;
+	text-align: justify;
+	font-weight: bold !important;
+}
+
+.TorzsKezdet
+{
+	margin-top: 0.5em !important;
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.TorzsKezdet0Bek
+{
+	margin-top: 0.5em !important;
+	text-align: justify;
+}
+
+.TorzsKoveto
+{
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.TorzsKezdetDolt
+{
+	margin-top: 0.5em !important;
+	text-indent: 1.5em;
+	text-align: justify;
+	font-style: italic;
+}
+
+.TorzsKovetoDolt
+{
+	text-indent: 1.5em;
+	text-align: justify;
+	font-style: italic;
+}
+
+.TorzsVersszam
+{
+	margin-top: 1em !important;
+	text-align: center !important;
+}
+
+.TorzsUvaca
+{
+	margin-top: 0.5em !important;
+	text-align: center !important;
+	font-style: italic;
+}
+
+.TorzsVers
+{
+	margin-top: 0.5em !important;
+	text-align: left;
+	font-style: italic;
+}
+
+.TorzsUvaca + .TorzsVers
+{
+	margin-top: 0 !important;
+}
+
+.Hivatkozas
+{
+	margin-top: 1em !important;
+	text-align: right !important;
+}
+
+.Balra
+{
+	margin-top: 1em !important;
+	text-align: left !important;
+}
+
+.Kozepen
+{
+	margin-top: 0.5em !important;
+	text-align: center !important;
+}
+
+.KozepenDolt
+{
+	margin-top: 0.5em !important;
+	text-align: center !important;
+	font-style: italic;
+}
+
+.KozepenKoveto
+{
+	text-align: center !important;
+}
+
+.KozepenKovetoDolt
+{
+	text-align: center !important;
+	font-style: italic;
+}
+
+.Jobbra
+{
+	text-align: right !important;
+}
+
+.MegjegyzesKezdet, .MegjegyzesKoveto, .MegjegyzesKozepen, .MegjegyzesJobbra
+{
+	margin-left: 3em !important;
+	margin-right: 3em !important;
+	font-size: 95%;
+}
+
+.MegjegyzesKezdet
+{
+	margin-top: 0.5em !important;
+	text-align: justify;
+}
+
+.MegjegyzesKoveto
+{
+	text-indent: 1.5em;
+	text-align: justify;
+}
+
+.MegjegyzesKozepen
+{
+	margin-top: 0.5em !important;
+	margin-bottom: 0.5em !important;
+	text-align: center !important;
+}
+
+.MegjegyzesJobbra
+{
+	text-align: right !important;
+}
+
+.Index
+{
+	/* in0..in4 instead */
+}
+
+.in0
+{
+	text-indent: -2.4em;
+	margin-left: 2.4em !important;
+}
+
+.in1
+{
+	text-indent: -2.4em;
+	margin-left: 3.6em !important;
+}
+
+.in2
+{
+	text-indent: -2.4em;
+	margin-left: 4.8em !important;
+}
+
+.in3
+{
+	text-indent: -2.4em;
+	margin-left: 6em !important;
+}
+
+.in4
+{
+	text-indent: -2.4em;
+	margin-left: 7.2em !important;
+}
+
+.BalraKoveto
+{
+	text-align: left;
+}
+
+.BalraCim
+{
+	text-align: left;
+	font-size: 110%;
+	font-weight: bold !important;
+}
+
+.BalraCimBek
+{
+	text-align: left;
+	font-size: 110%;
+	font-weight: bold !important;
+	margin-left: 2em !important;
+}
+
+.VsWrap1
+{
+	text-align: center !important;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.VsWrap2
+{
+	display: inline-block;
+}
+
+.Csillagok
+{
+	text-align: center !important;
+	margin-top: 1em !important;
+	margin-bottom: 0.5em !important;
+}
+
+.Ures1
+{
+	height: 1em;
+}
+
+.Ures2
+{
+	height: 2em;
+}
+
+.Ures3
+{
+	height: 3em;
+}
+
+.UjOldal
+{
+	height: 0;
+	line-height: 0;
+	page-break-before: always;
+}
+
+td
+{
+	padding-left: 3em !important;
+	text-align: left !important;
+}
+
+.Acarya
+{
+	margin-top: 1em !important;
+	text-align: left;
+	font-weight: bold !important;
+}
+
+.cNormal
+{
+	font-weight: normal !important;
+	font-style: normal;
+}
+
+.Labjegyzet
+{
+	margin-top: 0.5em !important;
+	text-align: left;
+	text-indent: -1.5em;
+	margin-left: 1.5em !important;
+}
+
+.LabjegyzetKoveto
+{
+	text-align: left;
+	text-indent: 1.5em;
+	margin-left: 1.5em !important;
+}
+

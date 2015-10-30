@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                        http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0"
+    metadata-complete="true">
+
+    <display-name>Pandit webapp</display-name>
+    <description>
+         Pandit web application
+    </description>
+
+	<listener>
+		<listener-class>hu.vidyavana.web.StartStop</listener-class>
+	</listener>
+    
+    <servlet>
+        <servlet-name>pandit</servlet-name>
+        <servlet-class>hu.vidyavana.web.PanditServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>pandit</servlet-name>
+        <url-pattern></url-pattern>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Pandit auth</web-resource-name>
+			<url-pattern>/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>pandit</role-name>
+		</auth-constraint>
+
+		<user-data-constraint>
+			<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+
+</web-app>

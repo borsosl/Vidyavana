@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build" name="build jar for Pandit webapp">
+    <target name="build">
+        <jar destfile="pandit.jar">
+            <fileset dir="../cls" includes="hu/ **/convert/api/" excludes="**/.gitignore **/convert/" />
+        </jar>
+    </target>
+</project>
