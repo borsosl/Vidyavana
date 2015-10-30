@@ -16,7 +16,6 @@ import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
-import org.apache.lucene.index.IndexWriter;
 
 public class Main implements UncaughtExceptionHandler
 {
@@ -26,7 +25,6 @@ public class Main implements UncaughtExceptionHandler
 	public JFrame frame;
 	private JMenuBar menuBar;
 	private JToolBar toolBar;
-	public String dbCreatedAt;
 
 
 	public static void main(String[] args)
@@ -240,16 +238,14 @@ public class Main implements UncaughtExceptionHandler
 				@Override
 				public void run()
 				{
-					String[] paths = {};
-					IndexWriter writer = Lucene.inst.open().writer();
-					for(int bookId = 1; bookId <= paths.length; ++bookId)
+					try
 					{
-						if(bookId == 2 || bookId == 14)
-							continue;
-						System.out.println(bookId);
-						new AddBook(bookId, paths[bookId - 1], writer).run();
+						AddBook.addFromStaticList();
 					}
-					Lucene.inst.closeWriter();
+					catch(IOException ex)
+					{
+						ex.printStackTrace();
+					}
 				}
 			});
 		}

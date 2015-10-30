@@ -1,0 +1,61 @@
+package hu.vidyavana.db;
+
+import hu.vidyavana.db.api.Lucene;
+import java.io.IOException;
+import org.apache.lucene.document.*;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.FieldInfo.IndexOptions;
+import org.apache.lucene.index.IndexWriter;
+
+public class IndexBooks
+{
+	private IndexWriter iw;
+	private FieldType txtFieldType;
+	private int bookId;
+	private int segment;
+
+	
+	public void init()
+	{
+		iw = Lucene.inst.open().writer();
+		txtFieldType = new FieldType();
+		txtFieldType.setIndexed(true);
+		txtFieldType.setTokenized(true);
+		txtFieldType.setStored(false);
+		txtFieldType.setStoreTermVectors(false);
+		txtFieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
+		txtFieldType.freeze();
+	}
+
+
+	public void initBook(int bookId, int segment)
+	{
+		this.bookId = bookId;
+		this.segment = segment;
+	}
+
+
+	public void addPara(int ordinal, String txt)
+	{
+		Document doc = new Document();
+		doc.add(new IntField("bookId", bookId, Store.YES));
+		doc.add(new IntField("segment", segment, Store.YES));
+		doc.add(new IntField("ordinal", ordinal, Store.YES));
+		doc.add(new Field("text", txt, txtFieldType));
+		try
+		{
+			// TODO transaction
+			iw.addDocument(doc);
+		}
+		catch(IOException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+	}
+
+
+	public void finish()
+	{
+		Lucene.inst.closeWriter();
+	}
+}

@@ -1,11 +1,16 @@
 package hu.vidyavana.db.api;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.*;
-import org.apache.lucene.search.*;
-import org.apache.lucene.store.*;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 public class Lucene
@@ -22,7 +27,7 @@ public class Lucene
 		try
 		{
 			analyzer = new StandardAnalyzer(Version.LUCENE_42);
-			index = FSDirectory.open(new File("./index"));
+			index = FSDirectory.open(new File("."));
 			return this;
 		}
 		catch(IOException ex)

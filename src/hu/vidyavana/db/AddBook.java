@@ -1,64 +1,118 @@
 package hu.vidyavana.db;
 
 import hu.vidyavana.convert.api.ParagraphClass;
-import hu.vidyavana.db.api.Db;
-import hu.vidyavana.db.model.*;
-import hu.vidyavana.util.*;
+import hu.vidyavana.db.model.BookSegment;
+import hu.vidyavana.db.model.StoragePara;
+import hu.vidyavana.db.model.StorageRoot;
+import hu.vidyavana.db.model.StorageTocItem;
+import hu.vidyavana.util.FileUtil;
+import hu.vidyavana.util.Globals;
+import hu.vidyavana.util.XmlUtil;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.regex.*;
-import org.apache.lucene.document.*;
-import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.index.FieldInfo.IndexOptions;
-import org.apache.lucene.index.*;
-import org.w3c.dom.*;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.w3c.dom.Document;
-import com.sleepycat.persist.PrimaryIndex;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class AddBook
 {
 	public static Pattern XML_LINE = Pattern.compile("^\\s*(<p( class=\"(.*?)\")?.*?>)?(.*?)(</p>|$)");
 	
-	private int bookId;
 	private String bookPath;
 	private File bookDir;
-	private final IndexWriter iw;
-	private FieldType txtFieldType;
+	private IndexBooks ib;
 	private ArrayList<String> bookFileNames;
 
+	private StorageRoot store;
+	private BookSegment bs;
+
+	private List<StoragePara> paraList;
+
+
 	
-	public AddBook(int bookId, String bookPath, IndexWriter writer)
+	public AddBook(String bookPath, StorageRoot store, IndexBooks ib)
 	{
-		this.bookId = bookId;
 		this.bookPath = bookPath;
+		this.store = store;
+		this.ib = ib;
 		bookDir = new File(this.bookPath);
-		this.iw = writer;
-		txtFieldType = new FieldType();
-		txtFieldType.setIndexed(true);
-		txtFieldType.setTokenized(true);
-		txtFieldType.setStored(false);
-		txtFieldType.setStoreTermVectors(false);
-		txtFieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
-		txtFieldType.freeze();
 	}
 	
 	
 	public void run()
 	{
-		Db.openForWrite();
-		addToc();
-		addChapters();
-		Db.openForRead();
+		long startPos = -1;
+		try
+		{
+			store.openForWrite();
+			store.setEncrypted(false);
+			startPos = store.handle.length();
+			bs = new BookSegment();
+			addHead();
+			ib.initBook(bs.bookId, bs.segment);
+			addContent();
+			bs.write(store);
+			bs.para = null;
+		}
+		catch(IOException ex)
+		{
+			if(startPos > -1)
+				try
+				{
+					store.handle.setLength(startPos);
+				}
+				catch(IOException ex1)
+				{
+				}
+			throw new RuntimeException("Error writing content file.", ex);
+		}
 	}
 
 
-	private void addToc()
+	private void addHead()
 	{
 		Element docElem = getXmlRoot("toc.xml");
-		// String xmlVersion = docElem.getElementsByTagName("version").item(0).getTextContent();
-
-		PrimaryIndex<BookOrdinalKey, Contents> idx = Contents.pkIdx();
+		NodeList children = docElem.getChildNodes();
+		String segmentTitle = null;
+		int segmentTitleOfs = 0;
+		for(int j=0, len2 = children.getLength(); j<len2; ++j)
+		{
+			Node n = children.item(j);
+			if("title".equals(n.getNodeName()))
+				bs.title = n.getTextContent().trim();
+			else if("id".equals(n.getNodeName()))
+				bs.bookId = Short.parseShort(n.getTextContent().trim());
+			else if("segment".equals(n.getNodeName()))
+				bs.segment = Byte.parseByte(n.getTextContent().trim());
+			else if("segment_title".equals(n.getNodeName()))
+				segmentTitle = n.getTextContent().trim();
+			else if("priority".equals(n.getNodeName()))
+				bs.priority = Integer.parseInt(n.getTextContent().trim());
+			else if("version".equals(n.getNodeName()))
+				bs.repoVersion = Integer.parseInt(n.getTextContent().trim());
+		}
+		
 		NodeList entries = docElem.getElementsByTagName("entries");
+		List<StorageTocItem> cts = new ArrayList<StorageTocItem>();
+
+		if(segmentTitle != null)
+		{
+			// empty title: continuing of prev segment and level 1 title
+			if(!segmentTitle.isEmpty())
+			{
+				StorageTocItem contents = new StorageTocItem();
+				contents.level = 1;
+				contents.title = segmentTitle;
+				contents.paraOrdinal = 1;
+				cts.add(contents);
+			}
+			segmentTitleOfs = 1;
+		}
+		
 		if(entries.getLength() > 0)
 		{
 			NodeList entryList = entries.item(0).getChildNodes();
@@ -67,29 +121,25 @@ public class AddBook
 				Node entry = entryList.item(i);
 				if(!"entry".equals(entry.getNodeName()))
 					continue;
-				NodeList children = entry.getChildNodes();
-				int tocOrdinal = -1;
-				Contents contents = new Contents();
+				children = entry.getChildNodes();
+				StorageTocItem contents = new StorageTocItem();
 				for(int j=0, len2 = children.getLength(); j<len2; ++j)
 				{
 					Node n = children.item(j);
 					String txt = n.getTextContent().trim();
 					if("level".equals(n.getNodeName()))
-						contents.level = Integer.parseInt(txt);
-					else if("division".equals(n.getNodeName()))
-						contents.division = txt;
+						contents.level = (byte)(Integer.parseInt(txt) + segmentTitleOfs);
 					else if("title".equals(n.getNodeName()))
 						contents.title = txt;
-					else if("toc_ordinal".equals(n.getNodeName()))
-						tocOrdinal = Integer.parseInt(txt);
 					else if("para_ordinal".equals(n.getNodeName()))
-						contents.bookParaOrdinal = Integer.parseInt(txt);
+						contents.paraOrdinal = Short.parseShort(txt);
 				}
-				contents.key = new BookOrdinalKey(bookId, tocOrdinal);
 				if(contents.title == null)
 					contents.title = "";
-				idx.put(contents);
+				cts.add(contents);
 			}
+			bs.contents = new StorageTocItem[cts.size()];
+			cts.toArray(bs.contents);
 		}
 		
 		bookFileNames = new ArrayList<>();
@@ -107,18 +157,18 @@ public class AddBook
 	}
 
 
-	private void addChapters()
+	private void addContent()
 	{
-		PrimaryIndex<BookOrdinalKey, Para> idx = Para.pkIdx();
+		paraList = new ArrayList<StoragePara>();
 		int bookParaOrdinal = 0;
 		for(String fname : bookFileNames)
 		{
 			File f = new File(bookDir, fname);
 			BufferedReader in = null;
+			StoragePara para = null;
 			try
 			{
 				in = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-				Para para = null;
 				StringBuilder paraSB = new StringBuilder(10000);
 				boolean inPara = false;
 				while(true)
@@ -126,12 +176,14 @@ public class AddBook
 					String line = in.readLine();
 					if(line == null)
 						break;
+
 					Matcher m = XML_LINE.matcher(line);
 					m.find();
 					if(m.group(1) != null)
 					{
+						// add previous para
 						if(inPara)
-							addPara(para, paraSB, idx);
+							addPara(para, paraSB, bookParaOrdinal++);
 						
 						String className = m.group(3);
 						ParagraphClass cls;
@@ -144,7 +196,8 @@ public class AddBook
 							cls = ParagraphClass.TorzsKoveto;
 						}
 						
-						para = new Para(bookId, ++bookParaOrdinal, cls.code, null);
+						para = new StoragePara();
+						para.cls = cls;
 						
 						String txt = m.group(4);
 						paraSB.setLength(0);
@@ -153,16 +206,19 @@ public class AddBook
 						inPara = true;
 					}
 					else if(inPara)
+						// not <p> start, but </p> not reached before: continuing line
 						paraSB.append(' ').append(m.group(4));
 
 					if(inPara)
 					{
-						// if <p> is started or cont'd, look for </p>
+						// if <p> has started or cont'd, look for </p>
 						inPara = m.group(5).length() == 0;
 						if(!inPara)
-							addPara(para, paraSB, idx);
+							addPara(para, paraSB, bookParaOrdinal++);
 					}
 				}
+				bs.para = new StoragePara[paraList.size()];
+				paraList.toArray(bs.para);
 			}
 			catch(Exception ex)
 			{
@@ -184,25 +240,12 @@ public class AddBook
 	}
 
 
-	private void addPara(Para para, StringBuilder paraSB, PrimaryIndex<BookOrdinalKey, Para> idx)
+	private void addPara(StoragePara para, StringBuilder paraSB, int ordinal)
 	{
 		String paraTxt = paraSB.toString();
-		para.text = Encrypt.getInstance().encrypt(paraTxt);
-		idx.put(para);
-		
-		org.apache.lucene.document.Document doc = new org.apache.lucene.document.Document();
-		doc.add(new IntField("bid", bookId, Store.YES));
-		doc.add(new IntField("ord", para.key.ordinal, Store.YES));
-		doc.add(new Field("text", paraTxt, txtFieldType));
-		try
-		{
-			// TODO transaction
-			iw.addDocument(doc);
-		}
-		catch(IOException ex)
-		{
-			throw new RuntimeException(ex);
-		}
+		para.text = paraTxt;
+		paraList.add(para);
+		//ib.addPara(ordinal, paraTxt);
 	}
 
 
@@ -212,5 +255,101 @@ public class AddBook
 		String xml = XmlUtil.readFromFile(f);
 		Document doc = XmlUtil.domFromString(xml);
 		return doc.getDocumentElement();
+	}
+
+	
+	public static void addFromStaticList() throws IOException
+	{
+		StorageRoot sroot = StorageRoot.SYSTEM;
+		sroot.useFile(StorageRoot.SYSTEM_FILE);
+		String[] paths = {
+			"d:\\wk2\\Sastra\\BBT\\v2012\\xml\\bg",
+			"d:\\wk2\\Sastra\\BBT\\v2012\\xml\\SB  1"
+		};
+		IndexBooks ib = new IndexBooks();
+		ib.init();
+		for(String path : paths)
+		{
+			System.out.println(path);
+			new AddBook(path, sroot, ib).run();
+		}
+		ib.finish();
+		sroot.close();
+	}
+
+	
+	public static void rebuildOnServer(String user, Writer out)
+	{
+		StorageRoot sroot = StorageRoot.SYSTEM;
+		IndexBooks ib = null;
+		try
+		{
+			File xmlRoot;
+			if(Globals.localEnv)
+				xmlRoot = new File("d:\\wk2\\Sastra\\BBT\\v2012\\xml");
+			else if(Globals.serverEnv)
+				xmlRoot = new File(Globals.cwd, user==null ? "system" : "users/"+user);
+			else
+				xmlRoot = null;
+			
+			// read dir list
+			List<String> books = FileUtil.readTextFile(new File(xmlRoot, "booklist.txt"));
+			if(books == null)
+				throw new RuntimeException("book list missing from path " + xmlRoot.getAbsolutePath());
+			
+			if(user == null)
+			{
+				sroot = StorageRoot.SYSTEM;
+				sroot.close();
+			}
+			else
+				sroot = new StorageRoot(new File(xmlRoot, "../user.pdt"));
+
+			ib = new IndexBooks();
+			ib.init();
+			for(String book : books)
+			{
+				File f = new File(xmlRoot, book);
+				if(!f.exists())
+					continue;
+				String path = f.getAbsolutePath();
+				out.write(path);
+				out.write("<br/>");
+				new AddBook(path, sroot, ib).run();
+			}
+			out.write("done<br/>");
+			sroot.close();
+		}
+		catch(IOException ex)
+		{
+			try
+			{
+				out.write("exception<br/>");
+			}
+			catch(IOException ex1)
+			{
+			}
+		}
+		finally
+		{
+			if(ib != null)
+				ib.finish();
+			if(user == null)
+			{
+				try
+				{
+					sroot.openForRead();
+				}
+				catch(IOException ex)
+				{
+				}
+			}
+		}
+	}
+
+	
+	public static void main(String[] args) throws IOException
+	{
+		addFromStaticList();
 	}
 }
