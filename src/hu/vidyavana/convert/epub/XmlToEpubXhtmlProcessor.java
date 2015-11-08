@@ -1,12 +1,12 @@
 package hu.vidyavana.convert.epub;
 
-import hu.vidyavana.convert.api.FileProcessor;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import hu.vidyavana.convert.api.FileProcessor;
 
 public class XmlToEpubXhtmlProcessor implements FileProcessor
 {
@@ -21,7 +21,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	public static Pattern CHAPTER_TITLE = Pattern.compile("<p class=\"Fejezetcim\">(.*)</p>");
 	public static Pattern SECTION = Pattern.compile("<p class=\"(Szakaszcim|SzakaszcimBalra|Alcim)\">(.*)</p>");
 	public static Pattern TEXT = Pattern.compile("<p class=\"Versszam\">(.*)</p>");
-	public static Pattern VERSE_BLOCK = Pattern.compile("class=\"(Uvaca|Vers|TorzsUvaca|TorzsVers|Hivatkozas)\"");
+	public static Pattern VERSE_BLOCK = Pattern.compile("class=\"(Uvaca|Vers|TorzsUvaca|TorzsVers|TorzsVersKozep|Hivatkozas)\"");
 	public static Pattern BR = Pattern.compile("\\s*<br\\s*/>\\s*");
 	public static Pattern B = Pattern.compile("</?b>");
 	public static Pattern INDENT = Pattern.compile("^\\s*");

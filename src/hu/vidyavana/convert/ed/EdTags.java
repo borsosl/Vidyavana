@@ -1,8 +1,8 @@
 package hu.vidyavana.convert.ed;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
-import hu.vidyavana.convert.api.ParagraphClass;
 import java.util.TreeMap;
+import hu.vidyavana.convert.api.ParagraphClass;
 
 public enum EdTags
 {
@@ -28,6 +28,7 @@ public enum EdTags
 	ch_title_f2("ch title f2"),
 	ch_title_fb("ch title fb"),
 	ch_title_fm("ch title fm"),
+	ch_title_1("ch title 1"),
 	ch_title_i("ch title i"),
 	ch_verse("ch verse"),
 	chapter("chapter", Fejezetszam),
@@ -99,6 +100,9 @@ public enum EdTags
 	notes("notes"),
 	npurp("npurp"),
 	number("number"),
+	num_one("num one"),
+	num_one_one("num one one"),
+	num_two("num two"),
 	om_tat_sat("om tat sat"),
 	p_tab("p tab"),
 	para_2_orp("para 2 orp"),
@@ -110,10 +114,13 @@ public enum EdTags
 	prose("prose", Proza),
 	prose_in_purp("prose in purp"),
 	purp_1orp("purp 1orp"),
+	purp_2_orp("purp 2 orp"),
 	purp_no_break("purp no break"),
+	purp_one("purp one"),
 	purp_para("purp para", TorzsKoveto),
 	purp_small("purp small"),
 	purp_space("purp space", Kozepen, "@@@"),
+	purp_two("purp two"),
 	purport("purport", TorzsKezdet),
 	purp_uvaca("purp uvaca"),
 	push_1_point("push 1 point"),
@@ -146,6 +153,7 @@ public enum EdTags
 	sans_uvaca_id("sans uvaca id"),
 	sanskrit("sanskrit", Vers),
 	signature("signature"),
+	sign_eps("sign eps"),
 	sloka("sloka"),
 	small_foot("small foot"),
 	special("special"),
@@ -196,7 +204,7 @@ public enum EdTags
 			chapter_p1, chapter_p2, chapter_m1},
 		{chapter_title,
 			chapter_spec, chapter_more, chapter_nospa, ch_title_f, ch_title_f2, ch_title_fb, ch_title_fm,
-			ch_title_i, ds_title, intro, history, history_no},
+			ch_title_1, ch_title_i, ds_title, intro, history, history_no},
 		{text},
 		{sans_uvaca,
 			sansuvaca},
@@ -210,10 +218,11 @@ public enum EdTags
 		{purport,
 			biglet, biglet1, date_no_space, date_space, datesmal, dc_left_top, end, fl_body_1, 
 			gl_first, gl_purp, introduction, keep_p_n, keep_p_p, notes, p_tab, prose_in_purp, purp_1orp,
-			purp_no_break, purp_small, wa_side, xi_head_text, xs_head_text, para_no_break},
+			purp_2_orp, purp_no_break, purp_small, wa_side, xi_head_text, xs_head_text, para_no_break,
+			purp_one, purp_two, num_one, num_one_one},
 		{purp_para,
 			dc_body_l, dc_body_r, dc_right_top, fl_body, glossary, italic_para, keep_pp_n, keep_pp_p,
-			pp_tab, para_2_orp, wa_body},
+			pp_tab, para_2_orp, wa_body, num_two},
 		{purp_space,
 			asterisk, endend},
 		{verse_uvaca,
@@ -243,7 +252,7 @@ public enum EdTags
 			book_title, lila, chaptno, chapt_no, chapter_head, textno},
 		{unhandled,
 			benbo, benro, ch_line, /* dev...*/ eop, foot_line, line,
-			pr_pic, /* push...*/ special, wa_number}};
+			pr_pic, /* push...*/ sign_eps, special, wa_number}};
 
 	
 	public static TreeMap<String, EdTags> map = new TreeMap<>();

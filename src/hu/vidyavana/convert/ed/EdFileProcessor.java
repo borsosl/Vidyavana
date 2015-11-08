@@ -1,11 +1,11 @@
 package hu.vidyavana.convert.ed;
 
 import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
-import hu.vidyavana.convert.api.*;
-import hu.vidyavana.convert.api.WriterInfo.SpecialFile;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import hu.vidyavana.convert.api.*;
+import hu.vidyavana.convert.api.WriterInfo.SpecialFile;
 
 public class EdFileProcessor implements FileProcessor
 {
@@ -367,7 +367,11 @@ public class EdFileProcessor implements FileProcessor
 						{
 							if(processed == 'J')
 							{
-								double num = Double.parseDouble(number.toString());
+								double num;
+								if(number.length() == 0)
+									num = 0;
+								else
+									num = Double.parseDouble(number.toString());
 								if(num > 200d)
 								{
 									para.text.append("<sup>");
@@ -381,7 +385,10 @@ public class EdFileProcessor implements FileProcessor
 							}
 							else if(processed == 'F')
 							{
-								fontCode = Integer.parseInt(number.toString());
+								if(number.length() == 0)
+									fontCode = 0;
+								else
+									fontCode = Integer.parseInt(number.toString());
 								if(fontCode == 255)
 									fontCode = 0;
 							}
@@ -581,6 +588,8 @@ public class EdFileProcessor implements FileProcessor
 					
 					if(c >= 128)
 					{
+						if(c == 253)
+							continue;
 						int savedCode = c;
 						c = EdCharacter.convert(c);
 						if(c == 0)
