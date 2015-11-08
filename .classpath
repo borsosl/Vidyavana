@@ -18,7 +18,8 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="server/app/WEB-INF/lib/gson-2.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/tomcat7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/tomcat8-boot"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/tomcat8-runtime"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="cls"/>
 </classpath>

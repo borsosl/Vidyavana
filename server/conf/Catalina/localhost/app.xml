@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context 
+	path="/app" 
+	docBase="c:/Wk/prg/Java/vidyavana/server/app" 
+	workDir="c:/Wk/prg/Java/vidyavana/server/app/WEB-INF/work">
+      <JarScanner>
+          <JarScanFilter pluggabilitySkip="*" tldSkip="*" />
+      </JarScanner>
+</Context>

@@ -27,12 +27,14 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
+    <security-role>
+        <role-name>pandit</role-name>
+    </security-role>
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Pandit auth</web-resource-name>
 			<url-pattern>/*</url-pattern>
-			<http-method>GET</http-method>
-			<http-method>POST</http-method>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>pandit</role-name>

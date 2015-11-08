@@ -7,4 +7,6 @@
 /srcimport
 /android/
 /server/app/WEB-INF/lib/
+/server/app/WEB-INF/work/
+font/
 X.*
