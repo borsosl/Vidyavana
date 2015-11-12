@@ -32,6 +32,37 @@ public class ParagraphStyle
 	public List<Integer> tabs;
 
 	public int emptyRowsBefore;
+
+
+	public void apply(ParagraphStyle style)
+	{
+		if(style.basedOn != null)
+			basedOn = style.basedOn;
+		if(style.align != null)
+			align = style.align;
+		if(style.font != null)
+			font = style.font;
+		if(style.size != null)
+			size = style.size;
+		if(style.bold != null)
+			bold = style.bold;
+		if(style.italic != null)
+			italic = style.italic;
+		if(style.left != null)
+			left = style.left;
+		if(style.right != null)
+			right = style.right;
+		if(style.before != null)
+			before = style.before;
+		if(style.after != null)
+			after = style.after;
+		if(style.first != null)
+			first = style.first;
+		if(style.hanging != null)
+			hanging = style.hanging;
+		if(style.tabs != null && style.tabs.size() > 0)
+			tabs = new ArrayList<Integer>(style.tabs);
+	}
 	
 	
 	@Override

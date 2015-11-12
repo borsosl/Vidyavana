@@ -58,7 +58,6 @@ public class EdCharacter
 		0x9a, 'Ñ',
 		0x92, 'Ṛ',
 		// 0x9d, 'Ṝ',
-		0x9d, 'ṁ',
 		0x99, 'Ṣ',
 		0x90, 'Ś',
 		0x97, 'Ṭ',
@@ -73,6 +72,7 @@ public class EdCharacter
 		0xcf, '«',
 		
 		0xc3, 'ā',
+		0x9d, 'ṁ',
 		0xe1, 'ḹ',
 		0xef, ' '
 		
