@@ -1,22 +1,63 @@
-var book,
-    measure,
-    loadMode = {section: 1, next: 2, down: 3, up: 4},
-    $msg,
-    nodeToUpdate,
-    selSection,
-    txtViewHgt,
-    loadedHgt,
-    scrollTop,
-    textBoundary,
-    $txt,
-    emptyEndBlock;
+// internal singletons
+var book, measure;
+// const collection
+var loadMode = {section: 1, next: 2, down: 3, up: 4};
+/**
+ * @type {JQuery} - points to centered message box
+ */
+var $msg;
+/**
+ * Stores info about current section selection.
+ * @type {{sel:HTMLElement, level:number, id:number, node:TocTreeItem}}
+ */
+var nodeToUpdate;
+/**
+ * @type {number} - TOC node id currently selected in UI.
+ */
+var selSection;
+/**
+ * @type {number} - px height of text canvas
+ */
+var txtViewHgt;
+/**
+ * @type {number} - measured height of text currently in DOM (scrolled)
+ */
+var loadedHgt;
+/**
+ * @type {number} - current scroll position of text in DOM
+ */
+var scrollTop;
+/**
+ * @type {boolean} - the previous up/down request hit the edge of the book
+ */
+var textBoundary;
+/**
+ * @type {JQuery} - container for text content
+ */
+var $txt;
+/**
+ * @type {boolean} - an empty spacer div has been added to book end
+ */
+var emptyEndBlock;
+/**
+ * @type {string} - top|bottom : where reduce() should shorten text in DOM
+ */
 var reduceAt;
 
 
+/**
+ * Sends ajax request to get text chunk. Starts rendering based on the
+ * scroll direction that started the request.
+ * @param {number} mode - one of loadMode's
+ * @param {number?} px - scroll amount to pass on after loading
+ */
 function loadText(mode, px)
 {
     var m = loadMode;
 
+    /**
+     * @returns {?string} - ajax request URI or null if no req needed
+     */
     function loadModeUrl()
     {
         switch(mode)
@@ -56,9 +97,9 @@ function loadText(mode, px)
                 }
             },
 
-            error: function(xhr, status)
+            error: function(/*xhr, status*/)
             {
-                ajaxError(xhr, status, 'Hiba a szöveg letöltésekor.', function()
+                ajaxError(/*xhr, status,*/ 'Hiba a szöveg letöltésekor.', function()
                 {
                     loadText(mode);
                 });
@@ -72,6 +113,11 @@ function loadText(mode, px)
 }
 
 
+/**
+ * On successful load, add text into DOM.
+ * @param {DisplayBlock} json - loaded text details
+ * @param {number} mode - one of loadMode's
+ */
 function renderText(json, mode)
 {
     var m = loadMode;
@@ -117,6 +163,11 @@ function renderText(json, mode)
 }
 
 
+/**
+ * Scrolls text down if enough is loaded, otherwise starts loading and will
+ * come back to scroll later.
+ * @param {number} px - pixels to scroll down
+ */
 function down(px)
 {
     //console.log(''+loadedHgt+','+scrollTop+','+txtViewHgt+','+px);
@@ -139,6 +190,11 @@ function down(px)
 }
 
 
+/**
+ * Scrolls text up if enough is loaded, otherwise starts loading and will
+ * come back to scroll later.
+ * @param {number} px - pixels to scroll up
+ */
 function up(px)
 {
     //console.log(''+scrollTop+','+px);
@@ -161,6 +217,10 @@ function up(px)
 }
 
 
+/**
+ * Actual relative scrolling of the DOM node of text.
+ * @param {number} ofs - offset by pixels
+ */
 function scrollTextBy(ofs)
 {
     scrollTop += ofs;
@@ -170,9 +230,34 @@ function scrollTextBy(ofs)
 
 function Book()
 {
-    var id, first, last, show, paraNum;
+    /**
+     * @type {number} - book id (segment # (eg. canto/lila) is << 16 bits)
+     */
+    var id;
+    /**
+     * @type {number} - 1-based index of first loaded paragraph
+     */
+    var first;
+    /**
+     * @type {number} - 1-based index of the next, unloaded paragraph
+     */
+    var last;
+    /**
+     * @type {number} - index of first visible paragraph
+     */
+    var show;
+    /**
+     * @type {number} - # of paragraphs in the book
+     */
+    var paraNum;
 
 
+    /**
+     * Resets fields if book has changed.
+     * @param {DisplayBlock} json - loaded chunk and book info
+     * @param {boolean} force - force reload even if the same book was loaded
+     * @returns {boolean} - was reset
+     */
     function init(json, force)
     {
         if(json.book == id && !force)
@@ -188,6 +273,11 @@ function Book()
     }
 
 
+    /**
+     * Adjusts first/last depending on how loaded chunk grew.
+     * Sets last req. parag.
+     * @param {DisplayBlock} json - loaded chunk and book info
+     */
     function load(json)
     {
         if(json.first < first)
@@ -212,14 +302,29 @@ function Book()
 
 function Measure()
 {
-    var $shadow = $('#shadowText'),
-        lnHgt,
-        charPerRow,
-        hgtMap,
-        $paras;
+    /**
+     * @type {JQuery} - Invisible DOM to measure char sizes.
+     */
+    var $shadow = $('#shadowText');
+    /**
+     * @type {number} - line height
+     */
+    var lnHgt;
+    /**
+     * @type {number} - estimated # of chars that fit in a row
+     */
+    var charPerRow;
+    var hgtMap;
+    /**
+     * @type {JQuery} - collection of <p> elements in rendered text
+     */
+    var $paras;
 
     init();
 
+    /**
+     * Reset stored measurements.
+     */
     function init()
     {
         $shadow.html('M');
@@ -238,6 +343,10 @@ function Measure()
     }
 
 
+    /**
+     * Adjust loaded height and re-scrolls to previously visible paragraph.
+     * @param {boolean?} up
+     */
     function eachPara(up)
     {
         loadedHgt = $txt[0].scrollHeight;
@@ -259,6 +368,9 @@ function Measure()
     }
 
 
+    /**
+     * Remove para's from DOM that user has scrolled far from.
+     */
     function reduce()
     {
         var KEEP_HGT = txtViewHgt*3;
@@ -325,6 +437,9 @@ function Measure()
 //********** TOC data **********
 
 
+/**
+ * Get unloaded children of selected node. Redraw selects when they are available.
+ */
 function updateTocNode()
 {
     var o = nodeToUpdate;
@@ -343,14 +458,22 @@ function updateTocNode()
 }
 
 
+/**
+ * Traverse loaded TOC nodes to find TOC id.
+ * @param {TocTreeItem} parent - root to start search from
+ * @param {number} id - TOC id to find
+ * @return {TocTreeItem} - found node or its parent
+ */
 function findTocNodeById(parent, id)
 {
+    /** @type Array.<TocTreeItem> */
     var ch = parent.children;
     if(ch == null)
         return parent;
     var len = ch.length;
     for(var i=0; i<len; ++i)
     {
+        /** @type TocTreeItem */
         var ti = ch[i];
         if(id > ti.id)
             continue;
@@ -362,6 +485,12 @@ function findTocNodeById(parent, id)
 }
 
 
+/**
+ * Loads node and children of a TOC id.
+ * @param {number} id - TOC id
+ * @param {function} retryFn - on failed ajax, call to retry
+ * @param {function} cb - call back on success
+ */
 function getTocChildren(id, retryFn, cb)
 {
     $.ajax(
@@ -375,9 +504,9 @@ function getTocChildren(id, retryFn, cb)
                     cb.call(this, json);
             },
 
-            error: function(xhr, status)
+            error: function(/*xhr, status*/)
             {
-                ajaxError(xhr, status, 'Hiba a tartalomjegyzék ág letöltésekor.', retryFn);
+                ajaxError(/*xhr, status,*/ 'Hiba a tartalomjegyzék ág letöltésekor.', retryFn);
             }
         });
 }
@@ -386,12 +515,15 @@ function getTocChildren(id, retryFn, cb)
 // ********** Section select **********
 
 
+/**
+ * One-time setup of event handlers.
+ */
 function initSectionSelect()
 {
     updateSectionSelects(pg.toc, 1);
 
     // event handlers
-    $('.sectionSelect').change(function()
+    $('.sectionSelect').change(/** @this HTMLSelectElement */ function()
     {
         var level = parseInt(this.id.substr(4));
         var id = parseInt(this.value);
@@ -408,10 +540,16 @@ function initSectionSelect()
 }
 
 
+/**
+ * Sets section select boxes from a level downwards.
+ * @param {TocTreeItem} parent - the children of which are a level's items
+ * @param {number} level - to update, with child levels
+ */
 function updateSectionSelects(parent, level)
 {
     while(parent)
     {
+        /** @type {Array.<TocTreeItem>} */
         var ch = parent.children;
         selSection = parent.id;
         if(parent.parentStart)
@@ -438,6 +576,9 @@ function updateSectionSelects(parent, level)
 }
 
 
+/**
+ * Start loading of selected section.
+ */
 function gotoSection()
 {
     $('#sectionPop').hide();
@@ -448,6 +589,11 @@ function gotoSection()
 //********** Util **********
 
 
+/**
+ * Shows server-side error and returns its presence.
+ * @param {Object} json - result of any ajax
+ * @return {boolean} - error happened
+ */
 function javaError(json)
 {
     if(json.error)
@@ -456,7 +602,12 @@ function javaError(json)
 }
 
 
-function ajaxError(xhr, status, msg, retryFn)
+/**
+ * Show error dialog.
+ * @param {string} msg - error text
+ * @param {function} retryFn - callback for retrying operation that had failed
+ */
+function ajaxError(/*xhr, status,*/ msg, retryFn)
 {
     message(msg + '...<br><a href="#" id="retry">Ismétlés</a>&nbsp;&nbsp;<a href="#" id="cancelMsg">Mégse</a>');
     $('#retry', $msg).click(function()
@@ -470,6 +621,10 @@ function ajaxError(xhr, status, msg, retryFn)
 }
 
 
+/**
+ * Set message text and reposition its window.
+ * @param {string} msg - message
+ */
 function message(msg)
 {
     if(!$msg)
