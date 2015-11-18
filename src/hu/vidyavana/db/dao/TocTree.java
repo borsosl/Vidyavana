@@ -1,21 +1,23 @@
 package hu.vidyavana.db.dao;
 
-import hu.vidyavana.db.model.BookSegment;
-import hu.vidyavana.db.model.StorageRoot;
-import hu.vidyavana.db.model.StorageTocItem;
-import hu.vidyavana.db.model.TocTreeItem;
-import hu.vidyavana.web.RequestInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import hu.vidyavana.db.model.BookSegment;
+import hu.vidyavana.db.model.StorageRoot;
+import hu.vidyavana.db.model.StorageTocItem;
+import hu.vidyavana.db.model.TocTreeItem;
+import hu.vidyavana.web.RequestInfo;
 
 public class TocTree
 {
 	public static TocTree inst = new TocTree();
 	private TocTreeItem root;
 	private TocTreeItem shortRoot;
+	private TocTreeItem prevItem;
+	public int maxId;
 
 	
 	private TocTree()
@@ -40,6 +42,7 @@ public class TocTree
 		TreeMap<Integer, Integer> segmentOrder = st.segmentOrder();
 		root = new TocTreeItem();
 		root.children = new ArrayList<TocTreeItem>();
+		prevItem = null;
 		TocTreeItem[] levels = new TocTreeItem[10];
 		int curLevel = 0;
 		int id = 0;
@@ -50,7 +53,8 @@ public class TocTree
 			// book title: level 0
 			if(seg.bookId != prevBook)
 			{
-				TocTreeItem tti = treeItem(++id, seg.title);
+				TocTreeItem tti = treeItem(++id, seg.title, true);
+				tti.level = curLevel;
 				tti.ordinal = -seg.id();
 				tti.parent = root;
 				root.children.add(tti);
@@ -69,22 +73,31 @@ public class TocTree
 					// an id before the actal children is reserved for parent-start nodes
 					++id;
 				}
-				TocTreeItem tti = treeItem(++id, cti.title);
+				TocTreeItem tti = treeItem(++id, cti.title, true);
+				tti.level = curLevel;
 				tti.ordinal = (int) cti.paraOrdinal;
 				tti.parent = parent;
 				parent.children.add(tti);
 				levels[curLevel] = tti;
 			}
 		}
+		maxId = id;
 		st.close();
 	}
 	
 	
-	private TocTreeItem treeItem(int id, String title)
+	private TocTreeItem treeItem(int id, String title, boolean server)
 	{
 		TocTreeItem tti = new TocTreeItem();
 		tti.id = id;
 		tti.title = title;
+		if(server)
+		{
+			tti.prev = prevItem;
+			if(prevItem != null)
+				prevItem.next = tti;
+			prevItem = tti;
+		}
 		return tti;
 	}
 	
@@ -106,7 +119,7 @@ public class TocTree
 	public TocTreeItem treeNode(int id)
 	{
 		TocTreeItem srvNode = findNodeById(root, id);
-		TocTreeItem cliNode = treeItem(srvNode.id, srvNode.title);
+		TocTreeItem cliNode = treeItem(srvNode.id, srvNode.title, false);
 		cliNode.children = new ArrayList<TocTreeItem>();
 		addChildren(srvNode, cliNode);
 		return cliNode;
@@ -143,14 +156,14 @@ public class TocTree
 		dest.children = new ArrayList<TocTreeItem>();
 		if(src != root)
 		{
-			TocTreeItem ti = treeItem(src.id+1, "Kezdete");
+			TocTreeItem ti = treeItem(src.id+1, "Kezdete", false);
 			ti.parentStart = true;
 			dest.children.add(ti);
 		}
 		for(int i=0; i<src.children.size(); ++i)
 		{
 			TocTreeItem it = src.children.get(i);
-			TocTreeItem ch = treeItem(it.id, it.title);
+			TocTreeItem ch = treeItem(it.id, it.title, false);
 			dest.children.add(ch);
 			if(it.children != null)
 				if(src == root && i==0)

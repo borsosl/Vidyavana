@@ -1,5 +1,5 @@
 
 /**
- * @type {{toc: TocTreeItem}}
+ * @type {{toc: TocTreeItem, maxTocId: number}}
  */
 var pg;

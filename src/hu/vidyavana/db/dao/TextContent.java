@@ -1,15 +1,15 @@
 package hu.vidyavana.db.dao;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
-import hu.vidyavana.db.model.*;
-import hu.vidyavana.web.RequestInfo;
 import java.io.IOException;
 import java.util.List;
+import hu.vidyavana.db.model.*;
+import hu.vidyavana.web.RequestInfo;
 
 
 public class TextContent
 {
-	public static final int SERVED_PARA_COUNT = 2;
+	public static final int SERVED_PARA_COUNT = 5;
 	
 	public void service(RequestInfo ri) throws Exception
 	{
@@ -20,60 +20,80 @@ public class TextContent
 		ri.ajax = true;
 		if("section".equals(ri.args[1]))
 			section(ri);
-		else if("next".equals(ri.args[1]))
-			move(ri, false);
-		else if("prev".equals(ri.args[1]))
-			move(ri, true);
+		else if("follow".equals(ri.args[1]))
+			follow(ri);
 	}
 
-	private void move(RequestInfo ri, boolean prev)
+	private void follow(RequestInfo ri)
 	{
-		int bookId = Integer.parseInt(ri.args[2]);
+		int tocId = Integer.parseInt(ri.args[2]);
 		int start = Integer.parseInt(ri.args[3]);
-		int end = start + SERVED_PARA_COUNT;
-		if(prev)
-		{
-			end = start;
-			start -= SERVED_PARA_COUNT;
-		}
-		ri.ajaxResult = text(bookId, start, end, false);
+		TocTreeItem node = TocTree.inst.findNodeById(tocId);
+		ri.ajaxResult = text(node, start);
 	}
 
 	private void section(RequestInfo ri)
 	{
-		int id = Integer.parseInt(ri.args[2]);
-		TocTreeItem node = TocTree.inst.findNodeById(id);
-		int bookId = TocTree.inst.bookId(node);
+		String dir = ri.args[2];
+		int id = Integer.parseInt(ri.args[3]);
+		TocTreeItem node = null;
+		switch(dir)
+		{
+			case "prev":
+				--id;
+				if(id < 1)
+					id = 1;
+				// intentional fallthru
+			case "go":
+				node = TocTree.inst.findNodeById(id);
+				while(node.prev != null && node.prev == node.parent)
+					node = node.prev;
+				break;
+			case "next":
+				node = TocTree.inst.findNodeById(id);
+				while(node.next != null && node.next.parent == node)
+					node = node.next;
+				if(node.next != null)
+					node = node.next;
+				break;
+		}
 		int ord = node.ordinal;
 		if(ord < 0)
 			ord = 1;
-		ri.ajaxResult = text(bookId, ord, ord+SERVED_PARA_COUNT, true);
+		ri.ajaxResult = text(node, ord);
 	}
 
 	
-	private DisplayBlock text(int bookId, int start, int end, boolean addLen)
+	private DisplayBlock text(TocTreeItem node, int start)
 	{
 		DisplayBlock db = new DisplayBlock();
 		StorageRoot sr = StorageRoot.SYSTEM;
+		int bookId = TocTree.inst.bookId(node);
 		BookSegment seg = sr.segment(bookId);
 		try
 		{
-			int show = start;
-			if(show < 1)
-				show = 1;
+			TocTreeItem origTocNode = node;
+			int end = start + SERVED_PARA_COUNT;
+			// merge titles with text: find text block TOC node
+			while(node.next != null && node.next.parent == node)
+			{
+				node = node.next;
+				++end;
+			}
+			int nodeEnd;
+			if(node.next != null && node.next.ordinal > node.ordinal)
+				nodeEnd = node.next.ordinal;
+			else
+				nodeEnd = seg.paraNum + 1;
 			--start;
 			--end;
-//			if(start < 5)
-//				start = 0;
+			--nodeEnd;
 			if(start < 0)
 				start = 0;
-			db.book = bookId;
-			db.first = start+1;
-			db.show = show;
-			if(addLen)
-				db.paraNum = seg.paraNum;
-			if(end > seg.paraNum-5)
-				end = seg.paraNum;
+			if(end > nodeEnd-2)
+				end = nodeEnd;
+			db.bookId = bookId;
+			db.tocId = origTocNode.id;
 			StringBuilder sb = new StringBuilder(50000);
 			int last = start;
 			int len = 0;
@@ -82,12 +102,9 @@ public class TextContent
 
 			outer: while(true)
 			{
-				if(start > seg.paraNum)
-				{
-					if(firstPass)
-						db.first = seg.paraNum;
+				if(start > nodeEnd)
 					break;
-				}
+
 				List<StoragePara> para = seg.readRange(sr.handle, start, end);
 				int pix = 0;
 				StoragePara p = null;
@@ -116,13 +133,15 @@ public class TextContent
 				}
 				if(p == null || !verse)
 					break;
+				// if inside verse, prolong range, and stop at the end of verse inside inner loop
 				start = last+1;
 				end = start+3;
-				if(end > seg.paraNum)
-					end = seg.paraNum;
 				firstPass = false;
 			}
-			db.last = last+2;
+			if(last == nodeEnd-1)
+				db.last = 0;
+			else
+				db.last = last+2;
 			db.text = sb.toString();
 		}
 		catch(IOException ex)

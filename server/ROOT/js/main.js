@@ -1,14 +1,16 @@
 // internal singletons
-var book, measure;
-// const collection
-var loadMode = {section: 1, next: 2, down: 3, up: 4};
+var page;
+/**
+ * @enum {number} - text request modes
+ */
+var loadMode = {section: 1, down: 2, next: 3, prev: 4};
 /**
  * @type {JQuery} - points to centered message box
  */
 var $msg;
 /**
  * Stores info about current section selection.
- * @type {{sel:HTMLElement, level:number, id:number, node:TocTreeItem}}
+ * @type {{sel:HTMLSelectElement, level:number, id:number, node:TocTreeItem}}
  */
 var nodeToUpdate;
 /**
@@ -20,38 +22,21 @@ var selSection;
  */
 var txtViewHgt;
 /**
- * @type {number} - measured height of text currently in DOM (scrolled)
- */
-var loadedHgt;
-/**
- * @type {number} - current scroll position of text in DOM
- */
-var scrollTop;
-/**
- * @type {boolean} - the previous up/down request hit the edge of the book
- */
-var textBoundary;
-/**
  * @type {JQuery} - container for text content
  */
 var $txt;
 /**
- * @type {boolean} - an empty spacer div has been added to book end
+ * @type {number} - last section of the database
  */
-var emptyEndBlock;
-/**
- * @type {string} - top|bottom : where reduce() should shorten text in DOM
- */
-var reduceAt;
+var maxTocId;
 
 
 /**
  * Sends ajax request to get text chunk. Starts rendering based on the
  * scroll direction that started the request.
- * @param {number} mode - one of loadMode's
- * @param {number?} px - scroll amount to pass on after loading
+ * @param {number} mode - one of {@link loadMode}
  */
-function loadText(mode, px)
+function loadText(mode)
 {
     var m = loadMode;
 
@@ -60,18 +45,20 @@ function loadText(mode, px)
      */
     function loadModeUrl()
     {
+        var sectionUrl = '/app/txt/section/';
         switch(mode)
         {
             case m.section:
-                return '/app/txt/section/'+selSection;
+                return sectionUrl + 'go/' + selSection;
             case m.next:
+                return sectionUrl + 'next/' + page.tocId();
+            case m.prev:
+                return sectionUrl + 'prev/' + page.tocId();
             case m.down:
-                var last = book.last();
-                if(last > book.paraNum())
+                var next = page.next();
+                if(next === null)
                     return null;
-                return '/app/txt/next/'+book.id()+'/'+last;
-            case m.up:
-                return '/app/txt/prev/'+book.id()+'/'+book.first();
+                return '/app/txt/follow/'+page.tocId()+'/'+next;
         }
     }
 
@@ -80,357 +67,112 @@ function loadText(mode, px)
         return;
 
     $.ajax(
-        {
-            url: url,
-            dataType: 'json',
-
-            success: function(json)
-            {
-                if(!javaError(json))
-                {
-                    renderText(json, mode);
-                    // scroll
-                    if(mode == m.down)
-                        down(px);
-                    else if(mode == m.up)
-                        up(px);
-                }
-            },
-
-            error: function(/*xhr, status*/)
-            {
-                ajaxError(/*xhr, status,*/ 'Hiba a szöveg letöltésekor.', function()
-                {
-                    loadText(mode);
-                });
-            }
-        });
-    if(mode === m.up)
     {
-        var $first = $txt.children(':first');
-        $first.data('pos', $first.position().top);
-    }
+        url: url,
+        dataType: 'json',
+
+        success: function(json)
+        {
+            if(!javaError(json))
+                renderText(json, mode);
+        },
+
+        error: function(/*xhr, status*/)
+        {
+            ajaxError(/*xhr, status,*/ 'Hiba a szöveg letöltésekor.', function()
+            {
+                loadText(mode);
+            });
+        }
+    });
 }
 
 
 /**
  * On successful load, add text into DOM.
  * @param {DisplayBlock} json - loaded text details
- * @param {number} mode - one of loadMode's
+ * @param {number} mode - one of {@link loadMode}
  */
 function renderText(json, mode)
 {
-    var m = loadMode;
-    var init = mode==m.section;
-    init = init || book.init(json, init);
-    book.load(json);
+    var initPage = mode != loadMode.down;
+    if(initPage)
+        page.init(json, false);
+    page.load(json);
     var h = json.text;
-    var down = mode==m.down,
-        up = mode==m.up;
     if(h)
     {
-        if(init)
-        {
+        if(initPage)
             $txt.html(h);
-            scrollTop = 0;
-            emptyEndBlock = false;
-        }
-        else if(up)
-        {
-            $txt.prepend(h);
-            reduceAt = 'bottom';
-        }
         else
-        {
             $txt.append(h);
-            reduceAt = 'top';
-        }
-        measure.eachPara(up);
-
-        // fill screen without scrolling
-        if(init && loadedHgt < txtViewHgt)
-            loadText(m.next);
-    }
-    else if(down || up)
-    {
-        textBoundary = true;
-        if(down && !emptyEndBlock)
-        {
-            $('<div style="height: '+txtViewHgt+'px;" />').appendTo($txt);
-            emptyEndBlock = true;
-        }
     }
 }
 
 
 /**
- * Scrolls text down if enough is loaded, otherwise starts loading and will
- * come back to scroll later.
- * @param {number} px - pixels to scroll down
+ * @constructor
  */
-function down(px)
-{
-    //console.log(''+loadedHgt+','+scrollTop+','+txtViewHgt+','+px);
-    if(loadedHgt > scrollTop+txtViewHgt+px)
-    {
-        scrollTextBy(px);
-        measure.reduce();
-    }
-    else if(textBoundary)
-    {
-        if(loadedHgt > scrollTop+px)
-            scrollTextBy(px);
-        textBoundary = false;
-    }
-    else
-    {
-        loadText(loadMode.down, px);
-        //console.log('load');
-    }
-}
-
-
-/**
- * Scrolls text up if enough is loaded, otherwise starts loading and will
- * come back to scroll later.
- * @param {number} px - pixels to scroll up
- */
-function up(px)
-{
-    //console.log(''+scrollTop+','+px);
-    if(textBoundary)
-    {
-        scrollTop = 0;
-        scrollTextBy(0);
-        textBoundary = false;
-    }
-    else if(scrollTop >= px)
-    {
-        scrollTextBy(-px);
-        measure.reduce();
-    }
-    else
-    {
-        loadText(loadMode.up, px);
-        //console.log('load up');
-    }
-}
-
-
-/**
- * Actual relative scrolling of the DOM node of text.
- * @param {number} ofs - offset by pixels
- */
-function scrollTextBy(ofs)
-{
-    scrollTop += ofs;
-    $txt.scrollTop(scrollTop);
-}
-
-
-function Book()
+function Page()
 {
     /**
      * @type {number} - book id (segment # (eg. canto/lila) is << 16 bits)
      */
-    var id;
+    var bookId;
     /**
-     * @type {number} - 1-based index of first loaded paragraph
+     * @type {number} - current TOC id
      */
-    var first;
+    var tocId;
     /**
      * @type {number} - 1-based index of the next, unloaded paragraph
      */
     var last;
-    /**
-     * @type {number} - index of first visible paragraph
-     */
-    var show;
-    /**
-     * @type {number} - # of paragraphs in the book
-     */
-    var paraNum;
 
 
     /**
      * Resets fields if book has changed.
      * @param {DisplayBlock} json - loaded chunk and book info
-     * @param {boolean} force - force reload even if the same book was loaded
+     * @param {boolean} force - force reload even if the same section was loaded
      * @returns {boolean} - was reset
      */
     function init(json, force)
     {
-        if(json.book == id && !force)
+        if(!json.tocId && !force)
             return false;
-        id = json.book;
-        first = 50000;
-        last = -1;
-        if(json.paraNum)
-            paraNum = json.paraNum;
-        if(measure)
-            measure.init();
+        bookId = json.bookId;
+        tocId = json.tocId;
+        last = 0;
         return true;
     }
 
 
     /**
-     * Adjusts first/last depending on how loaded chunk grew.
-     * Sets last req. parag.
+     * Sets last request data.
      * @param {DisplayBlock} json - loaded chunk and book info
      */
     function load(json)
     {
-        if(json.first < first)
-            first = json.first;
-        if(json.last > last)
-            last = json.last;
-        show = json.show;
+        last = json.last;
+    }
+
+
+    /**
+     * Gets next para ordinal, if section has more to load.
+     * @return {?number} - next para or null
+     */
+    function next()
+    {
+        return last ? last : null;
     }
 
 
     $.extend(this, {
         init: init,
         load: load,
-        id: function(){return id;},
-        first: function(f){return f===undefined ? first : (first=f);},
-        last: function(l){return l===undefined ? last : (last=l);},
-        paraNum: function(){return paraNum;},
-        show: function(){return show;}
+        next: next,
+        bookId: function(){return bookId;},
+        tocId: function(){return tocId;}
     });
-}
-
-
-function Measure()
-{
-    /**
-     * @type {JQuery} - Invisible DOM to measure char sizes.
-     */
-    var $shadow = $('#shadowText');
-    /**
-     * @type {number} - line height
-     */
-    var lnHgt;
-    /**
-     * @type {number} - estimated # of chars that fit in a row
-     */
-    var charPerRow;
-    var hgtMap;
-    /**
-     * @type {JQuery} - collection of <p> elements in rendered text
-     */
-    var $paras;
-
-    init();
-
-    /**
-     * Reset stored measurements.
-     */
-    function init()
-    {
-        $shadow.html('M');
-        lnHgt = $shadow.height();
-        $shadow.html('M<br/>M');
-        lnHgt = $shadow.height() - lnHgt;
-        var wid = $txt.width();
-        charPerRow = Math.ceil(wid / lnHgt / 0.35);
-        resize();
-    }
-
-
-    function resize()
-    {
-        hgtMap = {};
-    }
-
-
-    /**
-     * Adjust loaded height and re-scrolls to previously visible paragraph.
-     * @param {boolean?} up
-     */
-    function eachPara(up)
-    {
-        loadedHgt = $txt[0].scrollHeight;
-        if(up)
-        {
-            $paras = $txt.children();
-            for(var i=0; i<$paras.length; ++i)
-            {
-                var $p = $($paras[i]);
-                var prevPos = $p.data('pos');
-                if(prevPos === undefined)
-                    continue;
-                var newPos = $p.position().top;
-                scrollTop += newPos-prevPos;
-                return;
-            }
-            alert('No old pos');
-        }
-    }
-
-
-    /**
-     * Remove para's from DOM that user has scrolled far from.
-     */
-    function reduce()
-    {
-        var KEEP_HGT = txtViewHgt*3;
-        if(loadedHgt < KEEP_HGT)
-            return;
-        if(!reduceAt)
-            return;
-        var atTop = reduceAt === 'top';
-        reduceAt = null;
-        var $ch = $txt.children(),
-            len = $ch.length;
-
-        if(atTop)
-        {
-            var till = -KEEP_HGT;
-            var $p;
-            var ofs, topOfs;
-            for(var i=0; i<len; ++i)
-            {
-                $p = $($ch[i]);
-                ofs = $p.position().top;
-                if(!topOfs)
-                    topOfs = ofs;
-                if(ofs >= till)
-                    break;
-            }
-            if(i < len && i > 0)
-            {
-                $ch.slice(0, i).remove();
-                scrollTextBy(topOfs - ofs);
-                book.first(book.first()+i);
-            }
-        }
-        else
-        {
-            till = txtViewHgt+KEEP_HGT;
-            for(i=len-1; i>=0; --i)
-            {
-                $p = $($ch[i]);
-                ofs = $p.position().top;
-                if(ofs <= till)
-                    break;
-            }
-            if(i < len-1 && i >= 0)
-            {
-                $ch.slice(i+1).remove();
-                book.last(book.last()-(len-i-1));
-            }
-        }
-    }
-
-
-    $.extend(this,
-        {
-            init: init,
-            resize: resize,
-            eachPara: eachPara,
-            reduce: reduce,
-            lnHgt: function(){return lnHgt;}
-        });
 }
 
 
@@ -521,6 +263,7 @@ function getTocChildren(id, retryFn, cb)
 function initSectionSelect()
 {
     updateSectionSelects(pg.toc, 1);
+    maxTocId = pg.maxTocId;
 
     // event handlers
     $('.sectionSelect').change(/** @this HTMLSelectElement */ function()
@@ -656,8 +399,7 @@ function throttle(init, delay, cb)
 $(function()
 {
     $txt = $('#text');
-    book = new Book();
-    measure = new Measure();
+    page = new Page();
 
     initSectionSelect();
     $('#sectionPop').show();
@@ -668,22 +410,15 @@ $(function()
 
     $(window).keydown(function(e)
     {
-        if(e.keyCode == 40)		// down
-            down(measure.lnHgt());
-        else if(e.keyCode == 38)	// up
-            up(measure.lnHgt());
-        else if(e.keyCode == 34)	// pg dn
-            down(txtViewHgt);
-        else if(e.keyCode == 33)	// pg up
-            up(txtViewHgt);
-    });
-
-    $(window).on('mousewheel', function(e)
-    {
-        if(e.deltaY > 0)
-            up(measure.lnHgt());
-        else if(e.deltaY < 0)
-            down(measure.lnHgt());
+        if(e.keyCode == 39)     		// right
+            loadText(loadMode.down);
+        else if(e.keyCode == 13)		// enter
+            loadText(loadMode.next);
+        else if(e.keyCode == 8)	    	// backspace
+        {
+            loadText(loadMode.prev);
+            e.preventDefault();
+        }
     });
 
     window.onresize = throttle(true, 100, function()
@@ -696,7 +431,5 @@ $(function()
         $txt.innerHeight(winHgt-headHgt);
         $txt.innerWidth(winWid);
         txtViewHgt = $txt.height();
-        measure.resize();
-        measure.eachPara();
     });
 });

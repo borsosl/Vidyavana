@@ -1,10 +1,8 @@
 /**
  * @typedef {Object} DisplayBlock
- * @property {number} book
- * @property {number} paraNum?
- * @property {number} first
+ * @property {number} bookId
+ * @property {number} tocId?
  * @property {number} last
- * @property {number} show
  * @property {string} text
  */
 
