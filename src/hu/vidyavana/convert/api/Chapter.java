@@ -1,12 +1,12 @@
 package hu.vidyavana.convert.api;
 
-import hu.vidyavana.util.XmlUtil;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import hu.vidyavana.util.XmlUtil;
 
 public class Chapter
 {
@@ -39,7 +39,10 @@ public class Chapter
 		{
 			par.writeToFile(writerInfo);
 			if(par.cls == ParagraphClass.Fejezetszam)
+			{
 				writerInfo.tocDivision = XmlUtil.noMarkup(par.text.toString().trim());
+				writerInfo.tocDivisionParaOrdinal = writerInfo.paraOrdinal;
+			}
 			else if(par.cls == ParagraphClass.Fejezetcim)
 			{
 				tocEntry(writerInfo, 1, XmlUtil.noMarkup(par.text.toString().trim()));
@@ -92,7 +95,7 @@ public class Chapter
 //		o.write(Integer.toString(writerInfo.tocOrdinal));
 //		o.write("</toc_ordinal>\r\n");
 		o.write("      <para_ordinal>");
-		o.write(Integer.toString(writerInfo.paraOrdinal));
+		o.write(Integer.toString(writerInfo.tocDivision == null ? writerInfo.paraOrdinal : writerInfo.tocDivisionParaOrdinal));
 		o.write("</para_ordinal>\r\n");
 		o.write("    </entry>\r\n");
 		

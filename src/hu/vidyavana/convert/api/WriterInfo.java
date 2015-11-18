@@ -1,7 +1,11 @@
 package hu.vidyavana.convert.api;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class WriterInfo
 {
@@ -41,6 +45,7 @@ public class WriterInfo
 	public String tocDivision;
 	public int tocOrdinal;
 	public int paraOrdinal;
+	public int tocDivisionParaOrdinal;
 	
 	public TreeMap<String, Object> diacritics/* = new TreeMap<>()*/;		// uncomment for collect diacritics function
 }
