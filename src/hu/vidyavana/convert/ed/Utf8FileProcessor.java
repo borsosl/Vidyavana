@@ -1,8 +1,8 @@
 package hu.vidyavana.convert.ed;
 
 import static hu.vidyavana.convert.ed.EdCharacter.UtfMarkers.*;
-import hu.vidyavana.convert.api.FileProcessor;
 import java.io.*;
+import hu.vidyavana.convert.api.FileProcessor;
 
 public class Utf8FileProcessor implements FileProcessor
 {
@@ -49,19 +49,27 @@ public class Utf8FileProcessor implements FileProcessor
 				if(u < 128)
 					e = u;
 				else
-					e = EdCharacter.convertToEd(u);
-				if(e < 0)
-				{
-					if(e == Nbsp.code)
-						os.write(new byte[]{'<', 'N', '>'});
-					else if(e == Ellipsis.code)
+					try
 					{
-						os.write(new byte[]{'.', '.', '.'});
-						len += 2;
+						e = EdCharacter.convertToEd(u);
+						if(e < 0)
+						{
+							if(e == Nbsp.code)
+								os.write(new byte[]{'<', 'N', '>'});
+							++len;
+							continue;
+						}
 					}
-					++len;
-					continue;
-				}
+					catch(Exception ex)
+					{
+						os.write(new byte[]{'{', '`', '#'});
+						String s = ""+u;
+						for(int i=0; i<s.length(); ++i)
+							os.write((byte) s.charAt(i));
+						os.write((byte) '}');
+						len += 4 + s.length();
+						continue;
+					}
 				if(lineBreak && (e == 13 || e == 10))
 					continue;
 				lineBreak = false;

@@ -1,5 +1,6 @@
 package hu.vidyavana.convert.rtf;
 
+import static hu.vidyavana.convert.ed.EdCharacter.UtfMarkers.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -590,8 +591,19 @@ public class RtfFileProcessor implements FileProcessor
 				{
 					if(c == 8201)
 						c = 127;
+					else if(c == -3840)
+						c = 0x93;
+					else if(c == -3816)
+						c = 0x97;
 					else
+					{
 						c = EdCharacter.convertToEd(c);
+						if(c == Nbsp.code)
+						{
+							str("<N>");
+							return;
+						}
+					}
 				}
 				catch(Exception ex)
 				{
@@ -632,5 +644,18 @@ public class RtfFileProcessor implements FileProcessor
 		if(ptr == length)
 			return -1;
 		return line[ptr++];
+	}
+	
+	
+	public static void main(String[] args) throws Exception
+	{
+		String[] names = {};
+		for(String name : names)
+		{
+			RtfFileProcessor rtf = new RtfFileProcessor();
+			rtf.init(new File(""), new File(""));
+			rtf.process(new File(""+name), name.substring(0, name.indexOf('.')));
+			rtf.finish();
+		}
 	}
 }

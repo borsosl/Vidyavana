@@ -610,6 +610,25 @@ public class EdFileProcessor implements FileProcessor
 						prev = Char;
 				}
 				
+				// own markup {`#unicode}
+				else if(c == '{' && pos < length-4 && line[pos+1] == '`' && line[pos+2] == '#')
+				{
+					pos += 2;
+					String s = "";
+					while((c = line[++pos]) != '}')
+						s += (char) c;
+					try
+					{
+						c = Integer.valueOf(s);
+						para.text.append((char) c);
+						prev = Char;
+					}
+					catch(NumberFormatException ex)
+					{
+						throw new IllegalStateException(String.format("ERROR: Hibas unicode markup a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
+					}
+				}
+				
 				// plain ascii characters
 				else if(c >= ' ')
 				{

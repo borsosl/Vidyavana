@@ -20,6 +20,7 @@ public enum EdTags
 	biglet("biglet"),
 	biglet1("biglet1"),
 	book_title("book title"),
+	cantno("cantno"),
 	center("center", Kozepen),
 	center_line("center line"),
 	center_table("center table"),
@@ -251,7 +252,7 @@ public enum EdTags
 		{info,
 			book_title, lila, chaptno, chapt_no, chapter_head, textno},
 		{unhandled,
-			benbo, benro, ch_line, /* dev...*/ eop, foot_line, line,
+			benbo, benro, cantno, ch_line, /* dev...*/ eop, foot_line, line,
 			pr_pic, /* push...*/ sign_eps, special, wa_number}};
 
 	

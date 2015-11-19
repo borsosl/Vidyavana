@@ -132,8 +132,6 @@ public class EdCharacter
 				k = (int) '\'';
 			else if(c == 160)
 				k = UtfMarkers.Nbsp.code;
-			else if(c == 8230)
-				k = UtfMarkers.Ellipsis.code;
 			else
 				throw new IllegalStateException("Unsupported character code: "+c);
 		}
