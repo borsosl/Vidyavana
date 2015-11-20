@@ -28,7 +28,7 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 			</span>
 			--%>
 			<span id="sectionLnk" class="inblk clkTxt">
-				Szakasz
+				<u>S</u>zakasz
 			</span>
 		</div>
 	</div>

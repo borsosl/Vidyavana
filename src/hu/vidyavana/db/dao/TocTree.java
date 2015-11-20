@@ -51,15 +51,19 @@ public class TocTree
 		{
 			BookSegment seg = st.segment(e.getValue());
 			// book title: level 0
+			boolean markSegment = false;
 			if(seg.bookId != prevBook)
 			{
 				TocTreeItem tti = treeItem(++id, seg.title, true);
-				tti.level = curLevel;
+				tti.level = curLevel = 0;
 				tti.ordinal = -seg.id();
 				tti.parent = root;
 				root.children.add(tti);
 				levels[0] = tti;
+				prevBook = seg.bookId;
 			}
+			else
+				markSegment = true;
 			StorageTocItem[] ct = seg.contents;
 			for(StorageTocItem cti : ct)
 			{
@@ -76,6 +80,11 @@ public class TocTree
 				TocTreeItem tti = treeItem(++id, cti.title, true);
 				tti.level = curLevel;
 				tti.ordinal = (int) cti.paraOrdinal;
+				if(markSegment)
+				{
+					tti.ordinal = -seg.id();
+					markSegment = false;
+				}
 				tti.parent = parent;
 				parent.children.add(tti);
 				levels[curLevel] = tti;

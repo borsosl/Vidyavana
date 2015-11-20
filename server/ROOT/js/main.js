@@ -103,7 +103,10 @@ function renderText(json, mode)
     if(h)
     {
         if(initPage)
+        {
+            $txt.scrollTop(0);
             $txt.html(h);
+        }
         else
             $txt.append(h);
     }
@@ -191,6 +194,7 @@ function updateTocNode()
         {
             o.node.children = fullNode.children;
             o.node.partial = false;
+            replacePipes(o.node);
             updateTocNode();
         });
         return;
@@ -254,6 +258,24 @@ function getTocChildren(id, retryFn, cb)
 }
 
 
+/**
+ * Replaces pipe characters in TOC node text.
+ * @param {TocTreeItem} node
+ */
+function replacePipes(node)
+{
+    var ch = node.children;
+    var rex = /ǀ/;
+    for(var i in ch)
+    {
+        var it = ch[i];
+        it.title = it.title.replace(rex, ' – ');
+        if(it.children)
+            replacePipes(it);
+    }
+}
+
+
 // ********** Section select **********
 
 
@@ -262,6 +284,7 @@ function getTocChildren(id, retryFn, cb)
  */
 function initSectionSelect()
 {
+    replacePipes(pg.toc);
     updateSectionSelects(pg.toc, 1);
     maxTocId = pg.maxTocId;
 
@@ -410,15 +433,22 @@ $(function()
 
     $(window).keydown(function(e)
     {
-        if(e.keyCode == 39)     		// right
+        if(e.keyCode === 39)     		    // right
             loadText(loadMode.down);
-        else if(e.keyCode == 13)		// enter
+        else if(e.keyCode === 13)		    // enter
             loadText(loadMode.next);
-        else if(e.keyCode == 8)	    	// backspace
+        else if(e.keyCode === 8)	    	// backspace
         {
             loadText(loadMode.prev);
             e.preventDefault();
         }
+        else if(e.keyCode === 83)           // s
+        {
+            $('#sectionPop').toggle();
+            $('#sect1')[0].focus();
+        }
+        else if(e.keyCode === 27)		    // esc
+            $('#sectionPop').hide();
     });
 
     window.onresize = throttle(true, 100, function()
