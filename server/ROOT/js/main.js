@@ -446,6 +446,7 @@ $(function()
         {
             $('#sectionPop').toggle();
             $('#sect1')[0].focus();
+            e.preventDefault();
         }
         else if(e.keyCode === 27)		    // esc
             $('#sectionPop').hide();

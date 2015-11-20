@@ -35,13 +35,17 @@ public class Chapter
 		++writerInfo.indentLevel;
 		for(Paragraph inf : info)
 			inf.writeToFile(writerInfo);
+		writerInfo.tocDivisionParaOrdinal = -100;
 		for(Paragraph par : para)
 		{
 			par.writeToFile(writerInfo);
-			if(par.cls == ParagraphClass.Fejezetszam)
+			if(par.cls == ParagraphClass.Konyvcim)
+				writerInfo.tocDivisionParaOrdinal = writerInfo.paraOrdinal;
+			else if(par.cls == ParagraphClass.Fejezetszam)
 			{
 				writerInfo.tocDivision = XmlUtil.noMarkup(par.text.toString().trim());
-				writerInfo.tocDivisionParaOrdinal = writerInfo.paraOrdinal;
+				if(writerInfo.paraOrdinal - writerInfo.tocDivisionParaOrdinal > 3)
+					writerInfo.tocDivisionParaOrdinal = writerInfo.paraOrdinal;
 			}
 			else if(par.cls == ParagraphClass.Fejezetcim)
 			{
@@ -95,10 +99,14 @@ public class Chapter
 //		o.write(Integer.toString(writerInfo.tocOrdinal));
 //		o.write("</toc_ordinal>\r\n");
 		o.write("      <para_ordinal>");
-		o.write(Integer.toString(writerInfo.tocDivision == null ? writerInfo.paraOrdinal : writerInfo.tocDivisionParaOrdinal));
+		int ord = writerInfo.tocDivisionParaOrdinal;
+		if(writerInfo.paraOrdinal - ord > 3)
+			ord = writerInfo.paraOrdinal;
+		o.write(Integer.toString(ord));
 		o.write("</para_ordinal>\r\n");
 		o.write("    </entry>\r\n");
 		
 		writerInfo.tocDivision = null;
+		writerInfo.tocDivisionParaOrdinal = -100;
 	}
 }
