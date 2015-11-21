@@ -9,7 +9,8 @@ import hu.vidyavana.web.RequestInfo;
 
 public class TextContent
 {
-	public static final int SERVED_PARA_COUNT = 5;
+	public static final int FIRST_FETCH_PARA_COUNT = 10;
+	public static final int RESPONSE_CHARS = 10000;
 	
 	public void service(RequestInfo ri) throws Exception
 	{
@@ -73,7 +74,7 @@ public class TextContent
 		try
 		{
 			TocTreeItem origTocNode = node;
-			int end = start + SERVED_PARA_COUNT;
+			int end = start + FIRST_FETCH_PARA_COUNT;
 			// merge titles with text: find text block TOC node
 			while(node.next != null && node.next.parent == node)
 			{
@@ -90,19 +91,20 @@ public class TextContent
 			--nodeEnd;
 			if(start < 0)
 				start = 0;
-			if(end > nodeEnd-2)
-				end = nodeEnd;
 			db.bookId = bookId;
 			db.tocId = origTocNode.id;
-			StringBuilder sb = new StringBuilder(50000);
+			StringBuilder sb = new StringBuilder(RESPONSE_CHARS + 20000);
 			int last = start;
 			int len = 0;
+			int cPara = 0;
 			boolean firstPass = true;
 			boolean prevVerse = false;
 
 			outer: while(true)
 			{
-				if(start > nodeEnd)
+				if(end > nodeEnd-2)
+					end = nodeEnd;
+				if(start >= end)
 					break;
 
 				List<StoragePara> para = seg.readRange(sr.handle, start, end);
@@ -120,7 +122,7 @@ public class TextContent
 					if(firstPass)
 					{
 						len += p.text.length();
-						if(len > 20000)
+						if(len > RESPONSE_CHARS)
 							break;
 					}
 					if(!prevVerse && verse)
@@ -129,14 +131,24 @@ public class TextContent
 						.append("\" data-ix=\"").append(i).append("\">")
 						.append(p.text).append("</p>");
 					last = i;
+					++cPara;
 					prevVerse = verse;
 				}
-				if(p == null || !verse)
-					break;
-				// if inside verse, prolong range, and stop at the end of verse inside inner loop
 				start = last+1;
-				end = start+3;
-				firstPass = false;
+				if(start >= nodeEnd || !verse && len > RESPONSE_CHARS)
+					break;
+				if(len > RESPONSE_CHARS)
+				{
+					// if inside verse, prolong range, and stop at the end of verse inside inner loop
+					end = start+3;
+					firstPass = false;
+				}
+				else
+				{
+					int avgParaLen = len / cPara;
+					int predict = ((RESPONSE_CHARS - len) / avgParaLen) + 1;
+					end = start + predict;
+				}
 			}
 			if(last == nodeEnd-1)
 				db.last = 0;
