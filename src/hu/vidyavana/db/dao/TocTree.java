@@ -152,8 +152,13 @@ public class TocTree
 			TocTreeItem ti = ch.get(i);
 			if(id > ti.id)
 				continue;
-			if(id < ti.id && i > 0)
-				return findNodeById(ch.get(i-1), id);
+			if(id < ti.id)
+			{
+				if(i > 0)
+					return findNodeById(ch.get(i-1), id);
+				if(ti.prev != null)
+					return ti.prev;
+			}
 			return ti;
 		}
 		return findNodeById(ch.get(len-1), id);

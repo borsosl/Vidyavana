@@ -47,13 +47,15 @@ public class TextContent
 				// intentional fallthru
 			case "go":
 				node = TocTree.inst.findNodeById(id);
-				while(node.prev != null && node.prev == node.parent)
-					node = node.prev;
+				while(node.prev != null && node.prev == node.parent && 
+					(node.prev.ordinal < 0 || node.prev.ordinal >= node.ordinal-3))
+						node = node.prev;
 				break;
 			case "next":
 				node = TocTree.inst.findNodeById(id);
-				while(node.next != null && node.next.parent == node)
-					node = node.next;
+				while(node.next != null && node.next.parent == node && 
+					(node.ordinal < 0 || node.ordinal >= node.next.ordinal-3))
+						node = node.next;
 				if(node.next != null)
 					node = node.next;
 				break;
@@ -76,7 +78,8 @@ public class TextContent
 			TocTreeItem origTocNode = node;
 			int end = start + FIRST_FETCH_PARA_COUNT;
 			// merge titles with text: find text block TOC node
-			while(node.next != null && node.next.parent == node)
+			while(node.next != null && node.next.parent == node &&
+				(node.ordinal < 0 || node.ordinal >= node.next.ordinal-3))
 			{
 				node = node.next;
 				++end;
