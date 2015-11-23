@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/lucene-analyzers-common.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/temp/lucene/docs/analyzers-common/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/lucene-core.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/temp/lucene/docs/core/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/lucene-queryparser.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/temp/lucene/docs/queryparser/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="lib/lucene-analyzers-common.jar" sourcepath="work/lucene-src/analysis-common.zip"/>
+	<classpathentry kind="lib" path="lib/lucene-core.jar" sourcepath="work/lucene-src/core.zip"/>
 	<classpathentry kind="lib" path="server/app/WEB-INF/lib/gson-2.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/tomcat8-boot"/>

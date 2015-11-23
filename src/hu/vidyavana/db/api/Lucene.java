@@ -15,6 +15,7 @@ import org.apache.lucene.util.Version;
 
 public class Lucene
 {
+	public static final Version VERSION = Version.LATEST;
 	public static Lucene inst = new Lucene();
 
 	private StandardAnalyzer analyzer;
@@ -26,8 +27,8 @@ public class Lucene
 	{
 		try
 		{
-			analyzer = new StandardAnalyzer(Version.LUCENE_42);
-			index = FSDirectory.open(new File("."));
+			analyzer = new StandardAnalyzer();
+			index = FSDirectory.open(new File(".").toPath());
 			return this;
 		}
 		catch(IOException ex)
@@ -57,7 +58,7 @@ public class Lucene
 	{
 		try
 		{
-			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_42, analyzer);
+			IndexWriterConfig config = new IndexWriterConfig(analyzer);
 			writer = new IndexWriter(index, config);
 			return writer;
 		}

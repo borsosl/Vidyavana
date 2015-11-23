@@ -1,11 +1,14 @@
 package hu.vidyavana.db;
 
-import hu.vidyavana.db.api.Lucene;
 import java.io.IOException;
-import org.apache.lucene.document.*;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.index.FieldInfo.IndexOptions;
+import org.apache.lucene.document.FieldType;
+import org.apache.lucene.document.IntField;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
+import hu.vidyavana.db.api.Lucene;
 
 public class IndexBooks
 {
@@ -19,10 +22,10 @@ public class IndexBooks
 	{
 		iw = Lucene.inst.open().writer();
 		txtFieldType = new FieldType();
-		txtFieldType.setIndexed(true);
 		txtFieldType.setTokenized(true);
 		txtFieldType.setStored(false);
 		txtFieldType.setStoreTermVectors(false);
+		txtFieldType.setOmitNorms(true);
 		txtFieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
 		txtFieldType.freeze();
 	}
