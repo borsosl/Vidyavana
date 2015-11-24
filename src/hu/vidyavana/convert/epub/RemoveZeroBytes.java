@@ -1,8 +1,8 @@
 package hu.vidyavana.convert.epub;
 
-import hu.vidyavana.convert.indd.CharacterMap;
 import java.io.*;
 import java.util.Scanner;
+import hu.vidyavana.convert.indd.CharacterMap;
 
 public class RemoveZeroBytes
 {
@@ -84,6 +84,7 @@ public class RemoveZeroBytes
 			}
 			in.close();
 			out.close();
+			scanner.close();
 		}
 		catch(IOException ex)
 		{
