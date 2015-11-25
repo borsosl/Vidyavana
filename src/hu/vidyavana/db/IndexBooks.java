@@ -12,15 +12,22 @@ import hu.vidyavana.db.api.Lucene;
 
 public class IndexBooks
 {
+	private Lucene lucene;
 	private IndexWriter iw;
 	private FieldType txtFieldType;
 	private int bookId;
 	private int segment;
 
 	
+	public IndexBooks(Lucene lucene)
+	{
+		this.lucene = lucene;
+	}
+
+
 	public void init()
 	{
-		iw = Lucene.inst.open().writer();
+		iw = lucene.open().writer();
 		txtFieldType = new FieldType();
 		txtFieldType.setTokenized(true);
 		txtFieldType.setStored(false);
@@ -59,6 +66,6 @@ public class IndexBooks
 
 	public void finish()
 	{
-		Lucene.inst.closeWriter();
+		lucene.closeWriter();
 	}
 }

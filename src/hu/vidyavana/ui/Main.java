@@ -62,7 +62,7 @@ public class Main implements UncaughtExceptionHandler
 				{
 				}
 //				Db.inst.close();
-				Lucene.inst.close();
+				Lucene.SYSTEM.close();
 				Log.close();
 			}
 		});

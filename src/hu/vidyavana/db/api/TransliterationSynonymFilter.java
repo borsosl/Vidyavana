@@ -74,4 +74,12 @@ public class TransliterationSynonymFilter extends TokenStream
 		input.reset();
 		synonym = null;
 	}
+	
+	
+	@Override
+	public void close() throws IOException
+	{
+		super.close();
+		input.close();
+	}
 }

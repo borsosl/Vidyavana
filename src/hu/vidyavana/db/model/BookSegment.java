@@ -34,7 +34,7 @@ public class BookSegment
 
 	
 
-	public void write(StorageRoot sroot) throws IOException
+	public void write(Storage sroot) throws IOException
 	{
 		RandomAccessFile out = sroot.handle;
 		if(para.length > Short.MAX_VALUE)

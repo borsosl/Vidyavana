@@ -1,6 +1,5 @@
 package hu.vidyavana.db.model;
 
-import hu.vidyavana.util.Globals;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,17 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import hu.vidyavana.util.Globals;
 
-public class StorageRoot
+public class Storage
 {
 	public static final int CURRENT_VERSION = 1;
-	public static File SYSTEM_FILE = new File(Globals.cwd, "system.pdt");
-	public static StorageRoot SYSTEM = new StorageRoot(SYSTEM_FILE);
+	public static Storage SYSTEM = forUser(null);
 
 	public byte version = CURRENT_VERSION;
 	public String userName = "server";
 
-	public File currentFile;
+	public File file;
 	public RandomAccessFile handle;
 	private String mode;
 	private Map<Integer, BookSegment> segments;
@@ -29,30 +28,26 @@ public class StorageRoot
 	private boolean locked;
 	
 	
-	public StorageRoot(File file)
+	private Storage(String user)
 	{
-		useFile(file);
+		if(user == null)
+			file = new File(Globals.cwd, "system/text.bin");
+		else
+			file = new File(Globals.cwd, "users/"+user+"/text.bin");
 	}
-
 	
-	public void useFile(File f)
+	
+	public static Storage forUser(String user)
 	{
-		try
-		{
-			close();
-			currentFile = f;
-		}
-		catch(Exception ex)
-		{
-			throw new RuntimeException(ex);
-		}
+		if(user == null && SYSTEM != null)
+			return SYSTEM;
+		// TODO cache for some time
+		return new Storage(user);
 	}
 
 	
 	public boolean open(String mode) throws IOException
 	{
-		if(currentFile == null)
-			throw new RuntimeException("Main file not selected.");
 		if(locked)
 			throw new IOException("locked");
 		if(mode.equals(this.mode))
@@ -60,7 +55,7 @@ public class StorageRoot
 		close();
 		try
 		{
-			handle = new RandomAccessFile(currentFile, mode);
+			handle = new RandomAccessFile(file, mode);
 			this.mode = mode;
 			return true;
 		}

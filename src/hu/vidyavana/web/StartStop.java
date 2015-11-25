@@ -1,12 +1,12 @@
 package hu.vidyavana.web;
 
-import hu.vidyavana.db.model.StorageRoot;
-import hu.vidyavana.util.Globals;
 import java.io.File;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import hu.vidyavana.db.model.Storage;
+import hu.vidyavana.util.Globals;
 
 public class StartStop implements ServletContextListener
 {
@@ -20,18 +20,20 @@ public class StartStop implements ServletContextListener
 		{
 			// TODO check for android path
 			runtimeDir = new File(path, "runtime");
-			runtimeDir.mkdirs();
 			Globals.serverEnv = true;
 		}
 		else
+		{
+			runtimeDir = runtimeDir.getAbsoluteFile();
 			Globals.localEnv = true;
-		Globals.cwd = runtimeDir;
+		}
+		Globals.cwd = runtimeDir.getAbsoluteFile().toPath().normalize().toFile();
 		System.out.println("Working in " + runtimeDir.getAbsolutePath());
-		StorageRoot sr = StorageRoot.SYSTEM;
-		sr.setEncrypted(false);
+		Storage store = Storage.SYSTEM;
+		store.setEncrypted(false);
 		try
 		{
-			sr.openForRead();
+			store.openForRead();
 		}
 		catch(IOException ex)
 		{
@@ -45,7 +47,8 @@ public class StartStop implements ServletContextListener
 	{
 		try
 		{
-			StorageRoot.SYSTEM.close();
+			// TODO close cached user storages
+			Storage.SYSTEM.close();
 		}
 		catch(IOException ex)
 		{

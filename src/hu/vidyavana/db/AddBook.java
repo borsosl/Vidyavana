@@ -1,13 +1,5 @@
 package hu.vidyavana.db;
 
-import hu.vidyavana.convert.api.ParagraphClass;
-import hu.vidyavana.db.model.BookSegment;
-import hu.vidyavana.db.model.StoragePara;
-import hu.vidyavana.db.model.StorageRoot;
-import hu.vidyavana.db.model.StorageTocItem;
-import hu.vidyavana.util.FileUtil;
-import hu.vidyavana.util.Globals;
-import hu.vidyavana.util.XmlUtil;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +9,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import hu.vidyavana.convert.api.ParagraphClass;
+import hu.vidyavana.db.api.Lucene;
+import hu.vidyavana.db.model.BookSegment;
+import hu.vidyavana.db.model.Storage;
+import hu.vidyavana.db.model.StoragePara;
+import hu.vidyavana.db.model.StorageTocItem;
+import hu.vidyavana.util.FileUtil;
+import hu.vidyavana.util.Globals;
+import hu.vidyavana.util.XmlUtil;
 
 public class AddBook
 {
@@ -27,14 +28,14 @@ public class AddBook
 	private IndexBooks ib;
 	private ArrayList<String> bookFileNames;
 
-	private StorageRoot store;
+	private Storage store;
 	private BookSegment bs;
 
 	private List<StoragePara> paraList;
 
 
 	
-	public AddBook(String bookPath, StorageRoot store, IndexBooks ib)
+	public AddBook(String bookPath, Storage store, IndexBooks ib)
 	{
 		this.bookPath = bookPath;
 		this.store = store;
@@ -245,7 +246,7 @@ public class AddBook
 		String paraTxt = paraSB.toString();
 		para.text = paraTxt;
 		paraList.add(para);
-		//ib.addPara(ordinal, paraTxt);
+		ib.addPara(ordinal, paraTxt);
 	}
 
 
@@ -260,27 +261,28 @@ public class AddBook
 	
 	public static void addFromStaticList() throws IOException
 	{
-		StorageRoot sroot = StorageRoot.SYSTEM;
-		sroot.useFile(StorageRoot.SYSTEM_FILE);
+		Storage store = Storage.SYSTEM;
+		Lucene lucene = Lucene.SYSTEM;
 		String[] paths = {
 			"d:\\wk2\\Sastra\\BBT\\v2012\\xml\\bg",
 			"d:\\wk2\\Sastra\\BBT\\v2012\\xml\\SB  1"
 		};
-		IndexBooks ib = new IndexBooks();
+		IndexBooks ib = new IndexBooks(lucene);
 		ib.init();
 		for(String path : paths)
 		{
 			System.out.println(path);
-			new AddBook(path, sroot, ib).run();
+			new AddBook(path, store, ib).run();
 		}
 		ib.finish();
-		sroot.close();
+		store.close();
 	}
 
 	
 	public static void rebuildOnServer(String user, Writer out)
 	{
-		StorageRoot sroot = StorageRoot.SYSTEM;
+		Storage store = Storage.SYSTEM;
+		Lucene lucene = Lucene.SYSTEM;
 		IndexBooks ib = null;
 		try
 		{
@@ -288,7 +290,7 @@ public class AddBook
 			if(Globals.localEnv)
 				xmlRoot = new File("d:\\wk2\\Sastra\\BBT\\v2012\\xml");
 			else if(Globals.serverEnv)
-				xmlRoot = new File(Globals.cwd, user==null ? "system" : "users/"+user);
+				xmlRoot = new File(Globals.cwd, user==null ? "system/xml" : "users/"+user+"/xml");
 			else
 				xmlRoot = null;
 			
@@ -297,15 +299,10 @@ public class AddBook
 			if(books == null)
 				throw new RuntimeException("book list missing from path " + xmlRoot.getAbsolutePath());
 			
-			if(user == null)
-			{
-				sroot = StorageRoot.SYSTEM;
-				sroot.close();
-			}
-			else
-				sroot = new StorageRoot(new File(xmlRoot, "../user.pdt"));
+			store = Storage.forUser(user);
+			store.close();
 
-			ib = new IndexBooks();
+			ib = new IndexBooks(lucene);
 			ib.init();
 			for(String book : books)
 			{
@@ -315,15 +312,16 @@ public class AddBook
 				String path = f.getAbsolutePath();
 				out.write(path);
 				out.write("<br/>");
-				new AddBook(path, sroot, ib).run();
+				new AddBook(path, store, ib).run();
 			}
 			out.write("done<br/>");
-			sroot.close();
+			store.close();
 		}
-		catch(IOException ex)
+		catch(Exception ex)
 		{
 			try
 			{
+				ex.printStackTrace();
 				out.write("exception<br/>");
 			}
 			catch(IOException ex1)
@@ -338,7 +336,7 @@ public class AddBook
 			{
 				try
 				{
-					sroot.openForRead();
+					store.openForRead();
 				}
 				catch(IOException ex)
 				{

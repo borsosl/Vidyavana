@@ -14,9 +14,9 @@ public class TextContent
 	
 	public void service(RequestInfo ri) throws Exception
 	{
-		synchronized(StorageRoot.SYSTEM)
+		synchronized(Storage.SYSTEM)
 		{
-			StorageRoot.SYSTEM.openForRead();
+			Storage.SYSTEM.openForRead();
 		}
 		ri.ajax = true;
 		if("section".equals(ri.args[1]))
@@ -70,9 +70,9 @@ public class TextContent
 	private DisplayBlock text(TocTreeItem node, int start)
 	{
 		DisplayBlock db = new DisplayBlock();
-		StorageRoot sr = StorageRoot.SYSTEM;
+		Storage store = Storage.SYSTEM;
 		int bookId = TocTree.inst.bookId(node);
-		BookSegment seg = sr.segment(bookId);
+		BookSegment seg = store.segment(bookId);
 		try
 		{
 			TocTreeItem origTocNode = node;
@@ -110,7 +110,7 @@ public class TextContent
 				if(start >= end)
 					break;
 
-				List<StoragePara> para = seg.readRange(sr.handle, start, end);
+				List<StoragePara> para = seg.readRange(store.handle, start, end);
 				int pix = 0;
 				StoragePara p = null;
 				boolean verse = false;

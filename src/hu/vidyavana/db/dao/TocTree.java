@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import hu.vidyavana.db.model.BookSegment;
-import hu.vidyavana.db.model.StorageRoot;
+import hu.vidyavana.db.model.Storage;
 import hu.vidyavana.db.model.StorageTocItem;
 import hu.vidyavana.db.model.TocTreeItem;
 import hu.vidyavana.web.RequestInfo;
@@ -36,8 +36,7 @@ public class TocTree
 	
 	public void readFromFile() throws IOException
 	{
-		StorageRoot st = StorageRoot.SYSTEM;
-		st.useFile(StorageRoot.SYSTEM_FILE);
+		Storage st = Storage.SYSTEM;
 		st.openForRead();
 		TreeMap<Integer, Integer> segmentOrder = st.segmentOrder();
 		root = new TocTreeItem();
