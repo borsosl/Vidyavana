@@ -47,11 +47,14 @@ public class AnalysisTest
 	@Test
 	public void simpleWords() throws Exception
 	{
-		checkIndexedTerms("a b c", new String[]{"a", "b", "c"});
+		checkIndexedTerms("a b c", new String[]{"b", "c"});
 		checkIndexedTerms("<i>dharma-kṣetre kuru-kṣetre  samavetā yuyutsavaḥ<br/>māmakāḥ pāṇḍavāś caiva  kim\r\n" + 
-			"        akurvata sañjaya</i>", new String[]{"dharma", "kṣetre", "kuru", "kṣetre", "samavetā", "yuyutsavaḥ", "māmakāḥ", "pāṇḍavāś", "caiva", "kim", "akurvata", "sañjaya"});
+			"        akurvata sañjaya</i>", new String[]{"dharma", "kṣetre", "ksetre", "kuru", "kṣetre", "ksetre",
+				"samavetā", "samaveta", "yuyutsavaḥ", "yuyutsavah", "māmakāḥ", "mamakah", "pāṇḍavāś", "pandavas", "caiva",
+				"kim", "akurvata", "sañjaya", "sanjaya"});
 		checkIndexedTerms("<b>Dhṛtarāṣṭra így szólt: Óh, Sañjaya, mit tettek fiaim és Pāṇḍu fiai",
-			new String[]{"dhṛtarāṣṭra", "így", "szólt", "óh", "sañjaya", "mit", "tettek", "fiaim", "és", "pāṇḍu", "fiai"});
+			new String[]{"dhṛtarāṣṭra", "dhrtarastra", "így", "szólt", "óh", "sañjaya", "sanjaya", "mit", "tettek", "fiaim",
+				"pāṇḍu", "pandu", "fiai"});
 	}
 	
 	

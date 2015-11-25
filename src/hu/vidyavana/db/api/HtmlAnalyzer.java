@@ -1,8 +1,12 @@
 package hu.vidyavana.db.api;
 
 import java.io.Reader;
+import java.util.Arrays;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.core.StopFilter;
+import org.apache.lucene.analysis.util.CharArraySet;
 
 public class HtmlAnalyzer extends Analyzer
 {
@@ -11,7 +15,9 @@ public class HtmlAnalyzer extends Analyzer
 	protected TokenStreamComponents createComponents(String fieldName)
 	{
 		Tokenizer tokenizer = new TransliterationTokenizer();
-		return new TokenStreamComponents(tokenizer, tokenizer);
+		TokenStream filter = new StopFilter(tokenizer, new CharArraySet(Arrays.asList("a", "az", "és"), false));
+		filter = new TransliterationSynonymFilter(filter);
+		return new TokenStreamComponents(tokenizer, filter);
 	}
 
 
