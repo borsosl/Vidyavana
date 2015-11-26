@@ -27,7 +27,7 @@ public class IndexBooks
 
 	public void init()
 	{
-		iw = lucene.open().writer();
+		iw = lucene.writer();
 		txtFieldType = new FieldType();
 		txtFieldType.setTokenized(true);
 		txtFieldType.setStored(false);

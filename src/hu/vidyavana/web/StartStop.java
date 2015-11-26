@@ -2,6 +2,7 @@ package hu.vidyavana.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -39,6 +40,7 @@ public class StartStop implements ServletContextListener
 		{
 			ex.printStackTrace();
 		}
+		Globals.searchExecutors = Executors.newCachedThreadPool();
 	}
 
 	

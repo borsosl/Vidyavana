@@ -1,0 +1,56 @@
+package hu.vidyavana.search.task;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.StoredField;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import hu.vidyavana.db.api.Lucene;
+import hu.vidyavana.search.model.Hit;
+import hu.vidyavana.search.model.Search;
+
+public class SearchTask implements Runnable
+{
+	private Search details;
+
+
+	public SearchTask(Search details)
+	{
+		this.details = details;
+	}
+
+
+	@Override
+	public void run()
+	{
+		try
+		{
+			IndexSearcher sr = Lucene.SYSTEM.searcher();
+			details.query = VedabaseQueryParser.parse(details.queryStr);
+			TopDocs res = sr.search(details.query, details.fetchHits);
+			if(res.totalHits > 0)
+			{
+				details.hits = new ArrayList<>(details.fetchHits);
+				for(ScoreDoc sd : res.scoreDocs)
+				{
+					Hit hit = new Hit(sd.doc);
+					if(details.hits.size() < details.reqHits)
+					{
+						Document doc = sr.doc(sd.doc);
+						hit.bookId = (Integer)((StoredField) doc.getField("bookId")).numericValue();
+						hit.segment = (Integer)((StoredField) doc.getField("segment")).numericValue();
+						hit.ordinal = (Integer)((StoredField) doc.getField("ordinal")).numericValue();
+					}
+					details.hits.add(hit);
+				}
+			}
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+		
+	}
+}

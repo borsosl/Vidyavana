@@ -1,7 +1,7 @@
 package hu.vidyavana.db.model;
 
 import hu.vidyavana.convert.api.ParagraphClass;
-import hu.vidyavana.search.ParaCategory;
+import hu.vidyavana.search.model.ParaCategory;
 import hu.vidyavana.util.Encrypt;
 import java.io.IOException;
 import java.io.RandomAccessFile;

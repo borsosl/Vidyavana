@@ -1,4 +1,4 @@
-package hu.vidyavana.search;
+package hu.vidyavana.search.model;
 
 public enum ParaCategory
 {

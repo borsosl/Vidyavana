@@ -18,9 +18,11 @@ public class Lucene
 	public static final Version VERSION = Version.LATEST;
 	public static Lucene SYSTEM = forUser(null);
 
+	private File dir;
 	private Directory index;
 	private IndexWriter writer;
-	private File dir;
+	private DirectoryReader reader;
+	private IndexSearcher searcher;
 
 	
 	public Lucene(String user)
@@ -29,6 +31,7 @@ public class Lucene
 			dir = new File(Globals.cwd, "system/index");
 		else
 			dir = new File(Globals.cwd, "users/"+user+"/index");
+		open();
 	}
 	
 	
@@ -45,7 +48,8 @@ public class Lucene
 	{
 		try
 		{
-			index = FSDirectory.open(dir.toPath());
+			if(index == null)
+				index = FSDirectory.open(dir.toPath());
 			return this;
 		}
 		catch(IOException ex)
@@ -75,6 +79,11 @@ public class Lucene
 	{
 		try
 		{
+			if(reader != null)
+			{
+				reader.close();
+				reader = null;
+			}
 			HtmlAnalyzer analyzer = new HtmlAnalyzer();
 			IndexWriterConfig config = new IndexWriterConfig(analyzer);
 			config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
@@ -93,6 +102,28 @@ public class Lucene
 		try
 		{
 			writer.close();
+			writer = null;
+		}
+		catch(IOException ex)
+		{
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	
+	public IndexSearcher searcher()
+	{
+		try
+		{
+			if(writer != null)
+				return null;
+
+			if(reader == null)
+			{
+				reader = DirectoryReader.open(index);
+				searcher = new IndexSearcher(reader);
+			}
+			return searcher;
 		}
 		catch(IOException ex)
 		{
@@ -105,7 +136,6 @@ public class Lucene
 	{
 		try
 		{
-			SYSTEM.open();
 			IndexReader reader = DirectoryReader.open(index);
 			IndexSearcher sr = new IndexSearcher(reader);
 			Term t = new Term("text", "olvastak");
@@ -116,8 +146,6 @@ public class Lucene
 				Document doc = reader.document(sd.doc);
 				System.out.println(doc.get("bookId")+"/"+doc.get("segment")+"/"+doc.get("ordinal"));
 			}
-			reader.close();
-			SYSTEM.close();
 		}
 		catch(IOException ex)
 		{
