@@ -3,7 +3,15 @@ package hu.vidyavana.db.dao;
 import static hu.vidyavana.convert.api.ParagraphClass.*;
 import java.io.IOException;
 import java.util.List;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
+import hu.vidyavana.db.api.Lucene;
 import hu.vidyavana.db.model.*;
+import hu.vidyavana.search.model.Hit;
+import hu.vidyavana.search.model.Search;
+import hu.vidyavana.search.model.SearchResponse;
+import hu.vidyavana.search.task.SearchTask;
+import hu.vidyavana.util.Globals;
 import hu.vidyavana.web.RequestInfo;
 
 
@@ -19,10 +27,75 @@ public class TextContent
 			Storage.SYSTEM.openForRead();
 		}
 		ri.ajax = true;
-		if("section".equals(ri.args[1]))
+		if("search".equals(ri.args[1]))
+			if(ri.args.length > 2 && "hit".equals(ri.args[2]))
+				hit(ri);
+			else
+				search(ri);
+		else if("section".equals(ri.args[1]))
 			section(ri);
 		else if("follow".equals(ri.args[1]))
 			follow(ri);
+		else
+			ri.resp.setStatus(404);
+	}
+
+	private void search(RequestInfo ri) throws Exception
+	{
+		String q = ri.req.getParameter("q");
+		System.out.println(q);
+
+		Search details = new Search();
+		details.user = "lnd";
+		details.queryStr = q;
+		details.reqHits = 20;
+		Globals.searchExecutors.submit(new SearchTask(details)).get();
+
+		SearchResponse res = new SearchResponse();
+		ri.ajaxResult = res;
+		res.id = details.id;
+		res.hitCount = details.hitCount;
+		if(res.hitCount == 0)
+			return;
+
+		// we have hits
+		Globals.search.put(details.id, details);
+		// TODO put search ref into linked lists for timing out and freeing resources
+
+		Hit hit = details.hits.get(0);
+		int bookId = hit.segment<<16 | hit.bookId;
+		res.display = textForOnePara(bookId, hit.ordinal);
+	}
+
+	private void hit(RequestInfo ri) throws IOException
+	{
+		int searchId = Integer.parseInt(ri.args[3]);
+		int hitNum = Integer.parseInt(ri.args[4]);
+		Search details = Globals.search.get(searchId);
+
+		SearchResponse res = new SearchResponse();
+		ri.ajaxResult = res;
+		if(details == null)
+		{
+			res.hit = -1;
+			return;
+		}
+		
+		// TODO rerun search above 100 hits
+
+		Hit hit = details.hits.get(hitNum);
+		if(hit.bookId == 0)
+		{
+			DirectoryReader reader = Lucene.SYSTEM.reader();
+			Document doc = reader.document(hit.docId);
+			SearchTask.hitDataFromDoc(doc, hit);
+		}
+
+		int bookId = hit.segment<<16 | hit.bookId;
+		res.id = details.id;
+		res.hitCount = details.hitCount;
+		res.hit = hitNum;
+		res.display = textForOnePara(bookId, hit.ordinal);
 	}
 
 	private void follow(RequestInfo ri)
@@ -71,11 +144,21 @@ public class TextContent
 	{
 		DisplayBlock db = new DisplayBlock();
 		Storage store = Storage.SYSTEM;
-		int bookId = TocTree.inst.bookId(node);
-		BookSegment seg = store.segment(bookId);
+		TocTreeItem origTocNode = node;
+		int bookId = 0;
+		BookSegment seg = null;
+		while(true)
+		{
+			bookId = TocTree.inst.bookId(node);
+			seg = store.segment(bookId);
+			if(seg == null)
+				node = node.next;
+			else
+				break;
+		}
+		node = origTocNode;
 		try
 		{
-			TocTreeItem origTocNode = node;
 			int end = start + FIRST_FETCH_PARA_COUNT;
 			// merge titles with text: find text block TOC node
 			while(node.next != null && node.next.parent == node &&
@@ -157,6 +240,38 @@ public class TextContent
 				db.last = 0;
 			else
 				db.last = last+2;
+			db.text = sb.toString();
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+		return db;
+	}
+
+	
+	private DisplayBlock textForOnePara(int bookId, int ordinal)
+	{
+		DisplayBlock db = new DisplayBlock();
+		TocTreeItem tocNode = TocTree.inst.findNodeByOrdinal(bookId, ordinal);
+		db.bookId = bookId;
+		db.tocId = tocNode.id;
+		db.last = -1;
+		db.longRef = TocTree.longRef(tocNode);
+		Storage store = Storage.SYSTEM;
+		BookSegment seg = store.segment(bookId);
+		try
+		{
+			List<StoragePara> para = seg.readRange(store.handle, ordinal, ordinal+1);
+			StoragePara p = para.get(0);
+			StringBuilder sb = new StringBuilder(p.text.length()+200);
+			boolean verse = verseBlock(p);
+			if(verse)
+				sb.append("<div class=\"VsWrap1\"><div class=\"VsWrap2\">");
+			sb.append("<p class=\"").append(p.cls.name())
+				.append("\">").append(p.text).append("</p>");
+			if(verse)
+				sb.append("</div></div>");
 			db.text = sb.toString();
 		}
 		catch(IOException ex)

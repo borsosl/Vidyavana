@@ -61,7 +61,7 @@ public class TocTree
 				levels[0] = tti;
 				prevBook = seg.bookId;
 			}
-			else
+			if(seg.segment > 0)
 				markSegment = true;
 			StorageTocItem[] ct = seg.contents;
 			for(StorageTocItem cti : ct)
@@ -78,13 +78,14 @@ public class TocTree
 				}
 				TocTreeItem tti = treeItem(++id, cti.title, true);
 				tti.level = curLevel;
+				tti.parent = parent;
 				tti.ordinal = (int) cti.paraOrdinal;
 				if(markSegment)
 				{
 					tti.ordinal = -seg.id();
+					tti.parent.ordinal = -seg.bookId;
 					markSegment = false;
 				}
-				tti.parent = parent;
 				parent.children.add(tti);
 				levels[curLevel] = tti;
 			}
@@ -126,7 +127,7 @@ public class TocTree
 	
 	public TocTreeItem treeNode(int id)
 	{
-		TocTreeItem srvNode = findNodeById(root, id);
+		TocTreeItem srvNode = findNodeById(root, id, false);
 		TocTreeItem cliNode = treeItem(srvNode.id, srvNode.title, false);
 		cliNode.children = new ArrayList<TocTreeItem>();
 		addChildren(srvNode, cliNode);
@@ -136,11 +137,11 @@ public class TocTree
 	
 	public TocTreeItem findNodeById(int id)
 	{
-		return findNodeById(root, id);
+		return findNodeById(root, id, false);
 	}
 
 
-	private TocTreeItem findNodeById(TocTreeItem parent, int id)
+	private TocTreeItem findNodeById(TocTreeItem parent, int id, boolean byOrdinal)
 	{
 		List<TocTreeItem> ch = parent.children;
 		if(ch == null)
@@ -149,18 +150,38 @@ public class TocTree
 		for(int i=0; i<len; ++i)
 		{
 			TocTreeItem ti = ch.get(i);
-			if(id > ti.id)
+			int tiId = byOrdinal ? ti.ordinal : ti.id;
+			if(id > tiId)
 				continue;
-			if(id < ti.id)
+			if(id < tiId)
 			{
 				if(i > 0)
-					return findNodeById(ch.get(i-1), id);
+					return findNodeById(ch.get(i-1), id, byOrdinal);
 				if(ti.prev != null)
 					return ti.prev;
 			}
 			return ti;
 		}
-		return findNodeById(ch.get(len-1), id);
+		return findNodeById(ch.get(len-1), id, byOrdinal);
+	}
+
+	
+	public TocTreeItem findNodeByOrdinal(int bookId, int ordinal)
+	{
+		TocTreeItem bookRoot = findBookRoot(bookId, root);
+		return findNodeById(bookRoot, ordinal, true);
+	}
+
+	
+	private TocTreeItem findBookRoot(int bookId, TocTreeItem parent)
+	{
+		int coreBookId = bookId & ((1<<16)-1);
+		for(TocTreeItem tti : parent.children)
+			if(tti.ordinal == -bookId)
+				return tti;
+			else if(tti.ordinal == -coreBookId)
+				return findBookRoot(bookId, tti);
+		return null;
 	}
 
 
@@ -194,5 +215,31 @@ public class TocTree
 		if(ti.ordinal < 0)
 			return -ti.ordinal;
 		throw new IllegalStateException("In TOC no parent is under root");
+	}
+
+
+	public static String longRef(TocTreeItem node)
+	{
+		List<String> titles = new ArrayList<>();
+		int len = 0;
+		do
+		{
+			if(node.title != null)
+			{
+				String t = node.title;
+				int ix = t.indexOf('ǀ');
+				if(ix > -1)
+					t = t.substring(0, ix) + " (" + t.substring(ix+1) + ')';
+				titles.add(t);
+				len += t.length() + 2;
+			}
+			node = node.parent;
+		} while(node != null);
+		StringBuilder sb = new StringBuilder(len);
+		for(int i = titles.size()-1; i>=0; --i)
+			sb.append(titles.get(i)).append(", ");
+		if(sb.length() > 2)
+			sb.setLength(sb.length()-2);
+		return sb.toString();
 	}
 }

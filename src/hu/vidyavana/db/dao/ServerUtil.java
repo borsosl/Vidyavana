@@ -1,9 +1,9 @@
 package hu.vidyavana.db.dao;
 
+import java.io.IOException;
 import hu.vidyavana.db.AddBook;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.web.RequestInfo;
-import java.io.IOException;
 
 public class ServerUtil
 {
@@ -30,5 +30,7 @@ public class ServerUtil
 				val = false;
 			Globals.maintenance = val;
 		}
+		else
+			ri.resp.setStatus(404);
 	}
 }

@@ -28,5 +28,5 @@ public class Search
 
 	public Query query;
 	public List<Hit> hits;
-	public int numAllHits;
+	public int hitCount;
 }

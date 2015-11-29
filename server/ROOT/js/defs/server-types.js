@@ -4,6 +4,24 @@
  * @property {number} tocId?
  * @property {number} last
  * @property {string} text
+ * @property {string} shortRef?
+ * @property {string} longRef?
+ */
+
+/**
+ * @typedef {Object} HitResponse
+ * @property {string} shortRef
+ */
+
+/**
+ * @typedef {Object} SearchResponse
+ * @property {number} id
+ * @property {number} hitCount?
+ * @property {number} hit
+ * @property {number} ordinal
+ * @property {DisplayBlock} display
+ * @property {Array.<HitResponse>} hits?
+ * @property {number} startHit
  */
 
 /**

@@ -111,7 +111,7 @@ public class Lucene
 	}
 	
 	
-	public IndexSearcher searcher()
+	public DirectoryReader reader()
 	{
 		try
 		{
@@ -119,16 +119,26 @@ public class Lucene
 				return null;
 
 			if(reader == null)
-			{
 				reader = DirectoryReader.open(index);
-				searcher = new IndexSearcher(reader);
-			}
-			return searcher;
+
+			return reader;
 		}
 		catch(IOException ex)
 		{
 			throw new RuntimeException(ex);
 		}
+	}
+	
+	
+	public IndexSearcher searcher()
+	{
+		if(reader() == null)
+			return null;
+
+		if(searcher == null)
+			searcher = new IndexSearcher(reader);
+
+		return searcher;
 	}
 	
 	

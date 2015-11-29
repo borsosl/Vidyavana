@@ -110,7 +110,7 @@ body
 	visibility: hidden;
 }
 
-#sectionPop
+#searchPop, #sectionPop
 {
 	position: absolute;
 	top: 48px;
@@ -121,6 +121,18 @@ body
 	color: rgb(41, 34, 7);
 	border: 1px solid rgb(41, 34, 7);
 	padding: 10px;
+}
+
+.textInput100
+{
+	margin-top: 10px;
+	width: calc(100% - 8px);
+}
+
+#search-msg
+{
+	display: none;
+	margin-top: 10px;
 }
 
 .sectionSelect
@@ -334,4 +346,9 @@ body
     filter: alpha(opacity=0);
     opacity: 0.0;
     background: #888;
+}
+
+.long-ref
+{
+	margin: 1em 0;
 }

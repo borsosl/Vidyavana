@@ -6,4 +6,6 @@ public class DisplayBlock
 	public Integer tocId;
 	public int last;
 	public String text;
+	public String shortRef;
+	public String longRef;
 }

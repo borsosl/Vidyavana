@@ -1,10 +1,11 @@
-<%@page import="hu.vidyavana.web.RequestInfo"%>
+<%@page import="hu.vidyavana.web.RequestInfo" pageEncoding="UTF-8"%>
 <%
 RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 %>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
     <title>Pandit</title>
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 110x110 114x114" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
@@ -22,11 +23,10 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 	<div id="measure" class="abs fill novis"></div>
 	<div id="header">
 		<div id="headerCnt">
-			<%-- 
-			<span id="search" class="inblk clkTxt">
-				Keres
+			<span id="searchLnk" class="inblk clkTxt">
+				<u>K</u>eres
 			</span>
-			--%>
+			&nbsp;&nbsp;
 			<span id="sectionLnk" class="inblk clkTxt">
 				<u>S</u>zakasz
 			</span>
@@ -39,9 +39,23 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 	<div id="shadowText">
 	</div>
 
+	<div id="searchPop">
+		<div style="margin-top: 10px; text-align: center;">
+			Keres√©s:
+		</div>
+		<div>
+			<input type="text" id="searchInput" class="textInput100"></input>
+		</div>
+		<div id="search-msg">
+		</div>
+		<div style="margin-top: 10px; text-align: center;">
+			<button id="searchGo">Mehet</button>
+		</div>
+	</div>
+
 	<div id="sectionPop">
 		<div style="margin-top: 10px; text-align: center;">
-			Ugr·s a v·lasztott szakaszra:
+			Ugr√°s a v√°lasztott szakaszra:
 		</div>
 		<div>
 			<select id="sect1" class="sectionSelect"></select>

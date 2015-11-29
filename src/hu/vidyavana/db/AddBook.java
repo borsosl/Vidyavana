@@ -161,7 +161,6 @@ public class AddBook
 	private void addContent()
 	{
 		paraList = new ArrayList<StoragePara>();
-		int bookParaOrdinal = 0;
 		for(String fname : bookFileNames)
 		{
 			File f = new File(bookDir, fname);
@@ -184,7 +183,7 @@ public class AddBook
 					{
 						// add previous para
 						if(inPara)
-							addPara(para, paraSB, bookParaOrdinal++);
+							addPara(para, paraSB);
 						
 						String className = m.group(3);
 						ParagraphClass cls;
@@ -215,7 +214,7 @@ public class AddBook
 						// if <p> has started or cont'd, look for </p>
 						inPara = m.group(5).length() == 0;
 						if(!inPara)
-							addPara(para, paraSB, bookParaOrdinal++);
+							addPara(para, paraSB);
 					}
 				}
 				bs.para = new StoragePara[paraList.size()];
@@ -241,10 +240,11 @@ public class AddBook
 	}
 
 
-	private void addPara(StoragePara para, StringBuilder paraSB, int ordinal)
+	private void addPara(StoragePara para, StringBuilder paraSB)
 	{
 		String paraTxt = paraSB.toString();
 		para.text = paraTxt;
+		int ordinal = paraList.size();
 		paraList.add(para);
 		ib.addPara(ordinal, paraTxt);
 	}

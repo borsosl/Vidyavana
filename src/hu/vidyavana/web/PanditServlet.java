@@ -1,9 +1,5 @@
 package hu.vidyavana.web;
 
-import hu.vidyavana.db.dao.ServerUtil;
-import hu.vidyavana.db.dao.TextContent;
-import hu.vidyavana.db.dao.TocTree;
-import hu.vidyavana.util.Globals;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -13,6 +9,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import hu.vidyavana.db.dao.ServerUtil;
+import hu.vidyavana.db.dao.TextContent;
+import hu.vidyavana.db.dao.TocTree;
+import hu.vidyavana.util.Globals;
 
 public class PanditServlet extends HttpServlet
 {
@@ -82,7 +82,9 @@ public class PanditServlet extends HttpServlet
 				new TextContent().service(ri);
 			else if("util".equals(args[0]))
 				new ServerUtil().service(ri);
-			if(ri.ajax)
+			else
+				ri.resp.setStatus(404);
+			if(ri.ajax && ri.ajaxResult != null)
 			{
 	    		ri.resp.setContentType("application/json; charset=UTF-8");
 				writeJson(ri);

@@ -1,9 +1,12 @@
 // internal singletons
+/** @type {Page} */
 var page;
+/** @type {Search} */
+var search, pendingSearch;
 /**
  * @enum {number} - text request modes
  */
-var loadMode = {section: 1, down: 2, next: 3, prev: 4};
+var loadMode = {section: 1, down: 2, next: 3, prev: 4, search: 5, nextHit: 6, prevHit: 7};
 /**
  * @type {JQuery} - points to centered message box
  */
@@ -29,6 +32,8 @@ var $txt;
  * @type {number} - last section of the database
  */
 var maxTocId;
+/** @type {boolean} */
+var searchMsgShown;
 
 
 /**
@@ -39,6 +44,7 @@ var maxTocId;
 function loadText(mode)
 {
     var m = loadMode;
+    var data = null;
 
     /**
      * @returns {?string} - ajax request URI or null if no req needed
@@ -46,6 +52,7 @@ function loadText(mode)
     function loadModeUrl()
     {
         var sectionUrl = '/app/txt/section/';
+        var searchUrl = '/app/txt/search';
         switch(mode)
         {
             case m.section:
@@ -59,6 +66,20 @@ function loadText(mode)
                 if(next === null)
                     return null;
                 return '/app/txt/follow/'+page.tocId()+'/'+next;
+            case m.search:
+                data = {
+                    q: pendingSearch.query()
+                };
+                return searchUrl;
+            case m.nextHit:
+            case m.prevHit:
+                if(!search)
+                    return null;
+                var last = search.last();
+                var hit = last.hit + (mode == m.nextHit ? 1 : -1);
+                if(hit >= 0 && hit < last.hitCount)
+                    return searchUrl + '/hit/' + last.id + '/' + hit;
+                return null;
         }
     }
 
@@ -70,6 +91,7 @@ function loadText(mode)
     {
         url: url,
         dataType: 'json',
+        data: data,
 
         success: function(json)
         {
@@ -90,22 +112,45 @@ function loadText(mode)
 
 /**
  * On successful load, add text into DOM.
- * @param {DisplayBlock} json - loaded text details
+ * @param {DisplayBlock|SearchResponse} json - loaded text details
  * @param {number} mode - one of {@link loadMode}
  */
 function renderText(json, mode)
 {
+    var isSearch = json.hitCount !== undefined;
+    if(isSearch)
+    {
+        if(json.hitCount)
+        {
+            if(mode == loadMode.search)
+            {
+                search = pendingSearch;
+                dialog(-1, false);
+            }
+            search.last(json);
+        }
+        else
+        {
+            $('#search-msg').text('Nincs találat.').show();
+            searchMsgShown = true;
+            return;
+        }
+    }
+    var display = isSearch ? json.display : json;
     var initPage = mode != loadMode.down;
     if(initPage)
-        page.init(json, false);
-    page.load(json);
-    var h = json.text;
+        page.init(display, false);
+    page.load(display);
+    var h = display.text;
     if(h)
     {
         if(initPage)
         {
             $txt.scrollTop(0);
-            $txt.html(h);
+            if(isSearch)
+                $txt.html('<div class="long-ref">'+(json.hit+1)+' / '+json.hitCount+' : '+display.longRef+'</div>'+h);
+            else
+                $txt.html(h);
         }
         else
             $txt.append(h);
@@ -127,14 +172,14 @@ function Page()
      */
     var tocId;
     /**
-     * @type {number} - 1-based index of the next, unloaded paragraph
+     * @type {number} - 1-based index of the next, unloaded paragraph. 0=fully loaded. -1=search render.
      */
     var last;
 
 
     /**
-     * Resets fields if book has changed.
-     * @param {DisplayBlock} json - loaded chunk and book info
+     * Sets fields for current page content.
+     * @param {DisplayBlock} json - loaded section info
      * @param {boolean} force - force reload even if the same section was loaded
      * @returns {boolean} - was reset
      */
@@ -173,9 +218,74 @@ function Page()
         init: init,
         load: load,
         next: next,
+        isSearchResult: function(){return last === -1;},
         bookId: function(){return bookId;},
         tocId: function(){return tocId;}
     });
+}
+
+// ********** Search **********
+
+
+/**
+ * @constructor
+ */
+function Search()
+{
+    /**
+     * @type {string} - originally entered text
+     */
+    var query;
+    /**
+     * @type {SearchResponse} - details of last hit shown
+     */
+    var last;
+
+
+    $.extend(this, {
+        query: function(q){if(q==undefined) return query; query = q;},
+        last: function(l){if(l==undefined) return last; last = l;}
+    });
+}
+
+
+/**
+ * One-time setup of event handlers.
+ */
+function initSearch()
+{
+    var $inp = $('#searchInput');
+    $inp.keydown(function(/** @type JQueryKeyEventObject */ e)
+    {
+        if(searchMsgShown)
+        {
+            $('#search-msg').hide();
+            searchMsgShown = false;
+        }
+        if(e.keyCode == 13)
+        {
+            newSearch($inp.val());
+        }
+        if(!e.altKey)
+            e.stopPropagation();
+    });
+    $('#searchGo').click(function()
+    {
+        newSearch($inp.val());
+    });
+}
+
+
+function newSearch(text)
+{
+    if(searchMsgShown)
+    {
+        $('#search-msg').hide();
+        searchMsgShown = false;
+    }
+    var ps = pendingSearch = new Search();
+    ps.query(text);
+    loadText(loadMode.search);
 }
 
 
@@ -395,7 +505,11 @@ function message(msg)
 {
     if(!$msg)
         $msg = $('#message');
-    $msg.html(msg);
+    $msg.html(msg + '&nbsp;<a href="#" id="cancelMsg">Bezár</a>');
+    $('#cancelMsg', $msg).click(function()
+    {
+        $msg.hide();
+    });
     var $win = $(window);
     $msg.css({
         'top': Math.floor(($win.height() - $msg.height() - 20)/2) + 'px',
@@ -419,37 +533,88 @@ function throttle(init, delay, cb)
 }
 
 
+/**
+ * Shows/hides dialogs.
+ * @param {number} index - of dialog in ids array
+ * @param {boolean} toggle - or show
+ */
+function dialog(index, toggle)
+{
+    var ids = [$('#searchPop'), $('#sectionPop')];
+    for(var i in ids)
+        if(i == index)
+            if(toggle)
+                ids[i].toggle();
+            else
+                ids[i].show();
+        else
+            ids[i].hide();
+}
+
+
 $(function()
 {
     $txt = $('#text');
     page = new Page();
 
+    initSearch();
     initSectionSelect();
-    $('#sectionPop').show();
+    dialog(0, false);
+    $('#searchLnk').click(function()
+    {
+        dialog(0, true);
+    });
     $('#sectionLnk').click(function()
     {
-        $('#sectionPop').toggle();
+        dialog(1, true);
     });
 
     $(window).keydown(function(e)
     {
-        if(e.keyCode === 39)     		    // right
+        var c = e.keyCode;
+        if(c === 39)     		    // right
             loadText(loadMode.down);
-        else if(e.keyCode === 13)		    // enter
-            loadText(loadMode.next);
-        else if(e.keyCode === 8)	    	// backspace
+        else if(c === 13)		    // enter
+        {
+            if(page && page.isSearchResult())
+            {
+                selSection = search.last().display.tocId;
+                loadText(loadMode.section);
+            }
+            else
+                loadText(loadMode.next);
+        }
+        else if(c === 8)	    	// backspace
         {
             loadText(loadMode.prev);
             e.preventDefault();
         }
-        else if(e.keyCode === 83)           // s
+        else if(c === 75)           // k
         {
-            $('#sectionPop').toggle();
+            dialog(0, true);
+            var el = $('#searchInput')[0];
+            el.focus();
+            el.select();
+            e.preventDefault();
+        }
+        else if(c === 83)           // s
+        {
+            dialog(1, true);
             $('#sect1')[0].focus();
             e.preventDefault();
         }
-        else if(e.keyCode === 27)		    // esc
-            $('#sectionPop').hide();
+        else if(c === 27)		    // esc
+        {
+            dialog(-1, false);
+        }
+        else if(c === 188 || c === 109)		    // , or -
+        {
+            loadText(loadMode.prevHit);
+        }
+        else if(c === 190 || c === 107)		    // . or +
+        {
+            loadText(loadMode.nextHit);
+        }
     });
 
     window.onresize = throttle(true, 100, function()

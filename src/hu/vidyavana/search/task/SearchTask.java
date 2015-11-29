@@ -32,16 +32,15 @@ public class SearchTask implements Runnable
 			TopDocs res = sr.search(details.query, details.fetchHits);
 			if(res.totalHits > 0)
 			{
-				details.hits = new ArrayList<>(details.fetchHits);
+				details.hitCount = res.totalHits;
+				details.hits = new ArrayList<>(Math.min(details.fetchHits, res.totalHits));
 				for(ScoreDoc sd : res.scoreDocs)
 				{
 					Hit hit = new Hit(sd.doc);
 					if(details.hits.size() < details.reqHits)
 					{
 						Document doc = sr.doc(sd.doc);
-						hit.bookId = (Integer)((StoredField) doc.getField("bookId")).numericValue();
-						hit.segment = (Integer)((StoredField) doc.getField("segment")).numericValue();
-						hit.ordinal = (Integer)((StoredField) doc.getField("ordinal")).numericValue();
+						hitDataFromDoc(doc, hit);
 					}
 					details.hits.add(hit);
 				}
@@ -52,5 +51,13 @@ public class SearchTask implements Runnable
 			ex.printStackTrace();
 		}
 		
+	}
+	
+	
+	public static void hitDataFromDoc(Document doc, Hit hit)
+	{
+		hit.bookId = (Integer)((StoredField) doc.getField("bookId")).numericValue();
+		hit.segment = (Integer)((StoredField) doc.getField("segment")).numericValue();
+		hit.ordinal = (Integer)((StoredField) doc.getField("ordinal")).numericValue();
 	}
 }
