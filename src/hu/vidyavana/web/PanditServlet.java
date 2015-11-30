@@ -35,11 +35,17 @@ public class PanditServlet extends HttpServlet
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		RequestInfo ri = RequestInfo.create();
-		ri.req = req;
-		ri.resp = resp;
-		process(ri);
-		RequestInfo.reset();
+		try
+		{
+			RequestInfo ri = RequestInfo.create();
+			ri.req = req;
+			ri.resp = resp;
+			process(ri);
+		}
+		finally
+		{
+			RequestInfo.reset();
+		}
 	}
 
 	

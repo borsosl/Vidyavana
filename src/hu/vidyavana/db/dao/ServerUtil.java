@@ -1,10 +1,12 @@
 package hu.vidyavana.db.dao;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import javax.servlet.ServletException;
 import hu.vidyavana.db.AddBook;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
@@ -25,37 +27,70 @@ public class ServerUtil
 	{
 		if("rebuild".equals(ri.args[1]))
 		{
-			int serviceTag = (int) System.currentTimeMillis();
-			final BlockingQueue<Object> responseQueue = new ArrayBlockingQueue<>(100);
-			serviceMap.put(serviceTag, responseQueue);
-			new Thread(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					try
-					{
-						String user = ri.args.length > 2 ? ri.args[2] : null;
-						AddBook.rebuildOnServer(user, responseQueue);
-					}
-					catch(Exception ex)
-					{
-						responseQueue.add(ex);
-					}
-				}
-			}).start();
-			ServiceResponse res = new ServiceResponse();
-			res.serviceTag = serviceTag;
-			ri.ajaxResult = res;
-			ri.ajaxText();
-			ri.renderJsp("/server-monitor.jsp");
+			rebuild(ri);
 		}
 		else if("monitor".equals(ri.args[1]))
 		{
-			Integer serviceTag = Integer.valueOf(ri.args[2]);
-			BlockingQueue<Object> resp = serviceMap.get(serviceTag);
-			ServiceResponse res = new ServiceResponse();
-			res.text = "";
+			monitorBackgroundTask(ri);
+		}
+		else if("maint".equals(ri.args[1]))
+		{
+			boolean val = true;
+			if(ri.args.length > 2)
+				val = false;
+			Globals.maintenance = val;
+		}
+		else
+			ri.resp.setStatus(404);
+	}
+
+	private void rebuild(final RequestInfo ri) throws ServletException, IOException
+	{
+		int serviceTag = (int) System.currentTimeMillis();
+		final BlockingQueue<Object> responseQueue = new ArrayBlockingQueue<>(100);
+		serviceMap.put(serviceTag, responseQueue);
+		new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					String user = ri.args.length > 2 ? ri.args[2] : null;
+					AddBook.rebuildOnServer(user, responseQueue);
+				}
+				catch(Exception ex)
+				{
+					try
+					{
+						responseQueue.put(ex);
+					}
+					catch(InterruptedException ex1)
+					{
+						ex1.printStackTrace();
+					}
+				}
+			}
+		}).start();
+		ServiceResponse res = new ServiceResponse();
+		res.serviceTag = serviceTag;
+		ri.ajaxResult = res;
+		ri.ajaxText();
+		ri.renderJsp("/server-monitor.jsp");
+	}
+
+	private void monitorBackgroundTask(final RequestInfo ri) throws InterruptedException
+	{
+		Integer serviceTag = Integer.valueOf(ri.args[2]);
+		BlockingQueue<Object> resp = serviceMap.get(serviceTag);
+		ServiceResponse res = new ServiceResponse();
+		res.text = "";
+		if(resp == null)
+		{
+			res.finished = true;
+		}
+		else
+		{
 			Object data = resp.poll();
 			if(data == null)
 				// wait for one next
@@ -78,17 +113,8 @@ public class ServerUtil
 			}
 			if(res.finished)
 				serviceMap.remove(serviceTag);
-			ri.ajaxResult = res;
-			ri.ajax = true;
 		}
-		else if("maint".equals(ri.args[1]))
-		{
-			boolean val = true;
-			if(ri.args.length > 2)
-				val = false;
-			Globals.maintenance = val;
-		}
-		else
-			ri.resp.setStatus(404);
+		ri.ajaxResult = res;
+		ri.ajax = true;
 	}
 }

@@ -2,7 +2,8 @@
 <project default="build" name="build jar for Pandit webapp">
     <target name="build">
         <jar destfile="pandit.jar">
-            <fileset dir="../cls" includes="hu/ **/convert/api/" excludes="**/.gitignore **/convert/" />
+            <fileset dir="../cls" includes="hu/" excludes="**/.gitignore **/convert/" />
+            <fileset dir="../cls" includes="**/convert/api/" />
         </jar>
     </target>
 </project>
