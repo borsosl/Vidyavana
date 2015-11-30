@@ -3,6 +3,7 @@ package hu.vidyavana.db;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.w3c.dom.Document;
@@ -280,7 +281,7 @@ public class AddBook
 	}
 
 	
-	public static void rebuildOnServer(String user, Writer out)
+	public static void rebuildOnServer(String user, BlockingQueue responseQueue)
 	{
 		Storage store = Storage.SYSTEM;
 		Lucene lucene = Lucene.SYSTEM;
@@ -311,16 +312,21 @@ public class AddBook
 				if(!f.exists())
 					continue;
 				String path = f.getAbsolutePath();
-				out.write(path);
-				out.write("<br/>");
+				responseQueue.put(path.trim());
 				new AddBook(path, store, ib).run();
 			}
-			out.write("done<br/>");
+			responseQueue.put(true);
 			store.close();
 		}
 		catch(Exception ex)
 		{
-			throw new RuntimeException("Adding book", ex);
+			try
+			{
+				responseQueue.put(ex);
+			}
+			catch(InterruptedException ex1)
+			{
+			}
 		}
 		finally
 		{

@@ -83,7 +83,7 @@ public class Log
 	}
 	
 	
-	private static String stackTrace(Throwable t)
+	public static String stackTrace(Throwable t)
 	{
 		StringWriter sw = new StringWriter(2000);
 		PrintWriter pw = new PrintWriter(sw);
