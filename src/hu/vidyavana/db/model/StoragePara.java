@@ -1,13 +1,13 @@
 package hu.vidyavana.db.model;
 
-import hu.vidyavana.convert.api.ParagraphClass;
-import hu.vidyavana.search.model.ParaCategory;
-import hu.vidyavana.util.Encrypt;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import hu.vidyavana.convert.api.ParagraphClass;
+import hu.vidyavana.search.model.ParaCategory;
+import hu.vidyavana.util.Encrypt;
 
 public class StoragePara
 {
@@ -61,7 +61,7 @@ public class StoragePara
 			}
 			catch(UnsupportedEncodingException ex)
 			{
-				ex.printStackTrace();
+				throw new RuntimeException("Decoding para", ex);
 			}
 	}
 

@@ -63,6 +63,8 @@ public class Storage
 		{
 			handle = null;
 			this.mode = null;
+			if("rw".equals(mode))
+				throw new RuntimeException("Writing storage "+file, ex);
 			return false;
 		}
 	}

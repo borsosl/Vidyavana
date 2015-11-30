@@ -13,6 +13,7 @@ import hu.vidyavana.db.dao.ServerUtil;
 import hu.vidyavana.db.dao.TextContent;
 import hu.vidyavana.db.dao.TocTree;
 import hu.vidyavana.util.Globals;
+import hu.vidyavana.util.Log;
 
 public class PanditServlet extends HttpServlet
 {
@@ -54,7 +55,7 @@ public class PanditServlet extends HttpServlet
     		ri.resp.setHeader("Expires", "-1");
     		
     		if(debug)
-    			System.out.println(dumpTimeFmt.format(new Date())+": "+ri.uri);
+    			Log.debug(dumpTimeFmt.format(new Date())+": "+ri.uri);
 
 			if(ri.uri.endsWith(".jsp"))
 			{
@@ -93,8 +94,7 @@ public class PanditServlet extends HttpServlet
 		catch(Exception ex)
 		{
 			++errorRefNo;
-			System.out.println("Error reference "+errorRefNo);
-			ex.printStackTrace();
+			Log.error("Error ref "+errorRefNo, ex);
 			if(ri.ajax)
 			{
 				HashMap<String,Object> map = ajaxMap();
@@ -106,7 +106,7 @@ public class PanditServlet extends HttpServlet
 				}
 				catch(IOException ex1)
 				{
-					System.out.println("Unable to send ajax error response.");
+					Log.error("Unable to send ajax error response.", ex1);
 				}
 			}
 			else
@@ -118,7 +118,7 @@ public class PanditServlet extends HttpServlet
 				}
 				catch(IOException ex1)
 				{
-					System.out.println("Unable to send page error response.");
+					Log.error("Unable to send page error response.", ex1);
 				}
 			}
 		}
@@ -128,7 +128,7 @@ public class PanditServlet extends HttpServlet
 	private String refError()
 	{
 		return "Hiba történt. Kérlek írj hibajelentést arról, hogy melyik funkciót használtad "
-			+ "és hogyan. Hivatkozz erre a referenciaszámra: "+errorRefNo+". Email: lnd@pandit.hu";
+			+ "és hogyan. Hivatkozz erre a referenciaszámra: "+errorRefNo+". Email: lokanatha.srs@gmail.com";
 	}
 
 

@@ -17,6 +17,7 @@ import hu.vidyavana.db.model.StoragePara;
 import hu.vidyavana.db.model.StorageTocItem;
 import hu.vidyavana.util.FileUtil;
 import hu.vidyavana.util.Globals;
+import hu.vidyavana.util.Log;
 import hu.vidyavana.util.XmlUtil;
 
 public class AddBook
@@ -222,7 +223,7 @@ public class AddBook
 			}
 			catch(Exception ex)
 			{
-				throw new RuntimeException(ex);
+				throw new RuntimeException("Adding XML file", ex);
 			}
 			finally
 			{
@@ -233,7 +234,7 @@ public class AddBook
 				}
 					catch(IOException ex)
 					{
-						throw new RuntimeException(ex);
+						throw new RuntimeException("Closing XML file", ex);
 					}
 			}
 		}
@@ -271,7 +272,7 @@ public class AddBook
 		ib.init();
 		for(String path : paths)
 		{
-			System.out.println(path);
+			Log.info(path);
 			new AddBook(path, store, ib).run();
 		}
 		ib.finish();
@@ -319,14 +320,7 @@ public class AddBook
 		}
 		catch(Exception ex)
 		{
-			try
-			{
-				ex.printStackTrace();
-				out.write("exception<br/>");
-			}
-			catch(IOException ex1)
-			{
-			}
+			throw new RuntimeException("Adding book", ex);
 		}
 		finally
 		{

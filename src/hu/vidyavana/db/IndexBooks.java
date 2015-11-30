@@ -59,7 +59,7 @@ public class IndexBooks
 		}
 		catch(IOException ex)
 		{
-			throw new RuntimeException(ex);
+			throw new RuntimeException("Adding para to index: "+txt, ex);
 		}
 	}
 

@@ -1,15 +1,18 @@
 package hu.vidyavana.util;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
 
 public class Log
 {
 	private static Logger logger;
-	private static FileHandler handler;
 	
 	static
 	{
@@ -17,17 +20,29 @@ public class Log
 		{
 			URL url = Log.class.getResource("/hu/resource/logging.properties");
 			LogManager.getLogManager().readConfiguration(url.openStream());
-			
 			logger = Logger.getLogger("common");
-			logger.setLevel(Level.ALL);
-			
-			handler = new FileHandler("vidyavana.log");
-			handler.setFormatter(new SimplerFormatter());
-			logger.addHandler(handler);
+
+			if(Globals.serverEnv)
+			{
+				SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmm");
+				File f = new File(Globals.cwd, "log/pandit-"+sdf.format(new Date())+".log");
+				FileHandler handler = new FileHandler(f.getPath());
+				handler.setFormatter(new SimpleFormatter());
+				logger.addHandler(handler);
+				level(Level.CONFIG);
+			}
+			else
+			{
+				ConsoleHandler handler = new ConsoleHandler();
+				handler.setFormatter(new SimpleFormatter());
+				logger.addHandler(handler);
+				level(Level.ALL);
+			}
 		}
 		catch(SecurityException | IOException ex)
 		{
 			System.out.println("Failed to initialize logging.");
+			ex.printStackTrace();
 		}
 	}
 	
@@ -41,7 +56,7 @@ public class Log
 	public static void error(String text, Throwable t)
 	{
 		if(text != null)
-			logger.severe(text);
+			logger.severe(text + System.lineSeparator());
 		if(t != null)
 			logger.severe(stackTrace(t));
 	}
@@ -50,7 +65,7 @@ public class Log
 	public static void warning(String text, Throwable t)
 	{
 		if(text != null)
-			logger.warning(text);
+			logger.warning(text + System.lineSeparator());
 		if(t != null)
 			logger.warning(stackTrace(t));
 	}
@@ -59,6 +74,12 @@ public class Log
 	public static void info(String text)
 	{
 		logger.info(text + System.lineSeparator());
+	}
+	
+	
+	public static void debug(String text)
+	{
+		logger.finer(text + System.lineSeparator());
 	}
 	
 	
@@ -81,7 +102,7 @@ public class Log
 }
 
 
-class SimplerFormatter extends Formatter
+class SimpleFormatter extends Formatter
 {
 	private static final MessageFormat messageFormat = new MessageFormat("[{0,date,MM-dd HH:mm:ss}]: {1}");
 

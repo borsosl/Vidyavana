@@ -21,6 +21,7 @@ public class ServerUtil
 			}
 			catch(IOException ex)
 			{
+				throw new RuntimeException("Rebuilding on server", ex);
 			}
 		}
 		else if("maint".equals(ri.args[1]))

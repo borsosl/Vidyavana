@@ -1,13 +1,14 @@
 package hu.vidyavana.web;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import hu.vidyavana.db.dao.TocTree;
 import hu.vidyavana.db.model.Storage;
 import hu.vidyavana.util.Globals;
+import hu.vidyavana.util.Log;
 
 public class StartStop implements ServletContextListener
 {
@@ -20,7 +21,7 @@ public class StartStop implements ServletContextListener
 		if(!runtimeDir.exists())
 		{
 			// TODO check for android path
-			runtimeDir = new File(path, "runtime");
+			runtimeDir = new File(path, "WEB-INF/runtime");
 			Globals.serverEnv = true;
 		}
 		else
@@ -29,18 +30,21 @@ public class StartStop implements ServletContextListener
 			Globals.localEnv = true;
 		}
 		Globals.cwd = runtimeDir.getAbsoluteFile().toPath().normalize().toFile();
-		System.out.println("Working in " + runtimeDir.getAbsolutePath());
-		Storage store = Storage.SYSTEM;
-		store.setEncrypted(false);
+
+		Log.info("Pandit context initializing");
+		Log.info("Working in " + runtimeDir.getAbsolutePath());
+		long t0 = System.currentTimeMillis();
 		try
 		{
-			store.openForRead();
+			Storage.SYSTEM.setEncrypted(false);
+			TocTree.inst.readFromFile();
 		}
-		catch(IOException ex)
+		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			Log.error("Opening SYSTEM store or reading TOC", ex);
 		}
 		Globals.searchExecutors = Executors.newCachedThreadPool();
+		Log.info("Pandit context initialized in "+(System.currentTimeMillis() - t0));
 	}
 
 	
@@ -52,9 +56,11 @@ public class StartStop implements ServletContextListener
 			// TODO close cached user storages
 			Storage.SYSTEM.close();
 		}
-		catch(IOException ex)
+		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			Log.error("Closing SYSTEM store", ex);
 		}
+		Log.info("Pandit context destroyed");
+		Log.close();
 	}
 }

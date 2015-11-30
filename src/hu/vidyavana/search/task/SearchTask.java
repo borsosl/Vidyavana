@@ -48,7 +48,7 @@ public class SearchTask implements Runnable
 		}
 		catch(IOException ex)
 		{
-			ex.printStackTrace();
+			throw new RuntimeException("Lucene search: "+details.queryStr, ex);
 		}
 		
 	}

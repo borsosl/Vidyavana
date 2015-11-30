@@ -42,7 +42,7 @@ public class VedabaseQueryParser
 		}
 		catch(IOException ex)
 		{
-			ex.printStackTrace();
+			throw new RuntimeException("Analyzing: "+q, ex);
 		}
 		return list;
 	}

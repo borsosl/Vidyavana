@@ -2,12 +2,10 @@ package hu.vidyavana.db.api;
 
 import java.io.File;
 import java.io.IOException;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -54,7 +52,7 @@ public class Lucene
 		}
 		catch(IOException ex)
 		{
-			throw new RuntimeException(ex);
+			throw new RuntimeException("Opening index dir", ex);
 		}
 	}
 	
@@ -70,7 +68,7 @@ public class Lucene
 		}
 		catch(IOException ex)
 		{
-			throw new RuntimeException(ex);
+			throw new RuntimeException("Closing index dir", ex);
 		}
 	}
 	
@@ -92,7 +90,7 @@ public class Lucene
 		}
 		catch(IOException ex)
 		{
-			throw new RuntimeException(ex);
+			throw new RuntimeException("Opening index writer", ex);
 		}
 	}
 	
@@ -106,7 +104,7 @@ public class Lucene
 		}
 		catch(IOException ex)
 		{
-			throw new RuntimeException(ex);
+			throw new RuntimeException("Closing index writer", ex);
 		}
 	}
 	
@@ -125,7 +123,7 @@ public class Lucene
 		}
 		catch(IOException ex)
 		{
-			throw new RuntimeException(ex);
+			throw new RuntimeException("Opening index reader", ex);
 		}
 	}
 	
@@ -139,27 +137,5 @@ public class Lucene
 			searcher = new IndexSearcher(reader);
 
 		return searcher;
-	}
-	
-	
-	public void test()
-	{
-		try
-		{
-			IndexReader reader = DirectoryReader.open(index);
-			IndexSearcher sr = new IndexSearcher(reader);
-			Term t = new Term("text", "olvastak");
-			TopDocs res = sr.search(new TermQuery(t), 10);
-			System.out.println(res.totalHits);
-			for(ScoreDoc sd : res.scoreDocs)
-			{
-				Document doc = reader.document(sd.doc);
-				System.out.println(doc.get("bookId")+"/"+doc.get("segment")+"/"+doc.get("ordinal"));
-			}
-		}
-		catch(IOException ex)
-		{
-			ex.printStackTrace();
-		}
 	}
 }

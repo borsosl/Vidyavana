@@ -12,6 +12,7 @@ import hu.vidyavana.search.model.Search;
 import hu.vidyavana.search.model.SearchResponse;
 import hu.vidyavana.search.task.SearchTask;
 import hu.vidyavana.util.Globals;
+import hu.vidyavana.util.Log;
 import hu.vidyavana.web.RequestInfo;
 
 
@@ -43,7 +44,7 @@ public class TextContent
 	private void search(RequestInfo ri) throws Exception
 	{
 		String q = ri.req.getParameter("q");
-		System.out.println(q);
+		Log.debug("Search task: " + q);
 
 		Search details = new Search();
 		details.user = "lnd";
@@ -244,7 +245,7 @@ public class TextContent
 		}
 		catch(IOException ex)
 		{
-			ex.printStackTrace();
+			throw new RuntimeException("Text request", ex);
 		}
 		return db;
 	}
@@ -276,7 +277,7 @@ public class TextContent
 		}
 		catch(IOException ex)
 		{
-			ex.printStackTrace();
+			throw new RuntimeException("Search text request", ex);
 		}
 		return db;
 	}
