@@ -270,7 +270,7 @@ public class TextContent
 			if(verse)
 				sb.append("<div class=\"VsWrap1\"><div class=\"VsWrap2\">");
 			sb.append("<p class=\"").append(p.cls.name())
-				.append("\">").append(p.text).append("</p>");
+				.append("\" data-ix=\"1\">").append(p.text).append("</p>");
 			if(verse)
 				sb.append("</div></div>");
 			db.text = sb.toString();

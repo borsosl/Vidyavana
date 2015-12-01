@@ -18,6 +18,7 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
     <script src="/js/dynatree/dev.js"></script>
     -->
     <script src="/js/main.js"></script>
+    <script src="/js/highlight.js"></script>
 </head>
 <body class="noMargin noScroll">
 	<div id="measure" class="abs fill novis"></div>

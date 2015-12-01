@@ -19,3 +19,8 @@ var pg;
  * @method query
  * @method last
  */
+
+/**
+ * @typedef {Object} Highlight
+ * @method run
+ */

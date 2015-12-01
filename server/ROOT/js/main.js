@@ -3,6 +3,8 @@
 var page;
 /** @type {Search} */
 var search, pendingSearch;
+/** @type {Highlight} */
+var highlight;
 /**
  * @enum {number} - text request modes
  */
@@ -107,6 +109,9 @@ function loadText(mode)
             });
         }
     });
+
+    if(mode === m.search)
+        highlight = new Highlight(pendingSearch.query());
 }
 
 
@@ -154,6 +159,8 @@ function renderText(json, mode)
         }
         else
             $txt.append(h);
+        if(highlight)
+            highlight.run(h);
     }
 }
 
@@ -554,6 +561,7 @@ function dialog(index, toggle)
 
 $(function()
 {
+    tests();
     $txt = $('#text');
     page = new Page();
 
@@ -629,3 +637,18 @@ $(function()
         txtViewHgt = $txt.height();
     });
 });
+
+
+function tests()
+{
+    var h = new Highlight("pandu|Pāṇḍu fiai");
+    console.assert(h.lowercase('A Bhagavad-gītā úgy, ahogy van') === 'a bhagavad-gītā úgy, ahogy van');
+    console.assert(h.lowercase('Pāṇḍu feleségének, Kuntīnak, vagyis Pṛthānak, a Pāṇḍavák anyjának') === 'pāṇḍu feleségének, kuntīnak, vagyis pṛthānak, a pāṇḍavák anyjának');
+    console.assert(h.lowercase('Īśvara Śrī Caitanya Śaibya Ám Óh') === 'īśvara śrī caitanya śaibya ám óh');
+    h.wordArr([['pandu', false], ['pandu', true], ['fiai', false]]);
+    console.assert(h.sought(['pandu', 12, 17]) === true);
+    console.assert(h.sought(['fiai', 12, 17]) === true);
+    console.assert(h.sought(['más', 28, 32]) === false);
+    var hi = h.highlightIndexes('<b>Dhṛtarāṣṭra így szólt:&nbsp;Óh, Sañjaya, mit tettek fiaim és Pāṇḍu fiai, miután');
+    console.assert(hi.length === 2 && hi[0][0] === 64 && hi[1][1] === 74);
+}

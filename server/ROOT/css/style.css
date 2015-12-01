@@ -352,3 +352,9 @@ body
 {
 	margin: 1em 0;
 }
+
+.hilite
+{
+	background-color: rgb(125, 74, 23);
+	color: rgb(238, 202, 166);
+}
