@@ -22,14 +22,16 @@ var nodeToUpdate;
  * @type {number} - TOC node id currently selected in UI.
  */
 var selSection;
-/**
- * @type {number} - px height of text canvas
- */
-var txtViewHgt;
+/** @type {JQuery} - container for text and buttons */
+var $content;
 /**
  * @type {JQuery} - container for text content
  */
 var $txt;
+/** @type {JQuery} - button rows */
+var $textBtns, $hitBtns;
+/** @type {JQuery} - button to load more of section */
+var $sectDown;
 /**
  * @type {number} - last section of the database
  */
@@ -151,14 +153,17 @@ function renderText(json, mode)
     {
         if(initPage)
         {
-            $txt.scrollTop(0);
+            $content.scrollTop(0);
             if(isSearch)
                 $txt.html('<div class="long-ref">'+(json.hit+1)+' / '+json.hitCount+' : '+display.longRef+'</div>'+h);
             else
                 $txt.html(h);
+            $textBtns.toggle(!isSearch);
+            $hitBtns.toggle(isSearch);
         }
         else
             $txt.append(h);
+        $sectDown.toggle(page.next() !== null);
         if(highlight)
             highlight.run(h);
     }
@@ -562,7 +567,11 @@ function dialog(index, toggle)
 $(function()
 {
     tests();
+    $content = $('#content');
     $txt = $('#text');
+    $textBtns = $('#text-buttons');
+    $hitBtns = $('#hit-buttons');
+    $sectDown = $('#sect-down');
     page = new Page();
 
     initSearch();
@@ -625,30 +634,50 @@ $(function()
         }
     });
 
+    $('#prev-sect').click(function()
+    {
+        loadText(loadMode.prev);
+    });
+
+    $('#next-sect').click(function()
+    {
+        loadText(loadMode.next);
+    });
+
+    $sectDown.click(function()
+    {
+        loadText(loadMode.down);
+    });
+
+    $('#prev-hit').click(function()
+    {
+        loadText(loadMode.prevHit);
+    });
+
+    $('#next-hit').click(function()
+    {
+        loadText(loadMode.nextHit);
+    });
+
+    $('#this-sect').click(function()
+    {
+        selSection = search.last().display.tocId;
+        loadText(loadMode.section);
+    });
+
     window.onresize = throttle(true, 100, function()
     {
         var $m = $('#measure');
         var winHgt = $m.height();
         var winWid = $m.width();
         var headHgt = $('#header').height();
-        $txt[0].style.top = headHgt+'px';
-        $txt.innerHeight(winHgt-headHgt);
-        $txt.innerWidth(winWid);
-        txtViewHgt = $txt.height();
+        $content[0].style.top = headHgt+'px';
+        $content.innerHeight(winHgt-headHgt);
+        $content.innerWidth(winWid);
     });
 });
 
 
 function tests()
 {
-    var h = new Highlight("pandu|Pāṇḍu fiai");
-    console.assert(h.lowercase('A Bhagavad-gītā úgy, ahogy van') === 'a bhagavad-gītā úgy, ahogy van');
-    console.assert(h.lowercase('Pāṇḍu feleségének, Kuntīnak, vagyis Pṛthānak, a Pāṇḍavák anyjának') === 'pāṇḍu feleségének, kuntīnak, vagyis pṛthānak, a pāṇḍavák anyjának');
-    console.assert(h.lowercase('Īśvara Śrī Caitanya Śaibya Ám Óh') === 'īśvara śrī caitanya śaibya ám óh');
-    h.wordArr([['pandu', false], ['pandu', true], ['fiai', false]]);
-    console.assert(h.sought(['pandu', 12, 17]) === true);
-    console.assert(h.sought(['fiai', 12, 17]) === true);
-    console.assert(h.sought(['más', 28, 32]) === false);
-    var hi = h.highlightIndexes('<b>Dhṛtarāṣṭra így szólt:&nbsp;Óh, Sañjaya, mit tettek fiaim és Pāṇḍu fiai, miután');
-    console.assert(hi.length === 2 && hi[0][0] === 64 && hi[1][1] === 74);
 }

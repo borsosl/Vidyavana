@@ -1,0 +1,18 @@
+ExpiresActive On
+ExpiresDefault "modification plus 1 month"
+ExpiresByType application/javascript "modification plus 1 week"
+ExpiresByType application/x-font-ttf "modification plus 1 year"
+
+<filesMatch "\.(html|gif|jpe?g|png|ico)$">
+    Header set Cache-Control "max-age=2592000, public, must-revalidate"
+</filesMatch>
+
+<filesMatch "\.(css|js)$">
+    Header set Cache-Control "max-age=604800, public, must-revalidate"
+</filesMatch>
+
+<filesMatch "\.(ttf)$">
+    Header set Cache-Control "max-age=31536000, public"
+</filesMatch>
+
+Header unset ETag

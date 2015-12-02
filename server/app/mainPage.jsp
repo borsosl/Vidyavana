@@ -34,7 +34,21 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 		</div>
 	</div>
 
-	<div id="text" class="autoScroll">
+	<div id="content" class="autoScroll">
+		<div id="text">
+		</div>
+		<div class="button-rows">
+			<div id="text-buttons">
+				<span id="prev-sect" class="btn">&laquo; Előző szakasz (&#9668;) <span class="bsp-icon"></span></span>
+				<span id="sect-down" class="btn">Több betöltése (&#8594;) <span class="rgt-icon"></span></span>
+				<span id="next-sect" class="btn">Köv. szakasz (&#8626;) &raquo;</span></span>
+			</div>
+			<div id="hit-buttons">
+				<span id="prev-hit" class="btn">&laquo; Előző találat (,)</span>
+				<span id="this-sect" class="btn">Teljes szakasz (&#8626;)</span></span>
+				<span id="next-hit" class="btn">Köv találat (.) &raquo;</span>
+			</div>
+		</div>
 	</div>
 
 	<div id="shadowText">
@@ -45,7 +59,7 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 			Keresés:
 		</div>
 		<div>
-			<input type="text" id="searchInput" class="textInput100"></input>
+			<input type="text" id="searchInput" class="textInput100">
 		</div>
 		<div id="search-msg">
 		</div>

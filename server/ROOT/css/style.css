@@ -54,10 +54,10 @@ iframe
 
 /* End of CSS reset */
 
-html, input, select, option, button
+html, input, select, option, button, .button-rows
 {
 	font-family: sans-serif;
-	font-size: 11pt;
+	font-size: 13pt;
 }
 
 .ui-widget *
@@ -93,7 +93,7 @@ body
 	cursor: pointer;
 }
 
-#text, #shadowText
+#content
 {
 	position: absolute;
 	top: 32px;
@@ -103,11 +103,6 @@ body
 	color: rgb(41, 34, 7);
 	padding: 0 2%;
 	overflow: auto;
-}
-
-#shadowText
-{
-	visibility: hidden;
 }
 
 #searchPop, #sectionPop
@@ -357,4 +352,28 @@ body
 {
 	background-color: rgb(125, 74, 23);
 	color: rgb(238, 202, 166);
+}
+
+.button-rows
+{
+	margin-bottom: 1em;
+}
+.button-rows > div
+{
+	text-align: center;
+	margin-top: 1.5em;
+	display: none;
+}
+
+.btn
+{
+	display: inline-block;
+	padding: 0.2em 1em;
+	border: 1px solid rgb(125, 74, 23);
+	border-radius: 0.2em;
+	-moz-border-radius: 0.2em;
+	-webkit-border-radius: 0.2em;
+	background-color: rgb(242, 230, 187);
+	cursor: pointer;
+	line-height: 1.4em;
 }
