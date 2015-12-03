@@ -5,39 +5,31 @@ var page;
 var search, pendingSearch;
 /** @type {Highlight} */
 var highlight;
-/**
- * @enum {number} - text request modes
- */
+/** @enum {number} - text request modes */
 var loadMode = {section: 1, down: 2, next: 3, prev: 4, search: 5, nextHit: 6, prevHit: 7};
-/**
- * @type {JQuery} - points to centered message box
- */
+/** @type {JQuery} - points to centered message box */
 var $msg;
 /**
  * Stores info about current section selection.
  * @type {{sel:HTMLSelectElement, level:number, id:number, node:TocTreeItem}}
  */
 var nodeToUpdate;
-/**
- * @type {number} - TOC node id currently selected in UI.
- */
+/** @type {number} - TOC node id currently selected in UI. */
 var selSection;
 /** @type {JQuery} - container for text and buttons */
 var $content;
-/**
- * @type {JQuery} - container for text content
- */
+/** @type {JQuery} - container for text content */
 var $txt;
 /** @type {JQuery} - button rows */
 var $textBtns, $hitBtns;
 /** @type {JQuery} - button to load more of section */
 var $sectDown;
-/**
- * @type {number} - last section of the database
- */
+/** @type {number} - last section of the database */
 var maxTocId;
-/** @type {boolean} */
+/** @type {boolean} - if a search-related message is visible */
 var searchMsgShown;
+/** @type {number} - timestamp of last request to throttle connections */
+var lastReqTime;
 
 
 /**
@@ -47,6 +39,8 @@ var searchMsgShown;
  */
 function loadText(mode)
 {
+    if(lastReqTime && lastReqTime > Date.now()-60000)
+        return;
     var m = loadMode;
     var data = null;
 
@@ -90,6 +84,7 @@ function loadText(mode)
     var url = loadModeUrl();
     if(!url)
         return;
+    lastReqTime = Date.now();
 
     $.ajax(
     {
@@ -99,12 +94,14 @@ function loadText(mode)
 
         success: function(json)
         {
+            lastReqTime = null;
             if(!javaError(json))
                 renderText(json, mode);
         },
 
         error: function(/*xhr, status*/)
         {
+            lastReqTime = null;
             ajaxError(/*xhr, status,*/ 'Hiba a szöveg letöltésekor.', function()
             {
                 loadText(mode);
