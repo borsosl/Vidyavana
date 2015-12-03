@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.junit.Test;
 import hu.vidyavana.db.api.DiscardingHtmlCharFilter;
 import hu.vidyavana.db.api.HtmlAnalyzer;
+import hu.vidyavana.db.api.QueryAnalyzer;
 
 public class AnalysisTest
 {
@@ -58,21 +59,46 @@ public class AnalysisTest
 	}
 	
 	
+	@Test
+	public void queries() throws Exception
+	{
+		checkQueryTerms("a b c", new String[]{"b", "c"});
+		checkQueryTerms("a be* c?d", new String[]{"be*", "c?d"});
+		checkQueryTerms("a -be* c?d", new String[]{"-", "be*", "c?d"});
+		checkQueryTerms("-be*|a|c?d", new String[]{"-", "be*", "|", "|", "c?d"});
+	}
+	
+	
 	private void checkIndexedTerms(String in, String[] out) throws Exception
 	{
 		try(Analyzer analyzer = new HtmlAnalyzer())
 		{
-			try(TokenStream ts = analyzer.tokenStream("foo", new StringReader(in)))
-			{
-				CharTermAttribute termAttr = ts.addAttribute(CharTermAttribute.class);
-				ts.reset();
-				int ix = 0;
-				while(ts.incrementToken())
-					assertEquals(termAttr.toString(), out[ix++]);
+			checkTerms(analyzer, in, out);
+		}
+	}
+	
+	
+	private void checkQueryTerms(String in, String[] out) throws Exception
+	{
+		try(Analyzer analyzer = new QueryAnalyzer())
+		{
+			checkTerms(analyzer, in, out);
+		}
+	}
+	
+	
+	private void checkTerms(Analyzer analyzer, String in, String[] out) throws Exception
+	{
+		try(TokenStream ts = analyzer.tokenStream("foo", new StringReader(in)))
+		{
+			CharTermAttribute termAttr = ts.addAttribute(CharTermAttribute.class);
+			ts.reset();
+			int ix = 0;
+			while(ts.incrementToken())
+				assertEquals(termAttr.toString(), out[ix++]);
 
-				assertEquals(ix, out.length);
-				ts.end();
-			}
+			assertEquals(ix, out.length);
+			ts.end();
 		}
 	}
 }

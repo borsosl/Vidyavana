@@ -10,10 +10,9 @@ public class TransliterationTokenizer extends CharTokenizer
 	public static final String LOWER = "áéíóöőúüűāīūḍḥḷḹṁṅṇñṛṝṣśṭ";
 	public static final String UPPER = "ÁÉÍÓÖŐÚÜŰĀĪŪḌḤḶḸṀṄṆÑṚṜṢŚṬ";
 	
-	Map<Integer, Integer> lowerMap = new HashMap<>(71);
+	static Map<Integer, Integer> lowerMap = new HashMap<>(71);
 	
-	
-	public TransliterationTokenizer()
+	static
 	{
 		for(int i=0; i<LOWER.length(); ++i)
 		{
@@ -22,6 +21,11 @@ public class TransliterationTokenizer extends CharTokenizer
 			lowerMap.put(low, low);
 			lowerMap.put(upp, low);
 		}
+	}
+	
+	
+	public TransliterationTokenizer()
+	{
 	}
 
 
@@ -48,7 +52,7 @@ public class TransliterationTokenizer extends CharTokenizer
 	}
 	
 	
-	private int lowercase(int c)
+	public static int lowercase(int c)
 	{
 		if(c >= 'a' && c <= 'z' || c >= '0' && c <= '9');
 		else if(c >= 'A' && c <= 'Z')

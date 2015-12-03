@@ -40,6 +40,8 @@ public class ServerUtil
 				val = false;
 			Globals.maintenance = val;
 		}
+		else if("logout".equals(ri.args[1]))
+			ri.resp.setStatus(401);
 		else
 			ri.resp.setStatus(404);
 	}

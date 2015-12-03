@@ -28,7 +28,7 @@ function Highlight(queryStr)
     var whiteRex = /(.*?)( |$)/g;
 
     var q = lowercase(queryStr);
-    var soughtArrArr = words(q);
+    var soughtArrArr = words(q, true);
     for(var i in soughtArrArr)
     {
         var soughtArr = soughtArrArr[i];
@@ -36,6 +36,14 @@ function Highlight(queryStr)
         // if entered word has translit, take it literally
         if(plain(word) !== word)
             soughtArr[1] = true;
+        if(hasWildcard(word))
+        {
+            word = word.replace(/\?/g, '.');
+            word = word.replace(/\*/g, '.*');
+            soughtArr[2] = new RegExp(word);
+        }
+        else
+            soughtArr[2] = null;
     }
 
 
@@ -78,11 +86,20 @@ function Highlight(queryStr)
     }
 
 
+    function hasWildcard(s)
+    {
+        var ixAst = s.indexOf('*');
+        var ixQm = s.indexOf('?');
+        return (ixAst > 1 && (ixQm == -1 || ixQm > 1)) || ixQm > 1 && ixAst == -1;
+    }
+
+
     /**
      * @param {string} s - lowercased string of possibly multiple words
-     * @return {Array.<Array>} - array of words from string as [word, start, end], where indexes are relative to q
+     * @return {Array} - array of words from string as [word, start, end], where indexes are relative to q
+     * @param {boolean} isQuery - tokenizing for the queried words
      */
-    function words(s)
+    function words(s, isQuery)
     {
         var res = [];
         var inWord = false;
@@ -91,7 +108,7 @@ function Highlight(queryStr)
         for(var i = 0, len = s.length; i < len; ++i)
         {
             var c = s.charAt(i);
-            var wc = isLowerWordChar(c);
+            var wc = isLowerWordChar(c) || isQuery && (c == '*' || c == '?');
             if(!inWord && wc)
             {
                 inWord = true;
@@ -193,7 +210,7 @@ function Highlight(queryStr)
                     continue;
                 var toNextWhite = res[1];
                 var q = lowercase(toNextWhite);
-                var whiteWordArrArr = words(q);
+                var whiteWordArrArr = words(q, false);
                 for(var i in whiteWordArrArr)
                 {
                     var whiteWordArr = whiteWordArrArr[i];
@@ -212,8 +229,17 @@ function Highlight(queryStr)
         {
             var soughtArr = soughtArrArr[i];
             var word = soughtArr[0];
-            var strict = soughtArr[1];
-            if(strict)
+            var hasTrans = soughtArr[1];
+            var re = soughtArr[2];
+            if(re)
+            {
+                var paraWord = wordArr[0];
+                if(!hasTrans)
+                    paraWord = plain(paraWord);
+                if(re.test(paraWord))
+                    return true;
+            }
+            else if(hasTrans)
             {
                 if(word === wordArr[0])
                     return true;
