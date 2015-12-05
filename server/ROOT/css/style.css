@@ -97,12 +97,26 @@ body
 {
 	position: absolute;
 	top: 32px;
-	font-family: Times New Roman, Times, "DejaVu Serif", serif;
+	font-family: "Times New Roman", Times, "Droid Serif", "DejaVu Serif", serif;
 	font-size: 18pt;
 	background-color: rgb(238, 202, 166);
 	color: rgb(41, 34, 7);
 	padding: 0 2%;
 	overflow: auto;
+}
+
+/* smaller font on phones */
+@media all and (orientation:portrait) and (max-device-width: 599px), all and (orientation:landscape) and (max-device-width: 799px)
+{
+	html, input, select, option, button, .button-rows
+	{
+		font-size: 11pt;
+	}
+
+	#content
+	{
+		font-size: 13pt;
+	}
 }
 
 #searchPop, #sectionPop
@@ -134,7 +148,7 @@ body
 {
 	margin-top: 10px;
 	width: 100%;
-	visibility: hidden;
+	display: none;
 }
 
 #message
@@ -363,6 +377,7 @@ body
 	text-align: center;
 	margin-top: 1.5em;
 	display: none;
+	line-height: 2.2em;
 }
 
 .btn
@@ -370,10 +385,26 @@ body
 	display: inline-block;
 	padding: 0.2em 1em;
 	border: 1px solid rgb(125, 74, 23);
-	border-radius: 0.2em;
-	-moz-border-radius: 0.2em;
-	-webkit-border-radius: 0.2em;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
 	background-color: rgb(242, 230, 187);
 	cursor: pointer;
+	max-height: 1.4em;
 	line-height: 1.4em;
+}
+
+#header span.mini-btn
+{
+	display: inline-block;
+	border: 1px solid rgb(242, 230, 187);
+	line-height: 26px;
+	width: 26px;
+	text-align: center;
+	margin-top: 2px;
+	vertical-align: middle;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	cursor: pointer;
 }

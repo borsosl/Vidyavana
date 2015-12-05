@@ -22,8 +22,8 @@ var $content;
 var $txt;
 /** @type {JQuery} - button rows */
 var $textBtns, $hitBtns;
-/** @type {JQuery} - button to load more of section */
-var $sectDown;
+/** @type {JQuery} - buttons to load more of section or go to full section */
+var $sectDown, $thisSect;
 /** @type {number} - last section of the database */
 var maxTocId;
 /** @type {boolean} - if a search-related message is visible */
@@ -156,11 +156,12 @@ function renderText(json, mode)
             else
                 $txt.html(h);
             $textBtns.toggle(!isSearch);
-            $hitBtns.toggle(isSearch);
+            $hitBtns.toggle(!!search);
         }
         else
             $txt.append(h);
         $sectDown.toggle(page.next() !== null);
+        $thisSect.toggle(page.isSearchResult());
         if(highlight)
             highlight.run(h);
     }
@@ -275,7 +276,7 @@ function initSearch()
         {
             newSearch($inp.val());
         }
-        if(!e.altKey)
+        if(!menuModifier(e))
             e.stopPropagation();
     });
     $('#searchGo').click(function()
@@ -451,12 +452,12 @@ function updateSectionSelects(parent, level)
             opt.push('<option value="', it.id, '">', it.title, '</option>');
         }
         $e.html(opt.join(''));
-        $e.css('visibility', 'visible');
+        $e.show();
         parent = ch[0];
     }
     while(level <= 9)
     {
-        $('#sect'+(level++))[0].style.visibility = 'hidden';
+        $('#sect'+(level++)).hide();
     }
 }
 
@@ -561,6 +562,24 @@ function dialog(index, toggle)
 }
 
 
+function menuModifier(e)
+{
+    return e.altKey && (!client.system.mac || e.ctrlKey);
+}
+
+
+function thisNextSection()
+{
+    if(page.isSearchResult())
+    {
+        selSection = search.last().display.tocId;
+        loadText(loadMode.section);
+    }
+    else if(page.bookId())
+        loadText(loadMode.next);
+}
+
+
 $(function()
 {
     tests();
@@ -569,6 +588,7 @@ $(function()
     $textBtns = $('#text-buttons');
     $hitBtns = $('#hit-buttons');
     $sectDown = $('#sect-down');
+    $thisSect = $('#this-sect');
     page = new Page();
 
     initSearch();
@@ -590,17 +610,12 @@ $(function()
             loadText(loadMode.down);
         else if(c === 13)		    // enter
         {
-            if(page && page.isSearchResult())
-            {
-                selSection = search.last().display.tocId;
-                loadText(loadMode.section);
-            }
-            else
-                loadText(loadMode.next);
+            thisNextSection();
         }
         else if(c === 8)	    	// backspace
         {
-            loadText(loadMode.prev);
+            if(page.bookId())
+                loadText(loadMode.prev);
             e.preventDefault();
         }
         else if(c === 75)           // k
@@ -623,44 +638,61 @@ $(function()
         }
         else if(c === 188 || c === 109)		    // , or -
         {
-            loadText(loadMode.prevHit);
+            if(search)
+                loadText(loadMode.prevHit);
         }
         else if(c === 190 || c === 107)		    // . or +
         {
-            loadText(loadMode.nextHit);
+            if(search)
+                loadText(loadMode.nextHit);
         }
     });
 
-    $('#prev-sect').click(function()
+    $('.prev-sect').click(function()
     {
-        loadText(loadMode.prev);
+        if(page.bookId())
+            loadText(loadMode.prev);
     });
 
-    $('#next-sect').click(function()
-    {
-        loadText(loadMode.next);
-    });
+    $('.next-sect').click(thisNextSection);
 
     $sectDown.click(function()
     {
         loadText(loadMode.down);
     });
 
-    $('#prev-hit').click(function()
+    $('.prev-hit').click(function()
     {
-        loadText(loadMode.prevHit);
+        if(search)
+            loadText(loadMode.prevHit);
     });
 
-    $('#next-hit').click(function()
+    $('.next-hit').click(function()
     {
-        loadText(loadMode.nextHit);
+        if(search)
+            loadText(loadMode.nextHit);
     });
 
-    $('#this-sect').click(function()
+    $thisSect.click(thisNextSection);
+
+    var cs = client.system;
+    if(cs.android || cs.ios || cs.iphone || cs.ipad || cs.winMobile)
     {
-        selSection = search.last().display.tocId;
-        loadText(loadMode.section);
-    });
+        $(window).on('swipeleft', function()
+        {
+            if(page.isSearchResult())
+                loadText(loadMode.nextHit);
+            else if(page.bookId())
+                loadText(loadMode.next);
+
+        }).on('swiperight', function()
+        {
+            if(page.isSearchResult())
+                loadText(loadMode.prevHit);
+            else if(page.bookId())
+                loadText(loadMode.prev);
+        });
+    }
 
     window.onresize = throttle(true, 100, function()
     {

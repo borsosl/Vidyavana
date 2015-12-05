@@ -6,17 +6,14 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no" />
     <title>Pandit</title>
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 110x110 114x114" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <link rel="stylesheet" type="text/css" href="/css/text.css" />
+    <script src="/js/browser.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery.mobile.min.js"></script>
-    <script src="/js/jquery.mousewheel.min.js"></script>
-    <!-- 
-    <link rel="stylesheet" type="text/css" href="/js/dynatree/skin/ui.dynatree.css" />
-    <script src="/js/dynatree/dev.js"></script>
-    -->
     <script src="/js/main.js"></script>
     <script src="/js/highlight.js"></script>
 </head>
@@ -24,12 +21,24 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 	<div id="measure" class="abs fill novis"></div>
 	<div id="header">
 		<div id="headerCnt">
-			<span id="searchLnk" class="inblk clkTxt">
+			<span id="searchLnk" class="inblk">
 				<u>K</u>eres
 			</span>
 			&nbsp;&nbsp;
-			<span id="sectionLnk" class="inblk clkTxt">
+			<span id="sectionLnk" class="inblk">
 				<u>S</u>zakasz
+			</span>
+			<span class="mini-btn right next-hit">
+				&raquo;
+			</span>
+			<span class="mini-btn right next-sect">
+				&rsaquo;
+			</span>
+			<span class="mini-btn right prev-sect">
+				&lsaquo;
+			</span>
+			<span class="mini-btn right prev-hit">
+				&laquo;
 			</span>
 		</div>
 	</div>
@@ -39,14 +48,14 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 		</div>
 		<div class="button-rows">
 			<div id="text-buttons">
-				<span id="prev-sect" class="btn">&laquo; Előző szakasz (&#9668;) <span class="bsp-icon"></span></span>
+				<span class="btn prev-sect">&lsaquo; Előző szakasz (&#9668;) <span class="bsp-icon"></span></span>
 				<span id="sect-down" class="btn">Több betöltése (&#8594;) <span class="rgt-icon"></span></span>
-				<span id="next-sect" class="btn">Köv. szakasz (&#8626;) &raquo;</span></span>
+				<span class="btn next-sect">Köv. szakasz (&#8626;) &rsaquo;</span></span>
 			</div>
 			<div id="hit-buttons">
-				<span id="prev-hit" class="btn">&laquo; Előző találat (,)</span>
+				<span class="btn prev-hit">&laquo; Előző találat (,)</span>
 				<span id="this-sect" class="btn">Teljes szakasz (&#8626;)</span></span>
-				<span id="next-hit" class="btn">Köv találat (.) &raquo;</span>
+				<span class="btn next-hit">Köv találat (.) &raquo;</span>
 			</div>
 		</div>
 	</div>
