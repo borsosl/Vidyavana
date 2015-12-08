@@ -7,7 +7,7 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 <head>
     <meta charset="utf-8" />
     <title>Pandit</title>
-    <script src="/js/jquery.min.js"></script>
+    <script src="/js/lib.js"></script>
     <script src="/js/server-monitor.js"></script>
 </head>
 <body>

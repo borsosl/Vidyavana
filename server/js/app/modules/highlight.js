@@ -1,3 +1,9 @@
+
+var dom = require('./dom');
+
+/** @type {Highlight} */
+var highlight;
+
 var LOWER = "áéíóöőúüűāīūḍḥḷḹṁṅṇñṛṝṣśṭ";
 var UPPER = "ÁÉÍÓÖŐÚÜŰĀĪŪḌḤḶḸṀṄṆÑṚṜṢŚṬ";
 var TRANS = "āīūḍḥḷḹṁṅṇñṛṝṣśṭ";
@@ -18,7 +24,6 @@ for(i=0; i<TRANS.length; ++i)
 
 
 /**
- * @constructor
  * @param {string} queryStr - current search term
  */
 function Highlight(queryStr)
@@ -104,7 +109,7 @@ function Highlight(queryStr)
         var res = [];
         var inWord = false;
         var word = '';
-        var start;
+        var start = 0;
         for(var i = 0, len = s.length; i < len; ++i)
         {
             var c = s.charAt(i);
@@ -179,7 +184,7 @@ function Highlight(queryStr)
                 }
                 if(pos < pContent.length)
                     chunks.push(pContent.substring(pos));
-                $('p[data-ix="'+paraId+'"]', $txt).html(chunks.join(''));
+                $('p[data-ix="'+paraId+'"]', dom.$txt).html(chunks.join(''));
             }
         }
         nextPara(text);
@@ -251,13 +256,31 @@ function Highlight(queryStr)
     }
 
 
-    $.extend(this, {
-        run: run,
-        // for tests
-        wordArr: function(saa) {soughtArrArr = saa;},
-        lowercase: lowercase,
-        words: words,
-        highlightIndexes: highlightIndexes,
-        sought: sought
-    });
+    this.run = run;
+    // for tests
+    this.wordArr = function(saa) {soughtArrArr = saa;};
+    this.lowercase = lowercase;
+    // this.words = words;
+    this.highlightIndexes = highlightIndexes;
+    this.sought = sought;
 }
+
+
+/**
+ * @return {Highlight}
+ */
+function get() {
+    return highlight;
+}
+
+
+/**
+ * @param {string?} queryStr
+ * @return {Highlight}
+ */
+function init(queryStr) {
+    return highlight = new Highlight(queryStr);
+}
+
+exports.get = get;
+exports.init = init;

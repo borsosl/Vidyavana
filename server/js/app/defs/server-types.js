@@ -16,7 +16,7 @@
 /**
  * @typedef {Object} SearchResponse
  * @property {number} id
- * @property {number} hitCount?
+ * @property {*} hitCount
  * @property {number} hit
  * @property {number} ordinal
  * @property {DisplayBlock} display

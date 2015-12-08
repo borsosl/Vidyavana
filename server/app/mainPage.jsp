@@ -11,11 +11,8 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64 110x110 114x114" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <link rel="stylesheet" type="text/css" href="/css/text.css" />
-    <script src="/js/browser.js"></script>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/jquery.mobile.min.js"></script>
+    <script src="/js/lib.js"></script>
     <script src="/js/main.js"></script>
-    <script src="/js/highlight.js"></script>
 </head>
 <body class="noMargin noScroll">
 	<div id="measure" class="abs fill novis"></div>

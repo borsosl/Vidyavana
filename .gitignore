@@ -11,3 +11,4 @@
 font/
 X.*
 **/orig-pandit-apache-conf.txt
+node_modules/

@@ -1,0 +1,16 @@
+{
+  "name": "Pandit",
+  "version": "0.0.1",
+  "author": "Lokanatha d.",
+  "devDependencies": {
+    "browserify": "^10.2.3",
+    "event-stream": "^3.3.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "qunitjs": "^1.20.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}

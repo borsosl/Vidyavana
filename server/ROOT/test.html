@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>QUnit test</title>
+    <link rel="stylesheet" href="/qunit/qunit.css">
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="/js/lib.js"></script>
+    <script src="/qunit/qunit.js"></script>
+    <script>
+        var s, s0 = location.search;
+
+        s = s0;
+        var unit = s.indexOf('unit=');
+        if(unit < 0)
+        {
+            alert('Need "unit" parameter.');
+        }
+        else
+        {
+            var next = s.indexOf('&', unit+5);
+            if(next < 0)
+                next = s.length;
+            unit = s.substring(unit+5, next);
+            document.write('<script src="/js/test/'+unit+'.js"><'+'/script>');
+        }
+    </script>
+</body>
+</html>
