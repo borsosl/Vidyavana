@@ -146,18 +146,18 @@ public class Storage
 				inactiveSegment.add(bs);
 			else
 			{
-				int bookSeg = bs.id();
-				segments.put(bookSeg, bs);
+				int bookSegmentId = bs.bookSegmentId();
+				segments.put(bookSegmentId, bs);
 				int prioritySeg = bs.priority();
-				segmentOrder.put(prioritySeg, bookSeg);
+				segmentOrder.put(prioritySeg, bookSegmentId);
 			}
 		}
 	}
 	
 	
-	public BookSegment segment(int id)
+	public BookSegment segment(int bookSegmentId)
 	{
-		return segments.get(id);
+		return segments.get(bookSegmentId);
 	}
 	
 	
@@ -169,7 +169,7 @@ public class Storage
 	
 	public void addSegment(BookSegment bs)
 	{
-		segments.put(bs.id(), bs);
+		segments.put(bs.bookSegmentId(), bs);
 	}
 
 

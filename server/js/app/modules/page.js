@@ -2,7 +2,7 @@
 function Page()
 {
     /** @type {number} - book id (segment # (eg. canto/lila) is << 16 bits) */
-    var bookId;
+    var bookSegmentId;
     /** @type {number} - current TOC id */
     var tocId;
     /** @type {number} - 1-based index of the next, unloaded paragraph. 0=fully loaded. -1=search render. */
@@ -19,7 +19,7 @@ function Page()
     {
         if(!json.tocId && !force)
             return false;
-        bookId = json.bookId;
+        bookSegmentId = json.bookSegmentId;
         tocId = json.tocId;
         last = 0;
         return true;
@@ -51,7 +51,7 @@ function Page()
         load: load,
         next: next,
         isSearchResult: function(){return last === -1;},
-        bookId: function(){return bookId;},
+        bookId: function(){return bookSegmentId;},
         tocId: function(){return tocId;}
     });
 }

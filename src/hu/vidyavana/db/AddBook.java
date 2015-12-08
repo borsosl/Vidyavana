@@ -56,7 +56,7 @@ public class AddBook
 			startPos = store.handle.length();
 			bs = new BookSegment();
 			addHead();
-			ib.initBook(bs.bookId, bs.segment);
+			ib.initBook(bs.plainBookId, bs.segment);
 			addContent();
 			bs.write(store);
 			bs.para = null;
@@ -88,7 +88,7 @@ public class AddBook
 			if("title".equals(n.getNodeName()))
 				bs.title = n.getTextContent().trim();
 			else if("id".equals(n.getNodeName()))
-				bs.bookId = Short.parseShort(n.getTextContent().trim());
+				bs.plainBookId = Short.parseShort(n.getTextContent().trim());
 			else if("segment".equals(n.getNodeName()))
 				bs.segment = Byte.parseByte(n.getTextContent().trim());
 			else if("segment_title".equals(n.getNodeName()))

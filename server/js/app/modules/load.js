@@ -58,6 +58,7 @@ function text(mode)
         }
     }
 
+    var data = null;
     var url = getUrl();
     if(!url)
         return;

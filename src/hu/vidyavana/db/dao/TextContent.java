@@ -64,8 +64,8 @@ public class TextContent
 		// TODO put search ref into linked lists for timing out and freeing resources
 
 		Hit hit = details.hits.get(0);
-		int bookId = hit.segment<<16 | hit.bookId;
-		res.display = textForOnePara(bookId, hit.ordinal);
+		int bookSegmentId = hit.segment<<16 | hit.plainBookId;
+		res.display = textForOnePara(bookSegmentId, hit.ordinal);
 	}
 
 	private void hit(RequestInfo ri) throws IOException
@@ -85,18 +85,18 @@ public class TextContent
 		// TODO rerun search above 100 hits
 
 		Hit hit = details.hits.get(hitNum);
-		if(hit.bookId == 0)
+		if(hit.plainBookId == 0)
 		{
 			DirectoryReader reader = Lucene.SYSTEM.reader();
 			Document doc = reader.document(hit.docId);
 			SearchTask.hitDataFromDoc(doc, hit);
 		}
 
-		int bookId = hit.segment<<16 | hit.bookId;
+		int bookSegmentId = hit.segment<<16 | hit.plainBookId;
 		res.id = details.id;
 		res.hitCount = details.hitCount;
 		res.hit = hitNum;
-		res.display = textForOnePara(bookId, hit.ordinal);
+		res.display = textForOnePara(bookSegmentId, hit.ordinal);
 	}
 
 	private void follow(RequestInfo ri)
@@ -146,12 +146,12 @@ public class TextContent
 		DisplayBlock db = new DisplayBlock();
 		Storage store = Storage.SYSTEM;
 		TocTreeItem origTocNode = node;
-		int bookId = 0;
+		int bookSegmentId = 0;
 		BookSegment seg = null;
 		while(true)
 		{
-			bookId = TocTree.inst.bookId(node);
-			seg = store.segment(bookId);
+			bookSegmentId = TocTree.inst.bookSegmentId(node);
+			seg = store.segment(bookSegmentId);
 			if(seg == null)
 				node = node.next;
 			else
@@ -178,7 +178,7 @@ public class TextContent
 			--nodeEnd;
 			if(start < 0)
 				start = 0;
-			db.bookId = bookId;
+			db.bookSegmentId = bookSegmentId;
 			db.tocId = origTocNode.id;
 			StringBuilder sb = new StringBuilder(RESPONSE_CHARS + 20000);
 			int last = start;
@@ -251,16 +251,16 @@ public class TextContent
 	}
 
 	
-	private DisplayBlock textForOnePara(int bookId, int ordinal)
+	private DisplayBlock textForOnePara(int bookSegmentId, int ordinal)
 	{
 		DisplayBlock db = new DisplayBlock();
-		TocTreeItem tocNode = TocTree.inst.findNodeByOrdinal(bookId, ordinal);
-		db.bookId = bookId;
+		TocTreeItem tocNode = TocTree.inst.findNodeByOrdinal(bookSegmentId, ordinal);
+		db.bookSegmentId = bookSegmentId;
 		db.tocId = tocNode.id;
 		db.last = -1;
 		db.longRef = TocTree.longRef(tocNode);
 		Storage store = Storage.SYSTEM;
-		BookSegment seg = store.segment(bookId);
+		BookSegment seg = store.segment(bookSegmentId);
 		try
 		{
 			List<StoragePara> para = seg.readRange(store.handle, ordinal, ordinal+1);

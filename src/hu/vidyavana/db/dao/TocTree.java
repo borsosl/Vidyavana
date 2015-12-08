@@ -51,15 +51,15 @@ public class TocTree
 			BookSegment seg = st.segment(e.getValue());
 			// book title: level 0
 			boolean markSegment = false;
-			if(seg.bookId != prevBook)
+			if(seg.plainBookId != prevBook)
 			{
 				TocTreeItem tti = treeItem(++id, seg.title, true);
 				tti.level = curLevel = 0;
-				tti.ordinal = -seg.id();
+				tti.ordinal = -seg.bookSegmentId();
 				tti.parent = root;
 				root.children.add(tti);
 				levels[0] = tti;
-				prevBook = seg.bookId;
+				prevBook = seg.plainBookId;
 			}
 			if(seg.segment > 0)
 				markSegment = true;
@@ -82,8 +82,8 @@ public class TocTree
 				tti.ordinal = (int) cti.paraOrdinal;
 				if(markSegment)
 				{
-					tti.ordinal = -seg.id();
-					tti.parent.ordinal = -seg.bookId;
+					tti.ordinal = -seg.bookSegmentId();
+					tti.parent.ordinal = -seg.plainBookId;
 					markSegment = false;
 				}
 				parent.children.add(tti);
@@ -166,21 +166,21 @@ public class TocTree
 	}
 
 	
-	public TocTreeItem findNodeByOrdinal(int bookId, int ordinal)
+	public TocTreeItem findNodeByOrdinal(int bookSegmentId, int ordinal)
 	{
-		TocTreeItem bookRoot = findBookRoot(bookId, root);
+		TocTreeItem bookRoot = findBookRoot(bookSegmentId, root);
 		return findNodeById(bookRoot, ordinal, true);
 	}
 
 	
-	private TocTreeItem findBookRoot(int bookId, TocTreeItem parent)
+	private TocTreeItem findBookRoot(int bookSegmentId, TocTreeItem parent)
 	{
-		int coreBookId = bookId & ((1<<16)-1);
+		int plainBookId = bookSegmentId & ((1<<16)-1);
 		for(TocTreeItem tti : parent.children)
-			if(tti.ordinal == -bookId)
+			if(tti.ordinal == -bookSegmentId)
 				return tti;
-			else if(tti.ordinal == -coreBookId)
-				return findBookRoot(bookId, tti);
+			else if(tti.ordinal == -plainBookId)
+				return findBookRoot(bookSegmentId, tti);
 		return null;
 	}
 
@@ -208,7 +208,7 @@ public class TocTree
 	}
 	
 	
-	public int bookId(TocTreeItem ti)
+	public int bookSegmentId(TocTreeItem ti)
 	{
 		while(ti != null && ti.ordinal > 0)
 			ti = ti.parent;

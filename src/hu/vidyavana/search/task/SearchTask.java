@@ -56,7 +56,7 @@ public class SearchTask implements Runnable
 	
 	public static void hitDataFromDoc(Document doc, Hit hit)
 	{
-		hit.bookId = (Integer)((StoredField) doc.getField("bookId")).numericValue();
+		hit.plainBookId = (Integer)((StoredField) doc.getField("bookId")).numericValue();
 		hit.segment = (Integer)((StoredField) doc.getField("segment")).numericValue();
 		hit.ordinal = (Integer)((StoredField) doc.getField("ordinal")).numericValue();
 	}

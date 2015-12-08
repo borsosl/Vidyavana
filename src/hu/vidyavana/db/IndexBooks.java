@@ -15,7 +15,7 @@ public class IndexBooks
 	private Lucene lucene;
 	private IndexWriter iw;
 	private FieldType txtFieldType;
-	private int bookId;
+	private int plainBookId;
 	private int segment;
 
 	
@@ -38,9 +38,9 @@ public class IndexBooks
 	}
 
 
-	public void initBook(int bookId, int segment)
+	public void initBook(int plainBookId, int segment)
 	{
-		this.bookId = bookId;
+		this.plainBookId = plainBookId;
 		this.segment = segment;
 	}
 
@@ -48,7 +48,7 @@ public class IndexBooks
 	public void addPara(int ordinal, String txt)
 	{
 		Document doc = new Document();
-		doc.add(new IntField("bookId", bookId, Store.YES));
+		doc.add(new IntField("bookId", plainBookId, Store.YES));
 		doc.add(new IntField("segment", segment, Store.YES));
 		doc.add(new IntField("ordinal", ordinal, Store.YES));
 		doc.add(new Field("text", txt, txtFieldType));

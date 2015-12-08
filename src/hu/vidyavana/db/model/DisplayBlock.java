@@ -2,7 +2,7 @@ package hu.vidyavana.db.model;
 
 public class DisplayBlock
 {
-	public int bookId;
+	public int bookSegmentId;
 	public Integer tocId;
 	public int last;
 	public String text;

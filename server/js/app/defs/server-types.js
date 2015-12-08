@@ -1,6 +1,6 @@
 /**
  * @typedef {Object} DisplayBlock
- * @property {number} bookId
+ * @property {number} bookSegmentId
  * @property {number} tocId?
  * @property {number} last
  * @property {string} text

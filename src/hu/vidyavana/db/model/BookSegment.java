@@ -14,7 +14,7 @@ public class BookSegment
 	public int len;
 	public byte version;
 	public boolean inactive;
-	public short bookId;
+	public short plainBookId;
 	public byte segment;
 	public String title;
 	public int priority;		// TODO user or system priority from settings file
@@ -44,7 +44,7 @@ public class BookSegment
 		out.writeInt(0);		// set length after we know it
 		out.writeByte(CURRENT_VERSION);
 		out.writeBoolean(inactive);
-		out.writeShort(bookId);
+		out.writeShort(plainBookId);
 		out.writeByte(segment);
 		out.writeUTF(title);
 		out.writeShort(priority);
@@ -98,7 +98,7 @@ public class BookSegment
 		bs.len = in.readInt();
 		bs.version = in.readByte();
 		bs.inactive = in.readBoolean();
-		bs.bookId = in.readShort();
+		bs.plainBookId = in.readShort();
 		bs.segment = in.readByte();
 		bs.title = in.readUTF();
 		bs.priority = in.readShort();
@@ -146,9 +146,9 @@ public class BookSegment
 	}
 
 
-	public int id()
+	public int bookSegmentId()
 	{
-		return segment<<16 | bookId;
+		return segment<<16 | plainBookId;
 	}
 
 
