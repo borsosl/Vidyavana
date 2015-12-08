@@ -1,4 +1,4 @@
-package hu.vidyavana.db.api;
+package hu.vidyavana.search.api;
 
 import java.util.Arrays;
 import org.apache.lucene.analysis.Analyzer;

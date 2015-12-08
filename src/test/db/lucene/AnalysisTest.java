@@ -8,9 +8,9 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.junit.Test;
-import hu.vidyavana.db.api.DiscardingHtmlCharFilter;
-import hu.vidyavana.db.api.HtmlAnalyzer;
-import hu.vidyavana.db.api.QueryAnalyzer;
+import hu.vidyavana.search.api.DiscardingHtmlCharFilter;
+import hu.vidyavana.search.api.HtmlAnalyzer;
+import hu.vidyavana.search.api.QueryAnalyzer;
 
 public class AnalysisTest
 {

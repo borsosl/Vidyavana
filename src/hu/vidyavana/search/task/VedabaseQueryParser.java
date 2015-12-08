@@ -9,8 +9,8 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.*;
-import hu.vidyavana.db.api.QueryAnalyzer;
-import hu.vidyavana.db.api.SeparateQueryOperatorFilter;
+import hu.vidyavana.search.api.QueryAnalyzer;
+import hu.vidyavana.search.api.SeparateQueryOperatorFilter;
 
 public class VedabaseQueryParser
 {

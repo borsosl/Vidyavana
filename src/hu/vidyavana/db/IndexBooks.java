@@ -8,7 +8,7 @@ import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.IntField;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
-import hu.vidyavana.db.api.Lucene;
+import hu.vidyavana.search.api.Lucene;
 
 public class IndexBooks
 {

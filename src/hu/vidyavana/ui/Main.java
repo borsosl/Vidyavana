@@ -1,7 +1,7 @@
 package hu.vidyavana.ui;
 
 import hu.vidyavana.db.AddBook;
-import hu.vidyavana.db.api.Lucene;
+import hu.vidyavana.search.api.Lucene;
 import hu.vidyavana.util.Encrypt;
 import hu.vidyavana.util.Log;
 import java.awt.*;

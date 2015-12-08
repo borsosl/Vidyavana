@@ -7,7 +7,7 @@ import org.apache.lucene.document.StoredField;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import hu.vidyavana.db.api.Lucene;
+import hu.vidyavana.search.api.Lucene;
 import hu.vidyavana.search.model.Hit;
 import hu.vidyavana.search.model.Search;
 

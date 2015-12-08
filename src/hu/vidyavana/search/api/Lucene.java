@@ -1,4 +1,4 @@
-package hu.vidyavana.db.api;
+package hu.vidyavana.search.api;
 
 import java.io.File;
 import java.io.IOException;
