@@ -50,6 +50,11 @@ function text(json, mode)
             dom.$txt.append(h);
         dom.$sectDown.toggle(page.next() !== null);
         dom.$thisSect.toggle(page.isSearchResult());
+
+        if(!display.shortRef)
+            display.shortRef = '';
+        dom.$shortRef.text(display.shortRef);
+
         if(highlight.get())
             highlight.get().run(h);
     }

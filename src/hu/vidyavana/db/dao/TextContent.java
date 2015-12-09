@@ -180,6 +180,7 @@ public class TextContent
 				start = 0;
 			db.bookSegmentId = bookSegmentId;
 			db.tocId = origTocNode.id;
+			db.shortRef = TocTree.refs(node)[0];
 			StringBuilder sb = new StringBuilder(RESPONSE_CHARS + 20000);
 			int last = start;
 			int len = 0;
@@ -258,7 +259,9 @@ public class TextContent
 		db.bookSegmentId = bookSegmentId;
 		db.tocId = tocNode.id;
 		db.last = -1;
-		db.longRef = TocTree.longRef(tocNode);
+		String[] refs = TocTree.refs(tocNode);
+		db.shortRef = refs[0];
+		db.longRef = refs[1];
 		Storage store = Storage.SYSTEM;
 		BookSegment seg = store.segment(bookSegmentId);
 		try

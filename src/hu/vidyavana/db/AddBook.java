@@ -16,10 +16,7 @@ import hu.vidyavana.db.model.Storage;
 import hu.vidyavana.db.model.StoragePara;
 import hu.vidyavana.db.model.StorageTocItem;
 import hu.vidyavana.search.api.Lucene;
-import hu.vidyavana.util.FileUtil;
-import hu.vidyavana.util.Globals;
-import hu.vidyavana.util.Log;
-import hu.vidyavana.util.XmlUtil;
+import hu.vidyavana.util.*;
 
 public class AddBook
 {
@@ -81,6 +78,7 @@ public class AddBook
 		Element docElem = getXmlRoot("toc.xml");
 		NodeList children = docElem.getChildNodes();
 		String segmentTitle = null;
+		String segmentAbbrev = null;
 		int segmentTitleOfs = 0;
 		for(int j=0, len2 = children.getLength(); j<len2; ++j)
 		{
@@ -89,16 +87,24 @@ public class AddBook
 				bs.title = n.getTextContent().trim();
 			else if("id".equals(n.getNodeName()))
 				bs.plainBookId = Short.parseShort(n.getTextContent().trim());
+			else if("abbrev".equals(n.getNodeName()))
+				bs.abbrev = n.getTextContent().trim();
 			else if("segment".equals(n.getNodeName()))
 				bs.segment = Byte.parseByte(n.getTextContent().trim());
 			else if("segment_title".equals(n.getNodeName()))
 				segmentTitle = n.getTextContent().trim();
+			else if("segment_abbrev".equals(n.getNodeName()))
+				segmentAbbrev = n.getTextContent().trim();
 			else if("priority".equals(n.getNodeName()))
 				bs.priority = Integer.parseInt(n.getTextContent().trim());
 			else if("version".equals(n.getNodeName()))
 				bs.repoVersion = Integer.parseInt(n.getTextContent().trim());
 		}
-		
+
+		HunTitleToNumber httn = new HunTitleToNumber();
+		if(bs.abbrev == null)
+			bs.abbrev = "" + bs.segment;
+
 		NodeList entries = docElem.getElementsByTagName("entries");
 		List<StorageTocItem> cts = new ArrayList<StorageTocItem>();
 
@@ -110,6 +116,10 @@ public class AddBook
 				StorageTocItem contents = new StorageTocItem();
 				contents.level = 1;
 				contents.title = segmentTitle;
+				if(segmentAbbrev != null)
+					contents.abbrev = segmentAbbrev;
+				else
+					contents.abbrev = "" + bs.segment;
 				contents.paraOrdinal = 1;
 				cts.add(contents);
 			}
@@ -134,11 +144,18 @@ public class AddBook
 						contents.level = (byte)(Integer.parseInt(txt) + segmentTitleOfs);
 					else if("title".equals(n.getNodeName()))
 						contents.title = txt;
+					else if("abbrev".equals(n.getNodeName()))
+						contents.abbrev = txt;
 					else if("para_ordinal".equals(n.getNodeName()))
 						contents.paraOrdinal = Short.parseShort(txt);
 				}
 				if(contents.title == null)
-					contents.title = "";
+				{
+					contents.title = "(cím nélkül)";
+					contents.abbrev = "-";
+				}
+				else if(contents.abbrev == null)
+					contents.abbrev = httn.convert(contents.title);
 				cts.add(contents);
 			}
 			bs.contents = new StorageTocItem[cts.size()];

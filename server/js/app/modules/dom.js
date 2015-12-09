@@ -15,6 +15,8 @@ var dom = {
         this.$sectDown = $('#sect-down');
         /** @type {JQuery} */
         this.$thisSect = $('#this-sect');
+        /** @type {JQuery} */
+        this.$shortRef = $('#short-ref');
     }
 };
 

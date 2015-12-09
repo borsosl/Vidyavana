@@ -53,7 +53,7 @@ public class TocTree
 			boolean markSegment = false;
 			if(seg.plainBookId != prevBook)
 			{
-				TocTreeItem tti = treeItem(++id, seg.title, true);
+				TocTreeItem tti = treeItem(++id, seg.title, seg.abbrev, true);
 				tti.level = curLevel = 0;
 				tti.ordinal = -seg.bookSegmentId();
 				tti.parent = root;
@@ -76,7 +76,7 @@ public class TocTree
 					// an id before the actal children is reserved for parent-start nodes
 					++id;
 				}
-				TocTreeItem tti = treeItem(++id, cti.title, true);
+				TocTreeItem tti = treeItem(++id, cti.title, cti.abbrev, true);
 				tti.level = curLevel;
 				tti.parent = parent;
 				tti.ordinal = (int) cti.paraOrdinal;
@@ -95,13 +95,14 @@ public class TocTree
 	}
 	
 	
-	private TocTreeItem treeItem(int id, String title, boolean server)
+	private TocTreeItem treeItem(int id, String title, String abbrev, boolean server)
 	{
 		TocTreeItem tti = new TocTreeItem();
 		tti.id = id;
 		tti.title = title;
 		if(server)
 		{
+			tti.abbrev = abbrev;
 			tti.prev = prevItem;
 			if(prevItem != null)
 				prevItem.next = tti;
@@ -128,7 +129,7 @@ public class TocTree
 	public TocTreeItem treeNode(int id)
 	{
 		TocTreeItem srvNode = findNodeById(root, id, false);
-		TocTreeItem cliNode = treeItem(srvNode.id, srvNode.title, false);
+		TocTreeItem cliNode = treeItem(srvNode.id, srvNode.title, null, false);
 		cliNode.children = new ArrayList<TocTreeItem>();
 		addChildren(srvNode, cliNode);
 		return cliNode;
@@ -190,14 +191,14 @@ public class TocTree
 		dest.children = new ArrayList<TocTreeItem>();
 		if(src != root)
 		{
-			TocTreeItem ti = treeItem(src.id+1, "Kezdete", false);
+			TocTreeItem ti = treeItem(src.id+1, "Kezdete", null, false);
 			ti.parentStart = true;
 			dest.children.add(ti);
 		}
 		for(int i=0; i<src.children.size(); ++i)
 		{
 			TocTreeItem it = src.children.get(i);
-			TocTreeItem ch = treeItem(it.id, it.title, false);
+			TocTreeItem ch = treeItem(it.id, it.title, null, false);
 			dest.children.add(ch);
 			if(it.children != null)
 				if(src == root && i==0)
@@ -218,12 +219,15 @@ public class TocTree
 	}
 
 
-	public static String longRef(TocTreeItem node)
+	public static String[] refs(TocTreeItem node)
 	{
+		List<String> abbrevs = new ArrayList<>();
 		List<String> titles = new ArrayList<>();
 		int len = 0;
 		do
 		{
+			if(node.abbrev != null)
+				abbrevs.add(node.abbrev);
 			if(node.title != null)
 			{
 				String t = node.title;
@@ -235,11 +239,18 @@ public class TocTree
 			}
 			node = node.parent;
 		} while(node != null);
-		StringBuilder sb = new StringBuilder(len);
+
+		StringBuilder sbShort = new StringBuilder(len);
+		for(int i = abbrevs.size()-1; i>=0; --i)
+			sbShort.append(abbrevs.get(i)).append('.');
+		if(sbShort.length() > 1)
+			sbShort.setLength(sbShort.length()-1);
+
+		StringBuilder sbLong = new StringBuilder(len);
 		for(int i = titles.size()-1; i>=0; --i)
-			sb.append(titles.get(i)).append(", ");
-		if(sb.length() > 2)
-			sb.setLength(sb.length()-2);
-		return sb.toString();
+			sbLong.append(titles.get(i)).append(", ");
+		if(sbLong.length() > 2)
+			sbLong.setLength(sbLong.length()-2);
+		return new String[]{sbShort.toString(), sbLong.toString()};
 	}
 }

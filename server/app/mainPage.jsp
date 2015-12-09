@@ -21,21 +21,23 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 			<span id="searchLnk" class="inblk">
 				<u>K</u>eres
 			</span>
-			&nbsp;&nbsp;
+			&nbsp;
 			<span id="sectionLnk" class="inblk">
 				<u>S</u>zakasz
 			</span>
-			<span class="mini-btn right next-hit">
+			<span class="mini-btn next-hit">
 				&raquo;
 			</span>
-			<span class="mini-btn right next-sect">
+			<span class="mini-btn next-sect">
 				&rsaquo;
 			</span>
-			<span class="mini-btn right prev-sect">
+			<span class="mini-btn prev-sect">
 				&lsaquo;
 			</span>
-			<span class="mini-btn right prev-hit">
+			<span class="mini-btn prev-hit">
 				&laquo;
+			</span>
+			<span id="short-ref">
 			</span>
 		</div>
 	</div>

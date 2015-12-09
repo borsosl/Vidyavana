@@ -17,6 +17,7 @@ public class BookSegment
 	public short plainBookId;
 	public byte segment;
 	public String title;
+	public String abbrev;
 	public int priority;		// TODO user or system priority from settings file
 	public int repoVersion;
 	public StorageTocItem[] contents;
@@ -47,6 +48,7 @@ public class BookSegment
 		out.writeShort(plainBookId);
 		out.writeByte(segment);
 		out.writeUTF(title);
+		out.writeUTF(abbrev);
 		out.writeShort(priority);
 		out.writeInt(repoVersion);
 		
@@ -101,6 +103,7 @@ public class BookSegment
 		bs.plainBookId = in.readShort();
 		bs.segment = in.readByte();
 		bs.title = in.readUTF();
+		bs.abbrev = in.readUTF();
 		bs.priority = in.readShort();
 		bs.repoVersion = in.readInt();
 		

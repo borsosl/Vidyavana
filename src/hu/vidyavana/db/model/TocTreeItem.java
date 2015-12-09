@@ -9,6 +9,7 @@ public class TocTreeItem implements Serializable
     public Integer level;
     public Boolean parentStart;
     public String title;
+    public String abbrev;
     public Integer ordinal;
     public TocTreeItem parent, prev, next;
     public List<TocTreeItem> children;

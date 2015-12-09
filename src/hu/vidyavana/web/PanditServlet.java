@@ -134,7 +134,7 @@ public class PanditServlet extends HttpServlet
 	private String refError()
 	{
 		return "Hiba történt. Kérlek írj hibajelentést arról, hogy melyik funkciót használtad "
-			+ "és hogyan. Hivatkozz erre a referenciaszámra: "+errorRefNo+". Email: lokanatha.srs@gmail.com";
+			+ "és hogyan. Hivatkozz erre a referenciaszámra: "+errorRefNo+". Email: dev@pandit.hu";
 	}
 
 

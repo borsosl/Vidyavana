@@ -7,6 +7,7 @@ public class StorageTocItem
 {
 	public byte level;
 	public String title;
+	public String abbrev;
 	public short paraOrdinal;
 	
 	// derived
@@ -18,6 +19,7 @@ public class StorageTocItem
 	{
 		out.writeByte(level);
 		out.writeUTF(title);
+		out.writeUTF(abbrev);
 		out.writeShort(paraOrdinal);
 	}
 
@@ -27,6 +29,7 @@ public class StorageTocItem
 		StorageTocItem ci = new StorageTocItem();
 		ci.level = in.readByte();
 		ci.title = in.readUTF();
+		ci.abbrev = in.readUTF();
 		ci.paraOrdinal = in.readShort();
 		return ci;
 	}
