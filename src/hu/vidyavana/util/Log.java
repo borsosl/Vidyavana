@@ -38,12 +38,21 @@ public class Log
 				logger.addHandler(handler);
 				level(Level.ALL);
 			}
+			Level lev = logger.getLevel();
+			String msg = "Logging level set to " + lev;
+			logger.log(lev == Level.ALL ? Level.CONFIG : lev, msg + System.lineSeparator());
 		}
 		catch(SecurityException | IOException ex)
 		{
 			System.out.println("Failed to initialize logging.");
 			ex.printStackTrace();
 		}
+	}
+	
+	
+	public static Logger instance()
+	{
+		return logger;
 	}
 	
 	

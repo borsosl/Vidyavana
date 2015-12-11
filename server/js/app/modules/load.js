@@ -19,12 +19,16 @@ var lastReqTime;
  */
 function text(mode)
 {
+    if(lastReqTime && lastReqTime > Date.now()-60000)
+        return;
+    var m = loadMode;
+    var data = null;
+
     /**
      * @returns {?string} - ajax request URI or null if no req needed
      */
     function getUrl()
     {
-        var m = loadMode;
         var sectionUrl = '/app/txt/section/';
         var searchUrl = '/app/txt/search';
         switch(mode)
@@ -58,7 +62,6 @@ function text(mode)
         }
     }
 
-    var data = null;
     var url = getUrl();
     if(!url)
         return;

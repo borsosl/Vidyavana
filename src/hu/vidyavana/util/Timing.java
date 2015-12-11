@@ -1,6 +1,7 @@
 package hu.vidyavana.util;
 
 import java.util.Stack;
+import java.util.logging.Logger;
 
 public class Timing
 {
@@ -21,9 +22,19 @@ public class Timing
 
 	public static void stop(String note)
 	{
+		stop(note, null);
+	}
+
+
+	public static void stop(String note, Logger log)
+	{
 		long t = stop();
 		String diff = Double.toString(t / 1000000000.0);
 		diff = diff.substring(0, diff.indexOf('.')+4);
-		System.out.println(note + ": " + diff + " sec.");
+		String out = note + " time " + diff + " sec.";
+		if(log != null)
+			log.finest(out + System.lineSeparator());
+		else
+			System.out.println(out);
 	}
 }

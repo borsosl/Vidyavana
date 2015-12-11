@@ -13,6 +13,7 @@ import hu.vidyavana.search.model.SearchResponse;
 import hu.vidyavana.search.task.SearchTask;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
+import hu.vidyavana.util.Timing;
 import hu.vidyavana.web.RequestInfo;
 
 
@@ -49,8 +50,11 @@ public class TextContent
 		Search details = new Search();
 		details.user = "lnd";
 		details.queryStr = q;
-		details.reqHits = 20;
+		details.reqHits = 1000;
+		details.fetchHits = 1000;
+		Timing.start();
 		Globals.searchExecutors.submit(new SearchTask(details)).get();
+		Timing.stop("Search", Log.instance());
 
 		SearchResponse res = new SearchResponse();
 		ri.ajaxResult = res;
@@ -68,7 +72,8 @@ public class TextContent
 		res.display = textForOnePara(bookSegmentId, hit.ordinal);
 	}
 
-	private void hit(RequestInfo ri) throws IOException
+	
+	private void hit(RequestInfo ri) throws Exception
 	{
 		int searchId = Integer.parseInt(ri.args[3]);
 		int hitNum = Integer.parseInt(ri.args[4]);
@@ -82,7 +87,15 @@ public class TextContent
 			return;
 		}
 		
-		// TODO rerun search above 100 hits
+		if(details.hits.size() <= hitNum)
+		{
+			details.fetchHits = hitNum + 1000;
+			details.reqHits = hitNum + 1000;
+			Timing.start();
+			Globals.searchExecutors.submit(new SearchTask(details)).get();
+			Timing.stop("Re-search", Log.instance());
+			// TODO prolong search keepalive with session timeout
+		}
 
 		Hit hit = details.hits.get(hitNum);
 		if(hit.plainBookId == 0)
@@ -99,6 +112,7 @@ public class TextContent
 		res.display = textForOnePara(bookSegmentId, hit.ordinal);
 	}
 
+	
 	private void follow(RequestInfo ri)
 	{
 		int tocId = Integer.parseInt(ri.args[2]);
@@ -107,6 +121,7 @@ public class TextContent
 		ri.ajaxResult = text(node, start);
 	}
 
+	
 	private void section(RequestInfo ri)
 	{
 		String dir = ri.args[2];
