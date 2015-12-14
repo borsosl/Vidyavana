@@ -7,6 +7,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import hu.vidyavana.db.dao.TocTree;
 import hu.vidyavana.db.model.Storage;
+import hu.vidyavana.util.Encrypt;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 
@@ -20,16 +21,12 @@ public class StartStop implements ServletContextListener
 		File runtimeDir = new File(path, "../../runtime");
 		if(!runtimeDir.exists())
 		{
-			// TODO check for android path
 			runtimeDir = new File(path, "WEB-INF/runtime");
 			Globals.serverEnv = true;
 		}
 		else
-		{
-			runtimeDir = runtimeDir.getAbsoluteFile();
 			Globals.localEnv = true;
-		}
-		Globals.cwd = runtimeDir.getAbsoluteFile().toPath().normalize().toFile();
+		Globals.cwd = runtimeDir.getAbsoluteFile();
 
 		Log.info("Pandit context initializing");
 		Log.info("Working in " + runtimeDir.getAbsolutePath());
@@ -43,6 +40,7 @@ public class StartStop implements ServletContextListener
 		{
 			Log.error("Opening SYSTEM store or reading TOC", ex);
 		}
+		Encrypt.getInstance().init();
 		Globals.searchExecutors = Executors.newCachedThreadPool();
 		Log.info("Pandit context initialized in "+(System.currentTimeMillis() - t0));
 	}

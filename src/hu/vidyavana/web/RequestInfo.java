@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import com.google.gson.GsonBuilder;
 
 public class RequestInfo
@@ -12,6 +13,7 @@ public class RequestInfo
 	
 	public HttpServletRequest req;
 	public HttpServletResponse resp;
+	public HttpSession ses;
 	public String uri;
 	public String[] args;
 	public boolean ajax;
@@ -39,6 +41,12 @@ public class RequestInfo
 	public static void reset()
 	{
 		 instance.remove();
+	}
+	
+	
+	public void check()
+	{
+		// that the object exists
 	}
 	
 	

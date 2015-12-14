@@ -12,7 +12,12 @@ var $msg;
  */
 function javaError(json) {
     if(json.error)
-        message(json.error);
+    {
+        if(json.error === 'expired')
+            document.location = '/app';
+        else
+            message(json.error, true);
+    }
     return !!json.error;
 }
 
@@ -23,7 +28,7 @@ function javaError(json) {
  * @param {function} retryFn - callback for retrying operation that had failed
  */
 function ajaxError(/*xhr, status,*/ msg, retryFn) {
-    message(msg + '...<br><a href="#" id="retry">Ismétlés</a>&nbsp;&nbsp;<a href="#" id="cancelMsg">Mégse</a>');
+    message(msg + '...<br><a href="#" id="retry">Ismétlés</a>&nbsp;&nbsp;<a href="#" id="cancelMsg">Mégse</a>', false);
     $('#retry', $msg).click(function() {
         retryFn.call(this);
     });
@@ -36,11 +41,14 @@ function ajaxError(/*xhr, status,*/ msg, retryFn) {
 /**
  * Set message text and reposition its window.
  * @param {string} msg - message
+ * @param {boolean} needsCloser - need to add link to close?
  */
-function message(msg) {
+function message(msg, needsCloser) {
     if(!$msg)
         $msg = $('#message');
-    $msg.html(msg + '&nbsp;<a href="#" id="cancelMsg">Bezár</a>');
+    if(needsCloser)
+        msg += '&nbsp;<a href="#" id="cancelMsg">Bezár</a>';
+    $msg.html(msg);
     $('#cancelMsg', $msg).click(function() {
         $msg.hide();
     });

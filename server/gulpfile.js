@@ -38,6 +38,7 @@ gulp.task('js', function() {
     });
     var bundleRoots = [
         'js/app/main.js',
+        'js/app/login.js',
         'js/app/server-monitor.js',
         'js/app/test/highlight.js'
     ];

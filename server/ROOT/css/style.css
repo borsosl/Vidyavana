@@ -31,10 +31,16 @@ html, body, iframe, form, fieldset, input, label, ul, ol, li
 	padding: 0;
 }
 
-input[type="text"]
+input[type="text"], input[type="password"], input[type="email"]
 {
-	padding: 0 2px;
+	padding: 0.3em;
     background-color: white;
+    border-radius: 0.3em;
+}
+
+input:focus
+{
+    outline: 0;
 }
 
 html, select, option, .cover
@@ -80,8 +86,8 @@ body
 #headerCnt
 {
 	height: 100%;
-	background: rgb(125, 74, 23) url(/img/icon.gif) no-repeat 2px 0;
-	color: rgb(242, 230, 187);
+	background: #7D4A17 url(/img/icon.gif) no-repeat 2px 0;
+	color: #F2E6BB;
 	padding-left: 40px;
 }
 
@@ -99,8 +105,8 @@ body
 	top: 32px;
 	font-family: "Times New Roman", Times, "Droid Serif", "DejaVu Serif", serif;
 	font-size: 18pt;
-	background-color: rgb(238, 202, 166);
-	color: rgb(41, 34, 7);
+	background-color: #EECAA6;
+	color: #292207;
 	padding: 0 2%;
 	overflow: auto;
 }
@@ -126,16 +132,17 @@ body
 	left: 16px;
 	width: 250px;
 	display: none;
-	background-color: rgb(242, 230, 187);
-	color: rgb(41, 34, 7);
-	border: 1px solid rgb(41, 34, 7);
+	background-color: #F2E6BB;
+	color: #292207;
+	border: 1px solid #292207;
 	padding: 10px;
 }
 
 .textInput100
 {
 	margin-top: 10px;
-	width: calc(100% - 8px);
+	width: calc(100% - 12px);
+    border: 1px solid #292207;
 }
 
 #search-msg
@@ -309,6 +316,10 @@ body
 	padding-top: 2px;
 }
 
+.form-row {
+	margin-top: 10px;
+}
+
 .noScroll
 {
 	overflow: hidden;
@@ -364,14 +375,15 @@ body
 
 .hilite
 {
-	background-color: rgb(125, 74, 23);
-	color: rgb(238, 202, 166);
+	background-color: #7D4A17;
+	color: #EECAA6;
 }
 
 .button-rows
 {
 	margin-bottom: 1em;
 }
+
 .button-rows > div
 {
 	text-align: center;
@@ -384,21 +396,50 @@ body
 {
 	display: inline-block;
 	padding: 0.2em 1em;
-	border: 1px solid rgb(125, 74, 23);
+	border: 1px solid #7D4A17;
 	border-radius: 0.3em;
 	-moz-border-radius: 0.3em;
 	-webkit-border-radius: 0.3em;
-	background-color: rgb(242, 230, 187);
+	background-color: #F2E6BB;
 	cursor: pointer;
 	max-height: 1.4em;
 	line-height: 1.4em;
+}
+
+.btn:hover, button:hover
+{
+    background-color: #7D4A17;
+    color: #F2E6BB;
+}
+
+button
+{
+    padding: 0.2em 1em;
+    border: 1px solid #7D4A17;
+    border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+    background-color: #F2E6BB;
+    cursor: pointer;
+    line-height: normal;
+}
+
+button:focus {
+    outline: none;
+    border: 2px solid #7D4A17;
+}
+
+.button-row {
+    height: 2em;
+    line-height: 2em;
+    vertical-align: middle;
 }
 
 #header span.mini-btn
 {
 	display: inline-block;
 	float: right;
-	border: 1px solid rgb(242, 230, 187);
+	border: 1px solid #F2E6BB;
 	line-height: 26px;
 	width: 26px;
 	text-align: center;
@@ -415,4 +456,73 @@ body
 	display: inline-block;
 	float: right;
 	margin-right: 1em;
+}
+
+
+/* login page */
+
+.login-body
+{
+    background-color: #EECAA6;
+    color: #292207;
+}
+
+.login
+{
+    margin: 0 auto;
+    width: 310px;
+}
+
+.login .tabs
+{
+    height: 35px;
+    border-bottom: 1px solid #292207;
+    margin-top: 2%;
+}
+
+.login .tab-ctnr
+{
+    float: left;
+    margin-left: 1em;
+    height: 37px;
+}
+
+.tab-ctnr .tab
+{
+    float: left;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    line-height: 35px;
+    text-align: center;
+    padding: 0 0.5em;
+    margin-right: 0.5em;
+    cursor: pointer;
+}
+
+.tab-ctnr .tab.active, .tab-ctnr .tab.inactive:hover
+{
+    height: 35px;
+    border: 1px solid #292207;
+    border-bottom: 0;
+    background-color: #F2E6BB;
+    color: #292207;
+}
+
+.tab-ctnr .tab.inactive
+{
+    height: 34px;
+    border: 1px solid #898267;
+    border-bottom: 1px solid #292207;
+    border-bottom: 0;
+    background-color: #FFF6DB;
+    color: gray;
+}
+
+.login .form
+{
+    background-color: #F2E6BB;
+    color: #292207;
+    border: 1px solid #292207;
+    border-top: 0;
+    padding: 10px;
 }

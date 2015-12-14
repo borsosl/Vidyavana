@@ -7,7 +7,9 @@
 /srcimport
 /android/
 /server/app/WEB-INF/lib/
+/server/app/WEB-INF/runtime/
 /server/app/WEB-INF/work/
+/server/conf/
 font/
 X.*
 **/orig-pandit-apache-conf.txt

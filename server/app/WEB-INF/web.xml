@@ -23,31 +23,15 @@
 
     <servlet-mapping>
         <servlet-name>pandit</servlet-name>
-        <url-pattern></url-pattern>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <security-role>
-        <role-name>pandit</role-name>
-    </security-role>
-
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Pandit auth</web-resource-name>
-			<url-pattern>/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>pandit</role-name>
-		</auth-constraint>
-
-		<user-data-constraint>
-			<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
-			<transport-guarantee>NONE</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-
-	<login-config>
-		<auth-method>BASIC</auth-method>
-	</login-config>
+	<session-config>
+	    <session-timeout>30</session-timeout> 
+	    <cookie-config>
+	    	<name>sid</name>
+	        <max-age>86400</max-age>
+	    </cookie-config>
+	</session-config>
 
 </web-app>

@@ -1,6 +1,7 @@
 <%@page import="hu.vidyavana.web.RequestInfo" pageEncoding="UTF-8"%>
 <%
 RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
+ri.check();
 %>
 <!DOCTYPE html>
 <html>
@@ -71,7 +72,7 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 		</div>
 		<div id="search-msg">
 		</div>
-		<div style="margin-top: 10px; text-align: center;">
+		<div class="form-row button-row center">
 			<button id="searchGo">Mehet</button>
 		</div>
 	</div>
@@ -107,7 +108,7 @@ RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 		<div>
 			<select id="sect9" class="sectionSelect"></select>
 		</div>
-		<div style="margin-top: 10px; text-align: center;">
+		<div class="form-row button-row center">
 			<button id="sectionGo">Mehet</button>
 		</div>
 	</div>

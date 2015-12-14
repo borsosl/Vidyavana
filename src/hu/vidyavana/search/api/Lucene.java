@@ -16,20 +16,26 @@ public class Lucene
 	public static final Version VERSION = Version.LATEST;
 	public static Lucene SYSTEM = forUser(null);
 
-	private File dir;
-	private Directory index;
-	private IndexWriter writer;
-	private DirectoryReader reader;
-	private IndexSearcher searcher;
+	protected File dir;
+	protected Directory index;
+	protected IndexWriter writer;
+	protected DirectoryReader reader;
+	protected IndexSearcher searcher;
 
 	
 	public Lucene(String user)
+	{
+		setupDirectory(user);
+		open();
+	}
+
+
+	protected void setupDirectory(String user)
 	{
 		if(user == null)
 			dir = new File(Globals.cwd, "system/index");
 		else
 			dir = new File(Globals.cwd, "users/"+user+"/index");
-		open();
 	}
 	
 	
@@ -81,10 +87,9 @@ public class Lucene
 			{
 				reader.close();
 				reader = null;
+				searcher = null;
 			}
-			HtmlAnalyzer analyzer = new HtmlAnalyzer();
-			IndexWriterConfig config = new IndexWriterConfig(analyzer);
-			config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+			IndexWriterConfig config = createConfig();
 			writer = new IndexWriter(index, config);
 			return writer;
 		}
@@ -93,12 +98,23 @@ public class Lucene
 			throw new RuntimeException("Opening index writer", ex);
 		}
 	}
+
+
+	protected IndexWriterConfig createConfig()
+	{
+		HtmlAnalyzer analyzer = new HtmlAnalyzer();
+		IndexWriterConfig config = new IndexWriterConfig(analyzer);
+		config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+		return config;
+	}
 	
 	
 	public void closeWriter()
 	{
 		try
 		{
+			if(writer == null)
+				return;
 			writer.close();
 			writer = null;
 		}

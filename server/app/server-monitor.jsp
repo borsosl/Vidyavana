@@ -1,6 +1,7 @@
 <%@page import="hu.vidyavana.web.RequestInfo" pageEncoding="UTF-8"%>
 <%
 RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
+ri.check();
 %>
 <!DOCTYPE html>
 <html>

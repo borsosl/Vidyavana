@@ -22,23 +22,23 @@ public class Log
 			LogManager.getLogManager().readConfiguration(url.openStream());
 			logger = Logger.getLogger("common");
 
-			if(Globals.serverEnv)
+			String handlerType = Conf.get("log.handler");
+			Level lev = Level.parse(Conf.get("log.level"));
+			if("FILE".equals(handlerType))
 			{
 				SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmm");
 				File f = new File(Globals.cwd, "log/pandit-"+sdf.format(new Date())+".log");
 				FileHandler handler = new FileHandler(f.getPath());
 				handler.setFormatter(new SimpleFormatter());
 				logger.addHandler(handler);
-				level(Level.CONFIG);
 			}
 			else
 			{
 				ConsoleHandler handler = new ConsoleHandler();
 				handler.setFormatter(new SimpleFormatter());
 				logger.addHandler(handler);
-				level(Level.ALL);
 			}
-			Level lev = logger.getLevel();
+			level(lev);
 			String msg = "Logging level set to " + lev;
 			logger.log(lev == Level.ALL ? Level.CONFIG : lev, msg + System.lineSeparator());
 		}
@@ -86,9 +86,21 @@ public class Log
 	}
 	
 	
+	public static void activity(String text)
+	{
+		logger.fine(text + System.lineSeparator());
+	}
+	
+	
 	public static void debug(String text)
 	{
 		logger.finer(text + System.lineSeparator());
+	}
+	
+	
+	public static void finest(String text)
+	{
+		logger.finest(text + System.lineSeparator());
 	}
 	
 	
@@ -113,15 +125,16 @@ public class Log
 
 class SimpleFormatter extends Formatter
 {
-	private static final MessageFormat messageFormat = new MessageFormat("[{0,date,MM-dd HH:mm:ss}]: {1}");
+	private static final MessageFormat messageFormat = new MessageFormat("[{0,date,MM-dd HH:mm:ss} {2}]: {1}");
 
 
 	@Override
 	public String format(LogRecord record)
 	{
-		Object[] arguments = new Object[2];
+		Object[] arguments = new Object[3];
 		arguments[0] = new Date(record.getMillis());
 		arguments[1] = record.getMessage();
+		arguments[2] = record.getLevel();
 		return messageFormat.format(arguments);
 	}
 

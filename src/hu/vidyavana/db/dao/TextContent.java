@@ -24,11 +24,11 @@ public class TextContent
 	
 	public void service(RequestInfo ri) throws Exception
 	{
+		ri.ajax = true;
 		synchronized(Storage.SYSTEM)
 		{
 			Storage.SYSTEM.openForRead();
 		}
-		ri.ajax = true;
 		if("search".equals(ri.args[1]))
 			if(ri.args.length > 2 && "hit".equals(ri.args[2]))
 				hit(ri);
@@ -45,7 +45,7 @@ public class TextContent
 	private void search(RequestInfo ri) throws Exception
 	{
 		String q = ri.req.getParameter("q");
-		Log.debug("Search task: " + q);
+		Log.activity("Search task: " + q);
 
 		Search details = new Search();
 		details.user = "lnd";

@@ -1,3 +1,4 @@
+<%@page import="hu.vidyavana.web.RequestInfo" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +8,7 @@
 </head>
 <body class="noMargin noScroll">
 
-Karbantartást végzünk, bocsi.
+KarbantartÃ¡st vÃ©gzÃ¼nk, bocsi.
 	
 </body>
 </html>

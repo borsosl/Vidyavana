@@ -83,6 +83,7 @@ public class ServerUtil
 
 	private void monitorBackgroundTask(final RequestInfo ri) throws InterruptedException
 	{
+		ri.ajax = true;
 		Integer serviceTag = Integer.valueOf(ri.args[2]);
 		BlockingQueue<Object> resp = serviceMap.get(serviceTag);
 		ServiceResponse res = new ServiceResponse();
@@ -117,6 +118,5 @@ public class ServerUtil
 				serviceMap.remove(serviceTag);
 		}
 		ri.ajaxResult = res;
-		ri.ajax = true;
 	}
 }
