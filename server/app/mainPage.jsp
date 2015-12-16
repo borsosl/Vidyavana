@@ -26,6 +26,12 @@ ri.check();
 			<span id="sectionLnk" class="inblk">
 				<u>S</u>zakasz
 			</span>
+			&nbsp;
+			<span id="logoutLnk" class="inblk">
+				Kilé<u>p</u>
+			</span>
+
+			<%-- Right aligned --%>
 			<span class="mini-btn next-hit">
 				&raquo;
 			</span>

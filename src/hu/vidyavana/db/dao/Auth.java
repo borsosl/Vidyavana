@@ -18,6 +18,8 @@ public class Auth
 			authenticate(ri);
 		else if("register".equals(ri.args[1]))
 			register(ri);
+		else if("logout".equals(ri.args[1]))
+			logout(ri);
 		else
 			ri.resp.setStatus(404);
 	}
@@ -80,5 +82,12 @@ public class Auth
 	private boolean verifyEmail(String email)
 	{
 		return EMAIL.matcher(email).matches();
+	}
+
+	
+	public void logout(RequestInfo ri) throws Exception
+	{
+		ri.ses.removeAttribute("user");
+		ri.ajaxText = "{\"ok\": true}";
 	}
 }

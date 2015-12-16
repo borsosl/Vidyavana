@@ -1,5 +1,6 @@
 var dom = require('./modules/dom');
 var util = require('./modules/util');
+var task = require('./modules/task');
 var toc = require('./modules/toc');
 var search = require('./modules/search');
 
@@ -12,5 +13,5 @@ $(function()
     require('./modules/mouse');
     require('./modules/touch');
     util.resizeEvent();
-    util.dialog(0, false);
+    task.searchDialog();
 });

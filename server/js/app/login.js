@@ -52,6 +52,10 @@ function validatePassword() {
         message('A jelszók nem egyeznek');
         return null;
     }
+    if(!pwd1.length) {
+        message('Írd be (újra) a jelszót');
+        return null;
+    }
     var res = /\S+.*\S+/.exec(pwd1);
     if(!res || res[0].length < 5) {
         message('A jelszó minimum 5 karakter');
@@ -68,6 +72,10 @@ function login() {
     var pwd = validatePassword();
     if(!pwd)
         return;
+    if(pwd.length === 33 && pwd.charAt(0) === '@')
+        pwd = pwd.substring(1);
+    else
+        pwd = window.md5(pwd);
 
     $.ajax({
         url: '/app/auth/authenticate',
@@ -75,7 +83,7 @@ function login() {
         dataType: 'json',
         data: {
             email: email,
-            password: window.md5(pwd)
+            password: pwd
         },
 
         success: function(json)
@@ -85,7 +93,7 @@ function login() {
             else
                 post('/app', {
                     username: email,
-                    password: pwd
+                    password: '@' + pwd
                 });
         },
 
@@ -104,6 +112,7 @@ function register() {
     var pwd = validatePassword();
     if(!pwd)
         return;
+    pwd = window.md5(pwd);
 
     $.ajax({
         url: '/app/auth/register',
@@ -111,7 +120,7 @@ function register() {
         dataType: 'json',
         data: {
             email: email,
-            password: window.md5(pwd),
+            password: pwd,
             name: $('#name').val()
         },
 
@@ -124,7 +133,7 @@ function register() {
             else
                 post('/app/', {
                     username: email,
-                    password: pwd
+                    password: '@' + pwd
                 });
         },
 

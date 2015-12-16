@@ -2,17 +2,25 @@
 var page = require('./page').instance;
 var dom = require('./dom');
 var util = require('./util');
+var task = require('./task');
 var load = require('./load');
 var search = require('./search');
 
 $('#searchLnk').click(function()
 {
-    util.dialog(0, true);
+    task.searchDialog();
 });
 
 $('#sectionLnk').click(function()
 {
     util.dialog(1, true);
+    //noinspection JSUnresolvedFunction
+    $('#sect1')[0].focus();
+});
+
+$('#logoutLnk').click(function()
+{
+    task.logout();
 });
 
 $('.prev-sect').click(function()
