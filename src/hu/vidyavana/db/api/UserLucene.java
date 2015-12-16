@@ -13,6 +13,7 @@ import org.apache.lucene.search.TopDocs;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.search.api.Lucene;
 import hu.vidyavana.util.Globals;
+import hu.vidyavana.util.Log;
 
 public class UserLucene extends Lucene
 {
@@ -21,6 +22,19 @@ public class UserLucene extends Lucene
 	public UserLucene()
 	{
 		super(null);
+		try {
+			closeWriter();
+			reader();
+		} catch(Exception ex) {
+			try
+			{
+				writer().addDocument(new Document());
+			}
+			catch(IOException ex1)
+			{
+				Log.error("Cannot add first document", ex1);
+			}
+		}
 	}
 
 	

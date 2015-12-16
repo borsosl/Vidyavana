@@ -33,8 +33,12 @@ $(window).keydown(function(e)
         //noinspection JSUnresolvedFunction
         e.preventDefault();
     }
-    else if(c === 27)		    // esc
-        util.dialog(-1, false);
+    else if(c === 27) {		    // esc
+        if(util.isMenuVisible())
+            util.toggleMenu(true);
+        else
+            util.dialog(-1, false);
+    }
     else if(c === 188 || c === 109)		    // , or -
     {
         if(search.get())
@@ -45,6 +49,8 @@ $(window).keydown(function(e)
         if(search.get())
             load.text(load.mode.nextHit);
     }
+    else if(c === 88 && util.menuModifier(e))           // alt-x
+        util.toggleMenu();
     else if(c === 80 && util.menuModifier(e))           // alt-p
         task.logout();
 });

@@ -4,6 +4,26 @@ var dom = require('./dom');
 /** @type {JQuery} - points to centered message box, lazy init'd */
 var $msg;
 
+/** @type {boolean} */
+var menuVisible;
+
+
+function toggleMenu(close) {
+    var $m = $('#menu');
+    var visible = $m.css('display') === 'block';
+    if(close && !visible)
+        return;
+    if($m.height() > 5 || visible) {
+        $m.toggle();
+        menuVisible = !visible;
+    }
+}
+
+
+function isMenuVisible() {
+    return menuVisible;
+}
+
 
 /**
  * Shows server-side error and returns its presence.
@@ -105,11 +125,14 @@ function resizeEvent() {
         dom.$content[0].style.top = headHgt + 'px';
         dom.$content.innerHeight(winHgt - headHgt);
         dom.$content.innerWidth(winWid);
+        dom.initMenu();
     });
 }
 
 
 $.extend(exports, {
+    toggleMenu: toggleMenu,
+    isMenuVisible: isMenuVisible,
     javaError: javaError,
     ajaxError: ajaxError,
     dialog: dialog,

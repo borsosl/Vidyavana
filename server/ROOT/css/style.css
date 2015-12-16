@@ -34,7 +34,7 @@ html, body, iframe, form, fieldset, input, label, ul, ol, li
 input[type="text"], input[type="password"], input[type="email"]
 {
 	padding: 0.3em;
-    background-color: white;
+    background-color: #FFF6DB;
     border-radius: 0.3em;
 }
 
@@ -45,7 +45,7 @@ input:focus
 
 html, select, option, .cover
 {
-	background-color: white;
+	background-color: #FFF6DB;
 }
 
 img, iframe
@@ -80,23 +80,52 @@ body
 {
 	position: absolute;
 	width: 100%;
-	min-height: 32px;
+	height: 32px;
+	background-color: #7D4A17;
+	color: #F2E6BB;
+	overflow: hidden;
 }
 
-#headerCnt
-{
+#header #pandit-icon {
+	display: inline-block;
+	width: 36px;
 	height: 100%;
+	margin-left: 0;
 	background: #7D4A17 url(/img/icon.gif) no-repeat 2px 0;
-	color: #F2E6BB;
-	padding-left: 40px;
 }
 
 #header span
 {
 	line-height: 32px;
-	margin-left: 5px;
+	margin-left: 0.5em;
 	vertical-align: middle;
 	cursor: pointer;
+}
+
+#header span.mini-btn
+{
+	display: inline-block;
+	float: right;
+	border: 1px solid #F2E6BB;
+	line-height: 26px;
+	width: 26px;
+	text-align: center;
+	margin-top: 2px;
+	margin-left: 5px;
+	vertical-align: middle;
+	border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	-webkit-border-radius: 0.3em;
+	cursor: pointer;
+}
+
+#short-ref
+{
+	display: inline-block;
+	float: right;
+	margin-right: 1em;
+	margin-left: 0 !important;
+	text-align: right;
 }
 
 #content
@@ -111,7 +140,7 @@ body
 	overflow: auto;
 }
 
-/* smaller font on phones */
+/* smaller font on phones - keep this under overridden styles */
 @media all and (orientation:portrait) and (max-device-width: 599px), all and (orientation:landscape) and (max-device-width: 799px)
 {
 	html, input, select, option, button, .button-rows
@@ -123,6 +152,46 @@ body
 	{
 		font-size: 13pt;
 	}
+
+	#header span
+	{
+		margin-left: 0.3em;
+	}
+
+	#header span.mini-btn
+	{
+		margin-left: 0.2em;
+	}
+
+	#short-ref
+	{
+		margin-right: 0.3em;
+	}
+}
+
+#menu {
+	position: absolute;
+	top: 34px;
+	left: 2px;
+	display: none;
+	background-color: #F2E6BB;
+	color: #292207;
+	border: 1px solid #292207;
+}
+
+.mitem {
+	font-size: 120%;
+	line-height: 1.4em;
+	height: 1.4em;
+	margin: 2px;
+	vertical-align: middle;
+	padding: 2px;
+}
+
+.mitem:hover {
+	background-color: #292207;
+	color: #F2E6BB;
+	border-radius: 0.3em;
 }
 
 #searchPop, #sectionPop
@@ -330,14 +399,6 @@ body
 	overflow: auto;
 }
 
-#scrollbar-measure
-{
-	position: absolute;
-	left: -1000px;
-	width: 100px;
-	height: 100px;
-	overflow: scroll;
-}
 
 .grayBorder
 {
@@ -433,29 +494,6 @@ button:focus {
     height: 2em;
     line-height: 2em;
     vertical-align: middle;
-}
-
-#header span.mini-btn
-{
-	display: inline-block;
-	float: right;
-	border: 1px solid #F2E6BB;
-	line-height: 26px;
-	width: 26px;
-	text-align: center;
-	margin-top: 2px;
-	vertical-align: middle;
-	border-radius: 0.3em;
-	-moz-border-radius: 0.3em;
-	-webkit-border-radius: 0.3em;
-	cursor: pointer;
-}
-
-#short-ref
-{
-	display: inline-block;
-	float: right;
-	margin-right: 1em;
 }
 
 

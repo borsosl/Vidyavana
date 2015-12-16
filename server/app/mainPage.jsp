@@ -18,35 +18,36 @@ ri.check();
 <body class="noMargin noScroll">
 	<div id="measure" class="abs fill novis"></div>
 	<div id="header">
-		<div id="headerCnt">
-			<span id="searchLnk" class="inblk">
-				<u>K</u>eres
-			</span>
-			&nbsp;
-			<span id="sectionLnk" class="inblk">
-				<u>S</u>zakasz
-			</span>
-			&nbsp;
-			<span id="logoutLnk" class="inblk">
-				Kilé<u>p</u>
-			</span>
+        <span id="pandit-icon">&nbsp;</span>
+        <span id="search-link" class="inblk">
+            <u>K</u>eres
+        </span>
+        <span id="section-link" class="inblk">
+            <u>S</u>zakasz
+        </span>
 
-			<%-- Right aligned --%>
-			<span class="mini-btn next-hit">
-				&raquo;
-			</span>
-			<span class="mini-btn next-sect">
-				&rsaquo;
-			</span>
-			<span class="mini-btn prev-sect">
-				&lsaquo;
-			</span>
-			<span class="mini-btn prev-hit">
-				&laquo;
-			</span>
-			<span id="short-ref">
-			</span>
-		</div>
+        <%-- Right aligned, priority --%>
+        <span class="mini-btn next-hit">
+            &raquo;
+        </span>
+        <span class="mini-btn next-sect">
+            &rsaquo;
+        </span>
+        <span class="mini-btn prev-sect">
+            &lsaquo;
+        </span>
+        <span class="mini-btn prev-hit">
+            &laquo;
+        </span>
+
+        <%-- Right aligned, extra --%>
+        <span id="short-ref">
+        </span>
+
+        <%-- Left aligned, extra --%>
+        <span id="logout-link" class="inblk">
+            Kilé<u>p</u>
+        </span>
 	</div>
 
 	<div id="content" class="autoScroll">
@@ -64,9 +65,6 @@ ri.check();
 				<span class="btn next-hit">Köv találat (.) &raquo;</span>
 			</div>
 		</div>
-	</div>
-
-	<div id="shadowText">
 	</div>
 
 	<div id="searchPop">
@@ -117,6 +115,11 @@ ri.check();
 		<div class="form-row button-row center">
 			<button id="sectionGo">Mehet</button>
 		</div>
+	</div>
+
+	<div id="menu">
+	    <div id="menu-short-ref" class="mitem">Nincs szakasz</div>
+	    <div id="menu-logout-link" class="mitem">Kilé<u>p</u>és</div>
 	</div>
 
 	<div id="message">

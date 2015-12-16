@@ -6,19 +6,24 @@ var task = require('./task');
 var load = require('./load');
 var search = require('./search');
 
-$('#searchLnk').click(function()
+$('#pandit-icon').click(function()
+{
+    util.toggleMenu();
+});
+
+$('#search-link').click(function()
 {
     task.searchDialog();
 });
 
-$('#sectionLnk').click(function()
+$('#section-link').click(function()
 {
     util.dialog(1, true);
     //noinspection JSUnresolvedFunction
     $('#sect1')[0].focus();
 });
 
-$('#logoutLnk').click(function()
+$('#logout-link, #menu-logout-link').click(function()
 {
     task.logout();
 });

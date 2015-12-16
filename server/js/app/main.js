@@ -13,5 +13,6 @@ $(function()
     require('./modules/mouse');
     require('./modules/touch');
     util.resizeEvent();
+    dom.initMenu();
     task.searchDialog();
 });
