@@ -1,5 +1,7 @@
 
 function init() {
+    /** @type {JQuery} - top action bar */
+    this.$header = $('#header');
     /** @type {JQuery} - container for text and buttons */
     this.$content = $('#content');
     /** @type {JQuery} - container for text content */
@@ -18,18 +20,10 @@ function init() {
     this.$menuShortRef = $('#menu-short-ref');
 }
 
-
-function initMenu() {
-    var $head = $('#header');
-    $head.children().each(function(ix, el) {
-        var $menuEl = $('#menu-' + el.id);
-        $menuEl.toggle(el.offsetTop > 30);
-    });
-}
-
 /**
- * @type {{init, initMenu, $content, $txt, $textBtns, $hitBtns, $sectDown, $thisSect, $shortRef, $menuShortRef}}
+ * @type {{init, nowarn, $header, $content, $txt, $textBtns, $hitBtns,
+ *      $sectDown, $thisSect, $shortRef, $menuShortRef}}
  */
 var dom = exports;
 dom.init = init;
-dom.initMenu = initMenu;
+dom.nowarn = 0;

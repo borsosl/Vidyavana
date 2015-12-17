@@ -55,6 +55,7 @@ function text(json, mode)
             display.shortRef = '';
         dom.$shortRef.text(display.shortRef);
         dom.$menuShortRef.text(display.shortRef);
+        util.refreshMenu();
 
         if(highlight.get())
             highlight.get().run(h);

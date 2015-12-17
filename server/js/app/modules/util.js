@@ -1,6 +1,9 @@
 
 var dom = require('./dom');
 
+/** @type {JQuery} - points to menu box, lazy init'd */
+var $menu;
+
 /** @type {JQuery} - points to centered message box, lazy init'd */
 var $msg;
 
@@ -8,13 +11,19 @@ var $msg;
 var menuVisible;
 
 
-function toggleMenu(close) {
-    var $m = $('#menu');
-    var visible = $m.css('display') === 'block';
-    if(close && !visible)
-        return;
-    if($m.height() > 5 || visible) {
-        $m.toggle();
+function toggleMenu(close, onEmpty) {
+    if(!$menu)
+        $menu = $('#menu');
+    var visible = $menu.css('display') === 'block';
+    var hgt = $menu.height();
+    if(close) {
+        if(!visible)
+            return;
+        if(onEmpty && hgt > 5)
+            return;
+    }
+    if($menu.height() > 5 || visible) {
+        $menu.toggle();
         menuVisible = !visible;
     }
 }
@@ -22,6 +31,17 @@ function toggleMenu(close) {
 
 function isMenuVisible() {
     return menuVisible;
+}
+
+
+function refreshMenu() {
+    setTimeout(function() {
+        dom.$header.children().each(function(ix, el) {
+            var $menuEl = $('#menu-' + el.id);
+            $menuEl.toggle(el.offsetTop > 30);
+        });
+        toggleMenu(true, true);
+    }, 1);
 }
 
 
@@ -125,7 +145,7 @@ function resizeEvent() {
         dom.$content[0].style.top = headHgt + 'px';
         dom.$content.innerHeight(winHgt - headHgt);
         dom.$content.innerWidth(winWid);
-        dom.initMenu();
+        refreshMenu();
     });
 }
 
@@ -133,6 +153,7 @@ function resizeEvent() {
 $.extend(exports, {
     toggleMenu: toggleMenu,
     isMenuVisible: isMenuVisible,
+    refreshMenu: refreshMenu,
     javaError: javaError,
     ajaxError: ajaxError,
     dialog: dialog,

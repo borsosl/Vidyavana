@@ -19,12 +19,6 @@ ri.check();
 	<div id="measure" class="abs fill novis"></div>
 	<div id="header">
         <span id="pandit-icon">&nbsp;</span>
-        <span id="search-link" class="inblk">
-            <u>K</u>eres
-        </span>
-        <span id="section-link" class="inblk">
-            <u>S</u>zakasz
-        </span>
 
         <%-- Right aligned, priority --%>
         <span class="mini-btn next-hit">
@@ -38,6 +32,14 @@ ri.check();
         </span>
         <span class="mini-btn prev-hit">
             &laquo;
+        </span>
+
+        <%-- Left aligned, extra --%>
+        <span id="search-link" class="inblk">
+            <u>K</u>eres
+        </span>
+        <span id="section-link" class="inblk">
+            <u>S</u>zakasz
         </span>
 
         <%-- Right aligned, extra --%>
@@ -118,7 +120,9 @@ ri.check();
 	</div>
 
 	<div id="menu">
-	    <div id="menu-short-ref" class="mitem">Nincs szakasz</div>
+	    <div id="menu-short-ref" class="mitem">(Nincs pozíció)</div>
+        <div id="menu-search-link" class="mitem"><u>K</u>eres</div>
+        <div id="menu-section-link" class="mitem"><u>S</u>zakasz</div>
 	    <div id="menu-logout-link" class="mitem">Kilé<u>p</u>és</div>
 	</div>
 

@@ -11,12 +11,12 @@ $('#pandit-icon').click(function()
     util.toggleMenu();
 });
 
-$('#search-link').click(function()
+$('#search-link, #menu-search-link').click(function()
 {
     task.searchDialog();
 });
 
-$('#section-link').click(function()
+$('#section-link, #menu-section-link').click(function()
 {
     util.dialog(1, true);
     //noinspection JSUnresolvedFunction
