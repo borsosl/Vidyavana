@@ -2,14 +2,14 @@ package hu.vidyavana.db.api;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.search.api.Lucene;
 import hu.vidyavana.util.Globals;
@@ -82,7 +82,7 @@ public class UserLucene extends Lucene
 			if(res.totalHits != 1)
 				return null;
 			Document doc = searcher().doc(res.scoreDocs[0].doc);
-			return new User().fromDoc(doc);
+			return new User().fromDoc(doc, false);
 		}
 		catch(IOException ex)
 		{
@@ -101,6 +101,29 @@ public class UserLucene extends Lucene
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
+		}
+	}
+
+
+	public List<User> getAllUsers()
+	{
+		try
+		{
+			Query q = new WildcardQuery(new Term("email", "*"));
+			IndexSearcher sr = searcher();
+			TopDocs res = sr.search(q, Integer.MAX_VALUE);
+			List<User> users = new ArrayList<>(res.totalHits);
+			for(ScoreDoc sd : res.scoreDocs)
+			{
+				User u = new User();
+				u.fromDoc(sr.doc(sd.doc), true);
+				users.add(u);
+			}
+			return users;
+		}
+		catch(Exception ex)
+		{
+			throw new RuntimeException(ex);
 		}
 	}
 }

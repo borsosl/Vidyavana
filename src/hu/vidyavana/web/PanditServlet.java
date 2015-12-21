@@ -7,10 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import hu.vidyavana.db.dao.Auth;
-import hu.vidyavana.db.dao.ServerUtil;
-import hu.vidyavana.db.dao.TextContent;
-import hu.vidyavana.db.dao.TocTree;
+import hu.vidyavana.db.dao.*;
+import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 
@@ -28,7 +26,11 @@ public class PanditServlet extends HttpServlet
 	{
 		try
 		{
-			RequestInfo ri = RequestInfo.create();
+			RequestInfo ri = (RequestInfo) req.getAttribute("_ri");
+			if(ri == null)
+			{
+				ri = RequestInfo.create();
+			}
 			ri.req = req;
 			ri.resp = resp;
 			process(ri);
@@ -48,6 +50,8 @@ public class PanditServlet extends HttpServlet
 			String[] args = ri.args = ri.uri.substring(1).split("/");
 			boolean ctxRootReq = args.length == 1 && args[0].isEmpty();
     		ri.ses = ri.req.getSession();
+    		if(ri.user == null && ri.ses != null)
+    			ri.user = (User) ri.ses.getAttribute("user");
 			
     		ri.resp.setContentType("text/html; charset=UTF-8");
     		ri.resp.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -55,8 +59,9 @@ public class PanditServlet extends HttpServlet
     		ri.resp.setHeader("Pragma", "no-cache");
     		ri.resp.setHeader("Expires", "-1");
 
-    		Log.activity(ri.uri);
-    		Log.finest("Requested Session Id: " + ri.req.getRequestedSessionId() + " / " + ri.ses.getId());
+    		String userInfo = ri.user == null ? "" : "["+ri.user.email+"] ";
+    		Log.activity(userInfo + ri.uri);
+    		// Log.finest("Requested Session Id: " + ri.req.getRequestedSessionId() + " / " + ri.ses.getId());
 
     		if(Globals.maintenance && !"util".equals(args[0]))
     		{
@@ -77,14 +82,14 @@ public class PanditServlet extends HttpServlet
 				new Auth().service(ri);
 			else {
 	    		// check session
-	    		if(ri.ses.getAttribute("user") == null)
+	    		if(ri.user == null)
 	    		{
-	    			ri.ajax = true;
-	    			if(ctxRootReq)
+	    			if(ctxRootReq || ri.args.length == 1 && "admin".equals(args[0]))
 	    			{
 	    				new Auth().login(ri);
 	    				return;
 	    			}
+	    			ri.ajax = true;
 	    			ri.ajaxText = "{\"error\": \"expired\"}";
 	    		}
 	    		else
@@ -101,6 +106,8 @@ public class PanditServlet extends HttpServlet
 						new TextContent().service(ri);
 					else if("util".equals(args[0]))
 						new ServerUtil().service(ri);
+					else if("admin".equals(args[0]))
+						new Admin().service(ri);
 					else
 						ri.resp.setStatus(404);
 	    		}
@@ -154,10 +161,13 @@ public class PanditServlet extends HttpServlet
 
 	private void writeJson(RequestInfo ri) throws IOException
 	{
-		if(ri.ajaxResult != null)
-			ri.ajaxText();
-		else if(ri.ajaxText == null)
-			ri.ajaxText = "{}";
+		if(ri.ajaxText == null)
+		{
+			if(ri.ajaxResult != null)
+				ri.ajaxText();
+			else
+				ri.ajaxText = "{}";
+		}
 		ri.resp.getWriter().write(ri.ajaxText);
 	}
 	

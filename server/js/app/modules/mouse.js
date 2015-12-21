@@ -13,11 +13,13 @@ $('#pandit-icon').click(function()
 
 $('#search-link, #menu-search-link').click(function()
 {
+    util.toggleMenu(true);
     task.searchDialog();
 });
 
 $('#section-link, #menu-section-link').click(function()
 {
+    util.toggleMenu(true);
     util.dialog(1, true);
     //noinspection JSUnresolvedFunction
     $('#sect1')[0].focus();
@@ -25,6 +27,7 @@ $('#section-link, #menu-section-link').click(function()
 
 $('#logout-link, #menu-logout-link').click(function()
 {
+    util.toggleMenu(true);
     task.logout();
 });
 

@@ -23,6 +23,7 @@ function toggleMenu(close, onEmpty) {
             return;
     }
     if($menu.height() > 5 || visible) {
+        dialog(-1, false);
         $menu.toggle();
         menuVisible = !visible;
     }
@@ -142,9 +143,13 @@ function resizeEvent() {
         var winHgt = $m.height();
         var winWid = $m.width();
         var headHgt = $('#header').height();
-        dom.$content[0].style.top = headHgt + 'px';
-        dom.$content.innerHeight(winHgt - headHgt);
-        dom.$content.innerWidth(winWid);
+        var arr = [dom.$content, dom.$formContent];
+        for(var i in arr) {
+            var $e = arr[i];
+            $e[0].style.top = headHgt + 'px';
+            $e.innerHeight(winHgt - headHgt);
+            $e.innerWidth(winWid);
+        }
         refreshMenu();
     });
 }

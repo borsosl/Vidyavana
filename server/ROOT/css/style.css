@@ -143,8 +143,20 @@ body
 	overflow: auto;
 }
 
+#form-content
+{
+	position: absolute;
+	top: 48px;
+	display: none;
+	font: 12pt sans-serif;
+	background-color: #EECAA6;
+	color: #292207;
+	padding: 1em 2%;
+	overflow: auto;
+}
+
 /* smaller font on phones - keep this under overridden styles */
-@media all and (orientation:portrait) and (max-device-width: 599px), all and (orientation:landscape) and (max-device-width: 799px)
+@media only screen and (orientation:portrait) and (max-width: 599px), only screen and (orientation:landscape) and (max-width: 799px)
 {
 	html, input, select, option, button, .button-rows, #header
 	{
@@ -192,9 +204,9 @@ body
 }
 
 .mitem:hover {
-	background-color: #292207;
+	background-color: #7D4A17;
 	color: #F2E6BB;
-	border-radius: 0.3em;
+	cursor: pointer;
 }
 
 #searchPop, #sectionPop

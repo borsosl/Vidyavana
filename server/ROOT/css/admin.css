@@ -1,0 +1,36 @@
+.admin-form {
+    font: 12pt sans-serif !important;
+    margin: 1em 0 0.3em;
+}
+
+.admin-form span {
+    display: inline-block;
+}
+
+.admin-form span input, .admin-form span select {
+    font: 12pt sans-serif !important;
+    width: calc(100% - 16px);
+    padding: 2px;
+}
+
+.admin-form span button {
+    margin-right: 0.5em;
+}
+
+.admin-head {
+    font-weight: bold;
+    border-bottom: 1px solid;
+}
+
+.admin-row {
+    line-height: 2.5em;
+    height: 2.5em;
+}
+
+.ur-check {
+    width: 2em;
+}
+
+.ur-email, .ur-name, .ur-admin {
+    width: 10em;
+}

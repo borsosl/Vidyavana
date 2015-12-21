@@ -1,7 +1,10 @@
-<%@page import="hu.vidyavana.web.RequestInfo" pageEncoding="UTF-8"%>
+<%@page pageEncoding="UTF-8" import="
+	hu.vidyavana.web.RequestInfo,
+	hu.vidyavana.db.model.User"%>
 <%
 RequestInfo ri = (RequestInfo) request.getAttribute("_ri");
 ri.check();
+User user = (User) session.getAttribute("user");
 %>
 <!DOCTYPE html>
 <html>
@@ -13,7 +16,12 @@ ri.check();
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <link rel="stylesheet" type="text/css" href="/css/text.css" />
     <script src="/js/lib.js"></script>
+<% if(ri.admin) { %>
+    <link rel="stylesheet" type="text/css" href="/css/admin.css" />
+    <script src="/js/admin.js"></script>
+<% } else { %>
     <script src="/js/main.js"></script>
+<% } %>
 </head>
 <body class="noMargin noScroll">
 	<div id="measure" class="abs fill novis"></div>
@@ -67,6 +75,9 @@ ri.check();
 				<span class="btn next-hit">Köv találat (.) &raquo;</span>
 			</div>
 		</div>
+	</div>
+
+	<div id="form-content" class="autoScroll">
 	</div>
 
 	<div id="searchPop">
@@ -124,6 +135,9 @@ ri.check();
         <div id="menu-search-link" class="mitem"><u>K</u>eres</div>
         <div id="menu-section-link" class="mitem"><u>S</u>zakasz</div>
 	    <div id="menu-logout-link" class="mitem">Kilé<u>p</u>és</div>
+<% if(ri.admin) { %>
+	    <div id="users-link" class="mitem">Felhasználók</div>
+<% } %>
 	</div>
 
 	<div id="message">

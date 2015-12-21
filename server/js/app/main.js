@@ -4,8 +4,12 @@ var task = require('./modules/task');
 var toc = require('./modules/toc');
 var search = require('./modules/search');
 
-$(function()
+var initd = false;
+
+function init()
 {
+    if(initd)
+        return;
     dom.init();
     search.init();
     toc.initSectionSelect();
@@ -15,4 +19,12 @@ $(function()
     util.resizeEvent();
     util.refreshMenu();
     task.searchDialog();
+    initd = true;
+}
+
+$(function()
+{
+    init();
 });
+
+exports.init = init;

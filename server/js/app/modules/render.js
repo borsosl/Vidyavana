@@ -38,6 +38,7 @@ function text(json, mode)
     {
         if(initPage)
         {
+            dom.$formContent.hide();
             dom.$content.scrollTop(0);
             if(isSearch)
                 dom.$txt.html('<div class="long-ref">'+(json.hit+1)+' / '+json.hitCount+' : '+display.longRef+'</div>'+h);

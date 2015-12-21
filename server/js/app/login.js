@@ -131,7 +131,7 @@ function register() {
             else if(json.error)
                 message('Hiba sorszám: '+json.error);
             else
-                post('/app/', {
+                post('/app', {
                     username: email,
                     password: '@' + pwd
                 });

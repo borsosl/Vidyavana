@@ -41,15 +41,18 @@ public class User implements Serializable
 	}
 	
 	
-	public User fromDoc(Document doc)
+	public User fromDoc(Document doc, boolean forList)
 	{
 		id = (Long)((StoredField) doc.getField("id")).numericValue();
 		adminLevel = AdminLevel.valueOf(doc.getField("admin").stringValue());
 		email = doc.getField("email").stringValue();
-		password = doc.getField("password").stringValue();
 		name = doc.getField("name").stringValue();
-		regToken = doc.getField("reg-token").stringValue();
-		accessStr = doc.getField("access").stringValue();
+		if(!forList)
+		{
+			password = doc.getField("password").stringValue();
+			regToken = doc.getField("reg-token").stringValue();
+			accessStr = doc.getField("access").stringValue();
+		}
 		return this;
 	}
 	

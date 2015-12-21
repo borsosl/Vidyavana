@@ -3,6 +3,7 @@ package hu.vidyavana.db.dao;
 import java.util.regex.Pattern;
 import hu.vidyavana.db.api.UserLucene;
 import hu.vidyavana.db.model.User;
+import hu.vidyavana.util.Log;
 import hu.vidyavana.web.RequestInfo;
 
 public class Auth
@@ -44,6 +45,7 @@ public class Auth
 		if(user != null && user.password.equals(ri.req.getParameter("password")))
 		{
 			ri.ses.setAttribute("user", user);
+			Log.activity("Login: "+user.toString());
 			ri.ajaxText = "{\"ok\": true}";
 		}
 		else
@@ -62,6 +64,11 @@ public class Auth
 		if(!verifyEmail(user.email))
 		{
 			ri.ajaxText = "{\"message\": \"Helytelen e-mail formátum\"}";
+			return;
+		}
+		if(!user.email.endsWith("@fiktiv.hu"))
+		{
+			ri.ajaxText = "{\"message\": \"Egyenlőre csak béta tesztelőknek.\"}";
 			return;
 		}
 		if(user.password.length() != 32)

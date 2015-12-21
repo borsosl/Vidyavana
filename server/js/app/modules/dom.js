@@ -4,6 +4,8 @@ function init() {
     this.$header = $('#header');
     /** @type {JQuery} - container for text and buttons */
     this.$content = $('#content');
+    /** @type {JQuery} - container for forms */
+    this.$formContent = $('#form-content');
     /** @type {JQuery} - container for text content */
     this.$txt = $('#text');
     /** @type {JQuery} - button row */
@@ -21,7 +23,7 @@ function init() {
 }
 
 /**
- * @type {{init, nowarn, $header, $content, $txt, $textBtns, $hitBtns,
+ * @type {{init, nowarn, $header, $content, $formContent, $txt, $textBtns, $hitBtns,
  *      $sectDown, $thisSect, $shortRef, $menuShortRef}}
  */
 var dom = exports;

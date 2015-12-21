@@ -34,3 +34,11 @@
  * @property {?Array.<TocTreeItem>} children
  * @property {?boolean} partial
  */
+
+/**
+ * @typedef {Object} User
+ * @property {number} id - registration datestamp.
+ * @property {string} adminLevel - 'None'|'Full'|'BookRights'
+ * @property {string} email
+ * @property {string} name
+ */
