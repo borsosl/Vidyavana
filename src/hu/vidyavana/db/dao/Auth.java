@@ -38,7 +38,7 @@ public class Auth
 		String email = ri.req.getParameter("email").trim();
 		if(!verifyEmail(email))
 		{
-			ri.ajaxText = "{\"error\": true}";
+			ri.ajaxText = "{\"fail\": true}";
 			return;
 		}
 		User user = UserLucene.inst.findUserByEmail(email);
@@ -49,7 +49,7 @@ public class Auth
 			ri.ajaxText = "{\"ok\": true}";
 		}
 		else
-			ri.ajaxText = "{\"error\": true}";
+			ri.ajaxText = "{\"fail\": true}";
 	}
 
 

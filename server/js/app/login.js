@@ -88,8 +88,10 @@ function login() {
 
         success: function(json)
         {
-            if(json.error)
+            if(json.fail)
                 message('Sikertelen belépés');
+            else if(json.error)
+                errorMsg(json.error);
             else
                 post('/app', {
                     username: email,
@@ -99,7 +101,7 @@ function login() {
 
         error: function(/*xhr, status*/)
         {
-            message('Sikertelen belépés');
+            message('Hálózati hiba');
         }
     });
 }
@@ -129,7 +131,7 @@ function register() {
             if(json.message)
                 message(json.message);
             else if(json.error)
-                message('Hiba sorszám: '+json.error);
+                errorMsg(json.error);
             else
                 post('/app', {
                     username: email,
@@ -139,14 +141,20 @@ function register() {
 
         error: function(/*xhr, status*/)
         {
-            message('Sikertelen regisztráció');
+            message('Hálózati hiba');
         }
     });
 }
 
 
 function message(s) {
-    $msg.text(s).show();
+    $msg.html(s).show();
+}
+
+
+function errorMsg(code) {
+    message('Hiba történt. <a href="mailto:dev@pandit.hu?subject=Hibajelentés ('+
+        code+')">Beszámolok róla</a>');
 }
 
 

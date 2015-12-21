@@ -57,7 +57,8 @@ function javaError(json) {
         if(json.error === 'expired')
             document.location = '/app';
         else
-            message(json.error, true);
+            message('Hiba történt. <a href="mailto:dev@pandit.hu?subject=Hibajelentés ('+
+                json.error+')">Beszámolok róla</a>', true);
     }
     return !!json.error;
 }

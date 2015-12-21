@@ -125,7 +125,7 @@ public class PanditServlet extends HttpServlet
 			if(ri.ajax)
 			{
 				HashMap<String,Object> map = ajaxMap();
-				map.put("error", refError());
+				map.put("error", errorRefNo);
 				ri.ajaxResult = map;
 				try
 				{
@@ -141,7 +141,8 @@ public class PanditServlet extends HttpServlet
 				try
 				{
 					PrintWriter wr = ri.resp.getWriter();
-					wr.write(refError());
+					wr.write("Hiba történt. <a href=\"mailto:dev@pandit.hu?subject=Hibajelentés ("
+						+errorRefNo+")\">Beszámolok róla</a>");
 				}
 				catch(IOException ex1)
 				{
@@ -149,13 +150,6 @@ public class PanditServlet extends HttpServlet
 				}
 			}
 		}
-	}
-
-
-	private String refError()
-	{
-		return "Hiba történt. Kérlek írj hibajelentést arról, hogy melyik funkciót használtad "
-			+ "és hogyan. Hivatkozz erre a referenciaszámra: "+errorRefNo+". Email: dev@pandit.hu";
 	}
 
 
