@@ -162,6 +162,7 @@ $.extend(exports, {
     refreshMenu: refreshMenu,
     javaError: javaError,
     ajaxError: ajaxError,
+    message: message,
     dialog: dialog,
     menuModifier: menuModifier,
     resizeEvent: resizeEvent

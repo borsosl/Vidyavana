@@ -55,34 +55,38 @@ public class Auth
 
 	public void register(RequestInfo ri) throws Exception
 	{
-		User user = new User();
-		user.email = ri.req.getParameter("email").trim();
-		user.password = ri.req.getParameter("password");
-		user.name = ri.req.getParameter("name");
-		user.setDefaults();
-
-		if(!verifyEmail(user.email))
+		// one at a time
+		synchronized(Auth.class)
 		{
-			ri.ajaxText = "{\"message\": \"Helytelen e-mail formátum\"}";
-			return;
+			User user = new User();
+			user.email = ri.req.getParameter("email").trim();
+			user.password = ri.req.getParameter("password");
+			user.name = ri.req.getParameter("name");
+			user.setDefaults();
+	
+			if(!verifyEmail(user.email))
+			{
+				ri.ajaxText = "{\"message\": \"Helytelen e-mail formátum\"}";
+				return;
+			}
+			if(!user.email.endsWith("@fiktiv.hu"))
+			{
+				ri.ajaxText = "{\"message\": \"Egyenlőre csak béta tesztelőknek.\"}";
+				return;
+			}
+			if(user.password.length() != 32)
+			{
+				ri.ajaxText = "{\"message\": \"Hibás jelszó\"}";
+				return;
+			}
+			if(UserLucene.inst.addUser(user))
+			{
+				ri.ses.setAttribute("user", user);
+				ri.ajaxText = "{\"ok\": true}";
+			}
+			else
+				ri.ajaxText = "{\"message\": \"Az e-mail cím már regisztrálva van.\"}";
 		}
-		if(!user.email.endsWith("@fiktiv.hu"))
-		{
-			ri.ajaxText = "{\"message\": \"Egyenlőre csak béta tesztelőknek.\"}";
-			return;
-		}
-		if(user.password.length() != 32)
-		{
-			ri.ajaxText = "{\"message\": \"Hibás jelszó\"}";
-			return;
-		}
-		if(UserLucene.inst.addUser(user))
-		{
-			ri.ses.setAttribute("user", user);
-			ri.ajaxText = "{\"ok\": true}";
-		}
-		else
-			ri.ajaxText = "{\"message\": \"Az e-mail cím már regisztrálva van.\"}";
 	}
 
 

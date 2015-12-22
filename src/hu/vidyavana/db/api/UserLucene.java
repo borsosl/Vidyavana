@@ -54,7 +54,7 @@ public class UserLucene extends Lucene
 		return config;
 	}
 
-	public synchronized boolean addUser(User user)
+	public boolean addUser(User user)
 	{
 		if(findUserByEmail(user.email) != null)
 			return false;
@@ -72,7 +72,7 @@ public class UserLucene extends Lucene
 	}
 
 
-	public synchronized User findUserByEmail(String email)
+	public User findUserByEmail(String email)
 	{
 		try
 		{
@@ -91,6 +91,21 @@ public class UserLucene extends Lucene
 	}
 
 
+	public void updateUser(User user)
+	{
+		try
+		{
+			closeWriter();
+			Term t = new Term("email", user.email);
+			writer().updateDocument(t, user.toDoc(new Document()));
+		}
+		catch(Exception ex)
+		{
+			throw new RuntimeException(ex);
+		}
+	}
+
+
 	public void deleteUser(String email)
 	{
 		try
@@ -100,7 +115,7 @@ public class UserLucene extends Lucene
 		}
 		catch(Exception ex)
 		{
-			ex.printStackTrace();
+			throw new RuntimeException(ex);
 		}
 	}
 
@@ -109,6 +124,7 @@ public class UserLucene extends Lucene
 	{
 		try
 		{
+			closeWriter();
 			Query q = new WildcardQuery(new Term("email", "*"));
 			IndexSearcher sr = searcher();
 			TopDocs res = sr.search(q, Integer.MAX_VALUE);

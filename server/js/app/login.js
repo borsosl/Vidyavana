@@ -93,7 +93,7 @@ function login() {
             else if(json.error)
                 errorMsg(json.error);
             else
-                post('/app', {
+                post(location.href, {
                     username: email,
                     password: '@' + pwd
                 });
