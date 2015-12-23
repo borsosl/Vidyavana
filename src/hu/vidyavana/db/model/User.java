@@ -2,11 +2,9 @@ package hu.vidyavana.db.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import org.apache.lucene.document.Document;
+import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.LongField;
-import org.apache.lucene.document.StoredField;
-import org.apache.lucene.document.StringField;
+import org.apache.lucene.util.BytesRef;
 import hu.vidyavana.util.Encrypt;
 
 public class User implements Serializable
@@ -62,6 +60,7 @@ public class User implements Serializable
 		doc.add(new LongField("id", id, Store.YES));
 		doc.add(new StringField("admin", adminLevel.name(), Store.YES));
 		doc.add(new StringField("email", email, Store.YES));
+		doc.add(new SortedDocValuesField("email", new BytesRef(email)));
 		doc.add(new StringField("password", password, Store.YES));
 		doc.add(new StringField("name", name, Store.YES));
 		doc.add(new StringField("reg-token", regToken, Store.YES));

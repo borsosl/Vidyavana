@@ -125,9 +125,10 @@ public class UserLucene extends Lucene
 		try
 		{
 			closeWriter();
-			Query q = new WildcardQuery(new Term("email", "*"));
+			Query q = new FieldValueQuery("email");
+			Sort sort = new Sort(new SortField("email", SortField.Type.STRING));
 			IndexSearcher sr = searcher();
-			TopDocs res = sr.search(q, Integer.MAX_VALUE);
+			TopDocs res = sr.search(q, Integer.MAX_VALUE, sort);
 			List<User> users = new ArrayList<>(res.totalHits);
 			for(ScoreDoc sd : res.scoreDocs)
 			{
