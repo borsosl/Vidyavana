@@ -1,7 +1,6 @@
 package hu.vidyavana.db.dao;
 
 import java.util.List;
-import hu.vidyavana.db.api.UserLucene;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.web.MainPage;
 import hu.vidyavana.web.RequestInfo;
@@ -37,7 +36,7 @@ public class Admin
 	{
 		try
 		{
-			List<User> users = UserLucene.inst.getAllUsers();
+			List<User> users = UserDao.getAllUsers(true);
 			ri.renderAjaxTemplate("/admin/list-users.html", users);
 		}
 		catch(Exception ex)
@@ -49,17 +48,17 @@ public class Admin
 	
 	private void modifyUser(RequestInfo ri)
 	{
-		User user = UserLucene.inst.findUserByEmail(ri.req.getParameter("email"));
+		User user = UserDao.findUserByEmail(ri.req.getParameter("email"));
 		user.name = ri.req.getParameter("name");
 		user.adminLevel = User.AdminLevel.valueOf(ri.req.getParameter("admin"));
-		UserLucene.inst.updateUser(user);
+		UserDao.updateUser(user);
 		ri.ajaxText = "{\"ok\": true}";
 	}
 
 	
 	private void deleteUser(RequestInfo ri)
 	{
-		UserLucene.inst.deleteUser(ri.req.getParameter("email"));
+		UserDao.deleteUser(ri.req.getParameter("email"));
 		ri.ajaxText = "{\"ok\": true}";
 	}
 }

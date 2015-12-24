@@ -1,7 +1,6 @@
 package hu.vidyavana.db.dao;
 
 import java.util.regex.Pattern;
-import hu.vidyavana.db.api.UserLucene;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.web.RequestInfo;
@@ -41,7 +40,7 @@ public class Auth
 			ri.ajaxText = "{\"fail\": true}";
 			return;
 		}
-		User user = UserLucene.inst.findUserByEmail(email);
+		User user = UserDao.findUserByEmail(email);
 		if(user != null && user.password.equals(ri.req.getParameter("password")))
 		{
 			ri.ses.setAttribute("user", user);
@@ -79,13 +78,13 @@ public class Auth
 				ri.ajaxText = "{\"message\": \"Hibás jelszó\"}";
 				return;
 			}
-			if(UserLucene.inst.addUser(user))
-			{
+			try {
+				UserDao.insertUser(user);
 				ri.ses.setAttribute("user", user);
 				ri.ajaxText = "{\"ok\": true}";
-			}
-			else
+			} catch(Exception ex) {
 				ri.ajaxText = "{\"message\": \"Az e-mail cím már regisztrálva van.\"}";
+			}
 		}
 	}
 

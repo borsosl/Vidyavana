@@ -5,11 +5,14 @@ import java.util.concurrent.Executors;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import hu.vidyavana.db.SqlMigration;
+import hu.vidyavana.db.api.Sql;
 import hu.vidyavana.db.dao.TocTree;
 import hu.vidyavana.db.model.Storage;
 import hu.vidyavana.util.Encrypt;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
+import hu.vidyavana.util.ResourceUtil;
 
 public class StartStop implements ServletContextListener
 {
@@ -23,6 +26,8 @@ public class StartStop implements ServletContextListener
 		{
 			runtimeDir = new File(path, "WEB-INF/runtime");
 			Globals.serverEnv = true;
+			ResourceUtil.DBMIGRATE_JAR_PATH = new File(path, "WEB-INF/lib");
+			ResourceUtil.DBMIGRATE_JAR_NAME = "pandit.jar";
 		}
 		else
 			Globals.localEnv = true;
@@ -35,6 +40,8 @@ public class StartStop implements ServletContextListener
 		{
 			Storage.SYSTEM.setEncrypted(false);
 			TocTree.inst.readFromFile();
+			Sql.pathToSqlFiles = new File(Globals.cwd, "db").toPath();
+			databaseMigration();
 		}
 		catch(Exception ex)
 		{
@@ -53,6 +60,7 @@ public class StartStop implements ServletContextListener
 		{
 			// TODO close cached user storages
 			Storage.SYSTEM.close();
+			Sql.closeAll();
 		}
 		catch(Exception ex)
 		{
@@ -60,5 +68,14 @@ public class StartStop implements ServletContextListener
 		}
 		Log.info("Pandit context destroyed");
 		Log.close();
+	}
+
+
+	private void databaseMigration()
+	{
+		SqlMigration sqlMig = new SqlMigration();
+		if(!ResourceUtil.dbMigrationUsingJar(sqlMig))
+			if(!ResourceUtil.dbMigrationUsingFiles(sqlMig))
+				Log.warning("DB migration not performed.", null);
 	}
 }
