@@ -41,6 +41,7 @@ public class StartStop implements ServletContextListener
 			Storage.SYSTEM.setEncrypted(false);
 			TocTree.inst.readFromFile();
 			Sql.pathToSqlFiles = new File(Globals.cwd, "db").toPath();
+			Log.info("User DB running in "+Sql.System.path());
 			databaseMigration();
 		}
 		catch(Exception ex)

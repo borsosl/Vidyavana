@@ -65,7 +65,7 @@ public enum Sql
 	{
 		try
 		{
-			String dir = pathToSqlFiles.toRealPath().toUri().getPath().substring(1);
+			String dir = pathToSqlFiles.toRealPath().toUri().getPath();
 			return dir+name();
 		}
 		catch(IOException ex)
