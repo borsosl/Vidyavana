@@ -6,7 +6,7 @@ import hu.vidyavana.db.dao.TocTree;
 public enum BookPackage
 {
 	Sraddha("BhG|NoI|SSR"),
-	SadhuSanga("SB|KB|Cc|TLC|NoD|Iśo|PQPA|Jsd|EJ|RV|BBD|OWK|PoP|Top|PLs"),
+	SadhuSanga("SB|KB|Cc|TLC|NoD|Īśo|PQPA|Jsd|EJ|RV|BBD|OWK|PoP|Top|PLs"),
 	BhajanaKriya("BB|MBh|MBhs|RY"),
 	Ruci("SBC|VG|NPH|KS|NVM");
 
