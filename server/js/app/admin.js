@@ -3,6 +3,9 @@ var main = require('./main');
 var dom = require('./modules/dom');
 var util = require('./modules/util');
 var html = require('./modules/html-content');
+var access = require('./modules/admin-access');
+
+var books;
 
 $(function() {
     main.init();
@@ -18,12 +21,18 @@ function listUsers() {
 }
 
 
+/**
+ * Create user list admin form.
+ * @param {UserListResponse} data
+ */
 function initListUsers(data) {
     /** @type {JQuery} */
     var $row = $('.admin-row');
-    for(var i=0, len=data.length; i<len; ++i) {
+    var users = data.users;
+    books = data.books;
+    for(var i=0, len=users.length; i<len; ++i) {
         /** @type {User} */
-        var drow = data[i];
+        var drow = users[i];
         $row.data('email', drow.email);
         // fill row html
         $row.children().each(function(ix, el) {
@@ -40,6 +49,7 @@ function initListUsers(data) {
     }
     // event listeners
     $('button', '.admin-form').click(listUsersButton);
+    access.reset();
 }
 
 
@@ -66,12 +76,12 @@ function modifyUser($row) {
 
 
 function bookRights($row) {
-
+    access.open($row.data('email'), books);
 }
 
 
 function resendReg($row) {
-
+    alert('Nincs kész.');
 }
 
 
@@ -95,6 +105,10 @@ function ajax(url, type, data) {
         {
             if(util.javaError(json))
                 return;
+            if(json.fail) {
+                util.message('Nincs jogosultság, vagy egyéb hiba.', true);
+                return;
+            }
             if(type === 4)
                 listUsers();
             else if(json.ok)

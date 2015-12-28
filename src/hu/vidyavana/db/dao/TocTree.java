@@ -1,27 +1,61 @@
 package hu.vidyavana.db.dao;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
-import hu.vidyavana.db.model.BookSegment;
-import hu.vidyavana.db.model.Storage;
-import hu.vidyavana.db.model.StorageTocItem;
-import hu.vidyavana.db.model.TocTreeItem;
+import hu.vidyavana.db.model.*;
+import hu.vidyavana.search.model.BookAccess;
 import hu.vidyavana.web.RequestInfo;
 
 public class TocTree
 {
+	static class BookRange
+	{
+		int plainBookId;
+		int tocIdStart, tocIdEnd;
+	}
+	
 	public static TocTree inst = new TocTree();
+	public static Map<Integer, TocTree> viewCache = new HashMap<>();
 	private TocTreeItem root;
 	private TocTreeItem shortRoot;
 	private TocTreeItem prevItem;
+	public Map<String, Integer> abbrevToPlainBookId;
+	public List<BookRange> bookRanges = new ArrayList<>();
 	public int maxId;
 
 	
 	private TocTree()
 	{
+	}
+
+	
+	private TocTree(BookAccess access)
+	{
+		root = new TocTreeItem();
+		root.children = new ArrayList<TocTreeItem>();
+		for(TocTreeItem tti : inst.root.children)
+			if(access.contains(-tti.ordinal))
+				root.children.add(tti);
+		for(BookRange br : inst.bookRanges)
+			if(access.contains(br.plainBookId))
+				bookRanges.add(br);
+		maxId = bookRanges.get(bookRanges.size()-1).tocIdEnd;
+	}
+
+
+	public static TocTree getView(User user)
+	{
+		if(user.access == null)
+			user.setAccess();
+		if(user.access.fullAccess)
+			return inst;
+		TocTree tt = viewCache.get(user.access.hashCode());
+		if(tt != null)
+			return tt;
+		tt = new TocTree(user.access);
+		viewCache.put(user.access.hashCode(), tt);
+		return tt;
 	}
 
 
@@ -42,6 +76,8 @@ public class TocTree
 		root = new TocTreeItem();
 		root.children = new ArrayList<TocTreeItem>();
 		prevItem = null;
+		abbrevToPlainBookId = new HashMap<>();
+		BookRange currentRange = null;
 		TocTreeItem[] levels = new TocTreeItem[10];
 		int curLevel = 0;
 		int id = 0;
@@ -49,6 +85,7 @@ public class TocTree
 		for(Entry<Integer, Integer> e : segmentOrder.entrySet())
 		{
 			BookSegment seg = st.segment(e.getValue());
+			StorageTocItem[] ct = seg.contents;
 			// book title: level 0
 			boolean markSegment = false;
 			if(seg.plainBookId != prevBook)
@@ -60,10 +97,16 @@ public class TocTree
 				root.children.add(tti);
 				levels[0] = tti;
 				prevBook = seg.plainBookId;
+				abbrevToPlainBookId.put(seg.abbrev, (int) seg.plainBookId);
+				if(currentRange != null)
+					currentRange.tocIdEnd = id;
+				currentRange = new BookRange();
+				currentRange.plainBookId = seg.plainBookId;
+				currentRange.tocIdStart = id;
+				bookRanges.add(currentRange);
 			}
 			if(seg.segment > 0)
 				markSegment = true;
-			StorageTocItem[] ct = seg.contents;
 			for(StorageTocItem cti : ct)
 			{
 				if(cti.level > curLevel+1)
@@ -90,6 +133,8 @@ public class TocTree
 				levels[curLevel] = tti;
 			}
 		}
+		if(currentRange != null)
+			currentRange.tocIdEnd = id;
 		maxId = id;
 		st.close();
 	}
@@ -216,6 +261,25 @@ public class TocTree
 		if(ti.ordinal < 0)
 			return -ti.ordinal;
 		throw new IllegalStateException("In TOC no parent is under root");
+	}
+	
+	
+	public int checkTocIdRange(int tocId, boolean forwardStep)
+	{
+		BookRange prev = null;
+		for(BookRange br : bookRanges)
+		{
+			if(br.tocIdStart > tocId)
+			{
+				if(forwardStep || prev == null)
+					return br.tocIdStart;
+				return prev.tocIdEnd - 1;
+			}
+			else if(br.tocIdEnd > tocId)
+				return tocId;
+			prev = br;
+		}
+		return prev.tocIdEnd - 1;
 	}
 
 

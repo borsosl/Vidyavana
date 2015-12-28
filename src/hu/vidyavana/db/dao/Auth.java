@@ -3,6 +3,7 @@ package hu.vidyavana.db.dao;
 import java.util.regex.Pattern;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Log;
+import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
 
 public class Auth
@@ -37,18 +38,19 @@ public class Auth
 		String email = ri.req.getParameter("email").trim();
 		if(!verifyEmail(email))
 		{
-			ri.ajaxText = "{\"fail\": true}";
+			PanditServlet.failResult(ri);
 			return;
 		}
 		User user = UserDao.findUserByEmail(email);
 		if(user != null && user.password.equals(ri.req.getParameter("password")))
 		{
+			user.setAccess();
 			ri.ses.setAttribute("user", user);
 			Log.activity("Login: "+user.toString());
-			ri.ajaxText = "{\"ok\": true}";
+			PanditServlet.okResult(ri);
 		}
 		else
-			ri.ajaxText = "{\"fail\": true}";
+			PanditServlet.failResult(ri);
 	}
 
 
@@ -65,25 +67,26 @@ public class Auth
 	
 			if(!verifyEmail(user.email))
 			{
-				ri.ajaxText = "{\"message\": \"Helytelen e-mail formátum\"}";
+				PanditServlet.messageResult(ri, "Helytelen e-mail formátum");
 				return;
 			}
 			if(!user.email.endsWith("@fiktiv.hu"))
 			{
-				ri.ajaxText = "{\"message\": \"Egyenlőre csak béta tesztelőknek.\"}";
+				PanditServlet.messageResult(ri, "Egyenlőre csak béta tesztelőknek");
 				return;
 			}
 			if(user.password.length() != 32)
 			{
-				ri.ajaxText = "{\"message\": \"Hibás jelszó\"}";
+				PanditServlet.messageResult(ri, "Hibás jelszó");
 				return;
 			}
 			try {
 				UserDao.insertUser(user);
+				user.setAccess();
 				ri.ses.setAttribute("user", user);
-				ri.ajaxText = "{\"ok\": true}";
+				PanditServlet.okResult(ri);
 			} catch(Exception ex) {
-				ri.ajaxText = "{\"message\": \"Az e-mail cím már regisztrálva van.\"}";
+				PanditServlet.messageResult(ri, "Az e-mail cím már regisztrálva van.");
 			}
 		}
 	}
@@ -98,6 +101,6 @@ public class Auth
 	public void logout(RequestInfo ri) throws Exception
 	{
 		ri.ses.removeAttribute("user");
-		ri.ajaxText = "{\"ok\": true}";
+		PanditServlet.okResult(ri);
 	}
 }

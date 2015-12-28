@@ -1,8 +1,11 @@
 package hu.vidyavana.db.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import hu.vidyavana.db.model.User;
+import hu.vidyavana.search.model.BookPackage;
 import hu.vidyavana.web.MainPage;
+import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
 
 public class Admin
@@ -27,6 +30,10 @@ public class Admin
 			modifyUser(ri);
 		else if("delete-user".equals(ri.args[1]))
 			deleteUser(ri);
+		else if("init-access".equals(ri.args[1]))
+			initAccess(ri);
+		else if("save-access".equals(ri.args[1]))
+			saveAccess(ri);
 		else
 			ri.resp.setStatus(404);
 	}
@@ -37,7 +44,11 @@ public class Admin
 		try
 		{
 			List<User> users = UserDao.getAllUsers(true);
-			ri.renderAjaxTemplate("/admin/list-users.html", users);
+			HashMap<String, Object> res = PanditServlet.ajaxMap();
+			res.put("users", users);
+			res.put("books", BookPackage.serializeAll());
+			ri.ajaxResult = res;
+			ri.renderAjaxTemplate("/admin/list-users.html", res);
 		}
 		catch(Exception ex)
 		{
@@ -48,17 +59,43 @@ public class Admin
 	
 	private void modifyUser(RequestInfo ri)
 	{
+		if(ri.user.adminLevel != User.AdminLevel.Full)
+		{
+			PanditServlet.failResult(ri);
+			return;
+		}
 		User user = UserDao.findUserByEmail(ri.req.getParameter("email"));
 		user.name = ri.req.getParameter("name");
 		user.adminLevel = User.AdminLevel.valueOf(ri.req.getParameter("admin"));
 		UserDao.updateUser(user);
-		ri.ajaxText = "{\"ok\": true}";
+		PanditServlet.okResult(ri);
 	}
 
 	
 	private void deleteUser(RequestInfo ri)
 	{
+		if(ri.user.adminLevel != User.AdminLevel.Full)
+		{
+			PanditServlet.failResult(ri);
+			return;
+		}
 		UserDao.deleteUser(ri.req.getParameter("email"));
-		ri.ajaxText = "{\"ok\": true}";
+		PanditServlet.okResult(ri);
+	}
+
+	
+	private void initAccess(RequestInfo ri)
+	{
+		User user = UserDao.findUserByEmail(ri.req.getParameter("email"));
+		ri.ajaxText = "\"" + user.accessStr + "\"";
+	}
+
+	
+	private void saveAccess(RequestInfo ri)
+	{
+		User user = UserDao.findUserByEmail(ri.req.getParameter("email"));
+		user.accessStr = ri.req.getParameter("access");
+		UserDao.updateUser(user);
+		PanditServlet.okResult(ri);
 	}
 }

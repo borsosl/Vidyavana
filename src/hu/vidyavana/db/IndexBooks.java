@@ -1,11 +1,8 @@
 package hu.vidyavana.db;
 
 import java.io.IOException;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
+import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.FieldType;
-import org.apache.lucene.document.IntField;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import hu.vidyavana.search.api.Lucene;
@@ -49,6 +46,7 @@ public class IndexBooks
 	{
 		Document doc = new Document();
 		doc.add(new IntField("bookId", plainBookId, Store.YES));
+		doc.add(new NumericDocValuesField("bookId", plainBookId));
 		doc.add(new IntField("segment", segment, Store.YES));
 		doc.add(new IntField("ordinal", ordinal, Store.YES));
 		doc.add(new Field("text", txt, txtFieldType));

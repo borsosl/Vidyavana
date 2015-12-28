@@ -2,6 +2,7 @@ package hu.vidyavana.db.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import hu.vidyavana.search.model.BookAccess;
 import hu.vidyavana.util.Encrypt;
 
 public class User implements Serializable
@@ -21,6 +22,7 @@ public class User implements Serializable
 	public String name;
 	public String regToken;
 	public String accessStr;
+	public BookAccess access;
 	
 	
 	public void setDefaults()
@@ -31,8 +33,15 @@ public class User implements Serializable
 		else
 			name = name.trim();
 		regToken = Encrypt.md5(""+(new Date().getTime()));
-		accessStr = "BhG|NoI|SSR";
+		accessStr = "1";
 	}
+	
+	
+	public void setAccess()
+	{
+		access = BookAccess.parseAccessStr(accessStr, null);
+	}
+
 	
 	@Override
 	public String toString()

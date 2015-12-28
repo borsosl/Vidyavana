@@ -87,6 +87,7 @@ public class UserDao
 				stmt.setString(4, user.name);
 				stmt.setString(5, user.regToken);
 				stmt.setString(6, user.accessStr);
+				stmt.setInt(7, user.id);
 				stmt.executeUpdate();
 			}
 		});

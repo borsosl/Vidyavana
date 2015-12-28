@@ -9,15 +9,17 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.*;
+import hu.vidyavana.search.api.FilterByIntegerSetQuery;
 import hu.vidyavana.search.api.QueryAnalyzer;
 import hu.vidyavana.search.api.SeparateQueryOperatorFilter;
+import hu.vidyavana.search.model.BookAccess;
 
 public class VedabaseQueryParser
 {
 	private static Analyzer analyzer = new QueryAnalyzer();
 	
 	
-	public static Query parse(String s)
+	public static Query parse(String s, BookAccess bookAccess)
 	{
 		List<String> words = analyze(s);
 		BooleanQuery.Builder bqb = new BooleanQuery.Builder();
@@ -35,10 +37,12 @@ public class VedabaseQueryParser
 				q = new TermQuery(t);
 			bqb.add(q, BooleanClause.Occur.MUST);
 		}
+		if(bookAccess != null && !bookAccess.fullAccess)
+			bqb.add(new FilterByIntegerSetQuery("bookId", bookAccess), BooleanClause.Occur.MUST);
 		return bqb.build();
 	}
-	
-	
+
+
 	static List<String> analyze(String q)
 	{
 		List<String> list = new ArrayList<>();

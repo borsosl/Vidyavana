@@ -42,3 +42,20 @@
  * @property {string} email
  * @property {string} name
  */
+
+/**
+ * @typedef {Object} BookPackageMap
+ * @property {string|BookSpanArray} Sraddha
+ * @property {string|BookSpanArray} SadhuSanga
+ * @property {string|BookSpanArray} BhajanaKriya
+ * @property {string|BookSpanArray} Ruci
+ *
+ * Properties are strings abbr|id|abbr|id|... from server,
+ * converted to BookSpanArray on client.
+ */
+
+/**
+ * @typedef {Object} UserListResponse
+ * @property {Array.<User>} users
+ * @property {BookPackageMap} books
+ */

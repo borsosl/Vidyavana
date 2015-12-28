@@ -29,6 +29,7 @@ public class TextContent
 		{
 			Storage.SYSTEM.openForRead();
 		}
+		ri.toc = TocTree.getView(ri.user);
 		if("search".equals(ri.args[1]))
 			if(ri.args.length > 2 && "hit".equals(ri.args[2]))
 				hit(ri);
@@ -48,7 +49,8 @@ public class TextContent
 		Log.activity("Search task: " + q);
 
 		Search details = new Search();
-		details.user = "lnd";
+		details.user = ri.user.name;
+		details.bookAccess = ri.user.access;
 		details.queryStr = q;
 		details.reqHits = 1000;
 		details.fetchHits = 1000;
@@ -69,7 +71,7 @@ public class TextContent
 
 		Hit hit = details.hits.get(0);
 		int bookSegmentId = hit.segment<<16 | hit.plainBookId;
-		res.display = textForOnePara(bookSegmentId, hit.ordinal);
+		res.display = textForOnePara(ri.toc, bookSegmentId, hit.ordinal);
 	}
 
 	
@@ -109,7 +111,7 @@ public class TextContent
 		res.id = details.id;
 		res.hitCount = details.hitCount;
 		res.hit = hitNum;
-		res.display = textForOnePara(bookSegmentId, hit.ordinal);
+		res.display = textForOnePara(ri.toc, bookSegmentId, hit.ordinal);
 	}
 
 	
@@ -117,8 +119,13 @@ public class TextContent
 	{
 		int tocId = Integer.parseInt(ri.args[2]);
 		int start = Integer.parseInt(ri.args[3]);
-		TocTreeItem node = TocTree.inst.findNodeById(tocId);
-		ri.ajaxResult = text(node, start);
+		if(ri.toc.checkTocIdRange(tocId, false) != tocId)
+		{
+			ri.resp.setStatus(404);
+			return;
+		}
+		TocTreeItem node = ri.toc.findNodeById(tocId);
+		ri.ajaxResult = text(ri.toc, node, start);
 	}
 
 	
@@ -135,28 +142,32 @@ public class TextContent
 					id = 1;
 				// intentional fallthru
 			case "go":
-				node = TocTree.inst.findNodeById(id);
+				id = ri.toc.checkTocIdRange(id, false);
+				node = ri.toc.findNodeById(id);
 				while(node.prev != null && node.prev == node.parent && 
 					(node.prev.ordinal < 0 || node.prev.ordinal >= node.ordinal-3))
 						node = node.prev;
 				break;
 			case "next":
-				node = TocTree.inst.findNodeById(id);
+				node = ri.toc.findNodeById(id);
 				while(node.next != null && node.next.parent == node && 
 					(node.ordinal < 0 || node.ordinal >= node.next.ordinal-3))
 						node = node.next;
 				if(node.next != null)
 					node = node.next;
+				id = ri.toc.checkTocIdRange(node.id, true);
+				if(id != node.id)
+					node = ri.toc.findNodeById(id);
 				break;
 		}
 		int ord = node.ordinal;
 		if(ord < 0)
 			ord = 1;
-		ri.ajaxResult = text(node, ord);
+		ri.ajaxResult = text(ri.toc, node, ord);
 	}
 
 	
-	private DisplayBlock text(TocTreeItem node, int start)
+	private DisplayBlock text(TocTree toc, TocTreeItem node, int start)
 	{
 		DisplayBlock db = new DisplayBlock();
 		Storage store = Storage.SYSTEM;
@@ -165,7 +176,7 @@ public class TextContent
 		BookSegment seg = null;
 		while(true)
 		{
-			bookSegmentId = TocTree.inst.bookSegmentId(node);
+			bookSegmentId = toc.bookSegmentId(node);
 			seg = store.segment(bookSegmentId);
 			if(seg == null)
 				node = node.next;
@@ -267,10 +278,10 @@ public class TextContent
 	}
 
 	
-	private DisplayBlock textForOnePara(int bookSegmentId, int ordinal)
+	private DisplayBlock textForOnePara(TocTree toc, int bookSegmentId, int ordinal)
 	{
 		DisplayBlock db = new DisplayBlock();
-		TocTreeItem tocNode = TocTree.inst.findNodeByOrdinal(bookSegmentId, ordinal);
+		TocTreeItem tocNode = toc.findNodeByOrdinal(bookSegmentId, ordinal);
 		db.bookSegmentId = bookSegmentId;
 		db.tocId = tocNode.id;
 		db.last = -1;

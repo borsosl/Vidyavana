@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.google.gson.GsonBuilder;
+import hu.vidyavana.db.dao.TocTree;
 import hu.vidyavana.db.model.User;
 
 public class RequestInfo
@@ -23,6 +24,7 @@ public class RequestInfo
 	public HttpSession ses;
 	public boolean admin;
 	public User user;
+	public TocTree toc;
 	public String uri;
 	public String[] args;
 	public boolean ajax;

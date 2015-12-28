@@ -8,10 +8,11 @@ public class MainPage
 {
 	public void service(RequestInfo ri) throws Exception
 	{
-		TocTreeItem initialShortTree = TocTree.inst.initialShortTree();
+		TocTree toc = TocTree.getView(ri.user);
+		TocTreeItem initialShortTree = toc.initialShortTree();
 		HashMap<String, Object> res = PanditServlet.ajaxMap();
 		res.put("toc", initialShortTree);
-		res.put("maxTocId", TocTree.inst.maxId);
+		res.put("maxTocId", toc.maxId);
 		ri.ajaxResult = res;
 		ri.ajaxText();
 		ri.renderJsp("/mainPage.jsp");

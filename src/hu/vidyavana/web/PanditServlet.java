@@ -170,4 +170,22 @@ public class PanditServlet extends HttpServlet
 	{
 		return new HashMap<String, Object>();
 	}
+	
+	
+	public static void okResult(RequestInfo ri)
+	{
+		ri.ajaxText = "{\"ok\": true}";
+	}
+	
+	
+	public static void failResult(RequestInfo ri)
+	{
+		ri.ajaxText = "{\"fail\": true}";
+	}
+	
+	
+	public static void messageResult(RequestInfo ri, String msg)
+	{
+		ri.ajaxText = "{\"message\": \"" + msg + "\"}";
+	}
 }

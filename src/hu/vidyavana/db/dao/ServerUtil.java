@@ -8,6 +8,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.ServletException;
 import hu.vidyavana.db.AddBook;
+import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.web.RequestInfo;
@@ -25,6 +26,11 @@ public class ServerUtil
 
 	public void service(final RequestInfo ri) throws Exception
 	{
+		if(ri.user.adminLevel != User.AdminLevel.Full)
+		{
+			ri.resp.setStatus(404);
+			return;
+		}
 		if("rebuild".equals(ri.args[1]))
 		{
 			rebuild(ri);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import hu.vidyavana.search.api.Lucene;
@@ -28,8 +29,8 @@ public class SearchTask implements Runnable
 		try
 		{
 			IndexSearcher sr = Lucene.SYSTEM.searcher();
-			details.query = VedabaseQueryParser.parse(details.queryStr);
-			TopDocs res = sr.search(details.query, details.fetchHits);
+			Query query = VedabaseQueryParser.parse(details.queryStr, details.bookAccess);
+			TopDocs res = sr.search(query, details.fetchHits);
 			if(res.totalHits > 0)
 			{
 				details.hitCount = res.totalHits;
