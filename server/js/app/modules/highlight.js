@@ -39,8 +39,7 @@ function Highlight(queryStr)
         var soughtArr = soughtArrArr[i];
         var word = soughtArr[0];
         // if entered word has translit, take it literally
-        if(plain(word) !== word)
-            soughtArr[1] = true;
+        soughtArr[1] = plain(word) !== word;
         if(hasWildcard(word))
         {
             word = word.replace(/\?/g, '.');
