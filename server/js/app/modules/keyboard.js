@@ -9,7 +9,10 @@ $(window).keydown(function(e)
 {
     var c = e.keyCode;
     if(c === 39)     		    // right
-        load.text(load.mode.down);
+    {
+        if(!page.isSearchResult())
+            load.text(load.mode.down);
+    }
     else if(c === 13)		    // enter
         load.thisNextSection();
     else if(c === 8)	    	// backspace
