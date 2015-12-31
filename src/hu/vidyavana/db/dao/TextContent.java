@@ -2,7 +2,9 @@ package hu.vidyavana.db.dao;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import hu.vidyavana.db.model.*;
@@ -47,8 +49,14 @@ public class TextContent
 	{
 		String q = ri.req.getParameter("q");
 		Log.activity("Search task: " + q);
+		
+		Integer searchId = (Integer) ri.ses.getAttribute("searchId");
+		if(searchId == null)
+			searchId = 0;
+		ri.ses.setAttribute("searchId", ++searchId);
 
 		Search details = new Search();
+		details.id = searchId;
 		details.user = ri.user.name;
 		details.bookAccess = ri.user.access;
 		details.queryStr = q;
@@ -66,7 +74,8 @@ public class TextContent
 			return;
 
 		// we have hits
-		Globals.search.put(details.id, details);
+		Map<Integer, Search> smap = getSessionSearchMap(ri);
+		smap.put(details.id, details);
 		// TODO put search ref into linked lists for timing out and freeing resources
 
 		Hit hit = details.hits.get(0);
@@ -79,7 +88,8 @@ public class TextContent
 	{
 		int searchId = Integer.parseInt(ri.args[3]);
 		int hitNum = Integer.parseInt(ri.args[4]);
-		Search details = Globals.search.get(searchId);
+		Map<Integer, Search> smap = getSessionSearchMap(ri);
+		Search details = smap.get(searchId);
 
 		SearchResponse res = new SearchResponse();
 		ri.ajaxResult = res;
@@ -112,6 +122,17 @@ public class TextContent
 		res.hitCount = details.hitCount;
 		res.hit = hitNum;
 		res.display = textForOnePara(ri.toc, bookSegmentId, hit.ordinal);
+	}
+
+	protected Map<Integer, Search> getSessionSearchMap(RequestInfo ri)
+	{
+		Map<Integer, Search> smap = (Map<Integer, Search>) ri.ses.getAttribute("searchMap");
+		if(smap == null)
+		{
+			smap = new HashMap<>();
+			ri.ses.setAttribute("searchMap", smap);
+		}
+		return smap;
 	}
 
 	
