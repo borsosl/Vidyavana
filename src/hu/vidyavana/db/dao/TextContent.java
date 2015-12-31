@@ -98,15 +98,16 @@ public class TextContent
 			res.hit = -1;
 			return;
 		}
-		
-		if(details.hits.size() <= hitNum)
+
+		// tomcat restarted or requested hit out of fetched range
+		if(details.hits == null || details.hits.size() <= hitNum)
 		{
+			details.bookAccess = ri.user.access;
 			details.fetchHits = hitNum + 1000;
 			details.reqHits = hitNum + 1000;
 			Timing.start();
 			Globals.searchExecutors.submit(new SearchTask(details)).get();
 			Timing.stop("Re-search", Log.instance());
-			// TODO prolong search keepalive with session timeout
 		}
 
 		Hit hit = details.hits.get(hitNum);
