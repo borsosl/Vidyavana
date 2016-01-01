@@ -1,11 +1,8 @@
-package hu.vidyavana.db.dao;
+package hu.vidyavana.db.model;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
-import hu.vidyavana.db.model.*;
-import hu.vidyavana.search.model.BookAccess;
-import hu.vidyavana.web.RequestInfo;
 
 public class TocTree
 {
@@ -56,15 +53,6 @@ public class TocTree
 		tt = new TocTree(user.access);
 		viewCache.put(user.access.hashCode(), tt);
 		return tt;
-	}
-
-
-	public void service(RequestInfo ri) throws Exception
-	{
-		// args[1] == get
-		ri.ajax = true;
-		int id = Integer.parseInt(ri.args[2]);
-		ri.ajaxResult = treeNode(id);
 	}
 	
 	

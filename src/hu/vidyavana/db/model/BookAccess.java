@@ -1,7 +1,6 @@
-package hu.vidyavana.search.model;
+package hu.vidyavana.db.model;
 
 import java.util.*;
-import hu.vidyavana.db.dao.TocTree;
 
 public class BookAccess extends HashSet<Integer>
 {

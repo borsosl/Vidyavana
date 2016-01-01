@@ -2,7 +2,6 @@ package hu.vidyavana.db.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import hu.vidyavana.search.model.BookAccess;
 import hu.vidyavana.util.Encrypt;
 
 public class User implements Serializable

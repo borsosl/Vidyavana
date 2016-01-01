@@ -3,6 +3,7 @@ package hu.vidyavana.search.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import hu.vidyavana.db.model.BookAccess;
 
 public class Search implements Serializable
 {

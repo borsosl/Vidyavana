@@ -1,14 +1,15 @@
-package hu.vidyavana.db.dao;
+package hu.vidyavana.web.ctrl;
 
 import java.util.HashMap;
 import java.util.List;
+import hu.vidyavana.db.dao.UserDao;
+import hu.vidyavana.db.model.BookPackage;
 import hu.vidyavana.db.model.User;
-import hu.vidyavana.search.model.BookPackage;
 import hu.vidyavana.web.MainPage;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
 
-public class Admin
+public class AdminController
 {
 	public void service(RequestInfo ri) throws Exception
 	{

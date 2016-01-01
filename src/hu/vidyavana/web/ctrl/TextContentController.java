@@ -1,4 +1,4 @@
-package hu.vidyavana.db.dao;
+package hu.vidyavana.web.ctrl;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import hu.vidyavana.util.Timing;
 import hu.vidyavana.web.RequestInfo;
 
 
-public class TextContent
+public class TextContentController
 {
 	public static final int FIRST_FETCH_PARA_COUNT = 10;
 	public static final int RESPONSE_CHARS = 10000;

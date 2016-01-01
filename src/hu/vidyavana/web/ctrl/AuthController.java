@@ -1,12 +1,13 @@
-package hu.vidyavana.db.dao;
+package hu.vidyavana.web.ctrl;
 
 import java.util.regex.Pattern;
+import hu.vidyavana.db.dao.UserDao;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
 
-public class Auth
+public class AuthController
 {
 	public static final Pattern EMAIL = Pattern.compile("\\S+@\\S+\\.\\S+");
 	
@@ -57,7 +58,7 @@ public class Auth
 	public void register(RequestInfo ri) throws Exception
 	{
 		// one at a time
-		synchronized(Auth.class)
+		synchronized(AuthController.class)
 		{
 			User user = new User();
 			user.email = ri.req.getParameter("email").trim();

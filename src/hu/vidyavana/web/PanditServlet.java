@@ -7,10 +7,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import hu.vidyavana.db.dao.*;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
+import hu.vidyavana.web.ctrl.*;
 
 public class PanditServlet extends HttpServlet
 {
@@ -79,14 +79,14 @@ public class PanditServlet extends HttpServlet
 			
 			// no-session requests
 			if("auth".equals(args[0]))
-				new Auth().service(ri);
+				new AuthController().service(ri);
 			else {
 	    		// check session
 	    		if(ri.user == null)
 	    		{
 	    			if(ctxRootReq || ri.args.length == 1 && "admin".equals(args[0]))
 	    			{
-	    				new Auth().login(ri);
+	    				new AuthController().login(ri);
 	    				return;
 	    			}
 	    			ri.ajax = true;
@@ -101,13 +101,13 @@ public class PanditServlet extends HttpServlet
 						return;
 					}
 					else if("toc".equals(args[0]))
-						TocTree.inst.service(ri);
+						new TocTreeController().service(ri);
 					else if("txt".equals(args[0]))
-						new TextContent().service(ri);
+						new TextContentController().service(ri);
 					else if("util".equals(args[0]))
-						new ServerUtil().service(ri);
+						new ServerUtilController().service(ri);
 					else if("admin".equals(args[0]))
-						new Admin().service(ri);
+						new AdminController().service(ri);
 					else
 						ri.resp.setStatus(404);
 	    		}

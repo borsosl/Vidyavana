@@ -1,4 +1,4 @@
-package hu.vidyavana.db.dao;
+package hu.vidyavana.web.ctrl;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.web.RequestInfo;
 
-public class ServerUtil
+public class ServerUtilController
 {
 	static class ServiceResponse
 	{

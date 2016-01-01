@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.google.gson.GsonBuilder;
-import hu.vidyavana.db.dao.TocTree;
+import hu.vidyavana.db.model.TocTree;
 import hu.vidyavana.db.model.User;
 
 public class RequestInfo

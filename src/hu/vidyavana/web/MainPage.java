@@ -1,7 +1,7 @@
 package hu.vidyavana.web;
 
 import java.util.HashMap;
-import hu.vidyavana.db.dao.TocTree;
+import hu.vidyavana.db.model.TocTree;
 import hu.vidyavana.db.model.TocTreeItem;
 
 public class MainPage
