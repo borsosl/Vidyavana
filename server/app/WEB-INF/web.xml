@@ -13,6 +13,10 @@
     </description>
 
 	<listener>
+		<listener-class>hu.vidyavana.web.Sessions</listener-class>
+	</listener>
+
+	<listener>
 		<listener-class>hu.vidyavana.web.StartStop</listener-class>
 	</listener>
     
@@ -27,7 +31,7 @@
     </servlet-mapping>
 
 	<session-config>
-	    <session-timeout>30</session-timeout> 
+	    <session-timeout>30</session-timeout>
 	    <cookie-config>
 	    	<name>sid</name>
 	        <max-age>86400</max-age>

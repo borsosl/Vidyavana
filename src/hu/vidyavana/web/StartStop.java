@@ -1,6 +1,8 @@
 package hu.vidyavana.web;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.Executors;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -9,10 +11,7 @@ import hu.vidyavana.db.SqlMigration;
 import hu.vidyavana.db.api.Sql;
 import hu.vidyavana.db.model.Storage;
 import hu.vidyavana.db.model.TocTree;
-import hu.vidyavana.util.Encrypt;
-import hu.vidyavana.util.Globals;
-import hu.vidyavana.util.Log;
-import hu.vidyavana.util.ResourceUtil;
+import hu.vidyavana.util.*;
 
 public class StartStop implements ServletContextListener
 {
@@ -48,6 +47,16 @@ public class StartStop implements ServletContextListener
 		{
 			Log.error("Opening SYSTEM store or reading TOC", ex);
 		}
+		try
+		{
+			Globals.concurrentSessions = Integer.valueOf(Conf.get("session.concurrent"));
+			Globals.sessionsByUser = (HashMap<String, ArrayList<String>>)
+				FileUtil.deserializeFromFile(new File(Globals.cwd, "db/sessions-map.ser"));
+		}
+		catch(Exception ex)
+		{
+			Globals.sessionsByUser = new HashMap<>();
+		}
 		Encrypt.getInstance().init();
 		Globals.searchExecutors = Executors.newCachedThreadPool();
 		Log.info("Pandit context initialized in "+(System.currentTimeMillis() - t0));
@@ -61,11 +70,26 @@ public class StartStop implements ServletContextListener
 		{
 			// TODO close cached user storages
 			Storage.SYSTEM.close();
-			Sql.closeAll();
 		}
 		catch(Exception ex)
 		{
 			Log.error("Closing SYSTEM store", ex);
+		}
+		try
+		{
+			Sql.closeAll();
+		}
+		catch(Exception ex)
+		{
+			Log.error("Closing SQL", ex);
+		}
+		try
+		{
+			FileUtil.serializeToFile(Globals.sessionsByUser, new File(Globals.cwd, "db/sessions-map.ser"));
+		}
+		catch(Exception ex)
+		{
+			Log.error("Saving session map", ex);
 		}
 		Log.info("Pandit context destroyed");
 		Log.close();

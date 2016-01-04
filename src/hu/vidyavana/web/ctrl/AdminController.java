@@ -1,10 +1,12 @@
 package hu.vidyavana.web.ctrl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import hu.vidyavana.db.dao.UserDao;
 import hu.vidyavana.db.model.BookPackage;
 import hu.vidyavana.db.model.User;
+import hu.vidyavana.util.Globals;
 import hu.vidyavana.web.MainPage;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
@@ -35,6 +37,8 @@ public class AdminController
 			initAccess(ri);
 		else if("save-access".equals(ri.args[1]))
 			saveAccess(ri);
+		else if("remove-sessions".equals(ri.args[1]))
+			removeSessions(ri);
 		else
 			ri.resp.setStatus(404);
 	}
@@ -97,6 +101,15 @@ public class AdminController
 		User user = UserDao.findUserByEmail(ri.req.getParameter("email"));
 		user.accessStr = ri.req.getParameter("access");
 		UserDao.updateUser(user);
+		PanditServlet.okResult(ri);
+	}
+
+	
+	private void removeSessions(RequestInfo ri)
+	{
+		ArrayList<String> userSessions = Globals.sessionsByUser.get(ri.args[2]);
+		for(int i=userSessions.size()-1; i>=0; --i)
+			userSessions.remove(i);
 		PanditServlet.okResult(ri);
 	}
 }

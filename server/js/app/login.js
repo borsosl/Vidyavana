@@ -88,7 +88,9 @@ function login() {
 
         success: function(json)
         {
-            if(json.fail)
+            if(json.message)
+                message(json.message);
+            else if(json.fail)
                 message('Sikertelen belépés');
             else if(json.error)
                 errorMsg(json.error);

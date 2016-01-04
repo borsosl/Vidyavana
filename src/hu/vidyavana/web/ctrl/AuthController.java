@@ -3,9 +3,11 @@ package hu.vidyavana.web.ctrl;
 import java.util.regex.Pattern;
 import hu.vidyavana.db.dao.UserDao;
 import hu.vidyavana.db.model.User;
+import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
+import hu.vidyavana.web.Sessions;
 
 public class AuthController
 {
@@ -44,12 +46,7 @@ public class AuthController
 		}
 		User user = UserDao.findUserByEmail(email);
 		if(user != null && user.password.equals(ri.req.getParameter("password")))
-		{
-			user.setAccess();
-			ri.ses.setAttribute("user", user);
-			Log.activity("Login: "+user.toString());
-			PanditServlet.okResult(ri);
-		}
+			setUserInSession(ri, user);
 		else
 			PanditServlet.failResult(ri);
 	}
@@ -83,13 +80,27 @@ public class AuthController
 			}
 			try {
 				UserDao.insertUser(user);
-				user.setAccess();
-				ri.ses.setAttribute("user", user);
-				PanditServlet.okResult(ri);
+				setUserInSession(ri, user);
 			} catch(Exception ex) {
 				PanditServlet.messageResult(ri, "Az e-mail cím már regisztrálva van.");
 			}
 		}
+	}
+
+
+	protected void setUserInSession(RequestInfo ri, User user)
+	{
+		if(Sessions.addUserToSessionMap(ri.ses, user))
+		{
+			user.setAccess();
+			ri.ses.setAttribute("user", user);
+			Log.activity("Login: "+user.toString());
+			PanditServlet.okResult(ri);
+		}
+		else
+			PanditServlet.messageResult(ri, "Egyszerre csak "+Globals.concurrentSessions+
+				" eszközön / böngészőben használhatod az alkalmazást. A Kilép menüponttal"+
+				" kell kilépned a másikból, vagy várj max. fél órát.");
 	}
 
 
@@ -101,7 +112,14 @@ public class AuthController
 	
 	public void logout(RequestInfo ri) throws Exception
 	{
+		User user = (User) ri.ses.getAttribute("user");
+		if(user == null)
+		{
+			ri.ajaxText = "{\"error\": \"expired\"}";
+			return;
+		}
 		ri.ses.removeAttribute("user");
+		Sessions.removeUserFromSessionMap(ri.ses, user);
 		PanditServlet.okResult(ri);
 	}
 }
