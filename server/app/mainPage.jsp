@@ -142,7 +142,11 @@ User user = (User) session.getAttribute("user");
 
 	<div id="message">
 	</div>
-	
+
+	<div id="loading">
+	    <div></div>
+	</div>
+
 <script>
 var pg = <%= ri.ajaxText %>;
 </script>

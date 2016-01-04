@@ -47,6 +47,7 @@ function open(email, books) {
             util.ajaxError(/*xhr, status,*/ 'Hálózati hiba.', open.bind(null, email));
         }
     });
+    util.loading(true);
 }
 
 
@@ -283,6 +284,7 @@ function ok() {
             util.ajaxError(/*xhr, status,*/ 'Hálózati hiba.', ok);
         }
     });
+    util.loading(true);
 }
 
 

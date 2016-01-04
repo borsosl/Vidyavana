@@ -88,6 +88,7 @@ function getTocChildren(id, retryFn, cb)
             util.ajaxError(/*xhr, status,*/ 'Hiba a tartalomjegyzék ág letöltésekor.', retryFn);
         }
     });
+    util.loading(true);
 }
 
 

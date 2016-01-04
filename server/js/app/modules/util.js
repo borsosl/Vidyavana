@@ -10,6 +10,12 @@ var $msg;
 /** @type {boolean} */
 var menuVisible;
 
+/** @type {number} - loading timeout handle */
+var loadingHandle;
+
+/** @type {number} - concurrent loading contexts */
+var reentrantLoading = 0;
+
 
 function toggleMenu(close, onEmpty) {
     if(!$menu)
@@ -52,6 +58,7 @@ function refreshMenu() {
  * @return {boolean} - error happened
  */
 function javaError(json) {
+    loading(false);
     if(json.error)
     {
         if(json.error === 'expired')
@@ -70,6 +77,7 @@ function javaError(json) {
  * @param {function} retryFn - callback for retrying operation that had failed
  */
 function ajaxError(/*xhr, status,*/ msg, retryFn) {
+    loading(false);
     message(msg + '...<br><a href="#" id="retry">Ismétlés</a>&nbsp;&nbsp;<a href="#" id="cancelMsg">Mégse</a>', false);
     $('#retry', $msg).click(function() {
         retryFn.call(this);
@@ -133,6 +141,30 @@ function dialog(index, toggle) {
 }
 
 
+function loading(state) {
+    if(!state) {
+        if(--reentrantLoading <= 0) {
+            dom.$loading.hide();
+            reentrantLoading = 0;
+        }
+        if(!reentrantLoading && loadingHandle) {
+            clearTimeout(loadingHandle);
+            loadingHandle = 0;
+        }
+        return;
+    }
+    var alreadyVisibleOrAboutToShow = reentrantLoading++;
+    if(alreadyVisibleOrAboutToShow)
+        return;
+    loadingHandle = setTimeout(showIndicator, 500);
+
+    function showIndicator() {
+        dom.$loading.show();
+        loadingHandle = 0;
+    }
+}
+
+
 function menuModifier(e) {
     return e.altKey && (!client.system.mac || e.ctrlKey);
 }
@@ -164,6 +196,7 @@ $.extend(exports, {
     ajaxError: ajaxError,
     message: message,
     dialog: dialog,
+    loading: loading,
     menuModifier: menuModifier,
     resizeEvent: resizeEvent
 });

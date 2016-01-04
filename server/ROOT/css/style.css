@@ -253,6 +253,28 @@ body
     z-index: 1000;
 }
 
+#loading
+{
+	position: absolute;
+	top: 50%;
+	left: -200px;
+	transform: translate(-50%, -50%);
+	width: 85px;
+	height: 85px;
+	background-color: #EECAA6;
+	padding: 10px;
+	z-index: 10000;
+}
+
+#loading div
+{
+	width: 64px;
+	height: 64px;
+	background: url(/img/loading.gif) 10px 10px no-repeat;
+	border: 1px solid #292207;
+	padding: 10px;
+}
+
 .noMargin
 {
 	margin: 0;

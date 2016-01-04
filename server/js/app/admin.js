@@ -120,4 +120,5 @@ function ajax(url, type, data) {
             util.ajaxError(/*xhr, status,*/ 'Hálózati hiba.', ajax.bind(null, url, data, type));
         }
     });
+    util.loading(true);
 }

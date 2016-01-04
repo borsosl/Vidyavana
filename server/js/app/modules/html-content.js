@@ -25,6 +25,7 @@ function load(url, data, cb)
             util.ajaxError(/*xhr, status,*/ 'Hiba az oldal letöltésekor.', load.bind(null, url, data, cb));
         }
     });
+    util.loading(true);
 }
 
 

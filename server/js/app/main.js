@@ -19,6 +19,9 @@ function init()
     util.resizeEvent();
     util.refreshMenu();
     task.searchDialog();
+    dom.$loading.hide();
+    // to preload image, it is hidden only by negative left in css, position now
+    dom.$loading[0].style.left = '50%';
     initd = true;
 }
 

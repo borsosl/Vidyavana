@@ -20,11 +20,13 @@ function init() {
     this.$shortRef = $('#short-ref');
     /** @type {JQuery} */
     this.$menuShortRef = $('#menu-short-ref');
+    /** @type {JQuery} */
+    this.$loading = $('#loading');
 }
 
 /**
  * @type {{init, nowarn, $header, $content, $formContent, $txt, $textBtns, $hitBtns,
- *      $sectDown, $thisSect, $shortRef, $menuShortRef}}
+ *      $sectDown, $thisSect, $shortRef, $menuShortRef, $loading}}
  */
 var dom = exports;
 dom.init = init;

@@ -88,6 +88,7 @@ function text(mode)
             });
         }
     });
+    util.loading(true);
 
     if(mode === loadMode.search)
         highlight.init(search.pending().query());

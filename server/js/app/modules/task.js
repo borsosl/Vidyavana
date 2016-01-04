@@ -28,6 +28,7 @@ function logout() {
             failed();
         }
     });
+    util.loading(true);
 
     function failed() {
         util.ajaxError('Sikertelen művelet.', logout);
