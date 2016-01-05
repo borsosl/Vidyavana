@@ -13,6 +13,7 @@ public class Globals
 	public static boolean androidEnv;
 	public static boolean maintenance;
 	public static ExecutorService searchExecutors;
+	public static ExecutorService mailExecutor;
 	public static int concurrentSessions;
 	public static HashMap<String, ArrayList<String>> sessionsByUser;
 }

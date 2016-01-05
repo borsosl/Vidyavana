@@ -59,6 +59,7 @@ public class StartStop implements ServletContextListener
 		}
 		Encrypt.getInstance().init();
 		Globals.searchExecutors = Executors.newCachedThreadPool();
+		Globals.mailExecutor = Executors.newSingleThreadExecutor();
 		Log.info("Pandit context initialized in "+(System.currentTimeMillis() - t0));
 	}
 

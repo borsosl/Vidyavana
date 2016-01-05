@@ -1,17 +1,20 @@
 package hu.vidyavana.web.ctrl;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 import hu.vidyavana.db.dao.UserDao;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
+import hu.vidyavana.util.MailTask;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
 import hu.vidyavana.web.Sessions;
 
 public class AuthController
 {
-	public static final Pattern EMAIL = Pattern.compile("\\S+@\\S+\\.\\S+");
+	public static final Pattern EMAIL = Pattern.compile(
+        "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$");
 	
 	public void service(RequestInfo ri) throws Exception
 	{
@@ -22,6 +25,10 @@ public class AuthController
 			authenticate(ri);
 		else if("register".equals(ri.args[1]))
 			register(ri);
+		else if("verify".equals(ri.args[1]))
+			verify(ri);
+		else if("decline".equals(ri.args[1]))
+			decline(ri);
 		else if("logout".equals(ri.args[1]))
 			logout(ri);
 		else
@@ -68,11 +75,6 @@ public class AuthController
 				PanditServlet.messageResult(ri, "Helytelen e-mail formátum");
 				return;
 			}
-			if(!user.email.endsWith("@fiktiv.hu"))
-			{
-				PanditServlet.messageResult(ri, "Egyenlőre csak béta tesztelőknek");
-				return;
-			}
 			if(user.password.length() != 32)
 			{
 				PanditServlet.messageResult(ri, "Hibás jelszó");
@@ -81,10 +83,58 @@ public class AuthController
 			try {
 				UserDao.insertUser(user);
 				setUserInSession(ri, user);
+				if(Globals.serverEnv)
+					Globals.mailExecutor.submit(new MailTask("register", user.email, user.regToken));
 			} catch(Exception ex) {
 				PanditServlet.messageResult(ri, "Az e-mail cím már regisztrálva van.");
 			}
 		}
+	}
+
+
+	public void verify(RequestInfo ri) throws Exception
+	{
+		User user = verifyOrDecline(ri);
+		if(user == null)
+			return;
+		user.regToken = "";
+		UserDao.updateUser(user);
+		ri.resp.getWriter().write("Az e-mail cím megerősítése sikeres volt.");
+	}
+
+
+	public void decline(RequestInfo ri) throws Exception
+	{
+		User user = verifyOrDecline(ri);
+		if(user == null)
+			return;
+		UserDao.deleteUser(user.email);
+		ri.resp.getWriter().write("A regisztrációt töröltük.");
+	}
+
+
+	protected User verifyOrDecline(RequestInfo ri) throws IOException
+	{
+		String email = ri.req.getParameter("email").trim();
+		String token = ri.req.getParameter("token").trim();
+		if(!verifyEmail(email))
+		{
+			ri.resp.setStatus(403);
+			return null;
+		}
+		User user = UserDao.findUserByEmail(email);
+		if(user == null || !user.regToken.isEmpty() && !user.regToken.equals(token))
+		{
+			ri.resp.setStatus(403);
+			return null;
+		}
+		ri.ajax = false;
+		if(user.regToken.isEmpty())
+		{
+			ri.resp.getWriter().write("A link (már) nem érvényes.");
+			return null;
+		}
+		return user;
 	}
 
 
