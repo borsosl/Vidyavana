@@ -12,6 +12,7 @@ public class Globals
 	public static boolean localEnv;
 	public static boolean androidEnv;
 	public static boolean maintenance;
+	public static String downtime;
 	public static ExecutorService searchExecutors;
 	public static ExecutorService mailExecutor;
 	public static int concurrentSessions;

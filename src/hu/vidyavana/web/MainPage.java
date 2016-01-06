@@ -3,6 +3,7 @@ package hu.vidyavana.web;
 import java.util.HashMap;
 import hu.vidyavana.db.model.TocTree;
 import hu.vidyavana.db.model.TocTreeItem;
+import hu.vidyavana.util.Globals;
 
 public class MainPage
 {
@@ -14,6 +15,7 @@ public class MainPage
 		res.put("toc", initialShortTree);
 		res.put("maxTocId", toc.maxId);
 		res.put("justRegistered", ri.ses.getAttribute("justRegistered"));
+		res.put("downtime", Globals.downtime);
 		ri.ses.removeAttribute("justRegistered");
 		ri.ajaxResult = res;
 		ri.ajaxText();

@@ -65,8 +65,17 @@ public class PanditServlet extends HttpServlet
 
     		if(Globals.maintenance && !"util".equals(args[0]))
     		{
-    			ri.renderJsp("/maintenance.jsp");
-    			return;
+    			if(args.length > 1)
+    			{
+	    			ri.ajaxText = "{\"error\": \"maintenance\"}";
+	    			ajaxResponse(ri);
+	    			return;
+    			}
+    			if(!"maintenance.jsp".equals(args[0]))
+    			{
+        			ri.renderJsp("/maintenance.jsp");
+        			return;
+    			}
     		}
 
     		// make sure session pages call ri.check(), so that direct no-session access would fail
@@ -113,10 +122,7 @@ public class PanditServlet extends HttpServlet
 	    		}
 			}
 			if(ri.ajaxResult != null || ri.ajaxText != null)
-			{
-	    		ri.resp.setContentType("application/json; charset=UTF-8");
-				writeJson(ri);
-			}
+	    		ajaxResponse(ri);
 		}
 		catch(Exception ex)
 		{
@@ -150,6 +156,13 @@ public class PanditServlet extends HttpServlet
 				}
 			}
 		}
+	}
+
+
+	protected void ajaxResponse(RequestInfo ri) throws IOException
+	{
+		ri.resp.setContentType("application/json; charset=UTF-8");
+		writeJson(ri);
 	}
 
 

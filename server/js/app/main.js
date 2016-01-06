@@ -13,6 +13,8 @@ function init()
     dom.init();
     if(pg.justRegistered)
         util.message('A regisztráció véglegesítéséhez<br/>kiküldtünk egy ellenőrző e-mailt.<br/>', true);
+    if(pg.downtime)
+        util.downtime(pg.downtime);
     search.init();
     toc.initSectionSelect();
     require('./modules/keyboard');

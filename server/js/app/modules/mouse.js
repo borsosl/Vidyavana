@@ -56,4 +56,9 @@ $('.next-hit').click(function()
         load.text(load.mode.nextHit);
 });
 
+$('#info-icon').click(function()
+{
+    util.downtimeMsg();
+});
+
 dom.$thisSect.click(load.thisNextSection);

@@ -95,6 +95,14 @@ body
 	background: #7D4A17 url(/img/icon48.png) no-repeat 2px 0;
 }
 
+#header #info-icon {
+	display: none;
+	width: 44px;
+	height: 100%;
+	margin-left: 0;
+	background: url(/img/info.gif) no-repeat 0 4px;
+}
+
 #header span
 {
 	line-height: 48px;

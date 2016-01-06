@@ -11,6 +11,7 @@ import hu.vidyavana.db.AddBook;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
+import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
 
 public class ServerUtilController
@@ -31,7 +32,9 @@ public class ServerUtilController
 			ri.resp.setStatus(404);
 			return;
 		}
-		if("rebuild".equals(ri.args[1]))
+		if("down".equals(ri.args[1]))
+			downtime(ri);
+		else if("rebuild".equals(ri.args[1]))
 		{
 			rebuild(ri);
 		}
@@ -39,15 +42,6 @@ public class ServerUtilController
 		{
 			monitorBackgroundTask(ri);
 		}
-		else if("maint".equals(ri.args[1]))
-		{
-			boolean val = true;
-			if(ri.args.length > 2)
-				val = false;
-			Globals.maintenance = val;
-		}
-		else if("logout".equals(ri.args[1]))
-			ri.resp.setStatus(401);
 		else
 			ri.resp.setStatus(404);
 	}
@@ -124,5 +118,20 @@ public class ServerUtilController
 				serviceMap.remove(serviceTag);
 		}
 		ri.ajaxResult = res;
+	}
+
+	
+	private void downtime(RequestInfo ri)
+	{
+		String time = ri.req.getParameter("time");
+		if(time != null)
+		{
+			time = time.trim();
+			if(time.isEmpty())
+				time = null;
+		}
+		Globals.downtime = time;
+		Globals.maintenance = "most".equalsIgnoreCase(time);
+		PanditServlet.okResult(ri);
 	}
 }

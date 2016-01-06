@@ -27,6 +27,7 @@ User user = (User) session.getAttribute("user");
 	<div id="measure" class="abs fill novis"></div>
 	<div id="header">
         <span id="pandit-icon">&nbsp;</span>
+        <span id="info-icon">&nbsp;</span>
 
         <%-- Right aligned, priority --%>
         <span class="mini-btn next-hit">

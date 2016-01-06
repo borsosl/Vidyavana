@@ -296,6 +296,7 @@ public class TextContentController
 		{
 			throw new RuntimeException("Text request", ex);
 		}
+		db.downtime = Globals.downtime;
 		return db;
 	}
 
@@ -330,6 +331,7 @@ public class TextContentController
 		{
 			throw new RuntimeException("Search text request", ex);
 		}
+		db.downtime = Globals.downtime;
 		return db;
 	}
 

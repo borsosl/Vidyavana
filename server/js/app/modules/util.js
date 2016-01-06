@@ -16,6 +16,9 @@ var loadingHandle;
 /** @type {number} - concurrent loading contexts */
 var reentrantLoading = 0;
 
+/** @type {string} */
+var downtimeText;
+
 
 function toggleMenu(close, onEmpty) {
     if(!$menu)
@@ -63,10 +66,16 @@ function javaError(json) {
     {
         if(json.error === 'expired')
             document.location = '/app';
+        else if(json.error === 'maintenance')
+            document.location = '/app/maintenance';
         else
             message('Hiba történt. <a href="mailto:dev@pandit.hu?subject=Hibajelentés ('+
                 json.error+')">Beszámolok róla</a>', true);
     }
+    if(json.downtime)
+        downtime(json.downtime);
+    else if(downtimeText)
+        downtime(null);
     return !!json.error;
 }
 
@@ -165,6 +174,19 @@ function loading(state) {
 }
 
 
+function downtime(text) {
+    downtimeText = text;
+    if(!text)
+        text = '';
+    $('#info-icon').css('display', text ? 'inline-block' : 'none').attr('title', 'Karbantartás: '+text);
+}
+
+
+function downtimeMsg(text) {
+    message('Karbantartási leállás ideje: ' + downtimeText + '<br/>', true);
+}
+
+
 function menuModifier(e) {
     return e.altKey && (!client.system.mac || e.ctrlKey);
 }
@@ -197,6 +219,8 @@ $.extend(exports, {
     message: message,
     dialog: dialog,
     loading: loading,
+    downtime: downtime,
+    downtimeMsg: downtimeMsg,
     menuModifier: menuModifier,
     resizeEvent: resizeEvent
 });

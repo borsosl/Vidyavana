@@ -8,4 +8,5 @@ public class DisplayBlock
 	public String text;
 	public String shortRef;
 	public String longRef;
+	public String downtime;
 }

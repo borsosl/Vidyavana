@@ -61,6 +61,8 @@ function text(json, mode)
         if(highlight.get())
             highlight.get().run(h);
     }
+    if(isSearch && display.downtime)
+        util.downtime(display.downtime);
 }
 
 

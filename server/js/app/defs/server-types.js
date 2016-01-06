@@ -6,6 +6,7 @@
  * @property {string} text
  * @property {string} shortRef?
  * @property {string} longRef?
+ * @property {string} downtime?
  */
 
 /**
