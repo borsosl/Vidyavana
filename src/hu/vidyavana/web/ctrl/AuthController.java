@@ -53,7 +53,12 @@ public class AuthController
 		}
 		User user = UserDao.findUserByEmail(email);
 		if(user != null && user.password.equals(ri.req.getParameter("password")))
-			setUserInSession(ri, user);
+		{
+			if(!user.regToken.isEmpty())
+				PanditServlet.messageResult(ri, "Az e-mail cím megerősítése nem történt meg. A regisztrációkor küldött levélben van a link.");
+			else
+				setUserInSession(ri, user);
+		}
 		else
 			PanditServlet.failResult(ri);
 	}
@@ -83,6 +88,7 @@ public class AuthController
 			try {
 				UserDao.insertUser(user);
 				setUserInSession(ri, user);
+				ri.ses.setAttribute("justRegistered", true);
 				if(Globals.serverEnv)
 					Globals.mailExecutor.submit(new MailTask("register", user.email, user.regToken));
 			} catch(Exception ex) {

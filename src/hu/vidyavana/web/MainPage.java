@@ -13,6 +13,8 @@ public class MainPage
 		HashMap<String, Object> res = PanditServlet.ajaxMap();
 		res.put("toc", initialShortTree);
 		res.put("maxTocId", toc.maxId);
+		res.put("justRegistered", ri.ses.getAttribute("justRegistered"));
+		ri.ses.removeAttribute("justRegistered");
 		ri.ajaxResult = res;
 		ri.ajaxText();
 		ri.renderJsp("/mainPage.jsp");
