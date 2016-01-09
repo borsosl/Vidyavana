@@ -12,6 +12,7 @@ import hu.vidyavana.db.model.*;
 import hu.vidyavana.search.api.Lucene;
 import hu.vidyavana.search.model.Hit;
 import hu.vidyavana.search.model.Search;
+import hu.vidyavana.search.model.Search.Order;
 import hu.vidyavana.search.model.SearchResponse;
 import hu.vidyavana.search.task.SearchTask;
 import hu.vidyavana.util.Globals;
@@ -49,6 +50,7 @@ public class TextContentController
 	private void search(RequestInfo ri) throws Exception
 	{
 		String q = ri.req.getParameter("q");
+		String sortStr = ri.req.getParameter("sort");
 		Log.activity("Search task: " + q);
 		
 		Integer searchId = (Integer) ri.ses.getAttribute("searchId");
@@ -63,6 +65,7 @@ public class TextContentController
 		details.queryStr = q;
 		details.reqHits = 1000;
 		details.fetchHits = 1000;
+		details.order = sortStr == null ? Order.Score : Order.valueOf(sortStr);
 		Timing.start();
 		Globals.searchExecutors.submit(new SearchTask(details)).get();
 		Timing.stop("Search", Log.instance());

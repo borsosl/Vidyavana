@@ -9,7 +9,7 @@ public class Search implements Serializable
 {
 	public static enum Order
 	{
-		BookId,
+		Index,
 		Score
 	}
 	
@@ -20,7 +20,7 @@ public class Search implements Serializable
 	public int startHit;
 	public int reqHits = 20;
 	public int fetchHits = 100;
-	public Order order;
+	public Order order = Order.Score;
 	public transient BookAccess bookAccess;
 
 	public transient List<Hit> hits;

@@ -15,6 +15,10 @@ function Search()
      */
     var query;
     /**
+     * @type {string} - originally selected order
+     */
+    var _sort;
+    /**
      * @type {SearchResponse} - details of last hit shown
      */
     var last;
@@ -29,6 +33,16 @@ function Search()
         query = q;
     }
 
+    /**
+     * @param {string?} sort
+     * @return {string}
+     */
+    function sortFn(sort) {
+        if(sort === undefined)
+            return _sort;
+        _sort = sort;
+    }
+
 
     /**
      * @param {SearchResponse?} l
@@ -41,6 +55,7 @@ function Search()
     }
 
     this.query = queryFn;
+    this.sort = sortFn;
     this.last = lastFn;
 }
 
@@ -56,6 +71,8 @@ function accept() {
 function init()
 {
     var $inp = $('#searchInput');
+    /** @type {JQuery|Array.<HTMLInputElement>} */
+    var $scoreOrder = $('#score-order');
     $inp.keydown(function(e)
     {
         if(searchMsgShown)
@@ -65,7 +82,7 @@ function init()
         }
         if(e.keyCode == 13)
         {
-            newSearch($inp.val());
+            newSearch($inp.val(), $scoreOrder[0].checked);
         }
         if(!util.menuModifier(e))
             //noinspection JSUnresolvedFunction
@@ -73,12 +90,12 @@ function init()
     });
     $('#searchGo').click(function()
     {
-        newSearch($inp.val());
+        newSearch($inp.val(), $scoreOrder[0].checked);
     });
 }
 
 
-function newSearch(text)
+function newSearch(text, scoreOrder)
 {
     if(searchMsgShown)
     {
@@ -87,6 +104,7 @@ function newSearch(text)
     }
     var ps = pendingSearch = new Search();
     ps.query(text);
+    ps.sort(scoreOrder ? 'Score' : 'Index');
     load.text(load.mode.search);
 }
 

@@ -45,8 +45,10 @@ function text(mode)
                     return null;
                 return '/app/txt/follow/'+page.tocId()+'/'+next;
             case m.search:
+                var ps = search.pending();
                 data = {
-                    q: search.pending().query()
+                    q: ps.query(),
+                    sort: ps.sort()
                 };
                 return searchUrl;
             case m.nextHit:

@@ -86,7 +86,13 @@ User user = (User) session.getAttribute("user");
 			Keresés:
 		</div>
 		<div>
-			<input type="text" id="searchInput" class="textInput100">
+			<input type="text" id="searchInput" class="top10 textInput100">
+		</div>
+		<div class="top10 font80">
+		    Sorrend:&nbsp;
+			<input type="radio" name="sort" value="Score" id="score-order" checked>&nbsp;Fontosság
+			&nbsp;
+			<input type="radio" name="sort" value="Index">&nbsp;Szakasz
 		</div>
 		<div id="search-msg">
 		</div>

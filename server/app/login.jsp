@@ -30,16 +30,16 @@ ri.check();
         </div>
         <div class="form">
             <div>
-                <input type="email" id="email" class="textInput100" placeholder="E-mail*">
+                <input type="email" id="email" class="top10 textInput100" placeholder="E-mail*">
             </div>
             <div>
-                <input type="password" id="password" class="textInput100" placeholder="Jelszó*">
+                <input type="password" id="password" class="top10 textInput100" placeholder="Jelszó*">
             </div>
             <div class="regitem">
-                <input type="password" id="password2" class="textInput100" placeholder="Jelszó újra*">
+                <input type="password" id="password2" class="top10 textInput100" placeholder="Jelszó újra*">
             </div>
             <div class="regitem">
-                <input type="text" id="name" class="textInput100" placeholder="Név">
+                <input type="text" id="name" class="top10 textInput100" placeholder="Név">
             </div>
             <div id="loginMsg" class="hidden form-row">
             </div>

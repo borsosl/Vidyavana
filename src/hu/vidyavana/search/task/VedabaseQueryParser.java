@@ -13,13 +13,14 @@ import hu.vidyavana.db.model.BookAccess;
 import hu.vidyavana.search.api.FilterByIntegerSetQuery;
 import hu.vidyavana.search.api.QueryAnalyzer;
 import hu.vidyavana.search.api.SeparateQueryOperatorFilter;
+import hu.vidyavana.search.model.Search.Order;
 
 public class VedabaseQueryParser
 {
 	private static Analyzer analyzer = new QueryAnalyzer();
 	
 	
-	public static Query parse(String s, BookAccess bookAccess)
+	public static Query parse(String s, BookAccess bookAccess, Order order)
 	{
 		List<String> words = analyze(s);
 		BooleanQuery.Builder bqb = new BooleanQuery.Builder();
@@ -34,7 +35,8 @@ public class VedabaseQueryParser
 			if((ixAst > 1 && (ixQm == -1 || ixQm > 1)) || ixQm > 1 && ixAst == -1)
 			{
 				WildcardQuery wq = new WildcardQuery(t);
-				wq.setRewriteMethod(MultiTermQuery.SCORING_BOOLEAN_REWRITE);
+				if(order == Order.Score)
+					wq.setRewriteMethod(MultiTermQuery.SCORING_BOOLEAN_REWRITE);
 				q = wq;
 			}
 			else
