@@ -21,6 +21,7 @@ import hu.vidyavana.util.*;
 public class AddBook
 {
 	public static Pattern XML_LINE = Pattern.compile("^\\s*(<p( class=\"(.*?)\")?.*?>)?(.*?)(</p>|$)");
+	public static Pattern CHAPTNUM_LINE = Pattern.compile("^\\s*<chapter_number>(\\d+)</chapter_number>");
 	
 	private String bookPath;
 	private File bookDir;
@@ -227,6 +228,17 @@ public class AddBook
 					else if(inPara)
 						// not <p> start, but </p> not reached before: continuing line
 						paraSB.append(' ').append(m.group(4));
+					else if(bs.segment == 10 && bs.plainBookId == 2)
+					{
+						// SB 10: parse chapter number to know if it was Prabhupada's translation
+						m = CHAPTNUM_LINE.matcher(line);
+						if(m.find() && m.group(1) != null)
+						{
+							int chaptno = Integer.parseInt(m.group(1));
+							if(chaptno <= 13)
+								ib.setBookOfSrilaPrabhupada(true);
+						}
+					}
 
 					if(inPara)
 					{
@@ -265,7 +277,7 @@ public class AddBook
 		para.text = paraTxt;
 		int ordinal = paraList.size();
 		paraList.add(para);
-		ib.addPara(ordinal, paraTxt);
+		ib.addPara(ordinal, para.cls, paraTxt);
 	}
 
 

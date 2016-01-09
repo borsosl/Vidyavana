@@ -32,7 +32,11 @@ public class VedabaseQueryParser
 			int ixAst = word.indexOf('*');
 			int ixQm = word.indexOf('?');
 			if((ixAst > 1 && (ixQm == -1 || ixQm > 1)) || ixQm > 1 && ixAst == -1)
-				q = new WildcardQuery(t);
+			{
+				WildcardQuery wq = new WildcardQuery(t);
+				wq.setRewriteMethod(MultiTermQuery.SCORING_BOOLEAN_REWRITE);
+				q = wq;
+			}
 			else
 				q = new TermQuery(t);
 			bqb.add(q, BooleanClause.Occur.MUST);

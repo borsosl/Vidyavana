@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
+import hu.vidyavana.convert.api.ParagraphClass;
 import hu.vidyavana.db.model.*;
 import hu.vidyavana.search.api.Lucene;
 import hu.vidyavana.search.model.Hit;
@@ -321,8 +322,36 @@ public class TextContentController
 			boolean verse = verseBlock(p);
 			if(verse)
 				sb.append("<div class=\"VsWrap1\"><div class=\"VsWrap2\">");
-			sb.append("<p class=\"").append(p.cls.name())
-				.append("\" data-ix=\"1\">").append(p.text).append("</p>");
+			int i = 0;
+			while(true)
+			{
+				sb.append("<p class=\"").append(p.cls.name())
+					.append("\" data-ix=\"").append(i).append("\">")
+					.append(p.text).append("</p>");
+				if(verse)
+				{
+					if(i == 0)
+					{
+						para = seg.readRange(store.handle, ordinal+1, ordinal+3);
+						ParagraphClass canFollow = p.cls == Uvaca ? Vers : 
+							p.cls == ParagraphClass.TorzsUvaca ? TorzsVers : Hivatkozas;
+						p = para.get(i);
+						if(p.cls != canFollow)
+							break;
+					}
+					else if(i == 1)
+					{
+						p = para.get(i);
+						if(p.cls != Hivatkozas)
+							break;
+					}
+					else
+						break;
+					++i;
+				}
+				else
+					break;
+			}
 			if(verse)
 				sb.append("</div></div>");
 			db.text = sb.toString();

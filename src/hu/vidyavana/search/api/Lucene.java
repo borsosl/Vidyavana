@@ -90,6 +90,7 @@ public class Lucene
 				searcher = null;
 			}
 			IndexWriterConfig config = createConfig();
+			config.setSimilarity(new PanditSimilarity());
 			writer = new IndexWriter(index, config);
 			return writer;
 		}
@@ -150,7 +151,10 @@ public class Lucene
 			return null;
 
 		if(searcher == null)
+		{
 			searcher = new IndexSearcher(reader);
+			searcher.setSimilarity(new PanditSimilarity());
+		}
 
 		return searcher;
 	}
