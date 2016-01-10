@@ -7,97 +7,97 @@ p
 .Konyvcim
 {
 	font-size: 140%;
-	text-align: center !important;
-	font-weight: bold !important;
-	margin-top: 1em !important;
-	margin-bottom: 1em !important;
+	text-align: center;
+	font-weight: bold;
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 .Fejezetszam
 {
-	margin-top: 2em !important;
-	margin-bottom: 1em !important;
+	margin-top: 2em;
+	margin-bottom: 1em;
 	font-size: 115%;
-	text-align: center !important;
+	text-align: center;
 }
 
 .FejezetszamNagy
 {
-	margin-top: 2em !important;
-	margin-bottom: 0.5em !important;
+	margin-top: 2em;
+	margin-bottom: 0.5em;
 	font-size: 140%;
-	font-weight: bold !important;
-	text-align: center !important;
+	font-weight: bold;
+	text-align: center;
 }
 
 .Fejezetcim
 {
-	margin-top: 1.5em !important;
-	margin-bottom: 1em !important;
+	margin-top: 1.5em;
+	margin-bottom: 1em;
 	font-size: 120%;
-	text-align: center !important;
-	font-weight: bold !important;
+	text-align: center;
+	font-weight: bold;
 }
 
 .Szakaszcim
 {
-	margin-top: 1em !important;
-	margin-bottom: 1em !important;
-	text-align: center !important;
-	font-weight: bold !important;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	text-align: center;
+	font-weight: bold;
 }
 
 .Szakaszcim3
 {
-	margin-top: 3em !important;
-	margin-bottom: 1em !important;
-	text-align: center !important;
-	font-weight: bold !important;
+	margin-top: 3em;
+	margin-bottom: 1em;
+	text-align: center;
+	font-weight: bold;
 }
 
 .Alcim
 {
-	margin-top: 1em !important;
-	margin-bottom: 0.5em !important;
-	text-align: center !important;
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+	text-align: center;
 }
 
 .Alcim3
 {
-	margin-top: 3em !important;
-	margin-bottom: 0.5em !important;
-	text-align: center !important;
+	margin-top: 3em;
+	margin-bottom: 0.5em;
+	text-align: center;
 }
 
 .Versszam
 {
-	margin-top: 1em !important;
-	margin-bottom: 1em !important;
-	text-align: center !important;
-	font-weight: bold !important;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	text-align: center;
+	font-weight: bold;
 }
 
 .Uvaca
 {
-	text-align: center !important;
+	text-align: center;
 	font-style: italic;
 }
 
 .Vers
 {
-	margin-bottom: 0.5em !important;
-	text-align: left !important;
+	margin-bottom: 0.5em;
+	text-align: left;
 	font-style: italic;
 }
 
 .Uvaca + .Vers
 {
-	margin-top: 0 !important;
+	margin-top: 0;
 }
 
 .Proza
 {
-	margin-bottom: 0.5em !important;
+	margin-bottom: 0.5em;
 	text-indent: 1.5em;
 	text-align: justify;
 	font-style: italic;
@@ -105,29 +105,29 @@ p
 
 .Szavak
 {
-	margin-top: 0.5em !important;
+	margin-top: 0.5em;
 	text-indent: 1.5em;
 	text-align: justify;
 }
 
 .Forditas
 {
-	margin-top: 0.5em !important;
+	margin-top: 0.5em;
 	text-indent: 1.5em;
 	text-align: justify;
-	font-weight: bold !important;
+	font-weight: bold;
 }
 
 .TorzsKezdet
 {
-	margin-top: 0.5em !important;
+	margin-top: 0.5em;
 	text-indent: 1.5em;
 	text-align: justify;
 }
 
 .TorzsKezdet0Bek
 {
-	margin-top: 0.5em !important;
+	margin-top: 0.5em;
 	text-align: justify;
 }
 
@@ -139,7 +139,7 @@ p
 
 .TorzsKezdetDolt
 {
-	margin-top: 0.5em !important;
+	margin-top: 0.5em;
 	text-indent: 1.5em;
 	text-align: justify;
 	font-style: italic;
@@ -154,80 +154,80 @@ p
 
 .TorzsVersszam
 {
-	margin-top: 1em !important;
-	text-align: center !important;
+	margin-top: 1em;
+	text-align: center;
 }
 
 .TorzsUvaca
 {
-	margin-top: 0.5em !important;
-	text-align: center !important;
+	margin-top: 0.5em;
+	text-align: center;
 	font-style: italic;
 }
 
 .TorzsVers
 {
-	margin-top: 0.5em !important;
+	margin-top: 0.5em;
 	text-align: left;
 	font-style: italic;
 }
 
 .TorzsUvaca + .TorzsVers
 {
-	margin-top: 0 !important;
+	margin-top: 0;
 }
 
 .Hivatkozas
 {
-	margin-top: 1em !important;
-	text-align: right !important;
+	margin-top: 1em;
+	text-align: right;
 }
 
 .Balra
 {
-	margin-top: 1em !important;
-	text-align: left !important;
+	margin-top: 1em;
+	text-align: left;
 }
 
 .Kozepen
 {
-	margin-top: 0.5em !important;
-	text-align: center !important;
+	margin-top: 0.5em;
+	text-align: center;
 }
 
 .KozepenDolt
 {
-	margin-top: 0.5em !important;
-	text-align: center !important;
+	margin-top: 0.5em;
+	text-align: center;
 	font-style: italic;
 }
 
 .KozepenKoveto
 {
-	text-align: center !important;
+	text-align: center;
 }
 
 .KozepenKovetoDolt
 {
-	text-align: center !important;
+	text-align: center;
 	font-style: italic;
 }
 
 .Jobbra
 {
-	text-align: right !important;
+	text-align: right;
 }
 
 .MegjegyzesKezdet, .MegjegyzesKoveto, .MegjegyzesKozepen, .MegjegyzesJobbra
 {
-	margin-left: 3em !important;
-	margin-right: 3em !important;
+	margin-left: 3em;
+	margin-right: 3em;
 	font-size: 95%;
 }
 
 .MegjegyzesKezdet
 {
-	margin-top: 0.5em !important;
+	margin-top: 0.5em;
 	text-align: justify;
 }
 
@@ -239,14 +239,14 @@ p
 
 .MegjegyzesKozepen
 {
-	margin-top: 0.5em !important;
-	margin-bottom: 0.5em !important;
-	text-align: center !important;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	text-align: center;
 }
 
 .MegjegyzesJobbra
 {
-	text-align: right !important;
+	text-align: right;
 }
 
 .Index
@@ -257,31 +257,31 @@ p
 .in0
 {
 	text-indent: -2.4em;
-	margin-left: 2.4em !important;
+	margin-left: 2.4em;
 }
 
 .in1
 {
 	text-indent: -2.4em;
-	margin-left: 3.6em !important;
+	margin-left: 3.6em;
 }
 
 .in2
 {
 	text-indent: -2.4em;
-	margin-left: 4.8em !important;
+	margin-left: 4.8em;
 }
 
 .in3
 {
 	text-indent: -2.4em;
-	margin-left: 6em !important;
+	margin-left: 6em;
 }
 
 .in4
 {
 	text-indent: -2.4em;
-	margin-left: 7.2em !important;
+	margin-left: 7.2em;
 }
 
 .BalraKoveto
@@ -293,22 +293,21 @@ p
 {
 	text-align: left;
 	font-size: 110%;
-	font-weight: bold !important;
+	font-weight: bold;
 }
 
 .BalraCimBek
 {
 	text-align: left;
 	font-size: 110%;
-	font-weight: bold !important;
-	margin-left: 2em !important;
+	font-weight: bold;
+	margin-left: 2em;
 }
 
 .VsWrap1
 {
-	text-align: center !important;
-	margin-left: auto;
-	margin-right: auto;
+	text-align: center;
+	margin: 0 auto;
 }
 
 .VsWrap2
@@ -318,9 +317,9 @@ p
 
 .Csillagok
 {
-	text-align: center !important;
-	margin-top: 1em !important;
-	margin-bottom: 0.5em !important;
+	text-align: center;
+	margin-top: 1em;
+	margin-bottom: 0.5em;
 }
 
 .Ures1
@@ -347,35 +346,35 @@ p
 
 td
 {
-	padding-left: 3em !important;
-	text-align: left !important;
+	padding-left: 3em;
+	text-align: left;
 }
 
 .Acarya
 {
-	margin-top: 1em !important;
+	margin-top: 1em;
 	text-align: left;
-	font-weight: bold !important;
+	font-weight: bold;
 }
 
 .cNormal
 {
-	font-weight: normal !important;
+	font-weight: normal;
 	font-style: normal;
 }
 
 .Labjegyzet
 {
-	margin-top: 0.5em !important;
+	margin-top: 0.5em;
 	text-align: left;
 	text-indent: -1.5em;
-	margin-left: 1.5em !important;
+	margin-left: 1.5em;
 }
 
 .LabjegyzetKoveto
 {
 	text-align: left;
 	text-indent: 1.5em;
-	margin-left: 1.5em !important;
+	margin-left: 1.5em;
 }
 

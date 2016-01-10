@@ -30,8 +30,10 @@ function load(url, data, cb)
 
 
 function render(json, cb) {
-    $('#form-content').html(json.html).show();
-    cb.call(null, json.data);
+    $('#form-content').html(json.html).show().scrollTop(0);
+    util.resizeContent();
+    if(cb)
+        cb.call(null, json.data);
 }
 
 

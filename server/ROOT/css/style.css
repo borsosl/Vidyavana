@@ -163,6 +163,10 @@ body
 	overflow: auto;
 }
 
+.help {
+	font: 14pt sans-serif;
+}
+
 /* smaller font on phones - keep this under overridden styles */
 @media only screen and (orientation:portrait) and (max-width: 599px), only screen and (orientation:landscape) and (max-width: 799px)
 {
@@ -174,6 +178,10 @@ body
 	#content
 	{
 		font-size: 13pt;
+	}
+
+	.help {
+		font: 12pt sans-serif;
 	}
 
 	#header span
@@ -411,34 +419,6 @@ body
     color: black;
 }
 
-.opaque
-{
-    opacity: 1;
-    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: alpha(opacity=100);
-}
-
-.overlayPanel
-{
-	z-index: 1000000;
-    background: white;
-    display: none;
-}
-
-.help
-{
-	height: 16px;
-	padding-left: 20px;
-	background: url(/img/help.gif) no-repeat;
-	cursor: pointer;
-	text-decoration: none;
-	font-weight: normal;
-	color: #000000;
-	font-family: Tahoma, Arial;
-	font-size: 8pt;
-	padding-top: 2px;
-}
-
 .form-row {
 	margin-top: 10px;
 }
@@ -617,4 +597,23 @@ button:focus {
     border: 1px solid #292207;
     border-top: 0;
     padding: 10px;
+}
+
+.help-title {
+	text-align: center;
+	font-size: 140%;
+}
+
+.help p, .help table, .help ul {
+	margin-top: 1em;
+}
+
+.help td {
+	vertical-align: top;
+	padding: 0.5em;
+	min-height: 1.5em;
+}
+
+.left2 {
+	margin-left: 2em;
 }

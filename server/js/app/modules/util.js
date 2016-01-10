@@ -182,7 +182,7 @@ function downtime(text) {
 }
 
 
-function downtimeMsg(text) {
+function downtimeMsg() {
     message('Karbantartási leállás ideje: ' + downtimeText + '<br/>', true);
 }
 
@@ -194,19 +194,24 @@ function menuModifier(e) {
 
 function resizeEvent() {
     window.onresize = throttle(true, 100, function() {
-        var $m = $('#measure');
-        var winHgt = $m.height();
-        var winWid = $m.width();
-        var headHgt = $('#header').height();
-        var arr = [dom.$content, dom.$formContent];
-        for(var i in arr) {
-            var $e = arr[i];
-            $e[0].style.top = headHgt + 'px';
-            $e.innerHeight(winHgt - headHgt);
-            $e.innerWidth(winWid);
-        }
+        resizeContent();
         refreshMenu();
     });
+}
+
+
+function resizeContent() {
+    var $m = $('#measure');
+    var winHgt = $m.height();
+    var winWid = $m.width();
+    var headHgt = $('#header').height();
+    var arr = [dom.$content, dom.$formContent];
+    for(var i in arr) {
+        var $e = arr[i];
+        $e[0].style.top = headHgt + 'px';
+        $e.innerHeight(winHgt - headHgt);
+        $e.innerWidth(winWid);
+    }
 }
 
 
@@ -222,5 +227,6 @@ $.extend(exports, {
     downtime: downtime,
     downtimeMsg: downtimeMsg,
     menuModifier: menuModifier,
-    resizeEvent: resizeEvent
+    resizeEvent: resizeEvent,
+    resizeContent: resizeContent
 });

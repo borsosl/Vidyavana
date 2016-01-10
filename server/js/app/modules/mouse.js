@@ -3,6 +3,7 @@ var page = require('./page').instance;
 var dom = require('./dom');
 var util = require('./util');
 var task = require('./task');
+var html = require('./html-content');
 var load = require('./load');
 var search = require('./search');
 
@@ -28,7 +29,15 @@ $('#section-link, #menu-section-link').click(function()
 $('#logout-link, #menu-logout-link').click(function()
 {
     util.toggleMenu(true);
+    util.dialog(-1, false);
     task.logout();
+});
+
+$('#help-link, #menu-help-link').click(function()
+{
+    util.toggleMenu(true);
+    util.dialog(-1, false);
+    html.load('/app/dialog/html/help');
 });
 
 $('.prev-sect').click(function()

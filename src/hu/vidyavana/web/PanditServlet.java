@@ -109,10 +109,12 @@ public class PanditServlet extends HttpServlet
 						new MainPage().service(ri);
 						return;
 					}
-					else if("toc".equals(args[0]))
-						new TocTreeController().service(ri);
 					else if("txt".equals(args[0]))
 						new TextContentController().service(ri);
+					else if("toc".equals(args[0]))
+						new TocTreeController().service(ri);
+					else if("dialog".equals(args[0]))
+						new DialogController().service(ri);
 					else if("util".equals(args[0]))
 						new ServerUtilController().service(ri);
 					else if("admin".equals(args[0]))
