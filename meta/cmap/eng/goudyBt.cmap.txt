@@ -3,8 +3,10 @@
 * Goudy Old Style Sanskrit
 * Goudy Old Style BT Sanskrit \(OTF\)
 * Goudy Old Style Sanskrit \(OTF\)
+* Goudy Old Style
 * Vivaldi Sanskrt
 * Excelsor Script
+160	160	 	 
 161	363	¡	ū
 162	7779	¢	ṣ
 163	7751	£	ṇ
@@ -15,6 +17,7 @@
 168	7693	¨	ḍ
 169	169	©	©
 170	347	ª	ś
+172	7735	¬	ḷ
 173	247	­	÷
 175	7749	¯	ṅ
 176	7745	°	ṁ
@@ -35,6 +38,7 @@
 231	7788	ç	Ṭ
 233	233	é	é
 237	237	í	í
+239	239	ï	ï
 241	241	ñ	ñ
 243	243	ó	ó
 244	337	ô	ő

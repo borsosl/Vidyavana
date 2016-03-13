@@ -1,6 +1,5 @@
 package hu.vidyavana.convert.indd;
 
-import hu.vidyavana.convert.api.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -8,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import hu.vidyavana.convert.api.*;
 
 public class InddFileProcessor implements FileProcessor
 {
@@ -17,18 +17,20 @@ public class InddFileProcessor implements FileProcessor
 	private static boolean skipConnect = true;
 	
 	// book-specific settings
-	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26}));
+	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{}));
 	// NPH hun: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{54,342,348,374,392,432}));
 	// NPH eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{32,318,322,346,364}));
 	// KS eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{22,122,592,594,660,664}));
 	// SBC eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26,28,646}));
 	// SG eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{162, 182, 228, 266}));
 	// SOI eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{14, 34, 44, 72, 78}));
-	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18}));
+	// NVM eng 1: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26}));
+	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{}));
 	// NPH hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
 	// KS eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,64,121,171,443,481,508}));
 	// SBC eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{639}));
 	// SG eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{65}));
+	// NVM eng 1: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18}));
 	private int chapterDigits = 2;
 	private String endNoteFileName = "99";
 	// NPH: private String endNoteFileName = "22";
@@ -205,6 +207,7 @@ public class InddFileProcessor implements FileProcessor
 		lineNumber = 0;
 		styleSheet = new HashMap<>();
 		textLevel = 0;
+		flowLevel = 0;
 		text = new StringBuilder[10];
 		filePageNum = fileName.indexOf('_');
 		if(filePageNum > -1)
@@ -587,7 +590,10 @@ public class InddFileProcessor implements FileProcessor
 			{
 				charMaps.selectFont(CharacterMapManager.DEFAULT_STYLENAME);
 				String styleName = processLevel(tag.substring(10));
-				charMaps.selectFont(CharacterMapManager.DEFAULT_TEXT);
+				if(defineParaStyle != null || para == null || para.style == null || para.style.font == null)
+					charMaps.selectFont(CharacterMapManager.DEFAULT_TEXT);
+				else
+					charMaps.selectFont(para.style.font);
 				if("dolt".equals(styleName))
 				{
 					boolean psp = paraStartPending;
@@ -715,7 +721,8 @@ public class InddFileProcessor implements FileProcessor
 		{
 			if(isWhite(c))
 				return;
-			charMaps.selectFont(styleFont(para.style));
+			if(para != null)
+				charMaps.selectFont(styleFont(para.style));
 			paraStartPending = false;
 		}
 		if(c >= 128)
@@ -727,7 +734,7 @@ public class InddFileProcessor implements FileProcessor
 				pos();
 				if(para.text.length() < 50 && chapter.para.size() > 1)
 					System.out.println(chapter.para.get(chapter.para.size()-2).text);
-				System.out.println(para.text + "..." + c);
+				System.out.println(para.text + "..." + c + " / " + para.style.font + " / " + cmap.cmapFile.getName());
 				String s = scanner.next();
 				if("?".equals(s))
 					c = '?';
