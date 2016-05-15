@@ -21,6 +21,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	public static Pattern CHAPTER_TITLE = Pattern.compile("<p class=\"Fejezetcim\">(.*)</p>");
 	public static Pattern SECTION = Pattern.compile("<p class=\"(Szakaszcim|SzakaszcimBalra|Alcim)\">(.*)</p>");
 	public static Pattern TEXT = Pattern.compile("<p class=\"Versszam\">(.*)</p>");
+	public static Pattern ASTERISK = Pattern.compile("<p class=\"Asterisk\">(.*)</p>");
 	public static Pattern VERSE_BLOCK = Pattern.compile("class=\"(Uvaca|Vers|TorzsUvaca|TorzsVers|TorzsVersKozep|Hivatkozas)\"");
 	public static Pattern BR = Pattern.compile("\\s*<br\\s*/>\\s*");
 	public static Pattern B = Pattern.compile("</?b>");
@@ -47,6 +48,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	private String currentFileName;
 	private int currentFileIndex;
 	private boolean thisFileBreakable;
+	private boolean prevParaAsterisk;
 	private int fileTextLength;
 	private Level prevNavLevel;
 
@@ -134,6 +136,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		out.write("  <body>\r\n");
 		
 		fileTextLength = 0;
+		prevParaAsterisk = false;
 		return out;
 	}
 
@@ -276,6 +279,11 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 
 	private Writer addNavigation(String line, String textHash, int paraSinceTextHash, Writer out) throws Exception
 	{
+		if(prevParaAsterisk)
+		{
+			out = nextFile(out, null);
+			prevParaAsterisk = false;
+		}
 		Matcher m = CHAPTER.matcher(line);
 		if(m.find())
 		{
@@ -316,7 +324,11 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 				out.write("\"></a></div>\r\n");
 			}
 			addToNavMap(Level.Text, text, currentFileName+".html#"+textHash);
+			return out;
 		}
+		m = ASTERISK.matcher(line);
+		if(m.find())
+			prevParaAsterisk = true;
 		return out;
 	}
 

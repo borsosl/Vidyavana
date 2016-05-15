@@ -1,20 +1,20 @@
 package hu.vidyavana.convert.indd;
 
-import hu.vidyavana.convert.api.DirFilesProcessor;
-import hu.vidyavana.convert.api.FileProcessor;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import hu.vidyavana.convert.api.DirFilesProcessor;
+import hu.vidyavana.convert.api.FileProcessor;
 
 
 public class CharacterMapManager
 {
 	public static final String DEFAULT_STYLENAME = "defaultStylename";
 	public static final String DEFAULT_TEXT = "defaultText";
-	static String cmProp = System.getProperty("cmapDir", "c:\\Wk\\prg\\Java\\vidyavana\\meta\\cmap\\eng");
+	static String cmProp = System.getProperty("cmapDir", "c:\\Wk\\prg\\Java\\vidyavana\\meta\\cmap\\eng");//\\eng
 //	static String cmProp = System.getProperty("cmapDir", "c:\\backup\\Sastra\\1\\cmap");
 //	static String DEFAULT_TEXT_MAP_FILE = "pala-vg.cmap.txt";
 	static String DEFAULT_TEXT_MAP_FILE = "pala-sans-otf.cmap.txt";

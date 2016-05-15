@@ -15,6 +15,7 @@ public class InddFileProcessor implements FileProcessor
 	private static boolean skipHyphens = true;
 	private static boolean skipFootnotes = true;
 	private static boolean skipConnect = true;
+	private static boolean markStrippedFormatting = true;
 	
 	// book-specific settings
 	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{}));
@@ -22,13 +23,16 @@ public class InddFileProcessor implements FileProcessor
 	// NPH eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{32,318,322,346,364}));
 	// KS eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{22,122,592,594,660,664}));
 	// SBC eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26,28,646}));
+	// SBC hun: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{28,804}));
 	// SG eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{162, 182, 228, 266}));
 	// SOI eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{14, 34, 44, 72, 78}));
 	// NVM eng 1: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26}));
+	// NVM eng 6: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{806}));
 	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{}));
 	// NPH hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
 	// KS eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,64,121,171,443,481,508}));
 	// SBC eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{639}));
+	// SBC hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{22,687}));
 	// SG eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{65}));
 	// NVM eng 1: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18}));
 	private int chapterDigits = 2;
@@ -226,7 +230,7 @@ public class InddFileProcessor implements FileProcessor
 		String pref = supPrefix.get(fileName);
 		if(pref != null)
 		{
-			forwardRefPrefix = "e"+pref;
+			forwardRefPrefix = "f"+pref;
 			backRefPrefix = "b"+forwardRefPrefix;
 		}
 		else
@@ -456,11 +460,17 @@ public class InddFileProcessor implements FileProcessor
 	private void processLine(String line)
 	{
 		writerInfo.line = line;
+		boolean escape = false;
 		for(int pos = 0; pos < line.length(); ++pos)
 		{
 			char c = line.charAt(pos);
 			boolean skip = false;
-			if(c == '<')
+			if(c == '\\' && !escape)
+			{
+				escape = true;
+				continue;
+			}
+			if(c == '<' && !escape)
 			{
 				if(flowLevel == 0)
 				{
@@ -469,7 +479,7 @@ public class InddFileProcessor implements FileProcessor
 				}
 				++flowLevel;
 			}
-			else if(c == '>')
+			else if(c == '>' && !escape)
 			{
 				--flowLevel;
 				if(flowLevel == 0)
@@ -481,6 +491,7 @@ public class InddFileProcessor implements FileProcessor
 					skip = true;
 				}
 			}
+			escape = false;
 			if(!skip)
 			{
 				writerInfo.pos = pos;
@@ -900,7 +911,8 @@ public class InddFileProcessor implements FileProcessor
 			{
 				System.out.println("Notes section after: "
 					+ chapter.para.get(chapter.para.size()-2).text);
-				String s = scanner.next();
+				//String s = scanner.next();
+				String s = "99";
 				if("X".equals(s))
 					throw new RuntimeException("Notes input aborted.");
 				else if("-".equals(s))
@@ -911,7 +923,7 @@ public class InddFileProcessor implements FileProcessor
 					backRefPrefix = prevBackRefPrefix;
 				}
 				else
-					backRefPrefix = prevBackRefPrefix = "be" + s;
+					backRefPrefix = prevBackRefPrefix = "bf" + s;
 			}
 			endnoteLineToBackRefPrefixMap.put(filePageNum*10000+lineNumber, backRefPrefix);
 		}
@@ -1018,7 +1030,10 @@ public class InddFileProcessor implements FileProcessor
 			Matcher m = sameStartAndEnd.matcher(txt);
 			if(m.find())
 			{
-				txt = m.replaceFirst(m.group(2));
+				if(markStrippedFormatting)
+					txt = "÷:" + m.group(1) + '÷' + m.replaceFirst(m.group(2));
+				else
+					txt = m.replaceFirst(m.group(2));
 				if("b".equals(m.group(1)))
 					bold = true;
 				else if("i".equals(m.group(1)))

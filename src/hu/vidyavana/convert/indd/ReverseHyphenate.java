@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 public class ReverseHyphenate
 {
+	static boolean optionalHyphensOnly = true;
 	static Pattern pairs = Pattern.compile("^(.*?)\\t(.*)");
 	static Pattern hyphen = Pattern.compile("[-÷]");
 	static Pattern multiHyphens = Pattern.compile("[-÷]{2,}");
@@ -78,7 +79,7 @@ public class ReverseHyphenate
 		int ix = wordBuffer.indexOf("÷");
 		if(ix > 0)
 			optHyph = true;
-		else
+		else if(!optionalHyphensOnly)
 			ix = wordBuffer.indexOf("-");
 		if(ix > 0)
 		{
