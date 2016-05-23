@@ -1,11 +1,13 @@
 package hu.vidyavana.convert.ed;
 
-import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
+import hu.vidyavana.convert.api.*;
+import hu.vidyavana.convert.api.WriterInfo.SpecialFile;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import hu.vidyavana.convert.api.*;
-import hu.vidyavana.convert.api.WriterInfo.SpecialFile;
+
+import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
 
 public class EdFileProcessor implements FileProcessor
 {
@@ -120,6 +122,10 @@ public class EdFileProcessor implements FileProcessor
 					toc.close();
 					return;
 				}
+
+				if(ProofreadWords.ACTIVE) {
+					writerInfo.proofreadWords.writeFiles(destDir, writerInfo);
+				}
 				
 				toc.write("  </entries>\r\n");
 				toc.write("  <files>\r\n");
@@ -184,6 +190,7 @@ public class EdFileProcessor implements FileProcessor
 			// use short instead of byte to work around signed byte handling
 			short[] line = new short[100000];
 			int ptr = 0;
+			boolean emptyLine = true;
 			while(true)
 			{
 				int c = is.read();
@@ -191,7 +198,12 @@ public class EdFileProcessor implements FileProcessor
 				{
 					while(ptr>0 && line[ptr-1]==' ') --ptr;
 					if(ptr > 0)
-						processLine(line, ptr);
+					{
+						processLine(line, ptr, emptyLine);
+						emptyLine = false;
+					}
+					else
+						emptyLine = true;
 					if(c < 0) break;
 					ptr = 0;
 					++lineNumber;
@@ -205,11 +217,11 @@ public class EdFileProcessor implements FileProcessor
 	}
 	
 	
-	private void processLine(short[] line, int length)
+	private void processLine(short[] line, int length, boolean paraStartLine)
 	{
 		// handle tags at the beginning of lines
 		nextPos = 0;
-		if(line[0] == '@')
+		if(line[0] == '@' && paraStartLine)
 		{
 			// close previous tag
 			if(superscript)
@@ -246,6 +258,9 @@ public class EdFileProcessor implements FileProcessor
 			{
 				// info or content tags
 				para = new Paragraph();
+				para.srcStyle = tagStr;
+				para.srcFileName = srcFileName;
+				para.srcFileLine = lineNumber;
 				String tagName = currentTag.name();
 				switch(currentTag)
 				{
@@ -282,7 +297,7 @@ public class EdFileProcessor implements FileProcessor
 				if(currentAlias == EdTags.info)
 				{
 					para.isInfo = true;
-					para.tagName = tagName;
+					para.xmlTagName = tagName;
 				}
 	
 				// book text is p tag with a class attribute
@@ -558,7 +573,7 @@ public class EdFileProcessor implements FileProcessor
 						// disregard, only expect this in script
 						if(!currentTag.name().startsWith("sans") && 
 							!currentTag.name().startsWith("ben"))
-								throw new IllegalStateException(String.format("ERROR: <\\d+> formazas a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
+								throw new IllegalStateException(String.format("ERROR: <%d> formazas a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
 					}
 					
 					if(c == '>' || pos>=length)

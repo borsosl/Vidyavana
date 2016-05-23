@@ -1,5 +1,7 @@
 package hu.vidyavana.search.api;
 
+import hu.vidyavana.convert.api.DiacriticLowercase;
+
 public class QueryTokenizer extends TransliterationTokenizer
 {
 	public static final String queryCharStr = "*\"-!|?()/~^";
@@ -15,7 +17,7 @@ public class QueryTokenizer extends TransliterationTokenizer
 	@Override
 	protected boolean isTokenChar(int c)
 	{
-		return lowercase(c) != 0 || isQueryChar(c);
+		return DiacriticLowercase.chr(c) != 0 || isQueryChar(c);
 	}
 
 }

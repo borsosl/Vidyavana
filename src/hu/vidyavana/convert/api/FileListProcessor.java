@@ -47,6 +47,10 @@ public class FileListProcessor
 				}
 			}
 		}
+		catch (Throwable ex)
+		{
+			ex.printStackTrace();
+		}
 		finally
 		{
 			processor.finish();

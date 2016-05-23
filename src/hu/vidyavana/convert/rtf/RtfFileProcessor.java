@@ -104,35 +104,6 @@ public class RtfFileProcessor implements FileProcessor
 		if(toc != null)
 			try
 			{
-				if(writerInfo.diacritics != null)
-				{
-					toc.close();
-					toc = writerInfo.toc = new OutputStreamWriter(new FileOutputStream(tocFile), "UTF-8");
-					for(Map.Entry<String, Object> e : writerInfo.diacritics.entrySet())
-					{
-						String value = "";
-						if(e.getValue() instanceof String)
-						{
-							value = (String) e.getValue();
-							if(e.getKey().equals(value))
-								continue;
-						}
-						else
-						{
-							TreeSet<String> set = (TreeSet) e.getValue();
-							for(String w : set)
-								value += w + '|';
-							value = value.substring(0, value.length()-1);
-						}
-						toc.write(e.getKey());
-						toc.write("=");
-						toc.write(value);
-						toc.write("\r\n");
-					}
-					toc.close();
-					return;
-				}
-				
 				toc.write("  </entries>\r\n");
 				toc.write("  <files>\r\n");
 				for(String fname : writerInfo.fileNames)

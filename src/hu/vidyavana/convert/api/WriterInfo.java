@@ -29,7 +29,7 @@ public class WriterInfo
 			
 		}
 	}
-	
+
 	public File srcFile;
 	public File xmlFile;
 	public List<String> fileNames;
@@ -48,4 +48,5 @@ public class WriterInfo
 	public int tocDivisionParaOrdinal;
 	
 	public TreeMap<String, Object> diacritics/* = new TreeMap<>()*/;		// uncomment for collect diacritics function
+	public ProofreadWords proofreadWords = new ProofreadWords();
 }

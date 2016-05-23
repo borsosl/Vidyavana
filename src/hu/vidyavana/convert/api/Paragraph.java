@@ -6,13 +6,17 @@ import java.io.Writer;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class Paragraph
 {
+	public static Pattern WORD = Pattern.compile("[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰāīūḍḥḷḹṁṅṇñṛṝṣśṭĀĪŪḌḤḶḸṀṄṆÑṚṜṢŚṬ]+");
+
 	public boolean isInfo;
-	public String tagName;
+	public String srcStyle;
+	public String xmlTagName;
 	public ParagraphClass cls;
 	public ParagraphStyle style;
 	public Paragraph prev;
@@ -20,13 +24,14 @@ public class Paragraph
 	public int indent;
 	public StringBuilder text = new StringBuilder();
 	public List<String> footnote = new ArrayList<String>();
-	public static Pattern WORD = Pattern.compile("[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰāīūḍḥḷḹṁṅṇñṛṝṣśṭĀĪŪḌḤḶḸṀṄṆÑṚṜṢŚṬ]+");
-	
+	public String srcFileName;
+	public int srcFileLine;
+
 	
 	public void addToDocument(Document doc, Element parent)
 	{
-		if(tagName==null) tagName = "p";
-		Element para = doc.createElement(tagName);
+		if(xmlTagName ==null) xmlTagName = "p";
+		Element para = doc.createElement(xmlTagName);
 		parent.appendChild(para);
 		
 		if(cls != null)
@@ -47,15 +52,15 @@ public class Paragraph
 	public void writeToFile(WriterInfo writerInfo) throws IOException
 	{
 		Writer out = writerInfo.out;
-		if(tagName==null) tagName = "p";
-		if("p".equals(tagName))
+		if(xmlTagName ==null) xmlTagName = "p";
+		if("p".equals(xmlTagName))
 			++writerInfo.paraOrdinal;
 		Book.indent(writerInfo);
 		int indentLevel = writerInfo.indentLevel;
 		int len = indentLevel * Book.XML_INDENT.length();
 		out.write('<');
-		out.write(tagName);
-		len += tagName.length()+1;
+		out.write(xmlTagName);
+		len += xmlTagName.length()+1;
 		if(cls != null)
 		{
 			out.write(" class=\"");
@@ -107,7 +112,7 @@ public class Paragraph
 			Book.indent(writerInfo);
 		}
 		out.write("</");
-		out.write(tagName);
+		out.write(xmlTagName);
 		out.write(">\r\n");
 	}
 
@@ -118,6 +123,10 @@ public class Paragraph
 		{
 			collectDiacritics(txt, writerInfo);
 			return;
+		}
+
+		if(ProofreadWords.ACTIVE) {
+			writerInfo.proofreadWords.collect(this, txt);
 		}
 
 		txt = txt.replace("&", "&amp;");

@@ -30,6 +30,8 @@ public enum EdTags
 	ch_title_fb("ch title fb"),
 	ch_title_fm("ch title fm"),
 	ch_title_1("ch title 1"),
+	ch_title_10("ch title 10"),
+	ch_title_18("ch title 18"),
 	ch_title_i("ch title i"),
 	ch_verse("ch verse"),
 	chapter("chapter", Fejezetszam),
@@ -63,6 +65,7 @@ public enum EdTags
 	dev3("dev3"),
 	dev3b("dev3b"),
 	dev3e("dev3e"),
+	dev_uvaca("dev uvaca"),
 	devanagari("devanagari"),
 	ds_title("ds title"),
 	end("end"),
@@ -108,6 +111,7 @@ public enum EdTags
 	p_tab("p tab"),
 	para_2_orp("para 2 orp"),
 	para_no_break("para no break"),
+	picture("picture"),
 	poem("poem"),
 	poem_nr("poem nr"),
 	pp_tab("pp tab"),
@@ -205,7 +209,7 @@ public enum EdTags
 			chapter_p1, chapter_p2, chapter_m1},
 		{chapter_title,
 			chapter_spec, chapter_more, chapter_nospa, ch_title_f, ch_title_f2, ch_title_fb, ch_title_fm,
-			ch_title_1, ch_title_i, ds_title, intro, history, history_no},
+			ch_title_1, ch_title_10, ch_title_18, ch_title_i, ds_title, intro, history, history_no},
 		{text},
 		{sans_uvaca,
 			sansuvaca},
@@ -253,7 +257,7 @@ public enum EdTags
 			book_title, lila, chaptno, chapt_no, chapter_head, textno},
 		{unhandled,
 			benbo, benro, cantno, ch_line, /* dev...*/ eop, foot_line, line,
-			pr_pic, /* push...*/ sign_eps, special, wa_number}};
+			picture, pr_pic, /* push...*/ sign_eps, special, wa_number}};
 
 	
 	public static TreeMap<String, EdTags> map = new TreeMap<>();
