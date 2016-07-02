@@ -1,5 +1,7 @@
 package hu.vidyavana.convert.indd;
 
+import hu.vidyavana.convert.api.*;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -7,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import hu.vidyavana.convert.api.*;
 
 public class InddFileProcessor implements FileProcessor
 {
@@ -28,6 +29,7 @@ public class InddFileProcessor implements FileProcessor
 	// SOI eng: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{14, 34, 44, 72, 78}));
 	// NVM eng 1: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26}));
 	// NVM eng 6: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{806}));
+	// NVM hun 1: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{28,628}));
 	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{}));
 	// NPH hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
 	// KS eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,64,121,171,443,481,508}));
@@ -35,6 +37,7 @@ public class InddFileProcessor implements FileProcessor
 	// SBC hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{22,687}));
 	// SG eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{65}));
 	// NVM eng 1: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18}));
+	// NVM hun 1: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{24}));
 	private int chapterDigits = 2;
 	private String endNoteFileName = "99";
 	// NPH: private String endNoteFileName = "22";

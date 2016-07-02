@@ -101,6 +101,11 @@ public class ReverseHyphenate
 					mod = hyphen.matcher(simpler).replaceAll("");
 					put(simpler, mod);
 				}
+				else if("_".equals(s))
+				{
+					mod = simpler.replace('÷', '-');
+					put(simpler, mod);
+				}
 				else if("X".equals(s))
 					throw new RuntimeException("Hyphenate input aborted.");
 				else if(s.length()>1)
