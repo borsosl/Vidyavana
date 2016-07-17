@@ -1,5 +1,5 @@
 
-/** @type {{toc: TocTreeItem, maxTocId: number, justRegistered: boolean, downtime: string, serviceTag: string}} */
+/** @type {{toc: TocTreeItem, maxTocId: number, justRegistered: boolean, downtime: string, serviceTag: string, ref: function}} */
 var pg;
 
 /**

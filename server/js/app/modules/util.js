@@ -215,6 +215,15 @@ function resizeContent() {
 }
 
 
+function cookie(key, value) {
+    if(value === undefined) {
+        value = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
+        return value ? value.pop() : '';
+    }
+    document.cookie = encodeURIComponent(key) + "=" + encodeURIComponent(value) + '; path=/';
+}
+
+
 $.extend(exports, {
     toggleMenu: toggleMenu,
     isMenuVisible: isMenuVisible,
@@ -228,5 +237,6 @@ $.extend(exports, {
     downtimeMsg: downtimeMsg,
     menuModifier: menuModifier,
     resizeEvent: resizeEvent,
-    resizeContent: resizeContent
+    resizeContent: resizeContent,
+    cookie: cookie
 });

@@ -38,9 +38,14 @@ input[type="text"], input[type="password"], input[type="email"]
     border-radius: 0.3em;
 }
 
-input:focus
+input:focus, div:focus
 {
     outline: 0;
+}
+
+a:focus, input[type="radio"]:focus
+{
+	outline: 1px dotted #292207;
 }
 
 html, select, option, .cover
@@ -74,6 +79,10 @@ html, input, select, option, button, .button-rows
 body
 {
 	margin: 10px 10px 0;
+}
+
+a {
+	color: #292207;
 }
 
 #header
@@ -466,6 +475,12 @@ body
 .long-ref
 {
 	margin: 1em 0;
+}
+
+.hitlist-table td
+{
+	padding: 0.1em 0.1em 0.5em;
+	vertical-align: top;
 }
 
 .hilite

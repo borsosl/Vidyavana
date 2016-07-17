@@ -5,8 +5,7 @@ var task = require('./task');
 var load = require('./load');
 var search = require('./search');
 
-$(window).keydown(function(e)
-{
+$(window).keydown(function(e) {
     var c = e.keyCode;
     if(c === 39)     		    // right
     {
@@ -14,7 +13,16 @@ $(window).keydown(function(e)
             load.text(load.mode.down);
     }
     else if(c === 13)		    // enter
-        load.thisNextSection();
+    {
+        var ae = document.activeElement;
+        if(ae && ae.onclick)
+            ae.onclick();
+        else {
+            var sr = search.get();
+            if(!sr || !sr.last() || sr.last().endHit == -1)
+                load.currentOrNextSection();
+        }
+    }
     else if(c === 8)	    	// backspace
     {
         if(page.bookId())

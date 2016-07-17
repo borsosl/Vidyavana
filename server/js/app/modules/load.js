@@ -17,8 +17,7 @@ var lastReqTime;
  * scroll direction that started the request.
  * @param {number} mode - one of {@link loadMode}
  */
-function text(mode)
-{
+function text(mode) {
     if(lastReqTime && lastReqTime > Date.now()-60000)
         return;
     var m = loadMode;
@@ -48,7 +47,8 @@ function text(mode)
                 var ps = search.pending();
                 data = {
                     q: ps.query(),
-                    sort: ps.sort()
+                    sort: ps.sort(),
+                    page: ps.page()
                 };
                 return searchUrl;
             case m.nextHit:
@@ -57,7 +57,9 @@ function text(mode)
                     return null;
                 var sr = search.get();
                 var last = sr.last();
-                var hit = last.hit + (mode == m.nextHit ? 1 : -1);
+                var hit = last.startHit + (mode == m.nextHit ? sr.page() : -sr.page());
+                if(hit < 0 && hit > -sr.page())     // visszafelé 0 és 1 oldalnyi közöttről indulva
+                    hit = 0;
                 if(hit >= 0 && hit < last.hitCount)
                     return searchUrl + '/hit/' + last.id + '/' + hit;
                 return null;
@@ -97,19 +99,23 @@ function text(mode)
 }
 
 
-function thisNextSection()
-{
-    if(page.isSearchResult())
-    {
+function currentOrNextSection() {
+    if(page.isSearchResult()) {
         toc.selectedSection(search.get().last().display.tocId);
         text(loadMode.section);
-    }
-    else if(page.bookId())
+    } else if(page.bookId())
         text(loadMode.next);
+}
+
+/** @param {number} tocId */
+function hitlistClick(tocId) {
+    toc.selectedSection(tocId);
+    text(loadMode.section);
 }
 
 $.extend(exports, {
     mode: loadMode,
     text: text,
-    thisNextSection: thisNextSection
+    currentOrNextSection: currentOrNextSection,
+    hitlistClick: hitlistClick
 });

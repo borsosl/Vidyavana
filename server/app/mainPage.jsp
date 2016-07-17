@@ -65,7 +65,7 @@ User user = (User) session.getAttribute("user");
 	</div>
 
 	<div id="content" class="autoScroll">
-		<div id="text">
+		<div id="text" tabindex="0">
 		</div>
 		<div class="button-rows">
 			<div id="text-buttons">
@@ -96,6 +96,16 @@ User user = (User) session.getAttribute("user");
 			<input type="radio" name="sort" value="Score" id="score-order" checked>&nbsp;Fontosság
 			&nbsp;
 			<input type="radio" name="sort" value="Index">&nbsp;Szakasz
+		</div>
+		<div class="top10 font80" id="search-paging">
+		    Oldalanként:&nbsp;
+			<input type="radio" name="spage" value="1" checked>&nbsp;1
+			&nbsp;
+			<input type="radio" name="spage" value="10">&nbsp;10
+			&nbsp;
+			<input type="radio" name="spage" value="20">&nbsp;20
+			&nbsp;
+			<input type="radio" name="spage" value="50">&nbsp;50
 		</div>
 		<div id="search-msg">
 		</div>

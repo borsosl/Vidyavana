@@ -8,16 +8,19 @@ var search, pendingSearch;
 /** @type {boolean} - if a search-related message is visible */
 var searchMsgShown;
 
-function Search()
-{
+function Search() {
     /**
-     * @type {string} - originally entered text
+     * @type {string} - entered text
      */
     var query;
     /**
-     * @type {string} - originally selected order
+     * @type {string} - selected order
      */
     var _sort;
+    /**
+     * @type {number} - hitlist page size
+     */
+    var _page;
     /**
      * @type {SearchResponse} - details of last hit shown
      */
@@ -43,6 +46,18 @@ function Search()
         _sort = sort;
     }
 
+    /**
+     * @param {string?} page
+     * @return {number}
+     */
+    function pageFn(page) {
+        if(page === undefined)
+            return _page;
+        _page = Number(page);
+        if(isNaN(_page))
+            _page = 1;
+    }
+
 
     /**
      * @param {SearchResponse?} l
@@ -56,6 +71,7 @@ function Search()
 
     this.query = queryFn;
     this.sort = sortFn;
+    this.page = pageFn;
     this.last = lastFn;
 }
 
@@ -68,11 +84,17 @@ function accept() {
 /**
  * One-time setup of event handlers.
  */
-function init()
-{
+function init() {
     var $inp = $('#searchInput');
     /** @type {JQuery|Array.<HTMLInputElement>} */
     var $scoreOrder = $('#score-order');
+    var $searchPaging = $('#search-paging');
+
+    var spage = util.cookie('spage');
+    if(spage) {
+        $('input[value="'+spage+'"]', $searchPaging).prop('checked', true);
+    }
+
     $inp.keydown(function(e)
     {
         if(searchMsgShown)
@@ -82,7 +104,7 @@ function init()
         }
         if(e.keyCode == 13)
         {
-            newSearch($inp.val(), $scoreOrder[0].checked);
+            search();
         }
         if(!util.menuModifier(e))
             //noinspection JSUnresolvedFunction
@@ -90,13 +112,16 @@ function init()
     });
     $('#searchGo').click(function()
     {
-        newSearch($inp.val(), $scoreOrder[0].checked);
+        search();
     });
+
+    function search() {
+        newSearch($inp.val(), $scoreOrder[0].checked, $('input:checked', $searchPaging).val());
+    }
 }
 
 
-function newSearch(text, scoreOrder)
-{
+function newSearch(text, scoreOrder, page) {
     if(searchMsgShown)
     {
         $('#search-msg').hide();
@@ -105,7 +130,9 @@ function newSearch(text, scoreOrder)
     var ps = pendingSearch = new Search();
     ps.query(text);
     ps.sort(scoreOrder ? 'Score' : 'Index');
+    ps.page(page);
     load.text(load.mode.search);
+    util.cookie('spage', page);
 }
 
 

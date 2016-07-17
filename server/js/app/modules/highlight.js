@@ -28,9 +28,9 @@ for(i=0; i<TRANS.length; ++i)
  */
 function Highlight(queryStr)
 {
-    var paraRex = /<p.*?>(.*?)<\/p>/g;
-    var htmlRex = /(.*?)(<.*?>|&.*;|$)/g;
-    var whiteRex = /(.*?)( |$)/g;
+    var paraRex = /<p.*?>([^]*?)<\/p>/gm;
+    var htmlRex = /(.*?)(<.*?>|&.*;|$)/gm;
+    var whiteRex = /(.*?)( |$)/gm;
 
     var q = lowercase(queryStr);
     var soughtArrArr = words(q, true);
@@ -198,8 +198,10 @@ function Highlight(queryStr)
         {
             var htmlStart = htmlRex.lastIndex;
             var res = htmlRex.exec(pContent);
-            if(!res || !res[0])
+            if(!res || !res[0] && htmlRex.lastIndex >= pContent.length)
                 break;
+            if(!res[0])
+                ++htmlRex.lastIndex;
             if(!res[1])
                 continue;
             var toNextTag = res[1];

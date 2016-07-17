@@ -1,6 +1,7 @@
 ExpiresActive On
-ExpiresDefault "modification plus 1 month"
-ExpiresByType application/javascript "modification plus 1 week"
-ExpiresByType application/x-font-ttf "modification plus 1 year"
+ExpiresDefault "access plus 1 month"
+ExpiresByType text/css "access plus 1 day"
+ExpiresByType application/javascript "access plus 1 week"
+ExpiresByType application/x-font-ttf "access plus 1 year"
 
 Header unset ETag

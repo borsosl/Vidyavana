@@ -11,8 +11,7 @@ var search = require('./search');
  * @param {DisplayBlock|SearchResponse} json - loaded text details
  * @param {number} mode - one of {@link load.mode}
  */
-function text(json, mode)
-{
+function text(json, mode) {
     var isSearch = json.hitCount !== undefined;
     if(isSearch)
     {
@@ -34,14 +33,27 @@ function text(json, mode)
         page.init(display, false);
     page.load(display);
     var h = display.text;
+    var hitlist;
     if(h)
     {
         if(initPage)
         {
             dom.$formContent.hide();
             dom.$content.scrollTop(0);
-            if(isSearch)
-                dom.$txt.html('<div class="long-ref">'+(json.hit+1)+' / '+json.hitCount+' : '+display.longRef+'</div>'+h);
+            if(isSearch) {
+                var ref = '<div class="long-ref">'+(json.startHit+1);
+                if(json.endHit > -1) {
+                    hitlist = true;
+                    ref += '-' + json.endHit;
+                }
+                ref += ' / '+json.hitCount+' : ';
+                if(json.endHit == -1)
+                    ref += display.longRef;
+                ref += '</div>';
+                if(json.endHit > -1)
+                    h = hitlistMarkup(h);
+                dom.$txt.html(ref+h);
+            }
             else
                 dom.$txt.html(h);
             dom.$textBtns.toggle(!isSearch);
@@ -50,7 +62,7 @@ function text(json, mode)
         else
             dom.$txt.append(h);
         dom.$sectDown.toggle(page.next() !== null);
-        dom.$thisSect.toggle(page.isSearchResult());
+        dom.$thisSect.toggle(page.isSearchResult() && json.endHit == -1);
 
         if(!display.shortRef)
             display.shortRef = '';
@@ -58,11 +70,26 @@ function text(json, mode)
         dom.$menuShortRef.text(display.shortRef);
         util.refreshMenu();
 
-        if(highlight.get())
-            highlight.get().run(h);
+        var hl = highlight.get();
+        if(hl)
+            hl.run(h);
+
+        if(hitlist)
+            $('a', dom.$txt).filter(':first').focus();
+        else {
+            dom.$txt.focus();
+            dom.$content.scrollTop(0);
+        }
     }
     if(isSearch && display.downtime)
         util.downtime(display.downtime);
+}
+
+function hitlistMarkup(h) {
+    h = h.replace(/<td><a (\d+)>/g, '<td><a href="#" onclick="pg.ref($1);">');
+    h = h.replace(/<\/td><td (\d+)>/g, '</td><td><p data-ix="$1">');
+    h = h.replace(/<\/td><\/tr>/g, '</p></td></tr>');
+    return h;
 }
 
 

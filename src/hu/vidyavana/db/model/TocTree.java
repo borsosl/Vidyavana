@@ -271,7 +271,7 @@ public class TocTree
 	}
 
 
-	public static String[] refs(TocTreeItem node)
+	public static String[] refs(TocTreeItem node, boolean needLong)
 	{
 		List<String> abbrevs = new ArrayList<>();
 		List<String> titles = new ArrayList<>();
@@ -280,7 +280,7 @@ public class TocTree
 		{
 			if(node.abbrev != null)
 				abbrevs.add(node.abbrev);
-			if(node.title != null)
+			if(needLong && node.title != null)
 			{
 				String t = node.title;
 				int ix = t.indexOf('ǀ');
@@ -298,11 +298,14 @@ public class TocTree
 		if(sbShort.length() > 1)
 			sbShort.setLength(sbShort.length()-1);
 
-		StringBuilder sbLong = new StringBuilder(len);
-		for(int i = titles.size()-1; i>=0; --i)
-			sbLong.append(titles.get(i)).append(", ");
-		if(sbLong.length() > 2)
-			sbLong.setLength(sbLong.length()-2);
-		return new String[]{sbShort.toString(), sbLong.toString()};
+		StringBuilder sbLong = null;
+		if(needLong) {
+			sbLong = new StringBuilder(len);
+			for(int i = titles.size()-1; i>=0; --i)
+				sbLong.append(titles.get(i)).append(", ");
+			if(sbLong.length() > 2)
+				sbLong.setLength(sbLong.length()-2);
+		}
+		return new String[]{sbShort.toString(), needLong ? sbLong.toString() : null};
 	}
 }

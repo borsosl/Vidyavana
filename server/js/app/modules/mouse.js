@@ -46,7 +46,7 @@ $('.prev-sect').click(function()
         load.text(load.mode.prev);
 });
 
-$('.next-sect').click(load.thisNextSection);
+$('.next-sect').click(load.currentOrNextSection);
 
 dom.$sectDown.click(function()
 {
@@ -70,4 +70,4 @@ $('#info-icon').click(function()
     util.downtimeMsg();
 });
 
-dom.$thisSect.click(load.thisNextSection);
+dom.$thisSect.click(load.currentOrNextSection);

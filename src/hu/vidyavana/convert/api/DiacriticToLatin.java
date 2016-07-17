@@ -1,7 +1,7 @@
 package hu.vidyavana.convert.api;
 
 
-public class DiacriticToLatinPairs
+public class DiacriticToLatin
 {
 	static int[] pair = {
 		'ā', 'a',
@@ -51,5 +51,21 @@ public class DiacriticToLatinPairs
 	public static int convert(int c)
 	{
 		return table[c];
+	}
+
+	public static String convert(String word) {
+		return convert(new StringBuilder(), word);
+	}
+
+	public static String convert(StringBuilder sb, String word) {
+		sb.setLength(0);
+		int len = word.length();
+		for(int j = 0; j < len; ++j)
+        {
+            char orig = word.charAt(j);
+            int latin = convert(orig);
+            sb.append(latin == 0 ? (char) orig : (char) latin);
+        }
+		return sb.toString();
 	}
 }

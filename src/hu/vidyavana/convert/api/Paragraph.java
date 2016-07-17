@@ -1,14 +1,15 @@
 package hu.vidyavana.convert.api;
 
-import static hu.vidyavana.convert.api.ParagraphClass.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import static hu.vidyavana.convert.api.ParagraphClass.*;
 
 public class Paragraph
 {
@@ -168,15 +169,7 @@ public class Paragraph
 			if(m.find(ix))
 			{
 				String w = m.group().toLowerCase();
-				sb.setLength(0);
-				int len = w.length();
-				for(int j = 0; j < len; ++j)
-				{
-					char orig = w.charAt(j);
-					int latin = DiacriticToLatinPairs.convert(orig);
-					sb.append(latin == 0 ? (char) orig : (char) latin);
-				}
-				String latin = sb.toString().toLowerCase();
+				String latin = DiacriticToLatin.convert(sb, w).toLowerCase();
 				if(cls == Vers || cls == Proza || cls == TorzsVers || !latin.equals(w))
 				{
 					Object stored = writerInfo.diacritics.get(latin);

@@ -3,6 +3,7 @@ var util = require('./modules/util');
 var task = require('./modules/task');
 var toc = require('./modules/toc');
 var search = require('./modules/search');
+var load = require('./modules/load');
 
 var initd = false;
 
@@ -11,6 +12,7 @@ function init()
     if(initd)
         return;
     dom.init();
+    pg.ref = load.hitlistClick;
     if(pg.justRegistered)
         util.message('A regisztráció véglegesítéséhez<br/>kiküldtünk egy ellenőrző e-mailt.<br/>', true);
     if(pg.downtime)

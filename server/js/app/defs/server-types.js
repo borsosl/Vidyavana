@@ -18,11 +18,11 @@
  * @typedef {Object} SearchResponse
  * @property {number} id
  * @property {*} hitCount
- * @property {number} hit
+ * @property {number} startHit
+ * @property {number} endHit
  * @property {number} ordinal
  * @property {DisplayBlock} display
  * @property {Array.<HitResponse>} hits?
- * @property {number} startHit
  */
 
 /**

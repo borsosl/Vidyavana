@@ -1,12 +1,5 @@
 package hu.vidyavana.web.ctrl;
 
-import static hu.vidyavana.convert.api.ParagraphClass.*;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.DirectoryReader;
 import hu.vidyavana.convert.api.ParagraphClass;
 import hu.vidyavana.db.model.*;
 import hu.vidyavana.search.api.Lucene;
@@ -15,10 +8,20 @@ import hu.vidyavana.search.model.Search;
 import hu.vidyavana.search.model.Search.Order;
 import hu.vidyavana.search.model.SearchResponse;
 import hu.vidyavana.search.task.SearchTask;
+import hu.vidyavana.search.util.HitListEntry;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.util.Timing;
 import hu.vidyavana.web.RequestInfo;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static hu.vidyavana.convert.api.ParagraphClass.*;
 
 
 public class TextContentController
@@ -51,6 +54,7 @@ public class TextContentController
 	{
 		String q = ri.req.getParameter("q");
 		String sortStr = ri.req.getParameter("sort");
+		String pageStr = ri.req.getParameter("page");
 		Log.activity("Search task: " + q);
 		
 		Integer searchId = (Integer) ri.ses.getAttribute("searchId");
@@ -63,9 +67,14 @@ public class TextContentController
 		details.user = ri.user.name;
 		details.bookAccess = ri.user.access;
 		details.queryStr = q;
-		details.reqHits = 1000;
+		details.reqHits = 100;
 		details.fetchHits = 1000;
 		details.order = sortStr == null ? Order.Score : Order.valueOf(sortStr);
+		try {
+			details.page = Integer.valueOf(pageStr);
+		} catch (NumberFormatException ex) {
+			details.page = 1;
+		}
 		Timing.start();
 		Globals.searchExecutors.submit(new SearchTask(details)).get();
 		Timing.stop("Search", Log.instance());
@@ -82,16 +91,24 @@ public class TextContentController
 		smap.put(details.id, details);
 		// TODO put search ref into linked lists for timing out and freeing resources
 
-		Hit hit = details.hits.get(0);
-		int bookSegmentId = hit.segment<<16 | hit.plainBookId;
-		res.display = textForOnePara(ri.toc, bookSegmentId, hit.ordinal);
+		if(details.page == 1) {
+			Hit hit = details.hits.get(0);
+			int bookSegmentId = hit.segment<<16 | hit.plainBookId;
+			res.endHit = -1;
+			res.display = textForOnePara(ri.toc, bookSegmentId, hit.ordinal);
+		} else {
+			// make sure enough hit data is fetched for allowed page sizes
+			int end = details.page > res.hitCount ? res.hitCount : details.page;
+			res.endHit = end;
+			res.display = textForHitList(details, 0, end, ri.toc);
+		}
 	}
 
-	
+
 	private void hit(RequestInfo ri) throws Exception
 	{
 		int searchId = Integer.parseInt(ri.args[3]);
-		int hitNum = Integer.parseInt(ri.args[4]);
+		int hitOrdinal = Integer.parseInt(ri.args[4]);
 		Map<Integer, Search> smap = getSessionSearchMap(ri);
 		Search details = smap.get(searchId);
 
@@ -99,48 +116,49 @@ public class TextContentController
 		ri.ajaxResult = res;
 		if(details == null)
 		{
-			res.hit = -1;
+			res.startHit = res.endHit = -1;
 			return;
 		}
 
+		int endOrdinal = hitOrdinal + details.page;
+		if(endOrdinal > details.hitCount)
+			endOrdinal = details.hitCount;
+
 		// tomcat restarted or requested hit out of fetched range
-		if(details.hits == null || details.hits.size() <= hitNum)
+		if(details.hits == null || details.hits.size() < endOrdinal)
 		{
 			details.bookAccess = ri.user.access;
-			details.fetchHits = hitNum + 1000;
-			details.reqHits = hitNum + 1000;
+			details.fetchHits = hitOrdinal + 1000;
+			details.reqHits = hitOrdinal + 100;
 			Timing.start();
 			Globals.searchExecutors.submit(new SearchTask(details)).get();
 			Timing.stop("Re-search", Log.instance());
 		}
 
-		Hit hit = details.hits.get(hitNum);
-		if(hit.plainBookId == 0)
-		{
-			DirectoryReader reader = Lucene.SYSTEM.reader();
-			Document doc = reader.document(hit.docId);
-			SearchTask.hitDataFromDoc(doc, hit);
+		for(int i = hitOrdinal; i < endOrdinal; ++i) {
+			Hit hit = details.hits.get(i);
+			if(hit.plainBookId == 0)
+			{
+				DirectoryReader reader = Lucene.SYSTEM.reader();
+				Document doc = reader.document(hit.docId);
+				SearchTask.hitDataFromDoc(doc, hit);
+			}
 		}
 
-		int bookSegmentId = hit.segment<<16 | hit.plainBookId;
-		res.id = details.id;
 		res.hitCount = details.hitCount;
-		res.hit = hitNum;
-		res.display = textForOnePara(ri.toc, bookSegmentId, hit.ordinal);
-	}
-
-	protected Map<Integer, Search> getSessionSearchMap(RequestInfo ri)
-	{
-		Map<Integer, Search> smap = (Map<Integer, Search>) ri.ses.getAttribute("searchMap");
-		if(smap == null)
-		{
-			smap = new HashMap<>();
-			ri.ses.setAttribute("searchMap", smap);
+		res.id = details.id;
+		res.startHit = hitOrdinal;
+		if(details.page == 1) {
+			Hit hit = details.hits.get(hitOrdinal);
+			int bookSegmentId = hit.segment<<16 | hit.plainBookId;
+			res.endHit = -1;
+			res.display = textForOnePara(ri.toc, bookSegmentId, hit.ordinal);
+		} else {
+			res.endHit = endOrdinal;
+			res.display = textForHitList(details, hitOrdinal, endOrdinal, ri.toc);
 		}
-		return smap;
 	}
 
-	
 	private void follow(RequestInfo ri)
 	{
 		int tocId = Integer.parseInt(ri.args[2]);
@@ -154,7 +172,7 @@ public class TextContentController
 		ri.ajaxResult = text(ri.toc, node, start);
 	}
 
-	
+
 	private void section(RequestInfo ri)
 	{
 		String dir = ri.args[2];
@@ -170,13 +188,13 @@ public class TextContentController
 			case "go":
 				id = ri.toc.checkTocIdRange(id, false);
 				node = ri.toc.findNodeById(id);
-				while(node.prev != null && node.prev == node.parent && 
+				while(node.prev != null && node.prev == node.parent &&
 					(node.prev.ordinal < 0 || node.prev.ordinal >= node.ordinal-3))
 						node = node.prev;
 				break;
 			case "next":
 				node = ri.toc.findNodeById(id);
-				while(node.next != null && node.next.parent == node && 
+				while(node.next != null && node.next.parent == node &&
 					(node.ordinal < 0 || node.ordinal >= node.next.ordinal-3))
 						node = node.next;
 				if(node.next != null)
@@ -192,7 +210,7 @@ public class TextContentController
 		ri.ajaxResult = text(ri.toc, node, ord);
 	}
 
-	
+
 	private DisplayBlock text(TocTree toc, TocTreeItem node, int start)
 	{
 		DisplayBlock db = new DisplayBlock();
@@ -232,7 +250,7 @@ public class TextContentController
 				start = 0;
 			db.bookSegmentId = bookSegmentId;
 			db.tocId = origTocNode.id;
-			db.shortRef = TocTree.refs(node)[0];
+			db.shortRef = TocTree.refs(node, false)[0];
 			StringBuilder sb = new StringBuilder(RESPONSE_CHARS + 20000);
 			int last = start;
 			int len = 0;
@@ -304,7 +322,7 @@ public class TextContentController
 		return db;
 	}
 
-	
+
 	private DisplayBlock textForOnePara(TocTree toc, int bookSegmentId, int ordinal)
 	{
 		DisplayBlock db = new DisplayBlock();
@@ -312,7 +330,7 @@ public class TextContentController
 		db.bookSegmentId = bookSegmentId;
 		db.tocId = tocNode.id;
 		db.last = -1;
-		String[] refs = TocTree.refs(tocNode);
+		String[] refs = TocTree.refs(tocNode, true);
 		db.shortRef = refs[0];
 		db.longRef = refs[1];
 		Storage store = Storage.SYSTEM;
@@ -336,7 +354,7 @@ public class TextContentController
 					if(i == 0)
 					{
 						para = seg.readRange(store.handle, ordinal+1, ordinal+3);
-						ParagraphClass canFollow = p.cls == Uvaca ? Vers : 
+						ParagraphClass canFollow = p.cls == Uvaca ? Vers :
 							p.cls == ParagraphClass.TorzsUvaca ? TorzsVers : Hivatkozas;
 						p = para.get(i);
 						if(p.cls != canFollow)
@@ -367,9 +385,68 @@ public class TextContentController
 		return db;
 	}
 
+
+	private DisplayBlock textForHitList(Search details, int start, int end, TocTree toc) {
+		Timing.start();
+		DisplayBlock db = new DisplayBlock();
+		db.last = -1;
+		Storage store = Storage.SYSTEM;
+
+		StringBuilder sb = new StringBuilder((end-start) * 500);
+		sb.append("<table class=\"hitlist-table\">");
+		HitListEntry hitListEntry = new HitListEntry(80);
+		for(int i = start; i<end; ++i) {
+			Hit hit = details.hits.get(i);
+			int bookSegmentId = hit.segment<<16 | hit.plainBookId;
+			TocTreeItem tocNode = toc.findNodeByOrdinal(bookSegmentId, hit.ordinal);
+			String shortRef = TocTree.refs(tocNode, false)[0];
+			sb.append("<tr><td><a ")
+					.append(tocNode.id)
+					.append(">")
+					.append(shortRef)
+					.append("</a></td><td ")
+					.append(i)
+					.append('>');
+			BookSegment seg = store.segment(bookSegmentId);
+			try
+			{
+				List<StoragePara> para = seg.readRange(store.handle, hit.ordinal, hit.ordinal+1);
+				StoragePara p = para.get(0);
+				sb.append(hitListEntry.create(p.text, details.queryStr, verseBlock(p), boldParagraph(p)));
+			}
+			catch(IOException ex)
+			{
+				throw new RuntimeException("Hit list request", ex);
+			}
+			sb.append("</td></tr>\n");
+		}
+		sb.append("</table>");
+
+		db.text = sb.toString();
+		db.downtime = Globals.downtime;
+		Timing.stop("Hit list ("+details.page+")", Log.instance());
+		return db;
+	}
+
 	private boolean verseBlock(StoragePara p)
 	{
 		return p.cls == Vers || p.cls == Uvaca || p.cls == TorzsVers || p.cls == TorzsUvaca
-			|| p.cls == Hivatkozas;
+				|| p.cls == Hivatkozas;
+	}
+
+	private boolean boldParagraph(StoragePara p)
+	{
+		return p.cls.name().toLowerCase().contains("cim")  || p.cls == Forditas;
+	}
+
+	private Map<Integer, Search> getSessionSearchMap(RequestInfo ri)
+	{
+		Map<Integer, Search> smap = (Map<Integer, Search>) ri.ses.getAttribute("searchMap");
+		if(smap == null)
+		{
+			smap = new HashMap<>();
+			ri.ses.setAttribute("searchMap", smap);
+		}
+		return smap;
 	}
 }
