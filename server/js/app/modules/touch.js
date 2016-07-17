@@ -8,15 +8,15 @@ if(cs.android || cs.ios || cs.iphone || cs.ipad || cs.winMobile)
     $(window).on('swipeleft', function()
     {
         if(page.isSearchResult())
-            load.text(load.mode.nextHit);
+            load.nextHit();
         else if(page.bookId())
-            load.text(load.mode.next);
+            load.nextSection();
 
     }).on('swiperight', function()
     {
         if(page.isSearchResult())
-            load.text(load.mode.prevHit);
+            load.prevHit();
         else if(page.bookId())
-            load.text(load.mode.prev);
+            load.prevSection();
     });
 }

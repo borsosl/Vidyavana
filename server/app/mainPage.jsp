@@ -30,16 +30,13 @@ User user = (User) session.getAttribute("user");
         <span id="info-icon">&nbsp;</span>
 
         <%-- Right aligned, priority --%>
-        <span class="mini-btn next-hit">
+        <span class="mini-btn switch-view" title="Nézet váltás (Enter)">
+            &harr;
+        </span>
+        <span class="mini-btn next-page" title="Következő oldal ( . | N+)">
             &raquo;
         </span>
-        <span class="mini-btn next-sect">
-            &rsaquo;
-        </span>
-        <span class="mini-btn prev-sect">
-            &lsaquo;
-        </span>
-        <span class="mini-btn prev-hit">
+        <span class="mini-btn prev-page" title="Előző oldal ( , | N-)">
             &laquo;
         </span>
 
@@ -69,14 +66,14 @@ User user = (User) session.getAttribute("user");
 		</div>
 		<div class="button-rows">
 			<div id="text-buttons">
-				<span class="btn prev-sect">&lsaquo; Előző szakasz (&#9668;) <span class="bsp-icon"></span></span>
-				<span id="sect-down" class="btn">Több betöltése (&#8594;) <span class="rgt-icon"></span></span>
-				<span class="btn next-sect">Köv. szakasz (&#8626;) &rsaquo;</span></span>
+				<span class="btn prev-page">&laquo; Előző (,)</span>
+				<span id="sect-down" class="btn">Több betöltése (&#8594;)</span>
+				<span class="btn next-page">Következő (.) &raquo;</span>
 			</div>
 			<div id="hit-buttons">
-				<span class="btn prev-hit">&laquo; Előző találat (,)</span>
+				<span class="btn prev-page">&laquo; Előző (,)</span>
 				<span id="this-sect" class="btn">Teljes szakasz (&#8626;)</span></span>
-				<span class="btn next-hit">Köv találat (.) &raquo;</span>
+				<span class="btn next-page">Következő (.) &raquo;</span>
 			</div>
 		</div>
 	</div>

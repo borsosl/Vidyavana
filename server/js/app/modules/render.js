@@ -57,7 +57,7 @@ function text(json, mode) {
             else
                 dom.$txt.html(h);
             dom.$textBtns.toggle(!isSearch);
-            dom.$hitBtns.toggle(!!search.get());
+            dom.$hitBtns.toggle(isSearch);
         }
         else
             dom.$txt.append(h);
@@ -76,10 +76,8 @@ function text(json, mode) {
 
         if(hitlist)
             $('a', dom.$txt).filter(':first').focus();
-        else {
-            dom.$txt.focus();
-            dom.$content.scrollTop(0);
-        }
+        else
+            util.focusText(initPage);
     }
     if(isSearch && display.downtime)
         util.downtime(display.downtime);

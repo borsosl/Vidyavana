@@ -10,23 +10,18 @@ $(window).keydown(function(e) {
     if(c === 39)     		    // right
     {
         if(!page.isSearchResult())
-            load.text(load.mode.down);
+            load.continuation();
     }
     else if(c === 13)		    // enter
     {
         var ae = document.activeElement;
         if(ae && ae.onclick)
             ae.onclick();
-        else {
-            var sr = search.get();
-            if(!sr || !sr.last() || sr.last().endHit == -1)
-                load.currentOrNextSection();
-        }
+        else
+            load.contextSwitch();
     }
     else if(c === 8)	    	// backspace
     {
-        if(page.bookId())
-            load.text(load.mode.prev);
         //noinspection JSUnresolvedFunction
         e.preventDefault();
     }
@@ -49,17 +44,12 @@ $(window).keydown(function(e) {
             util.toggleMenu(true);
         else
             util.dialog(-1, false);
+        util.focusText();
     }
     else if(c === 188 || c === 109)		    // , or -
-    {
-        if(search.get())
-            load.text(load.mode.prevHit);
-    }
+        load.contextPrev();
     else if(c === 190 || c === 107)		    // . or +
-    {
-        if(search.get())
-            load.text(load.mode.nextHit);
-    }
+        load.contextNext();
     else if(c === 88 && util.menuModifier(e))           // alt-x
         util.toggleMenu();
     else if(c === 80 && util.menuModifier(e))           // alt-p

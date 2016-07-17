@@ -55,6 +55,13 @@ function refreshMenu() {
 }
 
 
+function focusText(scrollToTop) {
+    dom.$txt.focus();
+    if(scrollToTop)
+        dom.$content.scrollTop(0);
+}
+
+
 /**
  * Shows server-side error and returns its presence.
  * @param {Object} json - result of any ajax
@@ -178,12 +185,12 @@ function downtime(text) {
     downtimeText = text;
     if(!text)
         text = '';
-    $('#info-icon').css('display', text ? 'inline-block' : 'none').attr('title', 'Karbantartás: '+text);
+    $('#info-icon').css('display', text ? 'inline-block' : 'none').attr('title', text);
 }
 
 
 function downtimeMsg() {
-    message('Karbantartási leállás ideje: ' + downtimeText + '<br/>', true);
+    message(downtimeText + '<br/>', true);
 }
 
 
@@ -228,6 +235,7 @@ $.extend(exports, {
     toggleMenu: toggleMenu,
     isMenuVisible: isMenuVisible,
     refreshMenu: refreshMenu,
+    focusText: focusText,
     javaError: javaError,
     ajaxError: ajaxError,
     message: message,

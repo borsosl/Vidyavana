@@ -7,7 +7,7 @@ var search = require('./search');
 var toc = require('./toc');
 
 /** @enum {number} - text request modes */
-var loadMode = {section: 1, down: 2, next: 3, prev: 4, search: 5, nextHit: 6, prevHit: 7};
+var loadMode = {section: 1, down: 2, next: 3, prev: 4, search: 5, currentHit: 6, nextHit: 7, prevHit: 8};
 /** @type {?number} - timestamp of last request to throttle connections */
 var lastReqTime;
 
@@ -35,8 +35,12 @@ function text(mode) {
             case m.section:
                 return sectionUrl + 'go/' + toc.selectedSection();
             case m.next:
+                if(!page.bookId())
+                    return null;
                 return sectionUrl + 'next/' + page.tocId();
             case m.prev:
+                if(!page.bookId())
+                    return null;
                 return sectionUrl + 'prev/' + page.tocId();
             case m.down:
                 var next = page.next();
@@ -51,13 +55,14 @@ function text(mode) {
                     page: ps.page()
                 };
                 return searchUrl;
+            case m.currentHit:
             case m.nextHit:
             case m.prevHit:
-                if(!search.get())
-                    return null;
                 var sr = search.get();
+                if(!sr)
+                    return null;
                 var last = sr.last();
-                var hit = last.startHit + (mode == m.nextHit ? sr.page() : -sr.page());
+                var hit = last.startHit + (mode == m.nextHit ? sr.page() : mode == m.prevHit ? -sr.page() : 0);
                 if(hit < 0 && hit > -sr.page())     // visszafelé 0 és 1 oldalnyi közöttről indulva
                     hit = 0;
                 if(hit >= 0 && hit < last.hitCount)
@@ -98,24 +103,74 @@ function text(mode) {
         highlight.init(search.pending().query());
 }
 
-
-function currentOrNextSection() {
-    if(page.isSearchResult()) {
-        toc.selectedSection(search.get().last().display.tocId);
-        text(loadMode.section);
-    } else if(page.bookId())
-        text(loadMode.next);
-}
-
 /** @param {number} tocId */
-function hitlistClick(tocId) {
+function loadSection(tocId) {
     toc.selectedSection(tocId);
     text(loadMode.section);
+}
+
+function currentHitSection() {
+    loadSection(search.get().last().display.tocId);
+}
+
+function currentHits() {
+    text(loadMode.currentHit);
+}
+
+function contextSwitch() {
+    if(page.isSearchResult()) {
+        if(!search.isHitlist())
+            currentHitSection();
+    } else
+        currentHits();
+}
+
+function prevSection() {
+    text(loadMode.prev);
+}
+
+function nextSection() {
+    text(loadMode.next);
+}
+
+function prevHit() {
+    text(loadMode.prevHit);
+}
+
+function nextHit() {
+    text(loadMode.nextHit);
+}
+
+function contextPrev() {
+    if(page.isSearchResult())
+        prevHit();
+    else
+        prevSection();
+}
+
+function contextNext() {
+    if(page.isSearchResult())
+        nextHit();
+    else
+        nextSection();
+}
+
+function continuation() {
+    text(loadMode.down);
 }
 
 $.extend(exports, {
     mode: loadMode,
     text: text,
-    currentOrNextSection: currentOrNextSection,
-    hitlistClick: hitlistClick
+    hitlistClick: loadSection,
+    currentHitSection: currentHitSection,
+    currentHits: currentHits,
+    contextSwitch: contextSwitch,
+    prevSection: prevSection,
+    nextSection: nextSection,
+    prevHit: prevHit,
+    nextHit: nextHit,
+    contextPrev: contextPrev,
+    contextNext: contextNext,
+    continuation: continuation
 });

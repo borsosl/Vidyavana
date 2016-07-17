@@ -5,7 +5,8 @@ function Page()
     var bookSegmentId;
     /** @type {number} - current TOC id */
     var tocId;
-    /** @type {number} - 1-based index of the next, unloaded paragraph. 0=fully loaded. -1=search render. */
+    /** @type {number} - 1-based index of the next, unloaded paragraph in current section.
+     *      0=fully loaded section. -1=search render. */
     var last;
 
 

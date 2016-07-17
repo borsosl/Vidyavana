@@ -40,34 +40,17 @@ $('#help-link, #menu-help-link').click(function()
     html.load('/app/dialog/html/help');
 });
 
-$('.prev-sect').click(function()
-{
-    if(page.bookId())
-        load.text(load.mode.prev);
-});
+$('.prev-page').click(load.contextPrev);
 
-$('.next-sect').click(load.currentOrNextSection);
+$('.next-page').click(load.contextNext);
 
-dom.$sectDown.click(function()
-{
-    load.text(load.mode.down);
-});
+$('.switch-view').click(load.contextSwitch);
 
-$('.prev-hit').click(function()
-{
-    if(search.get())
-        load.text(load.mode.prevHit);
-});
-
-$('.next-hit').click(function()
-{
-    if(search.get())
-        load.text(load.mode.nextHit);
-});
+dom.$sectDown.click(load.continuation);
 
 $('#info-icon').click(function()
 {
     util.downtimeMsg();
 });
 
-dom.$thisSect.click(load.currentOrNextSection);
+dom.$thisSect.click(load.currentHitSection);

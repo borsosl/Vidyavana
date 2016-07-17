@@ -142,6 +142,11 @@ function message(msg) {
 
 }
 
+
+function isHitlist() {
+    return getInstance().last().endHit > -1;
+}
+
 /**
  * @param {boolean?} pending
  * @return {Search}
@@ -156,5 +161,6 @@ $.extend(exports, {
     pending: getInstance.bind(null, true),
     init: init,
     accept: accept,
-    message: message
+    message: message,
+    isHitlist: isHitlist
 });
