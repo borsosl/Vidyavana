@@ -1,16 +1,17 @@
 package hu.vidyavana.web;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.web.ctrl.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 
 public class PanditServlet extends HttpServlet
 {
@@ -54,9 +55,7 @@ public class PanditServlet extends HttpServlet
     			ri.user = (User) ri.ses.getAttribute("user");
 			
     		ri.resp.setContentType("text/html; charset=UTF-8");
-    		ri.resp.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-    		ri.resp.addHeader("Cache-Control", "post-check=0, pre-check=0");
-    		ri.resp.setHeader("Pragma", "no-cache");
+    		ri.resp.setHeader("Cache-Control", "no-store");
     		ri.resp.setHeader("Expires", "-1");
 
     		String userInfo = ri.user == null ? "" : "["+ri.user.email+"] ";

@@ -1,7 +1,4 @@
+AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json
 ExpiresActive On
-ExpiresDefault "access plus 1 month"
-ExpiresByType text/css "access plus 1 day"
-ExpiresByType application/javascript "access plus 1 week"
-ExpiresByType application/x-font-ttf "access plus 1 year"
-
+ExpiresDefault "access plus 10 minutes"
 Header unset ETag

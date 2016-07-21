@@ -2,6 +2,7 @@ package hu.vidyavana.search.util;
 
 import hu.vidyavana.convert.api.DiacriticLowercase;
 import hu.vidyavana.convert.api.DiacriticToLatin;
+import hu.vidyavana.search.api.QueryAnalyzer;
 import hu.vidyavana.util.XmlToken;
 import hu.vidyavana.util.XmlUtil;
 
@@ -44,9 +45,9 @@ public class HitListEntry {
 
     private static List<Sought> createSoughtPatterns(String query) {
         List<Sought> soughts = new ArrayList<>();
-        String[] tokens = query.split("\\s+");
+        List<String> tokens = QueryAnalyzer.getTokens(query);
         for (String token : tokens) {
-            if(token.isEmpty())
+            if(token.isEmpty() || DiacriticLowercase.chr(token.charAt(0)) == 0)
                 continue;
             Sought sought = new Sought();
             sought.word = token;
