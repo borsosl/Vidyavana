@@ -59,7 +59,11 @@ gulp.task('js', function() {
         }
 
         if(PROD) {
-            task = task.pipe(uglify());
+            task = task.pipe(uglify({
+                compress: {
+                    drop_debugger: false
+                }
+            }));
         }
 
         if(DEV) {

@@ -11,8 +11,13 @@ function setActiveTab() {
         $('.regitem').show();
     }
 
-    if(!client.browser.ie)
-        $('#email')[0].focus();
+    setTimeout(function() {
+        var $e = $('#email');
+        if(!$e.val() && !client.browser.ie)
+            $('#email')[0].focus();
+        else
+            $('#loginBtn')[0].focus();
+    }, 100);
 }
 
 
@@ -53,7 +58,7 @@ function validatePassword() {
         return null;
     }
     if(!pwd1.length) {
-        message('Írd be (újra) a jelszót');
+        message('Hiányzik a jelszó');
         return null;
     }
     var res = /\S+.*\S+/.exec(pwd1);
@@ -163,7 +168,8 @@ function errorMsg(code) {
 function keydown(e) {
     var c = e.keyCode;
     $msg.hide();
-    if(c === 13) {
+    var tag = document.activeElement.tagName.toLowerCase();
+    if(c === 13 && tag === 'input') {
         if(activeTab === 0)
             login();
         else
