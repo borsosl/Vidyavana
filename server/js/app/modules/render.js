@@ -1,5 +1,5 @@
 
-var page = require('./page').instance;
+var page = require('./page');
 var dom = require('./dom');
 var util = require('./util');
 var highlight = require('./highlight');
@@ -12,9 +12,16 @@ var search = require('./search');
  * @param {number} mode - one of {@link load.mode}
  */
 function text(json, mode) {
+    var initPage = mode != load.mode.down;
     var isSearch = json.hitCount !== undefined;
+    var isHitlist = false;
+    var display = isSearch ? json.display : json;
+
+    // set page values and select panel
     if(isSearch)
     {
+        if(display.downtime)
+            util.downtime(display.downtime);
         if(json.hitCount)
         {
             if(mode == load.mode.search)
@@ -22,65 +29,64 @@ function text(json, mode) {
                 search.accept();
                 util.dialog(-1, false);
             }
-            search.get().last(json);
+            search.inst().last(json);
         }
         else
             return search.message('Nincs találat.');
-    }
-    var display = isSearch ? json.display : json;
-    var initPage = mode != load.mode.down;
-    if(initPage)
-        page.init(display, false);
-    page.load(display);
-    var h = display.text;
-    var hitlist;
-    if(h)
-    {
+        util.showHitsPanel();
+        page.hits().init(display);
+    } else {
+        util.showSectionPanel();
         if(initPage)
-        {
-            dom.$formContent.hide();
-            dom.$content.scrollTop(0);
-            if(isSearch) {
-                var ref = '<div class="long-ref">'+(json.startHit+1);
-                if(json.endHit > -1) {
-                    hitlist = true;
-                    ref += '-' + json.endHit;
-                }
-                ref += ' / '+json.hitCount+' : ';
-                if(json.endHit == -1)
-                    ref += display.longRef;
-                ref += '</div>';
-                if(json.endHit > -1)
-                    h = hitlistMarkup(h);
-                dom.$txt.html(ref+h);
-            }
-            else
-                dom.$txt.html(h);
-            dom.$textBtns.toggle(!isSearch);
-            dom.$hitBtns.toggle(isSearch);
+            page.section().init(display);
+        else
+            page.section().down(display);
+    }
+
+    var h = display.text;
+    if(!h)
+        return;
+
+    // set content
+    if(initPage)
+    {
+        dom.$formContent.hide();
+        dom.$content.scrollTop(0);
+        if(isSearch) {
+            isHitlist = json.endHit > -1;
+            var ref = '<div class="long-ref">'+(json.startHit+1) +
+                (isHitlist ? '-' + json.endHit : '') +
+                ' / '+json.hitCount+' : ' +
+                (isHitlist ? '' : display.longRef) +
+                '</div>';
+            if(isHitlist)
+                h = hitlistMarkup(h);
+            dom.$hits.html(ref+h);
         }
         else
-            dom.$txt.append(h);
-        dom.$sectDown.toggle(page.next() !== null);
-        dom.$thisSect.toggle(page.isSearchResult() && json.endHit == -1);
-
-        if(!display.shortRef)
-            display.shortRef = '';
-        dom.$shortRef.text(display.shortRef);
-        dom.$menuShortRef.text(display.shortRef);
-        util.refreshMenu();
-
-        var hl = highlight.get();
-        if(hl)
-            hl.run(h);
-
-        if(hitlist)
-            $('a', dom.$txt).filter(':first').focus();
-        else
-            util.focusText(initPage);
+            dom.$txt.html(h);
     }
-    if(isSearch && display.downtime)
-        util.downtime(display.downtime);
+    else
+        dom.$txt.append(h);
+    util.toggleButtonBars(isSearch, isHitlist);
+
+    if(!display.shortRef)
+        display.shortRef = '';
+    dom.$shortRef.text(display.shortRef);
+    dom.$menuShortRef.text(display.shortRef);
+    util.refreshMenu();
+
+    var hl = highlight.inst();
+    if(hl)
+        hl.run(h, isSearch ? dom.$hits : dom.$txt);
+
+    if(isHitlist) {
+        dom.$content.scrollTop(0);
+        $('a', dom.$hits).filter(':first').focus();
+        page.hits().activeElement(document.activeElement);
+    }
+    else
+        util.focusContent(initPage);
 }
 
 function hitlistMarkup(h) {

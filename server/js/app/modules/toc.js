@@ -9,6 +9,8 @@ var load = require('./load');
 var nodeToUpdate;
 /** @type {number} - TOC node id currently selected in UI. */
 var selSection;
+/** @type {number} - Remember GUI-selected toc id, until hit selection is reflected on TOC GUI  */
+var guiSelSection;
 /** @type {number} - last section of the database */
 var maxTocId;
 
@@ -154,6 +156,7 @@ function updateSectionSelects(parent, level)
         selSection = parent.id;
         if(parent.parentStart)
             --selSection;
+        guiSelSection = selSection;
         if(!ch)
             break;
         var $e = $('#sect'+(level++));
@@ -184,6 +187,7 @@ function gotoSection()
     $('#sectionPop').hide();
     if(!load.text)
         initModules();
+    selSection = guiSelSection;
     load.text(load.mode.section);
 }
 

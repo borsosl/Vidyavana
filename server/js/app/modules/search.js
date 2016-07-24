@@ -69,10 +69,12 @@ function Search() {
         last = l;
     }
 
-    this.query = queryFn;
-    this.sort = sortFn;
-    this.page = pageFn;
-    this.last = lastFn;
+    $.extend(this, {
+        query: queryFn,
+        sort: sortFn,
+        page: pageFn,
+        last: lastFn
+    });
 }
 
 
@@ -157,7 +159,7 @@ function getInstance(pending) {
 
 
 $.extend(exports, {
-    get: getInstance,
+    inst: getInstance,
     pending: getInstance.bind(null, true),
     init: init,
     accept: accept,

@@ -1,5 +1,6 @@
 
 var dom = require('./dom');
+var page = require('./page');
 
 /** @type {JQuery} - points to menu box, lazy init'd */
 var $menu;
@@ -54,11 +55,32 @@ function refreshMenu() {
     }, 1);
 }
 
+function showSectionPanel() {
+    toggleContent(1);
+}
 
-function focusText(scrollToTop) {
-    dom.$txt.focus();
+function showHitsPanel() {
+    toggleContent(2);
+}
+
+function toggleContent(mode) {
+    dom.$txt.toggle(mode === 1);
+    dom.$hits.toggle(mode === 2);
+}
+
+
+function focusContent(scrollToTop) {
+    dom.$content.focus();
     if(scrollToTop)
         dom.$content.scrollTop(0);
+}
+
+
+function toggleButtonBars(isHits, hitlist) {
+    dom.$textBtns.toggle(!isHits);
+    dom.$hitBtns.toggle(isHits);
+    dom.$sectDown.toggle(page.current().next() !== null);
+    dom.$thisSect.toggle(page.isSearchResult() && !hitlist);
 }
 
 
@@ -195,6 +217,7 @@ function downtimeMsg() {
 
 
 function menuModifier(e) {
+    //noinspection JSUnresolvedVariable
     return e.altKey && (!client.system.mac || e.ctrlKey);
 }
 
@@ -224,6 +247,7 @@ function resizeContent() {
 
 function cookie(key, value) {
     if(value === undefined) {
+        //noinspection JSCheckFunctionSignatures
         value = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
         return value ? value.pop() : '';
     }
@@ -231,11 +255,20 @@ function cookie(key, value) {
 }
 
 
+function findClickableButton(e) {
+    var $group = $(e).closest('.has-button');
+    return $group ? $('button', $group) : null;
+}
+
+
 $.extend(exports, {
     toggleMenu: toggleMenu,
     isMenuVisible: isMenuVisible,
     refreshMenu: refreshMenu,
-    focusText: focusText,
+    showSectionPanel: showSectionPanel,
+    showHitsPanel: showHitsPanel,
+    focusContent: focusContent,
+    toggleButtonBars: toggleButtonBars,
     javaError: javaError,
     ajaxError: ajaxError,
     message: message,
@@ -246,5 +279,6 @@ $.extend(exports, {
     menuModifier: menuModifier,
     resizeEvent: resizeEvent,
     resizeContent: resizeContent,
-    cookie: cookie
+    cookie: cookie,
+    findClickableButton: findClickableButton
 });

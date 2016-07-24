@@ -1,11 +1,9 @@
 
-var page = require('./page').instance;
 var dom = require('./dom');
 var util = require('./util');
 var task = require('./task');
 var html = require('./html-content');
 var load = require('./load');
-var search = require('./search');
 
 $('#pandit-icon').click(function()
 {

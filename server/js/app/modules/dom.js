@@ -8,6 +8,8 @@ function init() {
     this.$formContent = $('#form-content');
     /** @type {JQuery} - container for text content */
     this.$txt = $('#text');
+    /** @type {JQuery} - container for search result content */
+    this.$hits = $('#hits');
     /** @type {JQuery} - button row */
     this.$textBtns = $('#text-buttons');
     /** @type {JQuery} - button row */
@@ -25,7 +27,7 @@ function init() {
 }
 
 /**
- * @type {{init, nowarn, $header, $content, $formContent, $txt, $textBtns, $hitBtns,
+ * @type {{init, nowarn, $header, $content, $formContent, $txt, $hits, $textBtns, $hitBtns,
  *      $sectDown, $thisSect, $shortRef, $menuShortRef, $loading}}
  */
 var dom = exports;

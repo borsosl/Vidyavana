@@ -1,5 +1,6 @@
 
-var page = require('./page').instance;
+var dom = require('./dom');
+var page = require('./page');
 var util = require('./util');
 var highlight = require('./highlight');
 var render = require('./render');
@@ -30,35 +31,36 @@ function text(mode) {
     {
         var sectionUrl = '/app/txt/section/';
         var searchUrl = '/app/txt/search';
+        var ps = page.section();
         switch(mode)
         {
             case m.section:
                 return sectionUrl + 'go/' + toc.selectedSection();
             case m.next:
-                if(!page.bookId())
+                if(!ps.bookId())
                     return null;
-                return sectionUrl + 'next/' + page.tocId();
+                return sectionUrl + 'next/' + ps.tocId();
             case m.prev:
-                if(!page.bookId())
+                if(!ps.bookId())
                     return null;
-                return sectionUrl + 'prev/' + page.tocId();
+                return sectionUrl + 'prev/' + ps.tocId();
             case m.down:
-                var next = page.next();
+                var next = ps.next();
                 if(next === null)
                     return null;
-                return '/app/txt/follow/'+page.tocId()+'/'+next;
+                return '/app/txt/follow/'+ps.tocId()+'/'+next;
             case m.search:
-                var ps = search.pending();
+                var psr = search.pending();
                 data = {
-                    q: ps.query(),
-                    sort: ps.sort(),
-                    page: ps.page()
+                    q: psr.query(),
+                    sort: psr.sort(),
+                    page: psr.page()
                 };
                 return searchUrl;
             case m.currentHit:
             case m.nextHit:
             case m.prevHit:
-                var sr = search.get();
+                var sr = search.inst();
                 if(!sr)
                     return null;
                 var last = sr.last();
@@ -104,25 +106,36 @@ function text(mode) {
 }
 
 /** @param {number} tocId */
-function loadSection(tocId) {
+function hitSection(tocId) {
     toc.selectedSection(tocId);
+    page.hits().scrollPos(dom.$content.scrollTop());
+    page.hits().activeElement(document.activeElement);
     text(loadMode.section);
 }
 
 function currentHitSection() {
-    loadSection(search.get().last().display.tocId);
-}
-
-function currentHits() {
-    text(loadMode.currentHit);
+    hitSection(search.inst().last().display.tocId);
 }
 
 function contextSwitch() {
     if(page.isSearchResult()) {
         if(!search.isHitlist())
             currentHitSection();
-    } else
-        currentHits();
+    } else {
+        var sr = search.inst();
+        if(!sr)
+            return null;
+        page.current(page.hits());
+        util.showHitsPanel();
+        util.toggleButtonBars(true, search.isHitlist());
+        var sp = page.hits().scrollPos();
+        if(sp > -1)
+            dom.$content.scrollTop(sp);
+        var ae = page.hits().activeElement();
+        if(ae) {
+            ae.focus();
+        }
+    }
 }
 
 function prevSection() {
@@ -162,9 +175,8 @@ function continuation() {
 $.extend(exports, {
     mode: loadMode,
     text: text,
-    hitlistClick: loadSection,
+    hitlistClick: hitSection,
     currentHitSection: currentHitSection,
-    currentHits: currentHits,
     contextSwitch: contextSwitch,
     prevSection: prevSection,
     nextSection: nextSection,

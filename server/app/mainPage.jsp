@@ -61,8 +61,10 @@ User user = (User) session.getAttribute("user");
         </span>
 	</div>
 
-	<div id="content" class="autoScroll">
-		<div id="text" tabindex="0">
+	<div id="content" class="autoScroll" tabindex="0">
+		<div id="text">
+		</div>
+		<div id="hits">
 		</div>
 		<div class="button-rows">
 			<div id="text-buttons">
@@ -81,7 +83,7 @@ User user = (User) session.getAttribute("user");
 	<div id="form-content" class="autoScroll">
 	</div>
 
-	<div id="searchPop">
+	<div id="searchPop" class="has-button">
 		<div style="margin-top: 10px; text-align: center;">
 			Keresés:
 		</div>
@@ -111,7 +113,7 @@ User user = (User) session.getAttribute("user");
 		</div>
 	</div>
 
-	<div id="sectionPop">
+	<div id="sectionPop" class="has-button">
 		<div style="margin-top: 10px; text-align: center;">
 			Ugrás a választott szakaszra:
 		</div>

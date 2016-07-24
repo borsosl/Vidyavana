@@ -1,6 +1,4 @@
 
-var dom = require('./dom');
-
 /** @type {Highlight} */
 var highlight;
 
@@ -31,6 +29,7 @@ function Highlight(queryStr)
     var paraRex = /<p.*?>([^]*?)<\/p>/gm;
     var htmlRex = /(.*?)(<.*?>|&.*;|$)/gm;
     var whiteRex = /(.*?)( |$)/gm;
+    var $root;
 
     var q = lowercase(queryStr);
     var soughtArrArr = words(q, true);
@@ -145,9 +144,11 @@ function Highlight(queryStr)
     /**
      * Split html into paragraphs and invoke highlighting in each.
      * @param {string} text - html chunk
+     * @param {JQuery} $rootElement - container of modified para's
      */
-    function run(text)
+    function run(text, $rootElement)
     {
+        $root = $rootElement;
         paraRex.lastIndex = 0;
         nextPara(text);
     }
@@ -183,7 +184,7 @@ function Highlight(queryStr)
                 }
                 if(pos < pContent.length)
                     chunks.push(pContent.substring(pos));
-                $('p[data-ix="'+paraId+'"]', dom.$txt).html(chunks.join(''));
+                $('p[data-ix="'+paraId+'"]', $root).html(chunks.join(''));
             }
         }
         nextPara(text);
@@ -270,7 +271,7 @@ function Highlight(queryStr)
 /**
  * @return {Highlight}
  */
-function get() {
+function getInstance() {
     return highlight;
 }
 
@@ -283,5 +284,7 @@ function init(queryStr) {
     return highlight = new Highlight(queryStr);
 }
 
-exports.get = get;
-exports.init = init;
+$.extend(exports, {
+    inst: getInstance,
+    init: init
+});

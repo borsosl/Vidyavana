@@ -1,5 +1,5 @@
 
-var page = require('./page').instance;
+var page = require('./page');
 var util = require('./util');
 var task = require('./task');
 var load = require('./load');
@@ -15,10 +15,20 @@ $(window).keydown(function(e) {
     else if(c === 13)		    // enter
     {
         var ae = document.activeElement;
-        if(ae && ae.onclick)
-            ae.onclick();
-        else
+        if(!ae || ae.tagName.toLowerCase() === 'div') {
             load.contextSwitch();
+            e.preventDefault();
+        }
+        else if(ae) {
+            if(ae.onclick)
+                ae.onclick();
+            else {
+                var $btn = util.findClickableButton(ae);
+                if($btn)
+                    $btn.click();
+            }
+            e.preventDefault();
+        }
     }
     else if(c === 8)	    	// backspace
     {
@@ -44,7 +54,7 @@ $(window).keydown(function(e) {
             util.toggleMenu(true);
         else
             util.dialog(-1, false);
-        util.focusText();
+        util.focusContent();
     }
     else if(c === 188 || c === 109)		    // , or -
         load.contextPrev();
