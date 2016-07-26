@@ -1,8 +1,10 @@
 package hu.vidyavana.convert.ed;
 
-import static hu.vidyavana.convert.api.ParagraphClass.*;
-import java.util.TreeMap;
 import hu.vidyavana.convert.api.ParagraphClass;
+
+import java.util.TreeMap;
+
+import static hu.vidyavana.convert.api.ParagraphClass.*;
 
 public enum EdTags
 {
@@ -13,6 +15,7 @@ public enum EdTags
 
 	// normal ed tags
 	ac_bhakti("ac bhakti"),
+	apple("apple"),
 	asterisk("asterisk"),
 	benbo("benbo"),
 	bengali("bengali"),
@@ -52,6 +55,8 @@ public enum EdTags
 	dc_body_r("dc body r"),
 	dc_left_top("dc left top"),
 	dc_right_top("dc right top"),
+	dedicated_to("dedicated to"),
+	dedication("dedication"),
 	dev("dev"),
 	dev1("dev1"),
 	dev1b("dev1b"),
@@ -79,6 +84,7 @@ public enum EdTags
 	gl_purp("gl purp"),
 	gloss_head("gloss head"),
 	glossary("glossary"),
+	harrison("harrison"),
 	header("header"),
 	history("history"),
 	history_no("history no"),
@@ -88,6 +94,7 @@ public enum EdTags
 	index_level_2("index level 2"),
 	index_level_3("index level 3"),
 	intro("intro"),
+	intro_verse("intro verse"),
 	introduction("introduction"),
 	italic_para("italic para"),
 	keep_p_n("keep p n"),
@@ -163,6 +170,7 @@ public enum EdTags
 	small_foot("small foot"),
 	special("special"),
 	spurp("spurp"),
+	spsign("spsign"),
 	sspurp("sspurp"),
 	subsub("subsub"),
 	subtit3("subtit3"),
@@ -234,10 +242,10 @@ public enum EdTags
 			uvaca_verse, sans_uvaca_id, purp_uvaca},
 		{verse_in_purp,
 			ch_verse, middel_long, sans_in_id, ver_in_purp1, verse_i_p_7p, 
-			uvaca_in_purp, uvaca_on_top, verse_short, very_long},
+			uvaca_in_purp, uvaca_on_top, verse_short, very_long, intro_verse},
 		{verse_ref},
 		{center,
-			center_line, center_table, gloss_head, header, number, poem_nr, quote_center},
+			center_line, center_table, gloss_head, header, number, poem_nr, quote_center, dedicated_to, dedication},
 		{right_align,
 			om_tat_sat, signature, ac_bhakti},
 		{subtitle,
@@ -257,7 +265,7 @@ public enum EdTags
 			book_title, lila, chaptno, chapt_no, chapter_head, textno},
 		{unhandled,
 			benbo, benro, cantno, ch_line, /* dev...*/ eop, foot_line, line,
-			picture, pr_pic, /* push...*/ sign_eps, special, wa_number}};
+			picture, pr_pic, /* push...*/ sign_eps, special, wa_number, apple, harrison, spsign}};
 
 	
 	public static TreeMap<String, EdTags> map = new TreeMap<>();

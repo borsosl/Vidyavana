@@ -16,6 +16,8 @@ public class EdFileProcessor implements FileProcessor
 	private WriterInfo writerInfo;
 	private String ebookPath;
 	private List<String> manual;
+
+	private boolean currentBookHasLeftAlignLeadParagraph = false;
 	
 	private int lineNumber;
 	private Book book;
@@ -84,6 +86,10 @@ public class EdFileProcessor implements FileProcessor
 		}
 		else if(fileName.toLowerCase().indexOf("huc219xt") != -1)
 			manual.add("huc219xt.h60: para broken in two at footnote!");
+		else if(fileName.toLowerCase().indexOf("hukb00dc.h09") != -1) {
+			manual.add("hukb00dc.h09.xml: dedication broken lines");
+			manual.add("*words<br/>* from George Harrison, toc-ban is");
+		}
 	}
 
 
@@ -334,6 +340,9 @@ public class EdFileProcessor implements FileProcessor
 				
 				else if(writerInfo.specialFile == SpecialFile.BG_PF && currentTag == EdTags.purport && line[nextPos]!='<')
 					para.cls = ParagraphClass.Balra;
+
+				if(currentBookHasLeftAlignLeadParagraph && para.cls == ParagraphClass.TorzsKezdet)
+					para.cls = ParagraphClass.BalraKezdet;
 	
 				prev = Tag;
 			}
