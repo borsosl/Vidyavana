@@ -1,0 +1,48 @@
+<div class="bookmark">
+	<div class="bm-title"></div>
+
+	<div id="bm-state-list">
+
+		<div class="bm-links"></div>
+
+		<div class="top10">Összes név szűrése (<span id="bm-count"></span>):</div>
+		<div><input type="search" id="bm-filter" class="wid100"></div>
+
+		<div id="bm-choose-wrap" class="top10"><select id="bm-choose" class="wid100"></select></div>
+		<div class="bm-spaced">
+			<button id="bm-new">Új</button>
+			<span id="bm-buttons">
+				<button id="bm-edit">Szerkesztés</button>
+				<button id="bm-delete">Törlés</button><br/>
+				<button id="bm-store">Pozíció tárolás</button>
+				<button id="bm-go">Ugrás</button>
+			</span>
+		</div>
+
+		<div class="top10"><button id="bm-close">Bezár</button></div>
+
+	</div>
+
+	<div id="bm-state-edit">
+		<div class="top10">Név:</div>
+		<div><input type="text" id="bm-name" class="wid100"></div>
+		<div class="top10"><span id="bm-ref-mode"></span><a href="#" id="bm-ref-link"></a></div>
+
+		<div class="top10">
+			<input type="checkbox" id="bm-follow">&nbsp;"Követő", lapozáskor frissül
+		</div>
+
+		<div class="top10">
+			<button id="bm-save">Mentés</button>  &nbsp;
+			<button class="bm-cancel">Mégsem</button>
+		</div>
+	</div>
+
+	<div id="bm-state-delete">
+		<div id="bm-delete-name"></div>
+		<div class="top10">
+			<button id="bm-del-ok">Törlés</button>  &nbsp;
+			<button class="bm-cancel">Mégsem</button>
+		</div>
+	</div>
+</div>

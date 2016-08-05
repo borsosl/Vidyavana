@@ -6,6 +6,8 @@ var hits = new Page();
 /** @type {Page} - current display = section|hits */
 var current = section;
 
+
+/** @constructor */
 function Page()
 {
     /** @type {number} - book id (segment # (eg. canto/lila) is << 16 bits) */
@@ -90,7 +92,9 @@ function Page()
         scrollPos: scrollPosFn,
         activeElement: activeElementFn,
         bookId: function(){return bookSegmentId;},
-        tocId: function(){return tocId;}
+        tocId: function(){return tocId;},
+        /** @type {string} */
+        shortRef: ''
     });
 }
 

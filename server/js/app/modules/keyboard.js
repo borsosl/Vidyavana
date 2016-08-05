@@ -4,6 +4,7 @@ var util = require('./util');
 var task = require('./task');
 var load = require('./load');
 var search = require('./search');
+var bookmark = require('./bookmark');
 
 $(window).keydown(function(e) {
     var c = e.keyCode;
@@ -32,13 +33,11 @@ $(window).keydown(function(e) {
     }
     else if(c === 8)	    	// backspace
     {
-        //noinspection JSUnresolvedFunction
         e.preventDefault();
     }
     else if(c === 75)           // k
     {
         task.searchDialog();
-        //noinspection JSUnresolvedFunction
         e.preventDefault();
     }
     else if(c === 83)           // s
@@ -46,7 +45,12 @@ $(window).keydown(function(e) {
         util.dialog(1, true);
         //noinspection JSUnresolvedFunction
         $('#sect1')[0].focus();
-        //noinspection JSUnresolvedFunction
+        e.preventDefault();
+    }
+    else if(c === 69)           // e
+    {
+        util.dialog(-1, false);
+        bookmark.load();
         e.preventDefault();
     }
     else if(c === 27) {		    // esc

@@ -4,6 +4,7 @@ var util = require('./util');
 var task = require('./task');
 var html = require('./html-content');
 var load = require('./load');
+var bookmark = require('./bookmark');
 
 $('#pandit-icon').click(function()
 {
@@ -22,6 +23,13 @@ $('#section-link, #menu-section-link').click(function()
     util.dialog(1, true);
     //noinspection JSUnresolvedFunction
     $('#sect1')[0].focus();
+});
+
+$('#bookmark-link, #menu-bookmark-link').click(function()
+{
+    util.toggleMenu(true);
+    util.dialog(-1, false);
+    bookmark.load();
 });
 
 $('#logout-link, #menu-logout-link').click(function()

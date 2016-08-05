@@ -108,8 +108,12 @@ function init() {
         {
             search();
         }
+        else if(e.keyCode == 27)
+        {
+            util.dialog(-1, false);
+            util.focusContent();
+        }
         if(!util.menuModifier(e))
-            //noinspection JSUnresolvedFunction
             e.stopPropagation();
     });
     $('#searchGo').click(function()

@@ -72,6 +72,7 @@ function text(json, mode) {
 
     if(!display.shortRef)
         display.shortRef = '';
+    page.current().shortRef = display.shortRef;
     dom.$shortRef.text(display.shortRef);
     dom.$menuShortRef.text(display.shortRef);
     util.refreshMenu();

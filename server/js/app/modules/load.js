@@ -8,9 +8,12 @@ var search = require('./search');
 var toc = require('./toc');
 
 /** @enum {number} - text request modes */
-var loadMode = {section: 1, down: 2, next: 3, prev: 4, search: 5, currentHit: 6, nextHit: 7, prevHit: 8};
+var loadMode = {section: 1, down: 2, next: 3, prev: 4, search: 5, currentHit: 6,
+    nextHit: 7, prevHit: 8, bookmark: 9};
 /** @type {?number} - timestamp of last request to throttle connections */
 var lastReqTime;
+/** @type {number} - id of bookmark to load */
+var bookmarkId;
 
 
 /**
@@ -70,6 +73,8 @@ function text(mode) {
                 if(hit >= 0 && hit < last.hitCount)
                     return searchUrl + '/hit/' + last.id + '/' + hit;
                 return null;
+            case m.bookmark:
+                return '/app/bookmark/go/'+bookmarkId;
         }
     }
 
@@ -172,6 +177,11 @@ function continuation() {
     text(loadMode.down);
 }
 
+function bookmark(id) {
+    bookmarkId = id;
+    text(loadMode.bookmark);
+}
+
 $.extend(exports, {
     mode: loadMode,
     text: text,
@@ -184,5 +194,6 @@ $.extend(exports, {
     nextHit: nextHit,
     contextPrev: contextPrev,
     contextNext: contextNext,
-    continuation: continuation
+    continuation: continuation,
+    bookmark: bookmark
 });

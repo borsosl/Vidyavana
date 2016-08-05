@@ -239,7 +239,8 @@ a {
 	position: absolute;
 	top: 64px;
 	left: 16px;
-	width: 250px;
+	width: 270px;
+	max-width: calc(100% - 36px);
 	display: none;
 	background-color: #F2E6BB;
 	color: #292207;
@@ -631,4 +632,22 @@ button:focus {
 
 .left2 {
 	margin-left: 2em;
+}
+
+.bookmark {
+	width: 100%;
+	max-width: 400px;
+}
+
+.bm-title {
+	font-size: 140%;
+}
+
+.bm-links {
+	line-height: 150%;
+}
+
+.bm-spaced button {
+	margin-right: 0.3em;
+	margin-top: 0.3em;
 }

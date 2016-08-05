@@ -218,7 +218,7 @@ function downtimeMsg() {
 
 function menuModifier(e) {
     //noinspection JSUnresolvedVariable
-    return e.altKey && (!client.system.mac || e.ctrlKey);
+    return e.altKey && (!client.system.mac ^ e.ctrlKey);
 }
 
 
@@ -260,6 +260,35 @@ function findClickableButton(e) {
     return $group ? $('button', $group) : null;
 }
 
+function bookOrdinalOnTop() {
+    if(page.isSearchResult())
+        return -page.hits().tocId();
+
+    var top = dom.$content.scrollTop();
+    var $ch = dom.$txt.children();
+    var $prev;
+    for(var i in $ch) {
+        var $e = $($ch[i]);
+        var pos = $e.position().top;
+        if(pos == top) {
+            $prev = $e;
+            break;
+        }
+        if(pos > top) {
+            if(!$prev)
+                $prev = $e;
+            break;
+        }
+        $prev = $e;
+    }
+    return $prev.data('ix') + 1;    // ix 0-based, ordinal in toc tree 1-based
+}
+
+function inputDefaults(e) {
+    if(!menuModifier(e))
+        e.stopPropagation();
+}
+
 
 $.extend(exports, {
     toggleMenu: toggleMenu,
@@ -280,5 +309,7 @@ $.extend(exports, {
     resizeEvent: resizeEvent,
     resizeContent: resizeContent,
     cookie: cookie,
-    findClickableButton: findClickableButton
+    findClickableButton: findClickableButton,
+    bookOrdinalOnTop: bookOrdinalOnTop,
+    textKeyDefaults: inputDefaults
 });

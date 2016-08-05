@@ -1,19 +1,20 @@
 package hu.vidyavana.web;
 
+import com.google.gson.GsonBuilder;
+import hu.vidyavana.db.model.TocTree;
+import hu.vidyavana.db.model.User;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import com.google.gson.GsonBuilder;
-import hu.vidyavana.db.model.TocTree;
-import hu.vidyavana.db.model.User;
 
 public class RequestInfo
 {
@@ -77,8 +78,17 @@ public class RequestInfo
 	
 	public void renderAjaxTemplate(String path, Object data) throws Exception
 	{
+		String html = getTemplate(path);
+		renderAjaxTemplateString(html, data);
+	}
+
+	public String getTemplate(String path) throws IOException {
 		ServletContext ctx = req.getServletContext();
-		String html = new String(Files.readAllBytes(Paths.get(ctx.getRealPath(path))), "UTF-8");
+		return new String(Files.readAllBytes(Paths.get(ctx.getRealPath(path))), "UTF-8");
+	}
+
+	public void renderAjaxTemplateString(String html, Object data) throws Exception
+	{
 		Pattern rex = Pattern.compile("[\\r\\n\\t]+");
 		html = rex.matcher(html).replaceAll("");
 		Map<String, Object> res = new HashMap<>();
@@ -89,7 +99,7 @@ public class RequestInfo
 		ajaxText();
 	}
 
-	
+
 	/**
 	 * @deprecated Produces empty response.
 	 */
