@@ -1,27 +1,37 @@
 <div class="admin-form">
-	<div class="admin-head">
-		<span class="ur-email">E-mail</span>
-		<span class="ur-name">Név</span>
-		<span class="ur-admin">Admin szint</span>
-		<span class="ur-btn">Művelet</span>
+	<div class="admin-stat">
+		Összes fiók: <span id="user-count"></span>, nem megerősített: <span id="unconf-count"></span>
 	</div>
-	<div class="admin-row">
-		<span class="ur-email"></span>
-		<span class="ur-name"><input type="text"></span>
-		<span class="ur-admin">
-			<select>
-				<option value="None">Nincs</option>
-				<option value="Full">Teljes</option>
-				<option value="BookRights">Könyv jogot adhat</option>
-			</select>
-		</span>
-		<span class="ur-btn">
-			<button type="button" data-id="1">Mentés</button>
-			<button type="button" data-id="2">Könyv jogok</button>
-			<button type="button" data-id="3">Reg. e-mail</button>
-			<button type="button" data-id="4">User törlése</button>
-		</span>
+	<div>
+		<table>
+			<tr>
+				<th>E-mail</th>
+				<th>Reg</th>
+				<th>Név</th>
+				<th>Admin szint</th>
+				<th>Művelet</th>
+			</tr>
+			<tr class="admin-row">
+				<td></td>
+				<td></td>
+				<td><input type="text"></td>
+				<td>
+					<select>
+						<option value="None">Nincs</option>
+						<option value="Full">Teljes</option>
+						<option value="BookRights">Könyv jogot adhat</option>
+					</select>
+				</td>
+				<td class="ur-btn">
+					<button type="button" data-id="1">Mentés</button>
+					<button type="button" data-id="2">Könyv jogok</button>
+					<button type="button" data-id="3">Reg. e-mail</button>
+					<button type="button" data-id="4">User törlése</button>
+				</td>
+			</tr>
+		</table>
 	</div>
+
 	<div id="admin-access">
 		<div class="row">
 			<input type="checkbox" id="full-access"> Teljes hozzáférés

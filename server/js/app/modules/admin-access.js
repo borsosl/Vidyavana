@@ -18,6 +18,17 @@ var packageCb;
 /** @type {Array.<boolean>} */
 var packageState;
 
+/**
+ * @typedef {Object} BookPackageMap
+ * @property {string|BookSpanArray} Sraddha
+ * @property {string|BookSpanArray} SadhuSanga
+ * @property {string|BookSpanArray} BhajanaKriya
+ * @property {string|BookSpanArray} Ruci
+ *
+ * Properties are strings abbr|id|abbr|id|... from server,
+ * converted to BookSpanArray on client.
+ */
+
 
 /**
  * Fetch user book access, then fill dialog

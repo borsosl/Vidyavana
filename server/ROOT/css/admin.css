@@ -1,28 +1,36 @@
-.admin-form {
+.admin-form, .admin-stat {
     font: 12pt sans-serif !important;
-    margin: 1em 0 0.3em;
+    margin-bottom: 0.3em;
 }
 
-.admin-form span {
-    display: inline-block;
+.admin-form table {
+    table-layout: fixed;
 }
 
-.admin-form span input, .admin-form span select {
+.admin-form td, .admin-form th {
+    padding: 0 0.5em 0.2em 0;
+    text-align: left;
+    text-wrap: none;
+    white-space: nowrap;
+}
+
+.admin-form td input, .admin-form td select {
     font: 12pt sans-serif !important;
     width: calc(100% - 16px);
+    min-width: 7em;
     padding: 2px;
 }
 
-.admin-form span input[type="checkbox"] {
+.admin-form td input[type="checkbox"] {
     width: auto;
     padding: 0;
 }
 
-.admin-form span button {
+.admin-form td button {
     margin-right: 0.5em;
 }
 
-.admin-head {
+.admin-form th {
     font-weight: bold;
     border-bottom: 1px solid;
 }
@@ -34,10 +42,6 @@
 
 .ur-check {
     width: 2em;
-}
-
-.ur-email, .ur-name, .ur-admin {
-    width: 10em;
 }
 
 #admin-access {

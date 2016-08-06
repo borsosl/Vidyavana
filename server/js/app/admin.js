@@ -7,6 +7,22 @@ var access = require('./modules/admin-access');
 
 var books;
 
+/**
+ * @typedef {Object} User
+ * @property {number} id - registration datestamp.
+ * @property {string} adminLevel - 'None'|'Full'|'BookRights'
+ * @property {string} email
+ * @property {string} name
+ * @property {string} regToken
+ */
+
+/**
+ * @typedef {Object} UserListResponse
+ * @property {Array.<User>} users
+ * @property {BookPackageMap} books
+ */
+
+
 $(function() {
     main.init();
     $('#users-link').click(function() {
@@ -30,16 +46,20 @@ function initListUsers(data) {
     var $row = $('.admin-row');
     var users = data.users;
     books = data.books;
+    var notConfirmed = 0;
     for(var i=0, len=users.length; i<len; ++i) {
         /** @type {User} */
         var drow = users[i];
+        if(drow.regToken)
+            ++notConfirmed;
         $row.data('email', drow.email);
         // fill row html
         $row.children().each(function(ix, el) {
             switch(ix) {
                 case 0: $(el).text(drow.email); break;
-                case 1: $('input', el).val(drow.name); break;
-                case 2: $('select', el).val(drow.adminLevel); break;
+                case 1: $(el).text(drow.regToken ? '!' : ''); break;
+                case 2: $('input', el).val(drow.name); break;
+                case 3: $('select', el).val(drow.adminLevel); break;
             }
         });
         // clone $row
@@ -47,6 +67,9 @@ function initListUsers(data) {
             $row = $row.clone().insertAfter($row);
         }
     }
+    // count
+    $('#user-count').text(''+len);
+    $('#unconf-count').text(''+notConfirmed);
     // event listeners
     $('button', '.admin-form').click(listUsersButton);
     access.reset();

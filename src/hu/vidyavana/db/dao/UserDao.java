@@ -1,14 +1,15 @@
 package hu.vidyavana.db.dao;
 
+import hu.vidyavana.db.api.ResultSetCallback;
+import hu.vidyavana.db.api.Sql;
+import hu.vidyavana.db.api.StatementCallback;
+import hu.vidyavana.db.model.User;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import hu.vidyavana.db.api.ResultSetCallback;
-import hu.vidyavana.db.api.Sql;
-import hu.vidyavana.db.api.StatementCallback;
-import hu.vidyavana.db.model.User;
 
 public class UserDao
 {
@@ -139,6 +140,13 @@ public class UserDao
 			}
 			try {
 				user.regToken = rs.getString("reg_token");
+			} catch (SQLException ex) {
+			}
+		} else {
+			try {
+				String token = rs.getString("reg_token");
+				if(token != null && !token.isEmpty())
+					user.regToken = "!";
 			} catch (SQLException ex) {
 			}
 		}

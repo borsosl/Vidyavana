@@ -35,28 +35,3 @@
  * @property {?Array.<TocTreeItem>} children
  * @property {?boolean} partial
  */
-
-/**
- * @typedef {Object} User
- * @property {number} id - registration datestamp.
- * @property {string} adminLevel - 'None'|'Full'|'BookRights'
- * @property {string} email
- * @property {string} name
- */
-
-/**
- * @typedef {Object} BookPackageMap
- * @property {string|BookSpanArray} Sraddha
- * @property {string|BookSpanArray} SadhuSanga
- * @property {string|BookSpanArray} BhajanaKriya
- * @property {string|BookSpanArray} Ruci
- *
- * Properties are strings abbr|id|abbr|id|... from server,
- * converted to BookSpanArray on client.
- */
-
-/**
- * @typedef {Object} UserListResponse
- * @property {Array.<User>} users
- * @property {BookPackageMap} books
- */
