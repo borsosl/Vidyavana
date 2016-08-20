@@ -257,7 +257,7 @@ function saveClick() {
     }
     bookmark.name = $('#bm-name').val();
     bookmark.follow = $('#bm-follow').prop('checked');
-    saveRequest(bookmark)
+    saveRequest(bookmark);
 }
 
 /**
