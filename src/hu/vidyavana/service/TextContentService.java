@@ -13,6 +13,7 @@ import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.util.Timing;
 import hu.vidyavana.web.RequestInfo;
+import hu.vidyavana.web.Sessions;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 
@@ -41,6 +42,7 @@ public class TextContentService
 		String sortStr = ri.req.getParameter("sort");
 		String pageStr = ri.req.getParameter("page");
 		Log.activity("Search task: " + q);
+		Sessions.updateUserAccessTime(ri.ses, ri.user);
 		
 		Integer searchId = (Integer) ri.ses.getAttribute("searchId");
 		if(searchId == null)
@@ -196,8 +198,10 @@ public class TextContentService
 		int ord = node.ordinal;
 		if(ord < 0)
 			ord = 1;
-		if(go)
+		if(go) {
 			ri.ses.removeAttribute(BookmarkService.FOLLOWED_BOOKMARK_KEY);
+			Sessions.updateUserAccessTime(ri.ses, ri.user);
+		}
 		else
 			BookmarkService.updateFollowedBookmark(ri, ri.toc.bookSegmentId(node), ord, TocTree.refs(node, false)[0]);
 		ri.ajaxResult = text(ri.toc, node, ord);

@@ -1,5 +1,7 @@
 package hu.vidyavana.util;
 
+import hu.vidyavana.web.model.SessionRegistryEntry;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,5 +18,5 @@ public class Globals
 	public static ExecutorService searchExecutors;
 	public static ExecutorService mailExecutor;
 	public static int concurrentSessions;
-	public static HashMap<String, ArrayList<String>> sessionsByUser;
+	public static HashMap<String, ArrayList<SessionRegistryEntry>> sessionsByUser;
 }

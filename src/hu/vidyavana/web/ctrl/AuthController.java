@@ -1,7 +1,5 @@
 package hu.vidyavana.web.ctrl;
 
-import java.io.IOException;
-import java.util.regex.Pattern;
 import hu.vidyavana.db.dao.UserDao;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
@@ -10,6 +8,10 @@ import hu.vidyavana.util.MailTask;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
 import hu.vidyavana.web.Sessions;
+
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.regex.Pattern;
 
 public class AuthController
 {
@@ -174,7 +176,11 @@ public class AuthController
 			ri.ajaxText = "{\"error\": \"expired\"}";
 			return;
 		}
-		ri.ses.removeAttribute("user");
+		Enumeration<String> attributeNames = ri.ses.getAttributeNames();
+		while(attributeNames.hasMoreElements()) {
+			String name = attributeNames.nextElement();
+			ri.ses.removeAttribute(name);
+		}
 		Sessions.removeUserFromSessionMap(ri.ses, user);
 		PanditServlet.okResult(ri);
 	}

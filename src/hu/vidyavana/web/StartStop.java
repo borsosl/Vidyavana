@@ -1,21 +1,24 @@
 package hu.vidyavana.web;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.Executors;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 import hu.vidyavana.db.SqlMigration;
 import hu.vidyavana.db.api.Sql;
 import hu.vidyavana.db.model.Storage;
 import hu.vidyavana.db.model.TocTree;
 import hu.vidyavana.util.*;
+import hu.vidyavana.web.model.SessionRegistryEntry;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Executors;
 
 public class StartStop implements ServletContextListener
 {
 	@Override
+	@SuppressWarnings("unchecked")
 	public void contextInitialized(ServletContextEvent sce)
 	{
 		ServletContext ctx = sce.getServletContext();
@@ -50,8 +53,9 @@ public class StartStop implements ServletContextListener
 		try
 		{
 			Globals.concurrentSessions = Integer.valueOf(Conf.get("session.concurrent"));
-			Globals.sessionsByUser = (HashMap<String, ArrayList<String>>)
-				FileUtil.deserializeFromFile(new File(Globals.cwd, "db/sessions-map.ser"));
+			Globals.sessionsByUser = (HashMap<String, ArrayList<SessionRegistryEntry>>)
+					FileUtil.deserializeFromFile(new File(Globals.cwd, "db/sessions-map.ser"));
+			Sessions.sweepSessionMap();
 		}
 		catch(Exception ex)
 		{

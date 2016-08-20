@@ -6,6 +6,7 @@ import hu.vidyavana.db.model.Bookmark;
 import hu.vidyavana.db.model.TocTree;
 import hu.vidyavana.db.model.TocTreeItem;
 import hu.vidyavana.web.RequestInfo;
+import hu.vidyavana.web.Sessions;
 
 import java.lang.reflect.Modifier;
 import java.util.List;
@@ -85,6 +86,7 @@ public class BookmarkService {
             return;
         }
 
+        Sessions.updateUserAccessTime(ri.ses, ri.user);
         BookmarkDao.updateLastUsed(id);
         if(bookmark.follow)
             ri.ses.setAttribute(FOLLOWED_BOOKMARK_KEY, id);

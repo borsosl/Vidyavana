@@ -1,8 +1,5 @@
 package hu.vidyavana.web.ctrl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import hu.vidyavana.db.dao.UserDao;
 import hu.vidyavana.db.model.BookPackage;
 import hu.vidyavana.db.model.User;
@@ -10,6 +7,11 @@ import hu.vidyavana.util.Globals;
 import hu.vidyavana.web.MainPage;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
+import hu.vidyavana.web.model.SessionRegistryEntry;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class AdminController
 {
@@ -107,7 +109,7 @@ public class AdminController
 	
 	private void removeSessions(RequestInfo ri)
 	{
-		ArrayList<String> userSessions = Globals.sessionsByUser.get(ri.args[2]);
+		ArrayList<SessionRegistryEntry> userSessions = Globals.sessionsByUser.get(ri.args[2]);
 		for(int i=userSessions.size()-1; i>=0; --i)
 			userSessions.remove(i);
 		PanditServlet.okResult(ri);
