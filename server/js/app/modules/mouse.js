@@ -39,6 +39,12 @@ $('#logout-link, #menu-logout-link').click(function()
     task.logout();
 });
 
+$('#view-link, #menu-view-link').click(function()
+{
+    util.toggleMenu(true);
+    task.viewDialog();
+});
+
 $('#help-link, #menu-help-link').click(function()
 {
     util.toggleMenu(true);
@@ -53,6 +59,11 @@ $('.next-page').click(load.contextNext);
 $('.switch-view').click(load.contextSwitch);
 
 dom.$sectDown.click(load.continuation);
+
+$('#viewGo').click(function()
+{
+    task.applyView();
+});
 
 $('#info-icon').click(function()
 {

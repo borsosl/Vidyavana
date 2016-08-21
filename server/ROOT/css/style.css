@@ -31,11 +31,12 @@ html, body, iframe, form, fieldset, input, label, ul, ol, li
 	padding: 0;
 }
 
-input[type="text"], input[type="password"], input[type="email"]
+input[type="text"], input[type="password"], input[type="email"], input[type="search"], input[type="number"], select
 {
 	padding: 0.3em;
     background-color: #FFF6DB;
     border-radius: 0.3em;
+	font-size: 100%;
 }
 
 input:focus, div:focus
@@ -65,10 +66,16 @@ iframe
 
 /* End of CSS reset */
 
-html, input, select, option, button, .button-rows
+html
 {
 	font-family: sans-serif;
 	font-size: 13pt;
+}
+
+button, .button-rows
+{
+	font-family: sans-serif;
+	font-size: 1rem;
 }
 
 .ui-widget *
@@ -153,7 +160,7 @@ a {
 	position: absolute;
 	top: 48px;
 	font-family: "Times New Roman", Times, "Droid Serif", "DejaVu Serif", serif;
-	font-size: 18pt;
+	font-size: 1.35rem;
 	background-color: #EECAA6;
 	color: #292207;
 	padding: 0 2%;
@@ -165,32 +172,28 @@ a {
 	position: absolute;
 	top: 48px;
 	display: none;
-	font: 12pt sans-serif;
+	font-size: 1.2rem;
 	background-color: #EECAA6;
 	color: #292207;
 	padding: 1em 2%;
 	overflow: auto;
 }
 
-.help {
-	font: 14pt sans-serif;
+#fixed-size {
+	font-size: 1rem;
 }
 
 /* smaller font on phones - keep this under overridden styles */
 @media only screen and (orientation:portrait) and (max-width: 599px), only screen and (orientation:landscape) and (max-width: 799px)
 {
-	html, input, select, option, button, .button-rows, #header
+	html
 	{
 		font-size: 11pt;
 	}
 
-	#content
+	#content, #form-content
 	{
-		font-size: 13pt;
-	}
-
-	.help {
-		font: 12pt sans-serif;
+		font-size: 1.1rem;
 	}
 
 	#header span
@@ -234,7 +237,7 @@ a {
 	cursor: pointer;
 }
 
-#searchPop, #sectionPop
+#searchPop, #sectionPop, #viewPop
 {
 	position: absolute;
 	top: 64px;
@@ -248,6 +251,10 @@ a {
 	padding: 10px;
 }
 
+#viewPop {
+	width: 200px;
+}
+
 .top10
 {
 	margin-top: 10px;
@@ -259,9 +266,9 @@ a {
     border: 1px solid #292207;
 }
 
-.font80
+.font85
 {
-	font-size: 80%;
+	font-size: 85%;
 }
 
 #search-msg
@@ -285,6 +292,7 @@ a {
     border: 1px solid black;
     padding: 10px;
     text-align: center;
+	font-size: 1.1rem;
     z-index: 1000;
 }
 
@@ -541,8 +549,8 @@ button:focus {
 }
 
 .button-row {
-    height: 2em;
-    line-height: 2em;
+    height: 2rem;
+    line-height: 2rem;
     vertical-align: middle;
 }
 

@@ -59,6 +59,9 @@ User user = (User) session.getAttribute("user");
         <span id="logout-link" class="inblk">
             Kilé<u>p</u>
         </span>
+        <span id="view-link" class="inblk">
+            Nézet
+        </span>
         <span id="help-link" class="inblk">
             Súgó
         </span>
@@ -86,83 +89,100 @@ User user = (User) session.getAttribute("user");
 	<div id="form-content" class="autoScroll">
 	</div>
 
-	<div id="searchPop" class="has-button">
-		<div style="margin-top: 10px; text-align: center;">
-			Keresés:
-		</div>
-		<div>
-			<input type="text" id="searchInput" class="top10 textInput100">
-		</div>
-		<div class="top10 font80">
-		    Sorrend:&nbsp;
-			<input type="radio" name="sort" value="Score" id="score-order" checked>&nbsp;Fontosság
-			&nbsp;
-			<input type="radio" name="sort" value="Index">&nbsp;Szakasz
-		</div>
-		<div class="top10 font80" id="search-paging">
-		    Oldalanként:&nbsp;
-			<input type="radio" name="spage" value="1" checked>&nbsp;1
-			&nbsp;
-			<input type="radio" name="spage" value="10">&nbsp;10
-			&nbsp;
-			<input type="radio" name="spage" value="20">&nbsp;20
-			&nbsp;
-			<input type="radio" name="spage" value="50">&nbsp;50
-		</div>
-		<div id="search-msg">
-		</div>
-		<div class="form-row button-row center">
-			<button id="searchGo">Mehet</button>
-		</div>
-	</div>
+	<div id="fixed-size">
+        <div id="searchPop" class="has-button">
+            <div style="margin-top: 10px; text-align: center;">
+                Keresés:
+            </div>
+            <div>
+                <input type="text" id="searchInput" class="top10 textInput100">
+            </div>
+            <div class="top10 font85">
+                Sorrend:&nbsp;
+                <input type="radio" name="sort" value="Score" id="score-order" checked>&nbsp;Fontosság
+                &nbsp;
+                <input type="radio" name="sort" value="Index">&nbsp;Szakasz
+            </div>
+            <div class="top10 font85" id="search-paging">
+                Oldalanként:&nbsp;
+                <input type="radio" name="spage" value="1" checked>&nbsp;1
+                &nbsp;
+                <input type="radio" name="spage" value="10">&nbsp;10
+                &nbsp;
+                <input type="radio" name="spage" value="20">&nbsp;20
+                &nbsp;
+                <input type="radio" name="spage" value="50">&nbsp;50
+            </div>
+            <div id="search-msg">
+            </div>
+            <div class="form-row button-row center">
+                <button id="searchGo">Mehet</button>
+            </div>
+        </div>
 
-	<div id="sectionPop" class="has-button">
-		<div style="margin-top: 10px; text-align: center;">
-			Ugrás a választott szakaszra:
-		</div>
-		<div>
-			<select id="sect1" class="sectionSelect"></select>
-		</div>
-		<div>
-			<select id="sect2" class="sectionSelect"></select>
-		</div>
-		<div>
-			<select id="sect3" class="sectionSelect"></select>
-		</div>
-		<div>
-			<select id="sect4" class="sectionSelect"></select>
-		</div>
-		<div>
-			<select id="sect5" class="sectionSelect"></select>
-		</div>
-		<div>
-			<select id="sect6" class="sectionSelect"></select>
-		</div>
-		<div>
-			<select id="sect7" class="sectionSelect"></select>
-		</div>
-		<div>
-			<select id="sect8" class="sectionSelect"></select>
-		</div>
-		<div>
-			<select id="sect9" class="sectionSelect"></select>
-		</div>
-		<div class="form-row button-row center">
-			<button id="sectionGo">Mehet</button>
-		</div>
-	</div>
+        <div id="sectionPop" class="has-button">
+            <div style="margin-top: 10px; text-align: center;">
+                Ugrás a választott szakaszra:
+            </div>
+            <div>
+                <select id="sect1" class="sectionSelect"></select>
+            </div>
+            <div>
+                <select id="sect2" class="sectionSelect"></select>
+            </div>
+            <div>
+                <select id="sect3" class="sectionSelect"></select>
+            </div>
+            <div>
+                <select id="sect4" class="sectionSelect"></select>
+            </div>
+            <div>
+                <select id="sect5" class="sectionSelect"></select>
+            </div>
+            <div>
+                <select id="sect6" class="sectionSelect"></select>
+            </div>
+            <div>
+                <select id="sect7" class="sectionSelect"></select>
+            </div>
+            <div>
+                <select id="sect8" class="sectionSelect"></select>
+            </div>
+            <div>
+                <select id="sect9" class="sectionSelect"></select>
+            </div>
+            <div class="form-row button-row center">
+                <button id="sectionGo">Mehet</button>
+            </div>
+        </div>
 
-	<div id="menu">
-	    <div id="menu-short-ref" class="mitem">(Nincs pozíció)</div>
-        <div id="menu-search-link" class="mitem"><u>K</u>eres</div>
-        <div id="menu-section-link" class="mitem"><u>S</u>zakasz</div>
-        <div id="menu-bookmark-link" class="mitem">Könyvj<u>e</u>lző</div>
-	    <div id="menu-logout-link" class="mitem">Kilé<u>p</u>és</div>
-	    <div id="menu-help-link" class="mitem">Súgó</div>
+        <div id="viewPop" class="has-button">
+            <div class="top10">
+                Betűméret:
+            </div>
+            <div>
+                <input type="number" min="6" max="30" id="viewFontInput" class="top10 textInput100">
+            </div>
+            <div id="view-msg" class="top10">
+            </div>
+            <div class="form-row button-row center">
+                <button id="viewGo">Beállítás</button>
+            </div>
+        </div>
+
+        <div id="menu">
+            <div id="menu-short-ref" class="mitem">(Nincs pozíció)</div>
+            <div id="menu-search-link" class="mitem"><u>K</u>eres</div>
+            <div id="menu-section-link" class="mitem"><u>S</u>zakasz</div>
+            <div id="menu-bookmark-link" class="mitem">Könyvj<u>e</u>lző</div>
+            <div id="menu-logout-link" class="mitem">Kilé<u>p</u>és</div>
+            <div id="menu-view-link" class="mitem">Nézet</div>
+            <div id="menu-help-link" class="mitem">Súgó</div>
 <% if(ri.admin) { %>
-	    <div id="users-link" class="mitem">Felhasználók</div>
+    	    <div id="users-link" class="mitem">Felhasználók</div>
 <% } %>
-	</div>
+    	</div>
+    </div>
 
 	<div id="message">
 	</div>

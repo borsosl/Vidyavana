@@ -165,17 +165,22 @@ function throttle(init, delay, cb) {
  * Shows/hides dialogs.
  * @param {number} index - of dialog in ids array
  * @param {boolean} toggle - or show
+ * @return {boolean} - dialog is now visible
  */
 function dialog(index, toggle) {
-    var ids = [$('#searchPop'), $('#sectionPop')];
+    var ids = [$('#searchPop'), $('#sectionPop'), $('#viewPop')];
+    var ret = false;
     for(var i in ids)
-        if(i == index)
+        if(i == index) {
             if(toggle)
                 ids[i].toggle();
             else
                 ids[i].show();
+            ret = ids[i].is(':visible');
+        }
         else
             ids[i].hide();
+    return ret;
 }
 
 

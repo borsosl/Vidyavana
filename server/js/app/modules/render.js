@@ -20,7 +20,7 @@ function text(json, mode) {
     // set page values and select panel
     if(isSearch)
     {
-        if(display.downtime)
+        if(display && display.downtime)
             util.downtime(display.downtime);
         if(json.hitCount)
         {

@@ -24,6 +24,7 @@ function init()
     require('./modules/touch');
     util.resizeEvent();
     util.refreshMenu();
+    task.initView();
     task.searchDialog();
     dom.$loading.hide();
     // to preload image, it is hidden only by negative left in css, position now
