@@ -11,6 +11,8 @@ import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
 
 public class EdFileProcessor implements FileProcessor
 {
+    public static final boolean NO_SPACES_AFTER_WBW_DASH = false;
+
 	private File destDir;
 	private String srcFileName;
 	private WriterInfo writerInfo;
@@ -90,6 +92,8 @@ public class EdFileProcessor implements FileProcessor
 			manual.add("hukb00dc.h09.xml: dedication broken lines");
 			manual.add("*words<br/>* from George Harrison, toc-ban is");
 		}
+		else if(fileName.toLowerCase().indexOf("hubg00pf.h10") != -1)
+			manual.add("Hubg00pf.h10: @signature speciális tartalma törlendő!");
 	}
 
 
@@ -570,7 +574,7 @@ public class EdFileProcessor implements FileProcessor
 					}
 					
 					// numbered ones
-					else if(number == null && "%FPJK".indexOf(c) != -1)
+					else if(number == null && "%FPJKS".indexOf(c) != -1)
 					{
 						processed = c;
 						number = new StringBuilder();
@@ -582,7 +586,7 @@ public class EdFileProcessor implements FileProcessor
 						// disregard, only expect this in script
 						if(!currentTag.name().startsWith("sans") && 
 							!currentTag.name().startsWith("ben"))
-								throw new IllegalStateException(String.format("ERROR: <%d> formazas a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
+								throw new IllegalStateException(String.format("ERROR: <%c> formazas a '%s' fajlban. Sor: %d.", c, srcFileName, lineNumber));
 					}
 					
 					if(c == '>' || pos>=length)
@@ -658,7 +662,7 @@ public class EdFileProcessor implements FileProcessor
 				{
 					if(c == ' ')
 					{
-						if(currentAlias == EdTags.word_by_word && prev == Dash)
+						if(NO_SPACES_AFTER_WBW_DASH && currentAlias == EdTags.word_by_word && prev == Dash)
 							continue;
 						prev = Space;
 					}
