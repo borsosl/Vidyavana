@@ -9,6 +9,10 @@ var initd = false;
 
 function init()
 {
+    if(pg.afterLogin) {
+        window.location = '/app';
+        return;
+    }
     if(initd)
         return;
     dom.init();
