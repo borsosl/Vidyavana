@@ -18,9 +18,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
 
@@ -47,6 +45,8 @@ public class TextContentService
 		Integer searchId = (Integer) ri.ses.getAttribute("searchId");
 		if(searchId == null)
 			searchId = 0;
+		else
+			sweepOldSearchResults();
 		ri.ses.setAttribute("searchId", ++searchId);
 
 		Search details = new Search();
@@ -57,6 +57,7 @@ public class TextContentService
 		details.reqHits = 100;
 		details.fetchHits = 1000;
 		details.order = sortStr == null ? Order.Score : Order.valueOf(sortStr);
+		details.lastAccess = new Date();
 		try {
 			details.page = Integer.valueOf(pageStr);
 		} catch (NumberFormatException ex) {
@@ -76,7 +77,6 @@ public class TextContentService
 		// we have hits
 		Map<Integer, Search> smap = getSessionSearchMap();
 		smap.put(details.id, details);
-		// TODO put search ref into linked lists for timing out and freeing resources
 
 		if(details.page == 1) {
 			Hit hit = details.hits.get(0);
@@ -89,6 +89,16 @@ public class TextContentService
 			res.endHit = end;
 			res.display = textForHitList(details, 0, end, ri.toc);
 		}
+	}
+
+	private void sweepOldSearchResults() {
+		long old = new Date().getTime() - 30*60*1000;
+		getSessionSearchMap().values().stream()
+			.filter(search -> search.hits != null && search.lastAccess.getTime() < old)
+			.forEach(search -> {
+				search.hits = null;
+				search.bookAccess = null;
+			});
 	}
 
 
@@ -121,6 +131,7 @@ public class TextContentService
 			Globals.searchExecutors.submit(new SearchTask(details)).get();
 			Timing.stop("Re-search", Log.instance());
 		}
+		details.lastAccess = new Date();
 
 		for(int i = hitOrdinal; i < endOrdinal; ++i) {
 			Hit hit = details.hits.get(i);
