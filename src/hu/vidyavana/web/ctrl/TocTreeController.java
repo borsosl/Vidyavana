@@ -7,9 +7,13 @@ public class TocTreeController
 {
 	public void service(RequestInfo ri) throws Exception
 	{
-		// args[1] == get
 		ri.ajax = true;
-		int id = Integer.parseInt(ri.args[2]);
-		ri.ajaxResult = TocTree.inst.treeNode(id);
+		TocTree toc = TocTree.getView(ri.user);
+		if("get".equals(ri.args[1])) {
+			int id = Integer.parseInt(ri.args[2]);
+			ri.ajaxResult = toc.treeNode(id);
+		} else if("root".equals(ri.args[1])) {
+			ri.ajaxResult = toc.initialShortTree();
+		}
 	}
 }
