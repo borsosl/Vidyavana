@@ -11,4 +11,9 @@ public class SessionRegistryEntry implements Serializable {
         this.sid = sid;
         accessed = new Date();
     }
+
+    @Override
+    public String toString() {
+        return sid;
+    }
 }

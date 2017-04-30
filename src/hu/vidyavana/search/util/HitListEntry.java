@@ -3,6 +3,7 @@ package hu.vidyavana.search.util;
 import hu.vidyavana.convert.api.DiacriticLowercase;
 import hu.vidyavana.convert.api.DiacriticToLatin;
 import hu.vidyavana.search.api.QueryAnalyzer;
+import hu.vidyavana.util.Log;
 import hu.vidyavana.util.XmlToken;
 import hu.vidyavana.util.XmlUtil;
 
@@ -29,6 +30,10 @@ public class HitListEntry {
         addHalfOfTargetLengthAroundFoundTokens(tokens, ranges);
         ranges = unifyOverlappingRanges(ranges);
         extendRangesToTargetLength(tokens, ranges);
+        if(ranges.size() == 0) {
+            Log.warning("No ranges in found hit. Para: "+para+"\n"+"Query: "+query, null);
+            return "";
+        }
         return printRanges(ranges, tokens, allItalic, allBold);
     }
 
