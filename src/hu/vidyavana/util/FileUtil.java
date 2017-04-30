@@ -6,13 +6,13 @@ import java.util.List;
 
 public class FileUtil
 {
-	public static List<String> readTextFile(File f)
+	public static List<String> readTextFile(File f, String encoding)
 	{
 		BufferedReader br = null;
 		List<String> list = new ArrayList<String>();
 		try
 		{
-			br = new BufferedReader(new FileReader(f));
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(f), encoding));
 			while(true)
 			{
 				String line = br.readLine();

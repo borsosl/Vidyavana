@@ -1,15 +1,5 @@
 package hu.vidyavana.db;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import hu.vidyavana.convert.api.ParagraphClass;
 import hu.vidyavana.db.model.BookSegment;
 import hu.vidyavana.db.model.Storage;
@@ -17,6 +7,17 @@ import hu.vidyavana.db.model.StoragePara;
 import hu.vidyavana.db.model.StorageTocItem;
 import hu.vidyavana.search.api.Lucene;
 import hu.vidyavana.util.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddBook
 {
@@ -326,7 +327,7 @@ public class AddBook
 				xmlRoot = null;
 			
 			// read dir list
-			List<String> books = FileUtil.readTextFile(new File(xmlRoot, "booklist.txt"));
+			List<String> books = FileUtil.readTextFile(new File(xmlRoot, "booklist.txt"), "UTF-8");
 			if(books == null)
 				throw new RuntimeException("book list missing from path " + xmlRoot.getAbsolutePath());
 			

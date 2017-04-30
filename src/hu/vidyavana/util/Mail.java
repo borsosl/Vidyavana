@@ -1,12 +1,12 @@
 package hu.vidyavana.util;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 public class Mail
 {
@@ -49,7 +49,7 @@ public class Mail
 			MimeMessage msg = new MimeMessage(session);
 			msg.addFrom(InternetAddress.parse(bounce));
 			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
-			msg.setSubject(subject);
+			msg.setSubject(subject, "UTF-8");
 			msg.setSentDate(new Date());
 			msg.setText(htmlText, "UTF-8", "html");
 			Transport.send(msg);
@@ -83,7 +83,7 @@ public class Mail
 
 	public static void register(String email, String token)
 	{
-		List<String> lines = FileUtil.readTextFile(new File(Globals.cwd, "../../admin/register-email.html"));
+		List<String> lines = FileUtil.readTextFile(new File(Globals.cwd, "../../admin/register-email.html"), "UTF-8");
 		StringBuilder sb = new StringBuilder();
 		for(String line : lines)
 		{
