@@ -1,9 +1,11 @@
 package hu.vidyavana.db.api;
 
+import hu.vidyavana.util.Conf;
+import org.h2.Driver;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.*;
-import org.h2.Driver;
 
 public enum Sql
 {
@@ -26,7 +28,7 @@ public enum Sql
 		try
 		{
 			if(conn == null || conn.isClosed())
-				conn = DriverManager.getConnection("jdbc:h2:"+path(),"","");
+				conn = DriverManager.getConnection("jdbc:h2:"+path(),"", Conf.get("db.password"));
 
 			return conn;
 		}
