@@ -183,6 +183,18 @@ p
 	text-align: right;
 }
 
+.TorzsVers + .Hivatkozas
+{
+	margin-top: 0.2em;
+}
+
+.NemDoltVers
+{
+	margin-top: 0.5em;
+	text-align: left;
+	font-style: normal;
+}
+
 .Balra
 {
 	margin-top: 1em;
@@ -282,6 +294,10 @@ p
 {
 	text-indent: -2.4em;
 	margin-left: 7.2em;
+}
+
+.TorzsKezdet + .in0, .TorzsKoveto + .in0, .TorzsKezdet + .in1, .TorzsKoveto + .in1 {
+	margin-top: 0.5em;
 }
 
 .BalraKoveto

@@ -2,10 +2,7 @@ package hu.vidyavana.convert.api;
 
 import java.io.File;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class WriterInfo
 {
@@ -46,7 +43,16 @@ public class WriterInfo
 	public int tocOrdinal;
 	public int paraOrdinal;
 	public int tocDivisionParaOrdinal;
+
+	public Set<Integer> numberedAbbrevOnTocLevels;
+	public int[] tocAbbrevLevelOrdinals;
 	
 	public TreeMap<String, Object> diacritics/* = new TreeMap<>()*/;		// uncomment for collect diacritics function
 	public ProofreadWords proofreadWords/* = new ProofreadWords()*/;
+
+	public void initNumberedAbbrevTocLevels(Integer... level) {
+		numberedAbbrevOnTocLevels = new HashSet<>(Arrays.asList(level));
+		tocAbbrevLevelOrdinals = new int[10];
+		tocAbbrevLevelOrdinals[1] = 0;
+	}
 }

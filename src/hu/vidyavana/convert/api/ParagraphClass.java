@@ -22,6 +22,7 @@ public enum ParagraphClass
 	TorzsUvaca(14),
 	TorzsVers(15),
 	Hivatkozas(16),
+	NemDoltVers(130),
 	Balra(17),
 	Kozepen(18),
 	Jobbra(19),
@@ -64,15 +65,17 @@ public enum ParagraphClass
 	BehuzottFuggo(124),
 	LabjegyzetKoveto(125),
 	LabjegyzetVersKoveto(126),
-	SzakaszcimBalra(127);
-	
+	SzakaszcimBalra(127),
+	UresFel(129);
+
 	
 	
 	private static Map<Integer, ParagraphClass> reverseMap = new HashMap<>();
 	static
 	{
 		for(ParagraphClass pc : values())
-			reverseMap.put(pc.code, pc);
+			if(reverseMap.put(pc.code, pc) != null)
+				throw new RuntimeException("Duplikált kód: " + pc.code);
 	}
 	
 	public final int code;

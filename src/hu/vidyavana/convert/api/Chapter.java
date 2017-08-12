@@ -1,12 +1,13 @@
 package hu.vidyavana.convert.api;
 
+import hu.vidyavana.util.XmlUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import hu.vidyavana.util.XmlUtil;
 
 public class Chapter
 {
@@ -39,7 +40,13 @@ public class Chapter
 		for(Paragraph par : para)
 		{
 			par.writeToFile(writerInfo);
-			if(par.cls == ParagraphClass.Konyvcim)
+			if(par.tocLevel != 0)
+			{
+				if(par.tocLevel > 0)
+					tocEntry(writerInfo, par.tocLevel,
+							par.tocText != null ? par.tocText : XmlUtil.noMarkup(par.text.toString().trim()));
+			}
+			else if(par.cls == ParagraphClass.Konyvcim)
 				writerInfo.tocDivisionParaOrdinal = writerInfo.paraOrdinal;
 			else if(par.cls == ParagraphClass.Fejezetszam)
 			{
@@ -89,15 +96,14 @@ public class Chapter
 		o.write("      <title>");
 		o.write(title);
 		o.write("</title>\r\n");
-//		if(writerInfo.tocDivision != null)
-//		{
-//			o.write("      <title>");
-//			o.write(tocTitle);
-//			o.write("</title>\r\n");
-//		}
-//		o.write("      <toc_ordinal>");
-//		o.write(Integer.toString(writerInfo.tocOrdinal));
-//		o.write("</toc_ordinal>\r\n");
+		if(writerInfo.numberedAbbrevOnTocLevels != null) {
+			if(writerInfo.numberedAbbrevOnTocLevels.contains(level)) {
+				o.write("      <abbrev>");
+				o.write(Integer.toString(++writerInfo.tocAbbrevLevelOrdinals[level]));
+				o.write("</abbrev>\r\n");
+            }
+            writerInfo.tocAbbrevLevelOrdinals[level+1] = 0;
+		}
 		o.write("      <para_ordinal>");
 		int ord = writerInfo.tocDivisionParaOrdinal;
 		if(writerInfo.paraOrdinal - ord > 3)

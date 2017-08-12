@@ -27,8 +27,10 @@ public class Paragraph
 	public List<String> footnote = new ArrayList<String>();
 	public String srcFileName;
 	public int srcFileLine;
+	public int tocLevel;
+	public String tocText;
 
-	
+
 	public void addToDocument(Document doc, Element parent)
 	{
 		if(xmlTagName ==null) xmlTagName = "p";
@@ -140,6 +142,11 @@ public class Paragraph
 				end = len;
 			while(end < len && txt.charAt(end)!=' ')
 				++end;
+			int nextStartOffset = 1;
+			if(end >= 3 && txt.substring(end-3, end).equals("<br")) {
+				end -= 3;
+				nextStartOffset = 0;
+			}
 			writerInfo.out.write(txt.substring(start, end));
 			if(end < len)
 			{
@@ -149,13 +156,13 @@ public class Paragraph
 				prefixLen = writerInfo.indentLevel * Book.XML_INDENT.length();
 				writerInfo.indentLevel -= 2;
 			}
-			start = end + 1;
+			start = end + nextStartOffset;
 		}
 	}
 
 
-	static Set<ParagraphClass> excludedClasses = new HashSet<>(Arrays.asList(new ParagraphClass[]{
-		Uvaca, Vers, Proza, Szavak, TorzsUvaca, TorzsVers, Kozepen, Index}));
+	static Set<ParagraphClass> excludedClasses = new HashSet<>(Arrays.asList(
+			Uvaca, Vers, Proza, Szavak, TorzsUvaca, TorzsVers, Kozepen, Index));
 	
 	private void collectDiacritics(String txt, WriterInfo writerInfo)
 	{

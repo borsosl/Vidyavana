@@ -1,13 +1,14 @@
 package hu.vidyavana.db.model;
 
+import hu.vidyavana.convert.api.ParagraphClass;
+import hu.vidyavana.search.model.ParaCategory;
+import hu.vidyavana.util.Encrypt;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import hu.vidyavana.convert.api.ParagraphClass;
-import hu.vidyavana.search.model.ParaCategory;
-import hu.vidyavana.util.Encrypt;
 
 public class StoragePara
 {
@@ -30,7 +31,7 @@ public class StoragePara
 
 	public void read(RandomAccessFile in, int len, boolean encrypted) throws IOException
 	{
-		byte code = in.readByte();
+		int code = in.readUnsignedByte();
 		cls = ParagraphClass.byCode(code);
 		--len;
 		ByteBuffer bb = ByteBuffer.allocate(len);

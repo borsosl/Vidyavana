@@ -1,8 +1,9 @@
 package hu.vidyavana.convert.api;
 
-import static hu.vidyavana.convert.api.ParagraphClass.*;
 import java.util.HashMap;
 import java.util.Map;
+
+import static hu.vidyavana.convert.api.ParagraphClass.*;
 
 public enum ParagraphCategory
 {
@@ -13,7 +14,7 @@ public enum ParagraphCategory
 	Szavak(ParagraphClass.Szavak),
 	Forditas(ParagraphClass.Forditas),
 	Magyarazat,
-	MagyarazatVers(TorzsUvaca, TorzsVers, Hivatkozas, TorzsVersszam),
+	MagyarazatVers(TorzsUvaca, TorzsVers, Hivatkozas, TorzsVersszam, NemDoltVers),
 	Index(ParagraphClass.Index, in0, in1, in2, in3, in4);
 
 	public static Map<ParagraphClass, ParagraphCategory> mapFromClass;
