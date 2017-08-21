@@ -14,13 +14,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
+import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.Ebook.BBD;
+import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.Ebook.OWK;
 import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.Ebook.SSR;
 import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.StyleNameMapping.m;
 
 public class BbtXhtmlFileProcessor implements FileProcessor
 {
-	enum Ebook { SSR }
-	private Ebook ebook = SSR;
+	enum Ebook { SSR, BBD, OWK }
+	private Ebook ebook = BBD;
 
 	static class StyleNameMapping {
 		String css;
@@ -34,7 +36,7 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 		}
 	}
 
-	StyleNameMapping[] styleNameMappings = {
+	StyleNameMapping[] inddStyleNameMappings = {
 			m("translation", Forditas),
 			m("speech", BalraKoveto),
 			m("text-number", TorzsVersszam),
@@ -45,12 +47,23 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 			m("reference", Hivatkozas),
 			m("signature", Balra),
 			m("poem", NemDoltVers),
-			m("footnote-body", Labjegyzet),
+			m("footnote-body", Labjegyzet)
 	};
+
+	StyleNameMapping[] edStyleNameMappings = {
+			m("para", TorzsKoveto),
+			m("purp", TorzsKezdet),
+			m("verse-in-purp", TorzsVers),
+			m("ch", Fejezetszam),
+			m("ch-title", Fejezetcim),
+			m("sanskrit", Vers)
+	};
+
+	StyleNameMapping[] styleNameMappings = ebook == SSR ? inddStyleNameMappings : edStyleNameMappings;
 
 	private static final Pattern FILENAME_CHAPTER = Pattern.compile("(\\d\\d)(\\D\\D)");
 	private static final Pattern BODY_LINE = Pattern.compile("^\\s*<body(.*?)>");
-	private static final Pattern HTML_TAG_LINE = Pattern.compile("^\\s*(<(p|h\\d|ol|ul|li)(.*?)>)?(.*?)(</(p|h\\d|body|ol|ul|li)>)?\\s*$");
+	private static final Pattern HTML_TAG_LINE = Pattern.compile("^\\s*(<(p|div|h\\d|ol|ul|li)(.*?)>)?(.*?)(</(p|div|h\\d|body|ol|ul|li)>)?\\s*$");
 	private static final Pattern HTML_ATTR = Pattern.compile("([a-zA-Z-]+)\\s*=\\s*\"(.*?)\"");
 	private static final Pattern WHITE_SPLITTER = Pattern.compile("\\s+");
 	private static final Pattern CHAPTER_PAGE_BODY_ID = Pattern.compile("s\\d+");
@@ -59,6 +72,7 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	private String srcFileName;
 	private WriterInfo writerInfo;
 	private List<String> manual;
+	private boolean bbdOwk = ebook == BBD || ebook == OWK;
 
 	private int fileNameChapter, lineNumber;
 	private String fileNameClass;
@@ -68,7 +82,7 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	private Stack<String> formatStack;
 	private File tocFile;
 
-	private boolean inBody;
+	private boolean inBody, inVerse;
 	private XhtmlTagInfo body, tag;
 	private boolean coverPageFile;
 	private boolean white;
@@ -171,7 +185,7 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 		}
 		para = prevPara = null;
 		formatStack = new Stack<>();
-		inBody = coverPageFile = false;
+		inBody = inVerse = coverPageFile = false;
 		h2count = 0;
 		
 		readXhtmlFile(xhtml);
@@ -248,6 +262,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 			if(!"ol".equals(tag.name) && !"ul".equals(tag.name))
 				chapter.para.add(para);
 			white = true;
+			mappedClassNames();
+			inVerse = para.cls == Uvaca || para.cls == Vers || para.cls == TorzsUvaca || para.cls == TorzsVers;
 		}
 		if(nonEmpty(content)) {
 			if(!white)
@@ -315,19 +331,28 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 				String tag = content.substring(tagStart, ptr-1).toLowerCase();
 				tagStart = -1;
 				white = false;
-				if("em".equals(tag))
-					ncsb.append("<i>");
-				else if("/em".equals(tag))
-					ncsb.append("</i>");
-				else if("strong".equals(tag))
+				if("em".equals(tag) || "i".equals(tag)) {
+					if(!inVerse)
+						ncsb.append("<i>");
+				} else if("/em".equals(tag) || "/i".equals(tag)) {
+					if(!inVerse)
+						ncsb.append("</i>");
+				} else if("strong".equals(tag) || "b".equals(tag))
 					ncsb.append("<b>");
-				else if("/strong".equals(tag))
+				else if("/strong".equals(tag) || "/b".equals(tag))
 					ncsb.append("</b>");
 				else if(tag.startsWith("a ") ||
 						"/a".equals(tag))
 					;
-				else if(tag.startsWith("/") ||
-						tag.startsWith("span"))
+				else if(tag.startsWith("span")) {
+					if(bbdOwk && content.substring(ptr-21, ptr+13).equals("<span class=\"hidden\">&emsp;</span>")) {
+						ncsb.append("\u2002\u2002");
+						ptr += 13;
+					} else {
+						ncsb.append("<").append(tag).append(">");
+					}
+				}
+				else if(tag.startsWith("/"))
 					ncsb.append("<").append(tag).append(">");
 				else if("br /".equals(tag)) {
 					ncsb.append("<br />");
@@ -345,7 +370,7 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	}
 
 	private void styleTag() {
-		mappedClassNames();
+		excludeMetaTags();
 		partCover();
 		chapterHeading();
 		lists();
@@ -370,6 +395,17 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 			para.cls = Balra;
 	}
 
+	private void excludeMetaTags() {
+		if(bbdOwk) {
+			if(tag.classes != null) {
+				if(tag.classes.contains("ch-number"))
+					throw new RuntimeException("exclude");
+				if(tag.classes.contains("ch-head"))
+					para.xmlTagName = "head";
+			}
+		}
+	}
+
 	private void partCover() {
 		if(ebook != SSR)
 			return;
@@ -386,7 +422,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	}
 
 	private void chapterHeading() {
-		// todo h3 mikor szakaszcim, alcim
+		if(bbdOwk)
+			return;
 		XhtmlTagInfo bodyTag = tagStack.get(0);
 		if(CHAPTER_PAGE_BODY_ID.matcher(bodyTag.id).matches())
 			return;
@@ -420,6 +457,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	}
 
 	private void lists() {
+		if(bbdOwk)
+			return;
 		if("ol".equals(tag.name) || "ul".equals(tag.name))
 			throw new RuntimeException("exclude");
 		if("li".equals(tag.name)) {
@@ -436,6 +475,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	}
 
 	private void followUpTags() {
+		if(bbdOwk)
+			return;
 		int paraNum = chapter.para.size();
 		if(paraNum < 2)
 			return;
@@ -466,6 +507,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	}
 
 	private void lineFeedByXhtmlStyleName() {
+		if(bbdOwk)
+			return;
 		if(tag.classes == null || tag.classes.isEmpty())
 			return;
 		int linefeed = 0;
@@ -508,6 +551,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	}
 
 	private void verseIndents() {
+		if(bbdOwk)
+			return;
 		if(para.cls == NemDoltVers || !para.cls.name().contains("Vers"))
 			return;
 		String text = para.text.toString();
