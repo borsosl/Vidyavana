@@ -7,19 +7,25 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static hu.vidyavana.convert.ed.EdFileProcessor.Bookname.CB;
 import static hu.vidyavana.convert.ed.EdPreviousEntity.*;
+import static hu.vidyavana.convert.ed.EdTags.intro_para;
+import static hu.vidyavana.convert.ed.EdTags.quote;
 
 public class EdFileProcessor implements FileProcessor
 {
-    public static final boolean NO_SPACES_AFTER_WBW_DASH = false;
+    enum Bookname {CB, OTHER}
 
+	public static final boolean NO_SPACES_AFTER_WBW_DASH = false;
+
+    private Bookname bookname = CB;
 	private File destDir;
 	private String srcFileName;
 	private WriterInfo writerInfo;
 	private String ebookPath;
 	private List<String> manual;
 
-	private boolean currentBookHasLeftAlignLeadParagraph = false;
+	private boolean currentBookHasLeftAlignLeadParagraph = true;
 	
 	private int lineNumber;
 	private Book book;
@@ -234,13 +240,7 @@ public class EdFileProcessor implements FileProcessor
 		if(line[0] == '@' && paraStartLine)
 		{
 			// close previous tag
-			if(superscript)
-			{
-				para.text.append("</sup>");
-				superscript = false;
-			}
-			purgeFormatStack();
-			skippingUnhandledTag = false;
+			postProcessPara();
 			
 			// start processing new tag
 			String tagStr = sequenceToString(line, 1, length, (short) '=').trim().toLowerCase();
@@ -249,6 +249,8 @@ public class EdFileProcessor implements FileProcessor
 			currentTag = EdTags.find(tagStr);
 			if(currentTag == null)
 				throw new IllegalStateException(String.format("ERROR: Nem definialt tag '%s' a '%s' fajlban. Sor: %d.", tagStr, srcFileName, lineNumber));
+			else if(currentTag == EdTags.intro && bookname == CB)
+				currentTag = quote;
 			currentAlias = currentTag.alias;
 			if(currentAlias == null)
 				currentAlias = currentTag;
@@ -347,7 +349,15 @@ public class EdFileProcessor implements FileProcessor
 
 				if(currentBookHasLeftAlignLeadParagraph && para.cls == ParagraphClass.TorzsKezdet)
 					para.cls = ParagraphClass.BalraKezdet;
-	
+
+				if(bookname == CB) {
+					if(para.cls == ParagraphClass.Alcim)
+						para.cls = ParagraphClass.BalraCim;
+					else if(para.cls == ParagraphClass.TorzsKoveto)
+						para.cls = ParagraphClass.BalraKoveto;
+					else if(currentTag == EdTags.notes)
+						para.cls = ParagraphClass.BalraCim;
+				}
 				prev = Tag;
 			}
 		}
@@ -400,7 +410,7 @@ public class EdFileProcessor implements FileProcessor
 									num = 0;
 								else
 									num = Double.parseDouble(number.toString());
-								if(num > 200d)
+								if(num > 200d || bookname == CB && num > 1.99d)
 								{
 									para.text.append("<sup>");
 									superscript = true;
@@ -720,7 +730,16 @@ public class EdFileProcessor implements FileProcessor
 					if(emspace < 0)
 						emspace = 0;
 				}
-				
+				if(emspace == 2) {
+					if(para.cls == ParagraphClass.Balra) {
+						para.cls = ParagraphClass.TorzsKezdet;
+						emspace = 0;
+					} else if(para.cls == ParagraphClass.BalraKoveto) {
+						para.cls = ParagraphClass.TorzsKoveto;
+						emspace = 0;
+					}
+				}
+
 				// if many indent marks start a paragraph
 				else if(emspace > 4)
 				{
@@ -731,7 +750,7 @@ public class EdFileProcessor implements FileProcessor
 					emspace = 0;
 				}
 			}
-			
+
 //			if(writerInfo.forEbook && prev == Linebreak)
 //				emspace = 0;
 
@@ -776,6 +795,24 @@ public class EdFileProcessor implements FileProcessor
 			{
 				para.text.append(deferredMarkup);
 				deferredMarkup.setLength(0);
+			}
+		}
+	}
+
+	private void postProcessPara() {
+		if(superscript)
+		{
+			para.text.append("</sup>");
+			superscript = false;
+		}
+		purgeFormatStack();
+		skippingUnhandledTag = false;
+
+		if(bookname == CB) {
+			if((currentTag == quote || currentTag == intro_para) &&
+					para.text.indexOf("<i>") < 0) {
+				para.text.insert(0, "<i>");
+				para.text.append("</i>");
 			}
 		}
 	}

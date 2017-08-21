@@ -17,7 +17,7 @@ public enum ParagraphClass
 	Szavak(10, true),
 	Forditas(11, true),
 	TorzsKezdet(12, true),
-	BalraKezdet(50, true),
+	BalraKezdet(50),
 	TorzsKoveto(13, true),
 	TorzsUvaca(14),
 	TorzsVers(15),
