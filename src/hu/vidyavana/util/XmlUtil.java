@@ -31,6 +31,8 @@ public class XmlUtil
 	
 	public static String noMarkup(String text)
 	{
+		if(text == null)
+			return null;
 		StringBuilder sb = new StringBuilder(text.length());
 		boolean inMarkup = false;
 		for(int i=0, len=text.length(); i<len; ++i)

@@ -172,11 +172,6 @@ p
 	font-style: italic;
 }
 
-.TorzsUvaca + .TorzsVers
-{
-	margin-top: 0;
-}
-
 .Hivatkozas
 {
 	margin-top: 1em;
@@ -186,6 +181,18 @@ p
 .TorzsVers + .Hivatkozas
 {
 	margin-top: 0.2em;
+}
+
+.KozepenVers
+{
+	margin-top: 0.5em;
+	text-align: center;
+	font-style: italic;
+}
+
+.TorzsUvaca + .TorzsVers, .TorzsVersszam + .TorzsVers, .TorzsVersszam + .KozepenVers
+{
+	margin-top: 0;
 }
 
 .NemDoltVers
@@ -217,6 +224,12 @@ p
 .KozepenKoveto
 {
 	text-align: center;
+	margin-top: 0;
+}
+
+.Szakaszcim + .KozepenKoveto
+{
+	margin-top: -1em;
 }
 
 .KozepenKovetoDolt

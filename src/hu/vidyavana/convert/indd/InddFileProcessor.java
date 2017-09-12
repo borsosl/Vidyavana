@@ -17,6 +17,7 @@ public class InddFileProcessor implements FileProcessor
 	private static boolean skipFootnotes = true;
 	private static boolean skipConnect = true;
 	private static boolean markStrippedFormatting = true;
+	private static boolean removeOptionalHyphens = false;
 	
 	// book-specific settings
 	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{}));
@@ -400,6 +401,16 @@ public class InddFileProcessor implements FileProcessor
 				else
 					torzsVersLineNum = 1;
 			}
+			if(para.cls == ParagraphClass.KozepenVers)
+			{
+				if(prev != null && prev.cls == ParagraphClass.KozepenVers && !verseBreak)
+				{
+					prev.text.append(BR);
+					prev.text.append(para.text);
+					para.text.setLength(0);
+					return false;
+				}
+			}
 			verseBreak = false;
 			if(prev != null && prev.cls == ParagraphClass.TorzsVers)
 			{
@@ -782,8 +793,10 @@ public class InddFileProcessor implements FileProcessor
 		{
 			boolean wordChar = Character.isAlphabetic(c)
 				|| c>=256 && c<400 || c>7600 && c<7800 || c=='-' || c=='÷';
-			if(wordChar || !endWord(c))
-				wordBuffer.append((char) c);
+			if(wordChar || !endWord(c)) {
+				if(!removeOptionalHyphens || c != '÷')
+					wordBuffer.append((char) c);
+			}
 			if(supScr && !inFootnote)
 			{
 				if(c >= '*' && c <= '9')
@@ -803,6 +816,8 @@ public class InddFileProcessor implements FileProcessor
 			if(caps)
 				c = Character.toUpperCase(c);
 		}
+		if(textLevel == 0 && removeOptionalHyphens && c == '÷')
+			return;
 		text[textLevel].append((char) c);
 	}
 

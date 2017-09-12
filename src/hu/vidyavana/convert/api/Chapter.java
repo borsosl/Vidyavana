@@ -40,11 +40,12 @@ public class Chapter
 		for(Paragraph par : para)
 		{
 			par.writeToFile(writerInfo);
-			if(par.tocLevel != 0)
+			if(par.tocLevel != 0)	// epub
 			{
 				if(par.tocLevel > 0)
 					tocEntry(writerInfo, par.tocLevel,
 							par.tocText != null ? par.tocText : XmlUtil.noMarkup(par.text.toString().trim()));
+				// negatív toc-level attr elnyomja adott tag TOC bejegyzését
 			}
 			else if(par.cls == ParagraphClass.Konyvcim)
 				writerInfo.tocDivisionParaOrdinal = writerInfo.paraOrdinal;

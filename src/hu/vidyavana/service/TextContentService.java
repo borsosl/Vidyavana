@@ -438,8 +438,8 @@ public class TextContentService
 
 	private boolean verseBlock(StoragePara p)
 	{
-		return p.cls == Vers || p.cls == Uvaca || p.cls == TorzsVers || p.cls == TorzsUvaca
-				|| p.cls == Hivatkozas || p.cls == NemDoltVers;
+		return p.cls == Vers || p.cls == Uvaca || p.cls == TorzsVers || p.cls == TorzsVersszam || p.cls == TorzsUvaca
+				|| p.cls == KozepenVers || p.cls == Hivatkozas || p.cls == NemDoltVers;
 	}
 
 	private boolean boldParagraph(StoragePara p)

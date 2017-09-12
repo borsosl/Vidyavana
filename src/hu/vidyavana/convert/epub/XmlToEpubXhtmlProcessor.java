@@ -1,12 +1,15 @@
 package hu.vidyavana.convert.epub;
 
+import hu.vidyavana.convert.api.FileProcessor;
+import hu.vidyavana.convert.api.ParagraphClass;
+import hu.vidyavana.util.XmlUtil;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import hu.vidyavana.convert.api.FileProcessor;
 
 public class XmlToEpubXhtmlProcessor implements FileProcessor
 {
@@ -17,14 +20,10 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	public static Pattern TAG_NAME = Pattern.compile("^\\s*</?([^ >/]+)");
 	public static Pattern NEW_FILE_CLASS = Pattern.compile("\"(Versszam|Szakaszcim|SzakaszcimBalra)\"");
 	public static Pattern TEXT_NUMBER = Pattern.compile("<text_number>(.*)</text_number>");
-	public static Pattern CHAPTER = Pattern.compile("<p class=\"Fejezetszam\">(.*)</p>");
-	public static Pattern CHAPTER_TITLE = Pattern.compile("<p class=\"Fejezetcim\">(.*)</p>");
-	public static Pattern SECTION = Pattern.compile("<p class=\"(Szakaszcim|SzakaszcimBalra|Alcim)\">(.*)</p>");
-	public static Pattern TEXT = Pattern.compile("<p class=\"Versszam\">(.*)</p>");
+	public static Pattern DIVISION_STYLES = Pattern.compile("<p class=\"(Fejezetszam|Fejezetcim|Szakaszcim|SzakaszcimBalra|Alcim|Versszam|Konyvcim)\">(.*)</p>");
 	public static Pattern ASTERISK = Pattern.compile("<p class=\"Asterisk\">(.*)</p>");
 	public static Pattern VERSE_BLOCK = Pattern.compile("class=\"(Uvaca|Vers|TorzsUvaca|TorzsVers|TorzsVersKozep|Hivatkozas)\"");
 	public static Pattern BR = Pattern.compile("\\s*<br\\s*/>\\s*");
-	public static Pattern B = Pattern.compile("</?b>");
 	public static Pattern INDENT = Pattern.compile("^\\s*");
 	
 	
@@ -38,8 +37,11 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	private StringBuilder spine;
 	private StringBuilder navMap;
 	private StringBuilder longContent;
+	private StringBuilder panditContent;
+	private int paraOrdinal;
+	private int blockStartParaOrdinal;
 	private int navPointCount;
-	private String chapter;
+	private String chapterNum;
 	private Stack<Level> levelStack;
 	private int maxNavigationLevel;
 	private int sectionCount;
@@ -61,6 +63,9 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		spine = new StringBuilder();
 		navMap = new StringBuilder();
 		longContent = new StringBuilder();
+		panditContent = new StringBuilder();
+		paraOrdinal = 0;
+		blockStartParaOrdinal = -10;
 		navPointCount = 0;
 		maxNavigationLevel = 0;
 		genHash = 0;
@@ -105,6 +110,8 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		f.write(maxNavigationLevel+"\r\n");
 		f.write("------------\r\n");
 		f.write(longContent.toString()+"\r\n");
+		f.write("------------\r\n");
+		f.write(panditContent.toString()+"\r\n");
 		f.close();
 	}
 
@@ -177,7 +184,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	{
 		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), "UTF-8"));
 
-		chapter = null;
+		chapterNum = null;
 		levelStack = new Stack<>();
 		levelStack.push(Level.Document);
 		sectionCount = 0;
@@ -206,6 +213,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 					{
 						if("p".equals(tag))
 						{
+							++paraOrdinal;
 							++paraSinceTextHash;
 							out = addNavigation(line, textHash, paraSinceTextHash, out);
 							verseBlock = VERSE_BLOCK.matcher(line).find();
@@ -279,52 +287,59 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 
 	private Writer addNavigation(String line, String textHash, int paraSinceTextHash, Writer out) throws Exception
 	{
-		if(prevParaAsterisk)
-		{
+		if(prevParaAsterisk) {
 			out = nextFile(out, null);
 			prevParaAsterisk = false;
 		}
-		Matcher m = CHAPTER.matcher(line);
-		if(m.find())
-		{
-			chapter = m.group(1);
-			return out;
-		}
-		m = CHAPTER_TITLE.matcher(line);
-		if(m.find())
-		{
-			String title = inline(m.group(1));
-			addToNavMap(Level.Chapter, chapter==null ? title : chapter+" – "+title, currentFileName+".html");
-			return out;
-		}
-		m = SECTION.matcher(line);
-		if(m.find())
-		{
-			out = nextFile(out, null);
-			String sectionStr = "s"+(++sectionCount);
-			out.write("    <div class=\"Ref\"><a id=\"");
-			out.write(sectionStr);
-			out.write("\"></a></div>\r\n");
-			String sectionTitle = inline(m.group(2));
-			addToNavMap(Level.Section, sectionTitle, currentFileName+".html#"+sectionStr);
-			return out;
-		}
-		m = TEXT.matcher(line);
-		if(m.find())
-		{
-			String text = inline(m.group(1));
-			// if the @textno is too far back to belong to this @text
-			if(paraSinceTextHash > 2)
-			{
-				out = nextFile(out, null);
-				++genHash;
-				textHash = "gen" + genHash;
-				out.write("    <div class=\"Ref\"><a id=\"");
-				out.write(textHash);
-				out.write("\"></a></div>\r\n");
+		Matcher m = DIVISION_STYLES.matcher(line);
+		if(m.find()) {
+			ParagraphClass cls = ParagraphClass.valueOf(m.group(1));
+			String title = XmlUtil.noMarkup(inline(m.group(2).trim()));
+			if(cls == ParagraphClass.Konyvcim)
+				blockStartParaOrdinal = paraOrdinal;
+			else if(cls == ParagraphClass.Fejezetszam) {
+				chapterNum = title;
+				if(paraOrdinal - blockStartParaOrdinal > 3)
+					blockStartParaOrdinal = paraOrdinal;
+				return out;
 			}
-			addToNavMap(Level.Text, text, currentFileName+".html#"+textHash);
-			return out;
+			else if(cls == ParagraphClass.Fejezetcim)
+			{
+				addToNavMap(Level.Chapter, chapterNum, title, currentFileName+".html");
+				chapterNum = null;
+				return out;
+			}
+			else if(cls == ParagraphClass.Szakaszcim || cls == ParagraphClass.SzakaszcimBalra
+					|| cls == ParagraphClass.Alcim) {
+				if(chapterNum != null)
+					addToNavMap(Level.Chapter, null, chapterNum, currentFileName+".html");
+				out = nextFile(out, null);
+				String sectionStr = "s"+(++sectionCount);
+				out.write("    <div class=\"Ref\"><a id=\"");
+				out.write(sectionStr);
+				out.write("\"></a></div>\r\n");
+				String sectionTitle = inline(m.group(2));
+				addToNavMap(Level.Section, null, sectionTitle, currentFileName+".html#"+sectionStr);
+				return out;
+			}
+			else if(cls == ParagraphClass.Versszam)
+			{
+				if(chapterNum != null)
+					addToNavMap(Level.Chapter, null, chapterNum, currentFileName+".html");
+				String text = inline(m.group(1));
+				// if the @textno is too far back to belong to this @text
+				if(paraSinceTextHash > 2)
+				{
+					out = nextFile(out, null);
+					++genHash;
+					textHash = "gen" + genHash;
+					out.write("    <div class=\"Ref\"><a id=\"");
+					out.write(textHash);
+					out.write("\"></a></div>\r\n");
+				}
+				addToNavMap(Level.Text, null, text, currentFileName+".html#"+textHash);
+				return out;
+			}
 		}
 		m = ASTERISK.matcher(line);
 		if(m.find())
@@ -333,7 +348,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 	}
 
 
-	private void addToNavMap(Level newLevel, String title, String uri)
+	private void addToNavMap(Level newLevel, String chapter, String title, String uri)
 	{
 		while(levelStack.peek().ordinal() >= newLevel.ordinal())
 			popNavigationLevel(newLevel);
@@ -342,8 +357,9 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		char[] spaceArr = indentSpaces(indentLevel);
 		levelStack.push(newLevel);
 		
-		// remove explicit <b> tags 
-		title = B.matcher(title).replaceAll("");
+		// remove explicit <b> tags
+		String printTitle = chapter == null ? title : chapter + " – " + title;
+		String tocTitle = chapter == null ? title : chapter + "ǀ" + title;	// 01c0
 
 		boolean heading = newLevel != Level.Text;
 		boolean gap = false;
@@ -361,18 +377,30 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 				.append("\">\r\n")
 				.append(spaceArr)
 				.append("  <navLabel><text>")
-				.append(title)
+				.append(printTitle)
 				.append("</text></navLabel>\r\n")
 				.append(spaceArr)
 				.append("  <content src=\"")
 				.append(uri)
 				.append("\"/>\r\n");
+			panditContent.append("    <entry>\r\n")
+					.append("      <level>")
+					.append(indentLevel+1)
+					.append("</level>\r\n")
+					.append("      <title>")
+					.append(tocTitle)
+					.append("</title>\r\n")
+					.append("      <para_ordinal>")
+					.append(blockStartParaOrdinal == -10 ? paraOrdinal : blockStartParaOrdinal)
+					.append("</para_ordinal>\r\n")
+					.append("    </entry>\r\n");
+			blockStartParaOrdinal = -10;
 		}
 		else
 		{
-			int ix = title.lastIndexOf('.');
+			int ix = printTitle.lastIndexOf('.');
 			if(ix > -1)
-				title = title.substring(0, ix+1);
+				printTitle = printTitle.substring(0, ix+1);
 			gap = true;
 		}
 
@@ -387,7 +415,7 @@ public class XmlToEpubXhtmlProcessor implements FileProcessor
 		longContent.append("  <a href=\"")
 			.append(uri)
 			.append("\">")
-			.append(title)
+			.append(printTitle)
 			.append("</a>");
 		if(gap)
 			longContent.append("\u2002\u2002");

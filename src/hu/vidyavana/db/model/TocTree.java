@@ -122,7 +122,7 @@ public class TocTree
 			}
 		}
 		if(currentRange != null)
-			currentRange.tocIdEnd = id;
+			currentRange.tocIdEnd = id + 1;
 		maxId = id;
 		st.close();
 	}
