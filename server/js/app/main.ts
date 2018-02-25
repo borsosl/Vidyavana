@@ -1,16 +1,20 @@
-var dom = require('./modules/dom');
-var util = require('./modules/util');
-var task = require('./modules/task');
-var toc = require('./modules/toc');
-var search = require('./modules/search');
-var load = require('./modules/load');
 
-var initd = false;
+import dom from './modules/dom';
+import util from './modules/util';
+import task from './modules/task';
+import toc from './modules/toc';
+import search from './modules/search';
+import load from './modules/load';
+import * as keyboard from './modules/keyboard';
+import * as mouse from './modules/mouse';
+import * as touch from './modules/touch';
 
-function init()
+let initd = false;
+
+export function init()
 {
     if(pg.afterLogin) {
-        window.location = '/app';
+        window.location.href = '/app';
         return;
     }
     if(initd)
@@ -23,9 +27,9 @@ function init()
         util.downtime(pg.downtime);
     search.init();
     toc.initSectionSelect();
-    require('./modules/keyboard');
-    require('./modules/mouse');
-    require('./modules/touch');
+    keyboard.init();
+    mouse.init();
+    touch.init();
     util.resizeEvent();
     util.refreshMenu();
     task.initView();
@@ -40,5 +44,3 @@ $(function()
 {
     init();
 });
-
-exports.init = init;

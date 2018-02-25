@@ -1,74 +1,76 @@
 
-var dom = require('./dom');
-var page = require('./page');
-var util = require('./util');
-var highlight = require('./highlight');
-var render = require('./render');
-var search = require('./search');
-var toc = require('./toc');
+import dom from './dom';
+import page from './page';
+import util from './util';
+import highlight from './highlight';
+import render from './render';
+import search from './search';
+import toc from './toc';
 
-/** @enum {number} - text request modes */
-var loadMode = {section: 1, down: 2, next: 3, prev: 4, search: 5, currentHit: 6,
-    nextHit: 7, prevHit: 8, bookmark: 9};
-/** @type {?number} - timestamp of last request to throttle connections */
-var lastReqTime;
-/** @type {number} - id of bookmark to load */
-var bookmarkId;
+/** text request modes */
+const loadMode: {[key: string]: number} = {
+    section: 1, down: 2, next: 3, prev: 4, search: 5, currentHit: 6,
+    nextHit: 7, prevHit: 8, bookmark: 9
+};
+/** timestamp of last request to throttle connections */
+let lastReqTime: number;
+/** id of bookmark to load */
+let bookmarkId: number;
 
 
 /**
  * Sends ajax request to get text chunk. Starts rendering based on the
  * scroll direction that started the request.
- * @param {number} mode - one of {@link loadMode}
+ * @param mode - one of {@link loadMode}
  */
-function text(mode) {
+function text(mode: number) {
     if(lastReqTime && lastReqTime > Date.now()-60000)
         return;
-    var m = loadMode;
-    var data = null;
+    const m = loadMode;
+    let data = null;
 
     /**
-     * @returns {?string} - ajax request URI or null if no req needed
+     * @returns ajax request URI or null if no req needed
      */
-    function getUrl()
+    function getUrl(): string
     {
-        var sectionUrl = '/app/txt/section/';
-        var searchUrl = '/app/txt/search';
-        var ps = page.section();
+        const sectionUrl = '/app/txt/section/';
+        const searchUrl = '/app/txt/search';
+        const ps = page.section;
         switch(mode)
         {
             case m.section:
                 return sectionUrl + 'go/' + toc.selectedSection();
             case m.next:
-                if(!ps.bookId())
+                if(!ps.bookId)
                     return null;
-                return sectionUrl + 'next/' + ps.tocId();
+                return sectionUrl + 'next/' + ps.tocId;
             case m.prev:
-                if(!ps.bookId())
+                if(!ps.bookId)
                     return null;
-                return sectionUrl + 'prev/' + ps.tocId();
+                return sectionUrl + 'prev/' + ps.tocId;
             case m.down:
-                var next = ps.next();
+                const next = ps.next();
                 if(next === null)
                     return null;
-                return '/app/txt/follow/'+ps.tocId()+'/'+next;
+                return '/app/txt/follow/'+ps.tocId+'/'+next;
             case m.search:
-                var psr = search.pending();
+                const psr = search.pending();
                 data = {
-                    q: psr.query(),
-                    sort: psr.sort(),
-                    page: psr.page()
+                    q: psr.query,
+                    sort: psr.sort,
+                    page: psr.page
                 };
                 return searchUrl;
             case m.currentHit:
             case m.nextHit:
             case m.prevHit:
-                var sr = search.inst();
+                let sr = search.inst();
                 if(!sr)
                     return null;
-                var last = sr.last();
-                var hit = last.startHit + (mode == m.nextHit ? sr.page() : mode == m.prevHit ? -sr.page() : 0);
-                if(hit < 0 && hit > -sr.page())     // visszafelé 0 és 1 oldalnyi közöttről indulva
+                const last = sr.last;
+                let hit = last.startHit + (mode == m.nextHit ? sr.page : mode == m.prevHit ? -sr.page : 0);
+                if(hit < 0 && hit > -sr.page)     // visszafelé 0 és 1 oldalnyi közöttről indulva
                     hit = 0;
                 if(hit >= 0 && hit < last.hitCount)
                     return searchUrl + '/hit/' + last.id + '/' + hit;
@@ -78,7 +80,7 @@ function text(mode) {
         }
     }
 
-    var url = getUrl();
+    let url = getUrl();
     if(!url)
         return;
     lastReqTime = Date.now();
@@ -107,36 +109,36 @@ function text(mode) {
     util.loading(true);
 
     if(mode === loadMode.search)
-        highlight.init(search.pending().query());
+        highlight.init(search.pending().query);
 }
 
-/** @param {number} tocId */
-function hitSection(tocId) {
+function hitSection(tocId: number) {
     toc.selectedSection(tocId);
-    page.hits().scrollPos(dom.$content.scrollTop());
-    page.hits().activeElement(document.activeElement);
+    page.hits.scrollPos = dom.$content.scrollTop();
+    page.hits.activeElement = document.activeElement as HTMLElement;
     text(loadMode.section);
 }
 
 function currentHitSection() {
-    hitSection(search.inst().last().display.tocId);
+    hitSection(search.inst().last.display.tocId);
 }
 
-function contextSwitch() {
+/** Switches b/w text content and search result */
+function contextSwitch(): void {
     if(page.isSearchResult()) {
         if(!search.isHitlist())
             currentHitSection();
     } else {
-        var sr = search.inst();
+        let sr = search.inst();
         if(!sr)
-            return null;
-        page.current(page.hits());
+            return;
+        page.current(page.hits);
         util.showHitsPanel();
         util.toggleButtonBars(true, search.isHitlist());
-        var sp = page.hits().scrollPos();
+        const sp = page.hits.scrollPos;
         if(sp > -1)
             dom.$content.scrollTop(sp);
-        var ae = page.hits().activeElement();
+        const ae = page.hits.activeElement;
         if(ae) {
             ae.focus();
         }
@@ -177,12 +179,12 @@ function continuation() {
     text(loadMode.down);
 }
 
-function bookmark(id) {
+function bookmark(id: number) {
     bookmarkId = id;
     text(loadMode.bookmark);
 }
 
-$.extend(exports, {
+export default {
     mode: loadMode,
     text: text,
     hitlistClick: hitSection,
@@ -196,4 +198,4 @@ $.extend(exports, {
     contextNext: contextNext,
     continuation: continuation,
     bookmark: bookmark
-});
+};

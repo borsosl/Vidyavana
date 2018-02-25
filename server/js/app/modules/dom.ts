@@ -1,35 +1,46 @@
 
-function init() {
-    /** @type {JQuery} - top action bar */
-    this.$header = $('#header');
-    /** @type {JQuery} - container for text and buttons */
-    this.$content = $('#content');
-    /** @type {JQuery} - container for forms */
-    this.$formContent = $('#form-content');
-    /** @type {JQuery} - container for text content */
-    this.$txt = $('#text');
-    /** @type {JQuery} - container for search result content */
-    this.$hits = $('#hits');
-    /** @type {JQuery} - button row */
-    this.$textBtns = $('#text-buttons');
-    /** @type {JQuery} - button row */
-    this.$hitBtns = $('#hit-buttons');
-    /** @type {JQuery} - buttons to load more of section or go to full section */
-    this.$sectDown = $('#sect-down');
-    /** @type {JQuery} */
-    this.$thisSect = $('#this-sect');
-    /** @type {JQuery} */
-    this.$shortRef = $('#short-ref');
-    /** @type {JQuery} */
-    this.$menuShortRef = $('#menu-short-ref');
-    /** @type {JQuery} */
-    this.$loading = $('#loading');
+class Dom {
+    nowarn: number;
+    $header: JQuery;
+    $content: JQuery;
+    $formContent: JQuery;
+    $txt: JQuery;
+    $hits: JQuery;
+    $textBtns: JQuery;
+    $hitBtns: JQuery;
+    $sectDown: JQuery;
+    $thisSect: JQuery;
+    $shortRef: JQuery;
+    $menuShortRef: JQuery;
+    $loading: JQuery;
+    
+    constructor() {
+        this.nowarn = 0;
+    }
+    
+    init() {
+        /** top action bar */
+        this.$header = $('#header');
+        /** container for text and buttons */
+        this.$content = $('#content');
+        /** container for forms */
+        this.$formContent = $('#form-content');
+        /** container for text content */
+        this.$txt = $('#text');
+        /** container for search result content */
+        this.$hits = $('#hits');
+        /** button row */
+        this.$textBtns = $('#text-buttons');
+        /** button row */
+        this.$hitBtns = $('#hit-buttons');
+        /** buttons to load more of section or go to full section */
+        this.$sectDown = $('#sect-down');
+
+        this.$thisSect = $('#this-sect');
+        this.$shortRef = $('#short-ref');
+        this.$menuShortRef = $('#menu-short-ref');
+        this.$loading = $('#loading');
+    }
 }
 
-/**
- * @type {{init, nowarn, $header, $content, $formContent, $txt, $hits, $textBtns, $hitBtns,
- *      $sectDown, $thisSect, $shortRef, $menuShortRef, $loading}}
- */
-var dom = exports;
-dom.init = init;
-dom.nowarn = 0;
+export default new Dom();

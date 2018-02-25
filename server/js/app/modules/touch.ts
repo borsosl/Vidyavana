@@ -1,23 +1,24 @@
 
-var page = require('./page');
-var load = require('./load');
+import page from './page';
+import load from './load';
 
-var cs = client.system;
-//noinspection JSUnresolvedVariable
-if(cs.android || cs.ios || cs.iphone || cs.ipad || cs.winMobile)
-{
-    $(window).on('swipeleft', function()
+export function init() {
+    const cs = client.system;
+    if(cs.android || cs.ios || cs.iphone || cs.ipad || cs.winMobile)
     {
-        if(page.isSearchResult())
-            load.nextHit();
-        else if(page.section().bookId())
-            load.nextSection();
+        $(window).on('swipeleft', function()
+        {
+            if(page.isSearchResult())
+                load.nextHit();
+            else if(page.section.bookId)
+                load.nextSection();
 
-    }).on('swiperight', function()
-    {
-        if(page.isSearchResult())
-            load.prevHit();
-        else if(page.section().bookId())
-            load.prevSection();
-    });
+        }).on('swiperight', function()
+        {
+            if(page.isSearchResult())
+                load.prevHit();
+            else if(page.section.bookId)
+                load.prevSection();
+        });
+    }
 }

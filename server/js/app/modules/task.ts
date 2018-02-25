@@ -1,21 +1,21 @@
 
-var util = require('./util');
+import util from './util';
 
 function searchDialog() {
     if(util.dialog(0, true)) {
-        var el = $('#searchInput')[0];
+        const el = $('#searchInput')[0] as HTMLInputElement;
         el.focus();
         el.select();
     }
 }
 
-var origFontSize, fontSize, viewMsgShown;
+let origFontSize: number, fontSize: string, viewMsgShown: boolean;
 
 function initView() {
-    var size = $(':root').css('font-size').replace('px', '');
+    const size: string = $(':root').css('font-size').replace('px', '');
     origFontSize = Math.round(parseFloat(size) * 72 / 96);
     fontSize = '' + origFontSize;
-    var storedSize = util.cookie('fontsize');
+    const storedSize = util.cookie('fontsize');
     if(storedSize) {
         fontSize = storedSize;
         setSizes();
@@ -35,17 +35,17 @@ function viewDialog() {
     if(util.dialog(2, true)) {
         $('#view-msg').hide();
         viewMsgShown = false;
-        var $e = $('#viewFontInput');
+        const $e = $('#viewFontInput');
         $e.val(fontSize);
-        var el = $e[0];
+        const el = $e[0] as HTMLInputElement;
         el.focus();
         el.select();
     }
 }
 
 function applyView() {
-    var size = $('#viewFontInput').val();
-    var val = parseFloat(size);
+    const size: string = $('#viewFontInput').val();
+    const val = parseFloat(size);
     if(isNaN(val) || val < 6 || val > 24) {
         $('#view-msg').text('Érvénytelen betűméret, 6 és 24 között lehet').show();
         viewMsgShown = true;
@@ -61,9 +61,10 @@ function applyView() {
 
 function setSizes() {
     $(':root').css('font-size', fontSize + 'pt');
-    var headerPx = fontSize < 8 ? 16 : fontSize < 10 ? 18 : fontSize < 17 ? 20 : fontSize < 21 ? 22 : 24;
+    const size = parseFloat(fontSize);
+    const headerPx = size < 8 ? 16 : size < 10 ? 18 : size < 17 ? 20 : size < 21 ? 22 : 24;
     $('#header').css('font-size', headerPx + 'px');
-    var fixedPt = fontSize < 10 ? origFontSize - 1 : fontSize < 17 ? origFontSize : origFontSize + 1;
+    const fixedPt = size < 10 ? origFontSize - 1 : size < 17 ? origFontSize : origFontSize + 1;
     $('#fixed-size').css('font-size', fixedPt + 'pt');
 }
 
@@ -79,7 +80,7 @@ function logout() {
             if(!json.ok)
                 failed();
             else
-                document.location = '/app';
+                document.location.href = '/app';
         },
 
         error: function(/*xhr, status*/) {
@@ -94,10 +95,10 @@ function logout() {
 }
 
 
-$.extend(exports, {
+export default {
     searchDialog: searchDialog,
     initView: initView,
     viewDialog: viewDialog,
     applyView: applyView,
     logout: logout
-});
+};

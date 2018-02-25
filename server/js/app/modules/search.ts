@@ -1,80 +1,38 @@
 
-var load = require('./load');
-var util = require('./util');
+import load from './load';
+import util from './util';
 
-/** @type {Search} */
-var search, pendingSearch;
+let search: Search, pendingSearch: Search;
 
-/** @type {boolean} - if a search-related message is visible */
-var searchMsgShown;
+/** if a search-related message is visible */
+let searchMsgShown: boolean;
 
-function Search() {
+class Search {
     /**
-     * @type {string} - entered text
+     * entered text
      */
-    var query;
+    public query: string;
     /**
-     * @type {string} - selected order
+     * selected order
      */
-    var _sort;
+    public sort: string;
     /**
-     * @type {number} - hitlist page size
+     * hitlist page size
      */
-    var _page;
+    public page: number;
     /**
-     * @type {SearchResponse} - details of last hit shown
+     * details of last hit shown
      */
-    var last;
+    public last: SearchResponse;
 
-    /**
-     * @param {string?} q
-     * @return {string}
-     */
-    function queryFn(q) {
-        if(q === undefined)
-            return query;
-        query = q;
-    }
 
-    /**
-     * @param {string?} sort
-     * @return {string}
-     */
-    function sortFn(sort) {
-        if(sort === undefined)
-            return _sort;
-        _sort = sort;
-    }
-
-    /**
-     * @param {string?} page
-     * @return {number}
-     */
-    function pageFn(page) {
+    setPage(page: string): number {
         if(page === undefined)
-            return _page;
-        _page = Number(page);
-        if(isNaN(_page))
-            _page = 1;
+            return this.page;
+        this.page = Number(page);
+        if(isNaN(this.page))
+            this.page = 1;
     }
-
-
-    /**
-     * @param {SearchResponse?} l
-     * @return {SearchResponse}
-     */
-    function lastFn(l) {
-        if(l === undefined)
-            return last;
-        last = l;
-    }
-
-    $.extend(this, {
-        query: queryFn,
-        sort: sortFn,
-        page: pageFn,
-        last: lastFn
-    });
 }
 
 
@@ -87,12 +45,11 @@ function accept() {
  * One-time setup of event handlers.
  */
 function init() {
-    var $inp = $('#searchInput');
-    /** @type {JQuery|Array.<HTMLInputElement>} */
-    var $scoreOrder = $('#score-order');
-    var $searchPaging = $('#search-paging');
+    const $inp = $('#searchInput');
+    const $scoreOrder: JQuery = $('#score-order');
+    const $searchPaging: JQuery = $('#search-paging');
 
-    var spage = util.cookie('spage');
+    const spage = util.cookie('spage');
     if(spage) {
         $('input[value="'+spage+'"]', $searchPaging).prop('checked', true);
     }
@@ -122,51 +79,47 @@ function init() {
     });
 
     function search() {
-        newSearch($inp.val(), $scoreOrder[0].checked, $('input:checked', $searchPaging).val());
+        newSearch($inp.val(), ($scoreOrder[0] as HTMLInputElement).checked, $('input:checked', $searchPaging).val());
     }
 }
 
 
-function newSearch(text, scoreOrder, page) {
+function newSearch(text: string, scoreOrder: boolean, page: string) {
     if(searchMsgShown)
     {
         $('#search-msg').hide();
         searchMsgShown = false;
     }
-    var ps = pendingSearch = new Search();
-    ps.query(text);
-    ps.sort(scoreOrder ? 'Score' : 'Index');
-    ps.page(page);
+    const ps = pendingSearch = new Search();
+    ps.query = text;
+    ps.sort = scoreOrder ? 'Score' : 'Index';
+    ps.setPage(page);
     load.text(load.mode.search);
     util.cookie('spage', page);
 }
 
 
-function message(msg) {
+function message(msg: string) {
     $('#search-msg').text(msg).show();
     searchMsgShown = true;
 
 }
 
-
+/** search page shows multiple results */
 function isHitlist() {
-    return getInstance().last().endHit > -1;
+    return getInstance().last.endHit > -1;
 }
 
-/**
- * @param {boolean?} pending
- * @return {Search}
- */
-function getInstance(pending) {
+function getInstance(pending?: boolean): Search {
     return pending ? pendingSearch : search;
 }
 
 
-$.extend(exports, {
+export default {
     inst: getInstance,
     pending: getInstance.bind(null, true),
     init: init,
     accept: accept,
     message: message,
     isHitlist: isHitlist
-});
+};

@@ -1,37 +1,39 @@
-/**
- * @typedef {Object} DisplayBlock
- * @property {number} bookSegmentId
- * @property {number} tocId?
- * @property {number} last
- * @property {string} text
- * @property {string} shortRef?
- * @property {string} longRef?
- * @property {string} downtime?
- */
 
-/**
- * @typedef {Object} HitResponse
- * @property {string} shortRef
- */
+interface DisplayBlock {
+    bookSegmentId: number;
+    tocId?: number;
+    last: number;
+    text: string;
+    shortRef?: string;
+    longRef?: string;
+    downtime?: string;
+}
 
-/**
- * @typedef {Object} SearchResponse
- * @property {number} id
- * @property {*} hitCount
- * @property {number} startHit
- * @property {number} endHit
- * @property {number} ordinal
- * @property {DisplayBlock} display
- * @property {Array.<HitResponse>} hits?
- */
+interface HitResponse {
+    shortRef: string;
+}
 
-/**
- * @typedef {Object} TocTreeItem
- * @property {number} id - Ordinal in the whole TOC for each TOC node.
- * @property {?boolean} parentStart
- * @property {string} title
- * @property {?number} ordinal
- * @property {?TocTreeItem} parent
- * @property {?Array.<TocTreeItem>} children
- * @property {?boolean} partial
- */
+interface SearchResponse {
+    id: number;
+    hitCount: number;
+    startHit: number;
+    endHit: number;
+    ordinal: number;
+    display: DisplayBlock;
+    hits?: HitResponse[];
+}
+
+interface TocTreeItem {
+    id: number;         // Ordinal in the whole TOC for each TOC node.
+    parentStart: boolean;
+    title: string;
+    ordinal: number;
+    parent: TocTreeItem;
+    children: TocTreeItem[];
+    partial: boolean;
+}
+
+interface AjaxResultCallback<T> {
+    // noinspection JSUnusedLocalSymbols
+    (json: T): void;
+}

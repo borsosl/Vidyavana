@@ -1,33 +1,26 @@
 
-var dom = require('./dom');
-var util = require('./util');
+import dom from './dom';
+import util from './util';
 
 
-/**
- * @typedef {Object} ContentPageData
- * @property {?boolean} skipRender
- */
+export interface ContentPageData {
+    skipRender?: boolean;
+}
 
-/**
- * @typedef {Object} ContentPageResult
- * @property {string} html
- * @property {ContentPageData} data
- * @property {string} [html]
- */
+export interface ContentPageResult<T extends ContentPageData> {
+    html?: string;
+    data?: T;
+}
 
-/**
- * @callback ContentPageCallback
- * @property {ContentPageData} data
- */
+interface ContentPageCallback<T extends ContentPageData> {
+    // noinspection JSUnusedLocalSymbols
+    (data: T, html: string): void;
+}
 
 /**
  * Sends ajax request to get html content page.
- *
- * @param {string} url
- * @param {Object} [data]
- * @param {ContentPageCallback} [cb]
  */
-function load(url, data, cb)
+function load<T extends ContentPageData>(url: string, data?: any, cb?: ContentPageCallback<T>)
 {
     $.ajax({
         url: url,
@@ -51,27 +44,20 @@ function load(url, data, cb)
 }
 
 
-/**
- * @param {ContentPageResult} res
- * @param {ContentPageCallback} cb
- */
-function init(res, cb) {
+function init<T extends ContentPageData>(res: ContentPageResult<T>, cb?: ContentPageCallback<T>) {
     if(!res.data || !res.data.skipRender)
         render(res.html);
     if(cb)
         cb.call(null, res.data, res.html);
 }
 
-/**
- * @param {string} html
- */
-function render(html) {
+function render(html: string) {
     dom.$formContent.html(html).show().scrollTop(0);
     util.resizeContent();
 }
 
 
-$.extend(exports, {
+export default {
     load: load,
     render: render
-});
+};

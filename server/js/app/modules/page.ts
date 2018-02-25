@@ -1,106 +1,76 @@
 
-/** @type {Page} - section display */
-var section = new Page();
-/** @type {Page} - hits display */
-var hits = new Page();
-/** @type {Page} - current display = section|hits */
-var current = section;
-
-
-/** @constructor */
-function Page()
-{
-    /** @type {number} - book id (segment # (eg. canto/lila) is << 16 bits) */
-    var bookSegmentId;
-    /** @type {number} - current TOC id */
-    var tocId;
-    /** @type {number} - 1-based index of the next, unloaded paragraph in current section.
+class Page {
+    /** book id (segment # (eg. canto/lila) is << 16 bits) */
+    private bookSegmentId: number;
+    /** current TOC id */
+    public tocId: number;
+    /** 1-based index of the next, unloaded paragraph in current section.
      *      0=fully loaded section. -1=search render. */
-    var last;
-    /** @type {number} - saved scroll position for repositioning */
-    var scrollPos;
-    /** @type {HTMLElement} - saved active link of hitlist */
-    var activeElement;
+    private last: number;
+    /** saved scroll position for repositioning */
+    public scrollPos?: number;
+    /** saved active link of hitlist */
+    public activeElement?: HTMLElement;
+
+    public shortRef: string = '';
 
 
     /**
      * Sets fields for current page content.
-     * @param {DisplayBlock} json - loaded section info
-     * @returns {boolean} - was reset
+     * @param json - loaded section info
+     * @returns was reset
      */
-    function init(json)
+    init(json: DisplayBlock): boolean
     {
-        //noinspection JSValidateTypes
         current = this;
-        last = json.last;
-        scrollPos = -1;
-        activeElement = null;
+        this.last = json.last;
+        this.scrollPos = -1;
+        this.activeElement = null;
 
         if(!json.tocId)
             return false;
-        bookSegmentId = json.bookSegmentId;
-        tocId = json.tocId;
+        this.bookSegmentId = json.bookSegmentId;
+        this.tocId = json.tocId;
         return true;
     }
 
+    get bookId(): number {
+        return this.bookSegmentId;
+    }
 
     /**
      * Sets last request data.
-     * @param {DisplayBlock} json - loaded chunk and book info
+     * @param json - loaded chunk and book info
      */
-    function down(json)
+    down(json: DisplayBlock)
     {
-        last = json.last;
+        this.last = json.last;
     }
 
 
     /**
      * Gets next para ordinal, if section has more to load.
-     * @return {?number} - next para or null
+     * @return next para ordinal or null
      */
-    function next()
+    next(): number
     {
-        return last ? last : null;
+        return this.last ? this.last : null;
     }
-
-    /**
-     * Sets or gets scroll position of the content panel
-     * @param {number?} position
-     * @return {?number}
-     */
-    function scrollPosFn(position) {
-        if(position !== undefined)
-            scrollPos = position;
-        return scrollPos;
-    }
-
-    /**
-     * Sets or gets scroll position of the content panel
-     * @param {HTMLElement} element
-     * @return {?HTMLElement}
-     */
-    function activeElementFn(element) {
-        if(element)
-            activeElement = element;
-        return activeElement;
-    }
-
-    $.extend(this, {
-        init: init,
-        down: down,
-        next: next,
-        scrollPos: scrollPosFn,
-        activeElement: activeElementFn,
-        bookId: function(){return bookSegmentId;},
-        tocId: function(){return tocId;},
-        /** @type {string} */
-        shortRef: ''
-    });
 }
 
-$.extend(exports, {
-    section: function() { return section; },
-    hits: function() { return hits; },
-    current: function(o) { if(o) current = o; return current; },
-    isSearchResult: function(){return current === hits;}
-});
+/** section display */
+const section = new Page();
+
+/** hits display */
+const hits = new Page();
+
+/** current display = section|hits */
+let current: Page = section;
+
+
+export default {
+    section,
+    hits,
+    current: function(o?: Page) { if(o) current = o; return current; },
+    isSearchResult: function(): boolean { return current === hits; }
+};

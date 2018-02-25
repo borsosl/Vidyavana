@@ -2,7 +2,13 @@
   "name": "Pandit",
   "version": "0.0.1",
   "author": "Lokanatha d.",
+  "scripts": {
+    "tsdev": "webpack --config server/webpack.dev.config.js --display-error-details",
+    "tsprod": "webpack --config server/webpack.prod.config.js --display-error-details",
+    "tswatch": "webpack --watch --config server/webpack.dev.config.js --display-error-details"
+  },
   "devDependencies": {
+    "@types/jquery": "^2.0.48",
     "browserify": "^10.2.3",
     "event-stream": "^3.3.2",
     "gulp": "^3.9.0",
@@ -10,7 +16,11 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "qunitjs": "^1.20.0",
+    "ts-loader": "^3.5.0",
+    "uglifyjs-webpack-plugin": "^1.1.8",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "webpack": "^3.11.0",
+    "webpack-glob-entry": "^2.1.1"
   }
 }

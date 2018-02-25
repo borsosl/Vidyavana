@@ -1,26 +1,23 @@
 
-var main = require('./main');
-var dom = require('./modules/dom');
-var util = require('./modules/util');
-var html = require('./modules/html-content');
-var access = require('./modules/admin-access');
+import * as main from './main';
+import util from './modules/util';
+import html, {ContentPageData} from './modules/html-content';
+import access, {BookPackageMap} from './modules/admin-access';
 
-var books;
+let books: BookPackageMap;
 
-/**
- * @typedef {Object} User
- * @property {number} id - registration datestamp.
- * @property {string} adminLevel - 'None'|'Full'|'BookRights'
- * @property {string} email
- * @property {string} name
- * @property {string} regToken
- */
+interface User {
+ id: number;            // registration datestamp.
+ adminLevel: string;    // 'None'|'Full'|'BookRights'
+ email: string;
+ name: string;
+ regToken: string;
+}
 
-/**
- * @typedef {Object} UserListResponse
- * @property {Array.<User>} users
- * @property {BookPackageMap} books
- */
+interface UserListResponse extends ContentPageData {
+ users: User[];
+ books: BookPackageMap;
+}
 
 
 $(function() {
@@ -39,17 +36,15 @@ function listUsers() {
 
 /**
  * Create user list admin form.
- * @param {UserListResponse} data
  */
-function initListUsers(data) {
-    /** @type {JQuery} */
-    var $row = $('.admin-row');
-    var users = data.users;
+function initListUsers(data: UserListResponse) {
+    let $row = $('.admin-row');
+    const users = data.users;
     books = data.books;
-    var notConfirmed = 0;
-    for(var i=0, len=users.length; i<len; ++i) {
-        /** @type {User} */
-        var drow = users[i];
+    let notConfirmed = 0;
+    let len = users.length;
+    for(let i=0; i<len; ++i) {
+        const drow = users[i];
         if(drow.regToken)
             ++notConfirmed;
         $row.data('email', drow.email);
@@ -77,9 +72,9 @@ function initListUsers(data) {
 
 
 function listUsersButton() {
-    var $e = $(this);
-    var btnId = $e.data('id');
-    var $row = $e.parents('.admin-row');
+    const $e = $(this);
+    const btnId = $e.data('id');
+    const $row = $e.parents('.admin-row');
     switch(btnId) {
         case 1: modifyUser($row); break;
         case 2: bookRights($row); break;
@@ -89,7 +84,7 @@ function listUsersButton() {
 }
 
 
-function modifyUser($row) {
+function modifyUser($row: JQuery) {
     ajax('/app/admin/modify-user', 1, {
         email: $row.data('email'),
         name: $('.ur-name>input', $row).val(),
@@ -98,17 +93,18 @@ function modifyUser($row) {
 }
 
 
-function bookRights($row) {
+function bookRights($row: JQuery) {
     access.open($row.data('email'), books);
 }
 
 
-function resendReg($row) {
+// noinspection JSUnusedLocalSymbols
+function resendReg($row: JQuery) {
     alert('Nincs kész.');
 }
 
 
-function deleteUser($row) {
+function deleteUser($row: JQuery) {
     if(!confirm('Tuti?'))
         return;
     ajax('/app/admin/delete-user', 4, {
@@ -117,7 +113,7 @@ function deleteUser($row) {
 }
 
 
-function ajax(url, type, data) {
+function ajax(url: string, type: number, data: any) {
     $.ajax({
         url: url,
         method: type==1 ? 'post' : 'get',

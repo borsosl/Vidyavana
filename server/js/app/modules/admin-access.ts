@@ -1,41 +1,36 @@
 
-var util = require('./util');
+import util from './util';
 
-/** @type {JQuery} */
-var $dialog;
-/** @type {boolean} */
-var checkboxesDrawn;
-/** @type {BookPackageMap} */
-var gBooks;
-/** @type {string} */
-var gEmail;
-/** @type {string} */
-var gAccess;
-/** @const */
-var packageNames = ['Sraddha', 'SadhuSanga', 'BhajanaKriya', 'Ruci'];
-/** @type {Array.<JQuery>} */
-var packageCb;
-/** @type {Array.<boolean>} */
-var packageState;
+type BookSpanArray = BookMap[];
+type Package = string|BookSpanArray;
+
+let $dialog: JQuery;
+let checkboxesDrawn: boolean;
+let gBooks: BookPackageMap;
+let gEmail: string;
+let gAccess: string;
+const packageNames = ['Sraddha', 'SadhuSanga', 'BhajanaKriya', 'Ruci'];
+let packageCb: JQuery[];
+let packageState: boolean[];
+
 
 /**
- * @typedef {Object} BookPackageMap
- * @property {string|BookSpanArray} Sraddha
- * @property {string|BookSpanArray} SadhuSanga
- * @property {string|BookSpanArray} BhajanaKriya
- * @property {string|BookSpanArray} Ruci
- *
  * Properties are strings abbr|id|abbr|id|... from server,
  * converted to BookSpanArray on client.
  */
+export interface BookPackageMap {
+    Sraddha: Package;
+    SadhuSanga: Package;
+    BhajanaKriya: Package;
+    Ruci: Package;
+    [key: string]: Package;
+}
 
 
 /**
  * Fetch user book access, then fill dialog
- * @param {string} email
- * @param {BookPackageMap} books
  */
-function open(email, books) {
+function open(email: string, books: BookPackageMap) {
     gEmail = email;
     $('input[type=checkbox]', $dialog).prop('checked', false);
     $dialog.show();
@@ -72,17 +67,15 @@ function reset() {
 
 /**
  * Fill checkboxes with user access.
- * @param {BookPackageMap} books
- * @param {string} access
  */
-function initCheckboxes(books, access) {
+function initCheckboxes(books: BookPackageMap, access: string) {
     drawCheckboxes(books);
     markAllPackages(false, false);
     gAccess = access;
-    var parts = access.split('|');
-    for(var p in parts) {
-        var pt = parts[p];
-        var pkg = parseInt(pt);
+    const parts = access.split('|');
+    for(let p in parts) {
+        const pt = parts[p];
+        const pkg = parseInt(pt);
         if(!isNaN(pkg))
             markPackage(pkg, false, true);
         else if(pt.charAt(0) === '-')
@@ -96,30 +89,30 @@ function initCheckboxes(books, access) {
 
 /**
  * Init data and DOM.
- * @param {BookPackageMap} books
  */
-function drawCheckboxes(books) {
+function drawCheckboxes(books: BookPackageMap) {
     if(checkboxesDrawn)
         return;
-    var $proto = $('.access-book', $dialog);
-    for(var p in packageNames) {
-        var pn = packageNames[p];
+    const $proto = $('.access-book', $dialog);
+    for(let p in packageNames) {
+        const pn = packageNames[p];
         packageCb.push($('#'+pn+'-cb'));
         packageState.push(false);
-        /** @type {JQuery} */
-        var $block = $('#'+pn+'-cb-row');
-        var parts = books[pn].split('|');
-        books[pn] = [];
-        for(var i=0, len=parts.length; i<len; i+=2)
+        const $block = $('#' + pn + '-cb-row');
+        const parts = (books[pn] as string).split('|');
+        books[pn] = [] as BookSpanArray;
+        let i = 0;
+        const len = parts.length;
+        for(; i<len; i+=2)
         {
-            var abbr = parts[i];
+            let abbr = parts[i];
             if(!abbr)
                 continue;
-            var id = parseInt(parts[i+1]);
-            var $span = $proto.clone();
+            const id = parseInt(parts[i + 1]);
+            const $span = $proto.clone();
             $span.appendTo($block).data('id', id);
             $('.access-abbrev', $span).text(abbr);
-            books[pn].push({
+            (books[pn] as BookSpanArray).push({
                 pkg: parseInt(p) + 1,
                 abbr: abbr,
                 id: id,
@@ -139,21 +132,21 @@ function drawCheckboxes(books) {
 }
 
 
-function cbChange() {
-    var state = this.checked;
+function cbChange(this: HTMLInputElement) {
+    const state = this.checked;
     if(this.id) {
         if(this.id === 'full-access')
             markFull(false, state);
         else {
-            var pkg = this.id.substr(0, this.id.length-3);
-            var pkgIx = packageNames.indexOf(pkg);
+            const pkg = this.id.substr(0, this.id.length - 3);
+            const pkgIx = packageNames.indexOf(pkg);
             packageState[pkgIx] = state;
             markPackageBooks(pkgIx+1, false, state);
             markFull(true);
         }
     } else {
-        var bookId = $(this).parent().data('id');
-        var bkMap = getBookMap(null, bookId);
+        const bookId = $(this).parent().data('id');
+        const bkMap = getBookMap(null, bookId);
         bkMap.state = state;
         markPackage(bkMap.pkg, true);
         markFull(true);
@@ -161,9 +154,9 @@ function cbChange() {
 }
 
 
-function markFull(determine, state) {
+function markFull(determine: boolean, state?: boolean) {
     if(determine) {
-        packageCb[4][0].checked =
+        (packageCb[4][0] as HTMLInputElement).checked =
             packageState[0] && packageState[1] && packageState[2] && packageState[3];
     }
     else {
@@ -172,38 +165,37 @@ function markFull(determine, state) {
 }
 
 
-function markAllPackages(determine, state) {
-    for(var i=1; i<=4; ++i)
+function markAllPackages(determine: boolean, state?: boolean) {
+    for(let i=1; i<=4; ++i)
         markPackage(i, determine, state);
     if(determine)
         markFull(true);
 }
 
 
-function markPackage(pkg, determine, state) {
+function markPackage(pkg: number, determine: boolean, state?: boolean) {
     if(determine) {
-        packageCb[pkg-1][0].checked =
+        (packageCb[pkg - 1][0] as HTMLInputElement).checked =
             packageState[pkg-1] = markPackageBooks(pkg, true);
     }
     else {
-        packageCb[pkg-1][0].checked =
+        (packageCb[pkg - 1][0] as HTMLInputElement).checked =
             packageState[pkg-1] = state;
         markPackageBooks(pkg, false, state);
     }
 }
 
 
-function markPackageBooks(pkg, determine, state) {
-    var pkgBookMaps = gBooks[packageNames[pkg-1]];
-    for(var i in pkgBookMaps) {
-        /** @type {BookMap} */
-        var bkMap = pkgBookMaps[i];
+function markPackageBooks(pkg: number, determine: boolean, state?: boolean) {
+    const pkgBookMaps = gBooks[packageNames[pkg - 1]] as BookSpanArray;
+    for(let i in pkgBookMaps) {
+        const bkMap = pkgBookMaps[i] as BookMap;
         if(determine) {
             if(!bkMap.state)
                 return false;
         }
         else {
-            bkMap.$cb[0].checked =
+            (bkMap.$cb[0] as HTMLInputElement).checked =
                 bkMap.state = state;
         }
     }
@@ -211,25 +203,20 @@ function markPackageBooks(pkg, determine, state) {
 }
 
 
-function markBook(abbr, state) {
-    var bkMap = getBookMap(abbr);
+function markBook(abbr: string, state: boolean) {
+    const bkMap = getBookMap(abbr);
     if(bkMap) {
-        bkMap.$cb[0].checked =
+        (bkMap.$cb[0] as HTMLInputElement).checked =
             bkMap.state = state;
     }
 }
 
 
-/**
- * @param {?string} abbr
- * @param {number?} id
- * @return {BookMap}
- */
-function getBookMap(abbr, id) {
-    for(var p in packageNames) {
-        var pkgBk = gBooks[packageNames[p]];
-        for(var i in pkgBk) {
-            var bkMap = pkgBk[i];
+function getBookMap(abbr: string, id?: number): BookMap {
+    for(let p in packageNames) {
+        const pkgBk = gBooks[packageNames[p]] as BookSpanArray;
+        for(let i in pkgBk) {
+            const bkMap = pkgBk[i] as BookMap;
             if(abbr && bkMap.abbr === abbr || bkMap.id === id)
                 return bkMap;
         }
@@ -238,15 +225,15 @@ function getBookMap(abbr, id) {
 
 
 function getAccessStr() {
-    var num = '', abbr = '';
-    for(var p=0; p<4; ++p) {
+    let num = '', abbr = '';
+    for(let p=0; p<4; ++p) {
         if(packageState[p])
             num += (p+1) + '|';
         else {
-            var pkgBk = gBooks[packageNames[p]];
-            var pkgInc = '', pkgExc = '';
-            for(var i in pkgBk) {
-                var bkMap = pkgBk[i];
+            const pkgBk = gBooks[packageNames[p]] as BookSpanArray;
+            let pkgInc = '', pkgExc = '';
+            for(let i in pkgBk) {
+                const bkMap = pkgBk[i] as BookMap;
                 if(bkMap.state)
                     pkgInc += bkMap.abbr + '|';
                 else
@@ -270,7 +257,7 @@ function getAccessStr() {
 
 
 function ok() {
-    var access = getAccessStr();
+    const access = getAccessStr();
     if(access === gAccess) {
         cancel();
         return;
@@ -303,7 +290,7 @@ function cancel() {
     $dialog.hide();
 }
 
-$.extend(exports, {
+export default {
     open: open,
     reset: reset
-});
+};

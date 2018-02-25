@@ -1,5 +1,6 @@
-var activeTab = 0;
-var $msg;
+
+let activeTab = 0;
+let $msg: JQuery;
 
 function setActiveTab() {
     if(activeTab == 0) {
@@ -12,9 +13,9 @@ function setActiveTab() {
     }
 
     setTimeout(function() {
-        var $e = $('#email');
+        const $e = $('#email');
         if(!$e.val() && !client.browser.ie)
-            $('#email')[0].focus();
+            $e[0].focus();
         else
             $('#loginBtn')[0].focus();
     }, 100);
@@ -31,11 +32,10 @@ function switchTabs() {
 
 
 /**
- * @return {?string} - parsed email or null if invalid
+ * @return parsed email or null if invalid
  */
-function validateEmail() {
-    /* @type {string} */
-    var email = $('#email').val();
+function validateEmail(): string {
+    let email = $('#email').val();
     email = email.replace(/^ */, '').replace(/ *$/, '');
     if(!/\S+@\S+\.\S+/.test(email)) {
         message('Helytelen e-mail formátum');
@@ -46,13 +46,11 @@ function validateEmail() {
 
 
 /**
- * @return {?string} - password or null if invalid
+ * @return password or null if invalid
  */
-function validatePassword() {
-    /* @type {string} */
-    var pwd1 = $('#password').val();
-    /* @type {string} */
-    var pwd2 = $('#password2').val();
+function validatePassword(): string {
+    const pwd1 = $('#password').val();
+    const pwd2 = $('#password2').val();
     if(activeTab == 1 && pwd1 !== pwd2) {
         message('A jelszók nem egyeznek');
         return null;
@@ -61,7 +59,7 @@ function validatePassword() {
         message('Hiányzik a jelszó');
         return null;
     }
-    var res = /\S+.*\S+/.exec(pwd1);
+    const res = /\S+.*\S+/.exec(pwd1);
     if(!res || res[0].length < 5) {
         message('A jelszó minimum 5 karakter');
         return null;
@@ -71,10 +69,10 @@ function validatePassword() {
 
 
 function login() {
-    var email = validateEmail();
+    const email = validateEmail();
     if(!email)
         return;
-    var pwd = validatePassword();
+    let pwd = validatePassword();
     if(!pwd)
         return;
     if(pwd.length === 33 && pwd.charAt(0) === '@')
@@ -115,10 +113,10 @@ function login() {
 
 
 function register() {
-    var email = validateEmail();
+    const email = validateEmail();
     if(!email)
         return;
-    var pwd = validatePassword();
+    let pwd = validatePassword();
     if(!pwd)
         return;
     pwd = window.md5(pwd);
@@ -154,21 +152,21 @@ function register() {
 }
 
 
-function message(s) {
+function message(s: string) {
     $msg.html(s).show();
 }
 
 
-function errorMsg(code) {
+function errorMsg(code: number) {
     message('Hiba történt. <a href="mailto:dev@pandit.hu?subject=Hibajelentés ('+
         code+')">Beszámolok róla</a>');
 }
 
 
-function keydown(e) {
-    var c = e.keyCode;
+function keydown(e: KeyboardEvent) {
+    const c = e.keyCode;
     $msg.hide();
-    var tag = document.activeElement.tagName.toLowerCase();
+    const tag = document.activeElement.tagName.toLowerCase();
     if(c === 13 && tag === 'input') {
         if(activeTab === 0)
             login();
@@ -189,14 +187,14 @@ $(function() {
 
 
 // http://stackoverflow.com/questions/2382329/how-can-i-get-browser-to-prompt-to-save-password
-function post(path, params, method)
+function post(path: string, params: any, method?: string)
 {
     method = method || "post"; // Set method to post by default if not specified.
 
     // The rest of this code assumes you are not using a library.
     // It can be made less wordy if you use one.
 
-    var form = document.createElement("form");
+    const form = document.createElement("form");
     form.id = "dynamicform" + Math.random();
     form.setAttribute("method", method);
     form.setAttribute("action", path);
@@ -204,11 +202,11 @@ function post(path, params, method)
     // Internet Explorer needs this
     form.setAttribute("onsubmit", "window.external.AutoCompleteSaveForm(document.getElementById('" + form.id + "'))");
 
-    for (var key in params)
+    for (const key in params)
     {
         if (params.hasOwnProperty(key))
         {
-            var hiddenField = document.createElement("input");
+            const hiddenField = document.createElement("input");
             // Internet Explorer needs a "password"-field to show the store-password-dialog
             hiddenField.setAttribute("type", key == "password" ? "password" : "text");
             hiddenField.setAttribute("name", key);
@@ -218,7 +216,7 @@ function post(path, params, method)
         }
     }
 
-    var submitButton = document.createElement("input");
+    const submitButton = document.createElement("input");
     submitButton.setAttribute("type", "submit");
 
     form.appendChild(submitButton);

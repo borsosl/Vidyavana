@@ -1,31 +1,29 @@
 
-var dom = require('./dom');
-var page = require('./page');
+import dom from './dom';
+import page from './page'
 
-/** @type {JQuery} - points to menu box, lazy init'd */
-var $menu;
+/** points to menu box, lazy init'd */
+let $menu: JQuery;
 
-/** @type {JQuery} - points to centered message box, lazy init'd */
-var $msg;
+/** points to centered message box, lazy init'd */
+let $msg: JQuery;
 
-/** @type {boolean} */
-var menuVisible;
+let menuVisible: boolean;
 
-/** @type {number} - loading timeout handle */
-var loadingHandle;
+/** loading timeout handle */
+let loadingHandle: number;
 
-/** @type {number} - concurrent loading contexts */
-var reentrantLoading = 0;
+/** concurrent loading contexts */
+let reentrantLoading: number = 0;
 
-/** @type {string} */
-var downtimeText;
+let downtimeText: string;
 
 
-function toggleMenu(close, onEmpty) {
+function toggleMenu(close?: boolean, onEmpty?: boolean) {
     if(!$menu)
         $menu = $('#menu');
-    var visible = $menu.css('display') === 'block';
-    var hgt = $menu.height();
+    let visible = $menu.css('display') === 'block';
+    const hgt = $menu.height();
     if(close) {
         if(!visible)
             return;
@@ -47,8 +45,8 @@ function isMenuVisible() {
 
 function refreshMenu() {
     setTimeout(function() {
-        dom.$header.children().each(function(ix, el) {
-            var $menuEl = $('#menu-' + el.id);
+        dom.$header.children().each(function(ix: number, el: HTMLDivElement) {
+            const $menuEl = $('#menu-' + el.id);
             $menuEl.toggle(el.offsetTop > 30);
         });
         toggleMenu(true, true);
@@ -63,20 +61,20 @@ function showHitsPanel() {
     toggleContent(2);
 }
 
-function toggleContent(mode) {
+function toggleContent(mode: number) {
     dom.$txt.toggle(mode === 1);
     dom.$hits.toggle(mode === 2);
 }
 
 
-function focusContent(scrollToTop) {
+function focusContent(scrollToTop?: boolean) {
     dom.$content.focus();
     if(scrollToTop)
         dom.$content.scrollTop(0);
 }
 
 
-function toggleButtonBars(isHits, hitlist) {
+function toggleButtonBars(isHits: boolean, hitlist: boolean) {
     dom.$textBtns.toggle(!isHits);
     dom.$hitBtns.toggle(isHits);
     dom.$sectDown.toggle(page.current().next() !== null);
@@ -86,17 +84,17 @@ function toggleButtonBars(isHits, hitlist) {
 
 /**
  * Shows server-side error and returns its presence.
- * @param {Object} json - result of any ajax
- * @return {boolean} - error happened
+ * @param json - result of any ajax
+ * @return true if error happened
  */
-function javaError(json) {
+function javaError(json: any): boolean {
     loading(false);
     if(json.error)
     {
         if(json.error === 'expired')
-            document.location = '/app';
+            document.location.href = '/app';
         else if(json.error === 'maintenance')
-            document.location = '/app/maintenance';
+            document.location.href = '/app/maintenance';
         else
             message('Hiba történt. <a href="mailto:dev@pandit.hu?subject=Hibajelentés ('+
                 json.error+')">Beszámolok róla</a>', true);
@@ -111,10 +109,10 @@ function javaError(json) {
 
 /**
  * Show error dialog.
- * @param {string} msg - error text
- * @param {function} retryFn - callback for retrying operation that had failed
+ * @param msg - error text
+ * @param retryFn - callback for retrying operation that had failed
  */
-function ajaxError(/*xhr, status,*/ msg, retryFn) {
+function ajaxError(/*xhr, status,*/ msg: string, retryFn: Function) {
     loading(false);
     message(msg + '...<br><a href="#" id="retry">Ismétlés</a>&nbsp;&nbsp;<a href="#" id="cancelMsg">Mégse</a>', false);
     $('#retry', $msg).click(function() {
@@ -128,10 +126,10 @@ function ajaxError(/*xhr, status,*/ msg, retryFn) {
 
 /**
  * Set message text and reposition its window.
- * @param {string} msg - message
- * @param {boolean} needsCloser - need to add link to close?
+ * @param msg - message
+ * @param needsCloser - need to add link to close?
  */
-function message(msg, needsCloser) {
+function message(msg: string, needsCloser: boolean) {
     if(!$msg)
         $msg = $('#message');
     if(needsCloser)
@@ -140,7 +138,7 @@ function message(msg, needsCloser) {
     $('#cancelMsg', $msg).click(function() {
         $msg.hide();
     });
-    var $win = $(window);
+    const $win = $(window);
     $msg.css({
         'top': Math.floor(($win.height() - $msg.height() - 20) / 2) + 'px',
         'left': Math.floor(($win.width() - $msg.width() - 20) / 2) + 'px',
@@ -149,11 +147,11 @@ function message(msg, needsCloser) {
 }
 
 
-function throttle(init, delay, cb) {
-    var timer;
+function throttle(init: boolean, delay: number, cb: () => void) {
+    let timer: number;
 
     if(init)
-        cb.call();
+        cb.call(undefined);
     return function() {
         clearTimeout(timer);
         timer = setTimeout(cb, delay);
@@ -163,15 +161,16 @@ function throttle(init, delay, cb) {
 
 /**
  * Shows/hides dialogs.
- * @param {number} index - of dialog in ids array
- * @param {boolean} toggle - or show
- * @return {boolean} - dialog is now visible
+ * @param index - of dialog in ids array
+ * @param toggle - or show
+ * @return true if dialog is now visible
  */
-function dialog(index, toggle) {
-    var ids = [$('#searchPop'), $('#sectionPop'), $('#viewPop')];
-    var ret = false;
-    for(var i in ids)
-        if(i == index) {
+function dialog(index: number, toggle: boolean): boolean {
+    const ids = [$('#searchPop'), $('#sectionPop'), $('#viewPop')];
+    let ret = false;
+    const ix = ''+index;
+    for(let i in ids)
+        if(i === ix) {
             if(toggle)
                 ids[i].toggle();
             else
@@ -184,7 +183,7 @@ function dialog(index, toggle) {
 }
 
 
-function loading(state) {
+function loading(state: boolean) {
     if(!state) {
         if(--reentrantLoading <= 0) {
             dom.$loading.hide();
@@ -196,7 +195,7 @@ function loading(state) {
         }
         return;
     }
-    var alreadyVisibleOrAboutToShow = reentrantLoading++;
+    const alreadyVisibleOrAboutToShow = reentrantLoading++;
     if(alreadyVisibleOrAboutToShow)
         return;
     loadingHandle = setTimeout(showIndicator, 500);
@@ -208,7 +207,7 @@ function loading(state) {
 }
 
 
-function downtime(text) {
+function downtime(text: string) {
     downtimeText = text;
     if(!text)
         text = '';
@@ -221,9 +220,12 @@ function downtimeMsg() {
 }
 
 
-function menuModifier(e) {
-    //noinspection JSUnresolvedVariable
-    return e.altKey && (!client.system.mac ^ e.ctrlKey);
+function menuModifier(e: JQueryKeyEventObject): boolean {
+    if(!e.altKey)
+        return false;
+    if(client.system.mac && !e.ctrlKey)
+        return false;
+    return true;
 }
 
 
@@ -236,13 +238,13 @@ function resizeEvent() {
 
 
 function resizeContent() {
-    var $m = $('#measure');
-    var winHgt = $m.height();
-    var winWid = $m.width();
-    var headHgt = $('#header').height();
-    var arr = [dom.$content, dom.$formContent];
-    for(var i in arr) {
-        var $e = arr[i];
+    const $m = $('#measure');
+    const winHgt = $m.height();
+    const winWid = $m.width();
+    const headHgt = $('#header').height();
+    const arr = [dom.$content, dom.$formContent];
+    for(let i in arr) {
+        const $e = arr[i];
         $e[0].style.top = headHgt + 'px';
         $e.innerHeight(winHgt - headHgt);
         $e.innerWidth(winWid);
@@ -250,31 +252,31 @@ function resizeContent() {
 }
 
 
-function cookie(key, value) {
+function cookie(key: string, value?: string) {
     if(value === undefined) {
-        //noinspection JSCheckFunctionSignatures
-        value = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
-        return value ? value.pop() : '';
+        let getvalue = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
+        return getvalue ? getvalue.pop() : '';
     }
     document.cookie = encodeURIComponent(key) + "=" + encodeURIComponent(value) + '; path=/';
 }
 
 
-function findClickableButton(e) {
-    var $group = $(e).closest('.has-button');
+function findClickableButton(e: Element) {
+    const $group = $(e).closest('.has-button');
     return $group ? $('button', $group) : null;
 }
 
 function bookOrdinalOnTop() {
     if(page.isSearchResult())
-        return -page.hits().tocId();
+        return -page.hits.tocId;
 
-    var top = dom.$content.scrollTop();
-    var $ch = dom.$txt.children();
-    var $prev;
-    for(var i in $ch) {
-        var $e = $($ch[i]);
-        var pos = $e.position().top;
+    const top = dom.$content.scrollTop();
+    const $ch = dom.$txt.children();
+    let $prev;
+    for(let i in $ch) {
+        // noinspection JSUnfilteredForInLoop
+        const $e = $($ch[i]);
+        const pos = $e.position().top;
         if(pos == top) {
             $prev = $e;
             break;
@@ -289,13 +291,13 @@ function bookOrdinalOnTop() {
     return $prev.data('ix') + 1;    // ix 0-based, ordinal in toc tree 1-based
 }
 
-function inputDefaults(e) {
+function textKeyDefaults(e: JQueryKeyEventObject) {
     if(!menuModifier(e))
         e.stopPropagation();
 }
 
 
-$.extend(exports, {
+export default {
     toggleMenu: toggleMenu,
     isMenuVisible: isMenuVisible,
     refreshMenu: refreshMenu,
@@ -316,5 +318,5 @@ $.extend(exports, {
     cookie: cookie,
     findClickableButton: findClickableButton,
     bookOrdinalOnTop: bookOrdinalOnTop,
-    textKeyDefaults: inputDefaults
-});
+    textKeyDefaults: textKeyDefaults
+};
