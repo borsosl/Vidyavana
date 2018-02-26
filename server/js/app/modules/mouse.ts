@@ -1,10 +1,10 @@
 
 import dom from './dom';
-import util from './util';
-import task from './task';
-import html from './html-content';
-import load from './load';
-import bookmark from './bookmark';
+import * as util from './util';
+import * as task from './task';
+import * as html from './html-content';
+import * as load from './load';
+import * as bookmark from './bookmark';
 
 export function init() {
     $('#pandit-icon').click(function()
@@ -29,7 +29,7 @@ export function init() {
     {
         util.toggleMenu(true);
         util.dialog(-1, false);
-        bookmark.load();
+        bookmark.loadPage();
     });
 
     $('#logout-link, #menu-logout-link').click(function()

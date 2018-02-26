@@ -1,8 +1,5 @@
 
-import util from './util';
-
-type BookSpanArray = BookMap[];
-type Package = string|BookSpanArray;
+import * as util from './util';
 
 let $dialog: JQuery;
 let checkboxesDrawn: boolean;
@@ -14,23 +11,11 @@ let packageCb: JQuery[];
 let packageState: boolean[];
 
 
-/**
- * Properties are strings abbr|id|abbr|id|... from server,
- * converted to BookSpanArray on client.
- */
-export interface BookPackageMap {
-    Sraddha: Package;
-    SadhuSanga: Package;
-    BhajanaKriya: Package;
-    Ruci: Package;
-    [key: string]: Package;
-}
-
 
 /**
  * Fetch user book access, then fill dialog
  */
-function open(email: string, books: BookPackageMap) {
+export function open(email: string, books: BookPackageMap) {
     gEmail = email;
     $('input[type=checkbox]', $dialog).prop('checked', false);
     $dialog.show();
@@ -57,7 +42,7 @@ function open(email: string, books: BookPackageMap) {
 }
 
 
-function reset() {
+export function reset() {
     checkboxesDrawn = false;
     packageCb = [];
     packageState = [];
@@ -289,8 +274,3 @@ function ok() {
 function cancel() {
     $dialog.hide();
 }
-
-export default {
-    open: open,
-    reset: reset
-};

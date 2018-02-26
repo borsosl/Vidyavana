@@ -1,6 +1,6 @@
 
 import dom from './dom';
-import page from './page'
+import * as page from './page'
 
 /** points to menu box, lazy init'd */
 let $menu: JQuery;
@@ -19,7 +19,7 @@ let reentrantLoading: number = 0;
 let downtimeText: string;
 
 
-function toggleMenu(close?: boolean, onEmpty?: boolean) {
+export function toggleMenu(close?: boolean, onEmpty?: boolean) {
     if(!$menu)
         $menu = $('#menu');
     let visible = $menu.css('display') === 'block';
@@ -38,12 +38,12 @@ function toggleMenu(close?: boolean, onEmpty?: boolean) {
 }
 
 
-function isMenuVisible() {
+export function isMenuVisible() {
     return menuVisible;
 }
 
 
-function refreshMenu() {
+export function refreshMenu() {
     setTimeout(function() {
         dom.$header.children().each(function(ix: number, el: HTMLDivElement) {
             const $menuEl = $('#menu-' + el.id);
@@ -53,11 +53,11 @@ function refreshMenu() {
     }, 1);
 }
 
-function showSectionPanel() {
+export function showSectionPanel() {
     toggleContent(1);
 }
 
-function showHitsPanel() {
+export function showHitsPanel() {
     toggleContent(2);
 }
 
@@ -67,14 +67,14 @@ function toggleContent(mode: number) {
 }
 
 
-function focusContent(scrollToTop?: boolean) {
+export function focusContent(scrollToTop?: boolean) {
     dom.$content.focus();
     if(scrollToTop)
         dom.$content.scrollTop(0);
 }
 
 
-function toggleButtonBars(isHits: boolean, hitlist: boolean) {
+export function toggleButtonBars(isHits: boolean, hitlist: boolean) {
     dom.$textBtns.toggle(!isHits);
     dom.$hitBtns.toggle(isHits);
     dom.$sectDown.toggle(page.current().next() !== null);
@@ -87,7 +87,7 @@ function toggleButtonBars(isHits: boolean, hitlist: boolean) {
  * @param json - result of any ajax
  * @return true if error happened
  */
-function javaError(json: any): boolean {
+export function javaError(json: any): boolean {
     loading(false);
     if(json.error)
     {
@@ -112,7 +112,7 @@ function javaError(json: any): boolean {
  * @param msg - error text
  * @param retryFn - callback for retrying operation that had failed
  */
-function ajaxError(/*xhr, status,*/ msg: string, retryFn: Function) {
+export function ajaxError(/*xhr, status,*/ msg: string, retryFn: Function) {
     loading(false);
     message(msg + '...<br><a href="#" id="retry">Ismétlés</a>&nbsp;&nbsp;<a href="#" id="cancelMsg">Mégse</a>', false);
     $('#retry', $msg).click(function() {
@@ -129,7 +129,7 @@ function ajaxError(/*xhr, status,*/ msg: string, retryFn: Function) {
  * @param msg - message
  * @param needsCloser - need to add link to close?
  */
-function message(msg: string, needsCloser: boolean) {
+export function message(msg: string, needsCloser: boolean) {
     if(!$msg)
         $msg = $('#message');
     if(needsCloser)
@@ -165,7 +165,7 @@ function throttle(init: boolean, delay: number, cb: () => void) {
  * @param toggle - or show
  * @return true if dialog is now visible
  */
-function dialog(index: number, toggle: boolean): boolean {
+export function dialog(index: number, toggle: boolean): boolean {
     const ids = [$('#searchPop'), $('#sectionPop'), $('#viewPop')];
     let ret = false;
     const ix = ''+index;
@@ -183,7 +183,7 @@ function dialog(index: number, toggle: boolean): boolean {
 }
 
 
-function loading(state: boolean) {
+export function loading(state: boolean) {
     if(!state) {
         if(--reentrantLoading <= 0) {
             dom.$loading.hide();
@@ -207,7 +207,7 @@ function loading(state: boolean) {
 }
 
 
-function downtime(text: string) {
+export function downtime(text: string) {
     downtimeText = text;
     if(!text)
         text = '';
@@ -215,12 +215,12 @@ function downtime(text: string) {
 }
 
 
-function downtimeMsg() {
+export function downtimeMsg() {
     message(downtimeText + '<br/>', true);
 }
 
 
-function menuModifier(e: JQueryKeyEventObject): boolean {
+export function menuModifier(e: JQueryKeyEventObject): boolean {
     if(!e.altKey)
         return false;
     if(client.system.mac && !e.ctrlKey)
@@ -229,7 +229,7 @@ function menuModifier(e: JQueryKeyEventObject): boolean {
 }
 
 
-function resizeEvent() {
+export function resizeEvent() {
     window.onresize = throttle(true, 100, function() {
         resizeContent();
         refreshMenu();
@@ -237,7 +237,7 @@ function resizeEvent() {
 }
 
 
-function resizeContent() {
+export function resizeContent() {
     const $m = $('#measure');
     const winHgt = $m.height();
     const winWid = $m.width();
@@ -252,7 +252,7 @@ function resizeContent() {
 }
 
 
-function cookie(key: string, value?: string) {
+export function cookie(key: string, value?: string) {
     if(value === undefined) {
         let getvalue = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
         return getvalue ? getvalue.pop() : '';
@@ -261,12 +261,12 @@ function cookie(key: string, value?: string) {
 }
 
 
-function findClickableButton(e: Element) {
+export function findClickableButton(e: Element) {
     const $group = $(e).closest('.has-button');
     return $group ? $('button', $group) : null;
 }
 
-function bookOrdinalOnTop() {
+export function bookOrdinalOnTop() {
     if(page.isSearchResult())
         return -page.hits.tocId;
 
@@ -291,32 +291,7 @@ function bookOrdinalOnTop() {
     return $prev.data('ix') + 1;    // ix 0-based, ordinal in toc tree 1-based
 }
 
-function textKeyDefaults(e: JQueryKeyEventObject) {
+export function textKeyDefaults(e: JQueryKeyEventObject) {
     if(!menuModifier(e))
         e.stopPropagation();
 }
-
-
-export default {
-    toggleMenu: toggleMenu,
-    isMenuVisible: isMenuVisible,
-    refreshMenu: refreshMenu,
-    showSectionPanel: showSectionPanel,
-    showHitsPanel: showHitsPanel,
-    focusContent: focusContent,
-    toggleButtonBars: toggleButtonBars,
-    javaError: javaError,
-    ajaxError: ajaxError,
-    message: message,
-    dialog: dialog,
-    loading: loading,
-    downtime: downtime,
-    downtimeMsg: downtimeMsg,
-    menuModifier: menuModifier,
-    resizeEvent: resizeEvent,
-    resizeContent: resizeContent,
-    cookie: cookie,
-    findClickableButton: findClickableButton,
-    bookOrdinalOnTop: bookOrdinalOnTop,
-    textKeyDefaults: textKeyDefaults
-};

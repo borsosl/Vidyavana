@@ -1,9 +1,9 @@
 
 import dom from './dom';
-import util from './util';
-import page from './page';
-import html, {ContentPageData, ContentPageResult} from './html-content';
-import load from './load';
+import * as util from './util';
+import * as page from './page';
+import * as html from './html-content';
+import * as load from './load';
 
 /** bookmark page display states */
 const pageState: {[key: string]: string} = {list: 'list', edit: 'edit', delete: 'delete'};
@@ -47,11 +47,11 @@ interface BookmarksResult extends ContentPageData {
 }
 
 
-function loadPage() {
+export function loadPage() {
     html.load('/app/bookmark/page', null, initPage);
 }
 
-function initPage(data: BookmarksResult, html: string) {
+export function initPage(data: BookmarksResult, html: string) {
     allCount = data.allCount;
     recent10 = data.recent10;
     linkEntityMap = data.recentEntityMap;
@@ -350,8 +350,3 @@ function ajax<T>(url: string, data: any, retryFn: Function, cb: AjaxResultCallba
         }
     });
 }
-
-export default {
-    load: loadPage,
-    initPage: initPage
-};

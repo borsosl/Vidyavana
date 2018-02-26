@@ -1,9 +1,9 @@
 
-import page from './page';
-import util from './util';
-import task from './task';
-import load from './load';
-import bookmark from './bookmark';
+import * as page from './page';
+import * as util from './util';
+import * as task from './task';
+import * as load from './load';
+import * as bookmark from './bookmark';
 
 export function init() {
     $(window).keydown(function(e: JQueryEventObject) {
@@ -50,7 +50,7 @@ export function init() {
         else if(c === 69)           // e
         {
             util.dialog(-1, false);
-            bookmark.load();
+            bookmark.loadPage();
             e.preventDefault();
         }
         else if(c === 27) {		    // esc

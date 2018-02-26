@@ -285,16 +285,11 @@ class Highlight {
 }
 
 
-function getInstance(): Highlight {
+export function getInstance(): Highlight {
     return highlight;
 }
 
 
-function init(queryStr: string): Highlight {
+export function init(queryStr: string): Highlight {
     return highlight = new Highlight(queryStr);
-}
-
-export default {
-    inst: getInstance,
-    init: init
 }

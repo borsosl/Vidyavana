@@ -1,6 +1,6 @@
 
-import util from './util';
-import load from './load';
+import * as util from './util';
+import * as load from './load';
 
 interface NodeInfo {
     sel:HTMLSelectElement;
@@ -115,7 +115,7 @@ function replacePipes(node: TocTreeItem)
 /**
  * One-time setup of event handlers.
  */
-function initSectionSelect()
+export function initSectionSelect()
 {
     replacePipes(pg.toc);
     updateSectionSelects(pg.toc, 1);
@@ -186,14 +186,8 @@ function gotoSection()
 }
 
 
-function selectedSection(sel?: number) {
+export function selectedSection(sel?: number) {
     if(sel !== undefined)
         selSection = sel;
     return selSection;
 }
-
-
-export default {
-    initSectionSelect: initSectionSelect,
-    selectedSection: selectedSection
-};

@@ -37,3 +37,27 @@ interface AjaxResultCallback<T> {
     // noinspection JSUnusedLocalSymbols
     (json: T): void;
 }
+
+interface ContentPageData {
+    skipRender?: boolean;
+}
+
+interface ContentPageResult<T extends ContentPageData> {
+    html?: string;
+    data?: T;
+}
+
+type BookSpanArray = BookMap[];
+type Package = string|BookSpanArray;
+
+/**
+ * Properties are strings abbr|id|abbr|id|... from server,
+ * converted to BookSpanArray on client.
+ */
+interface BookPackageMap {
+    Sraddha: Package;
+    SadhuSanga: Package;
+    BhajanaKriya: Package;
+    Ruci: Package;
+    [key: string]: Package;
+}

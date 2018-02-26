@@ -1,6 +1,6 @@
 
-import load from './load';
-import util from './util';
+import * as load from './load';
+import * as util from './util';
 
 let search: Search, pendingSearch: Search;
 
@@ -36,7 +36,7 @@ class Search {
 }
 
 
-function accept() {
+export function accept() {
     search = pendingSearch;
 }
 
@@ -44,7 +44,7 @@ function accept() {
 /**
  * One-time setup of event handlers.
  */
-function init() {
+export function init() {
     const $inp = $('#searchInput');
     const $scoreOrder: JQuery = $('#score-order');
     const $searchPaging: JQuery = $('#search-paging');
@@ -99,27 +99,21 @@ function newSearch(text: string, scoreOrder: boolean, page: string) {
 }
 
 
-function message(msg: string) {
+export function message(msg: string) {
     $('#search-msg').text(msg).show();
     searchMsgShown = true;
 
 }
 
 /** search page shows multiple results */
-function isHitlist() {
+export function isHitlist() {
     return getInstance().last.endHit > -1;
 }
 
-function getInstance(pending?: boolean): Search {
-    return pending ? pendingSearch : search;
+export function getInstance(): Search {
+    return search;
 }
 
-
-export default {
-    inst: getInstance,
-    pending: getInstance.bind(null, true),
-    init: init,
-    accept: accept,
-    message: message,
-    isHitlist: isHitlist
-};
+export function getPendingInstance(): Search {
+    return pendingSearch;
+}

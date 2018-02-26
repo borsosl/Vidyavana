@@ -1,17 +1,17 @@
 
-import page from './page';
 import dom from './dom';
-import util from './util';
-import highlight from './highlight';
-import load from './load';
-import search from './search';
+import * as page from './page';
+import * as util from './util';
+import * as highlight from './highlight';
+import * as load from './load';
+import * as search from './search';
 
 /**
  * On successful load, add text into DOM.
  * @param json - loaded text details
  * @param mode - one of {@link load.mode}
  */
-function text(json: DisplayBlock | SearchResponse, mode: number) {
+export function text(json: DisplayBlock | SearchResponse, mode: number) {
     const initPage = mode != load.mode.down;
     const resp = json as SearchResponse;
     const isSearch = resp.hitCount !== undefined;
@@ -30,7 +30,7 @@ function text(json: DisplayBlock | SearchResponse, mode: number) {
                 search.accept();
                 util.dialog(-1, false);
             }
-            search.inst().last = resp;
+            search.getInstance().last = resp;
         }
         else
             return search.message('Nincs találat.');
@@ -78,7 +78,7 @@ function text(json: DisplayBlock | SearchResponse, mode: number) {
     dom.$menuShortRef.text(display.shortRef);
     util.refreshMenu();
 
-    const hl = highlight.inst();
+    const hl = highlight.getInstance();
     if(hl)
         hl.run(h, isSearch ? dom.$hits : dom.$txt);
 
@@ -97,8 +97,3 @@ function hitlistMarkup(h: string) {
     h = h.replace(/<\/td><\/tr>/g, '</p></td></tr>');
     return h;
 }
-
-
-export default {
-    text
-};

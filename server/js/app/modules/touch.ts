@@ -1,6 +1,6 @@
 
-import page from './page';
-import load from './load';
+import * as page from './page';
+import * as load from './load';
 
 export function init() {
     const cs = client.system;

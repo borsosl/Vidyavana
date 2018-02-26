@@ -1,16 +1,7 @@
 
 import dom from './dom';
-import util from './util';
+import * as util from './util';
 
-
-export interface ContentPageData {
-    skipRender?: boolean;
-}
-
-export interface ContentPageResult<T extends ContentPageData> {
-    html?: string;
-    data?: T;
-}
 
 interface ContentPageCallback<T extends ContentPageData> {
     // noinspection JSUnusedLocalSymbols
@@ -20,7 +11,7 @@ interface ContentPageCallback<T extends ContentPageData> {
 /**
  * Sends ajax request to get html content page.
  */
-function load<T extends ContentPageData>(url: string, data?: any, cb?: ContentPageCallback<T>)
+export function load<T extends ContentPageData>(url: string, data?: any, cb?: ContentPageCallback<T>)
 {
     $.ajax({
         url: url,
@@ -51,13 +42,7 @@ function init<T extends ContentPageData>(res: ContentPageResult<T>, cb?: Content
         cb.call(null, res.data, res.html);
 }
 
-function render(html: string) {
+export function render(html: string) {
     dom.$formContent.html(html).show().scrollTop(0);
     util.resizeContent();
 }
-
-
-export default {
-    load: load,
-    render: render
-};

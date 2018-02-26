@@ -1,10 +1,10 @@
 
 import dom from './modules/dom';
-import util from './modules/util';
-import task from './modules/task';
-import toc from './modules/toc';
-import search from './modules/search';
-import load from './modules/load';
+import * as util from './modules/util';
+import * as task from './modules/task';
+import * as toc from './modules/toc';
+import * as search from './modules/search';
+import * as load from './modules/load';
 import * as keyboard from './modules/keyboard';
 import * as mouse from './modules/mouse';
 import * as touch from './modules/touch';

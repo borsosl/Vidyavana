@@ -2,7 +2,7 @@
 
 /// <reference path="../defs/client.d.ts"/>
 
-import highlight from '../modules/highlight';
+import * as highlight from '../modules/highlight';
 
 $(function()
 {

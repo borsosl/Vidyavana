@@ -59,18 +59,24 @@ class Page {
 }
 
 /** section display */
-const section = new Page();
+export const section = new Page();
 
 /** hits display */
-const hits = new Page();
+export const hits = new Page();
 
 /** current display = section|hits */
 let current: Page = section;
 
+function currentPage(page?: Page) {
+    if(page)
+        current = page;
+    return current;
+}
 
-export default {
-    section,
-    hits,
-    current: function(o?: Page) { if(o) current = o; return current; },
-    isSearchResult: function(): boolean { return current === hits; }
+export function isSearchResult(): boolean {
+    return current === hits;
+}
+
+export {
+    currentPage as current
 };

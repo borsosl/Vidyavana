@@ -1,11 +1,11 @@
 
 import dom from './dom';
-import page from './page';
-import util from './util';
-import highlight from './highlight';
-import render from './render';
-import search from './search';
-import toc from './toc';
+import * as page from './page';
+import * as util from './util';
+import * as highlight from './highlight';
+import * as render from './render';
+import * as search from './search';
+import * as toc from './toc';
 
 /** text request modes */
 const loadMode: {[key: string]: number} = {
@@ -23,7 +23,7 @@ let bookmarkId: number;
  * scroll direction that started the request.
  * @param mode - one of {@link loadMode}
  */
-function text(mode: number) {
+export function text(mode: number) {
     if(lastReqTime && lastReqTime > Date.now()-60000)
         return;
     const m = loadMode;
@@ -55,7 +55,7 @@ function text(mode: number) {
                     return null;
                 return '/app/txt/follow/'+ps.tocId+'/'+next;
             case m.search:
-                const psr = search.pending();
+                const psr = search.getPendingInstance();
                 data = {
                     q: psr.query,
                     sort: psr.sort,
@@ -65,7 +65,7 @@ function text(mode: number) {
             case m.currentHit:
             case m.nextHit:
             case m.prevHit:
-                let sr = search.inst();
+                let sr = search.getInstance();
                 if(!sr)
                     return null;
                 const last = sr.last;
@@ -109,7 +109,7 @@ function text(mode: number) {
     util.loading(true);
 
     if(mode === loadMode.search)
-        highlight.init(search.pending().query);
+        highlight.init(search.getPendingInstance().query);
 }
 
 function hitSection(tocId: number) {
@@ -119,17 +119,17 @@ function hitSection(tocId: number) {
     text(loadMode.section);
 }
 
-function currentHitSection() {
-    hitSection(search.inst().last.display.tocId);
+export function currentHitSection() {
+    hitSection(search.getInstance().last.display.tocId);
 }
 
 /** Switches b/w text content and search result */
-function contextSwitch(): void {
+export function contextSwitch(): void {
     if(page.isSearchResult()) {
         if(!search.isHitlist())
             currentHitSection();
     } else {
-        let sr = search.inst();
+        let sr = search.getInstance();
         if(!sr)
             return;
         page.current(page.hits);
@@ -145,57 +145,46 @@ function contextSwitch(): void {
     }
 }
 
-function prevSection() {
+export function prevSection() {
     text(loadMode.prev);
 }
 
-function nextSection() {
+export function nextSection() {
     text(loadMode.next);
 }
 
-function prevHit() {
+export function prevHit() {
     text(loadMode.prevHit);
 }
 
-function nextHit() {
+export function nextHit() {
     text(loadMode.nextHit);
 }
 
-function contextPrev() {
+export function contextPrev() {
     if(page.isSearchResult())
         prevHit();
     else
         prevSection();
 }
 
-function contextNext() {
+export function contextNext() {
     if(page.isSearchResult())
         nextHit();
     else
         nextSection();
 }
 
-function continuation() {
+export function continuation() {
     text(loadMode.down);
 }
 
-function bookmark(id: number) {
+export function bookmark(id: number) {
     bookmarkId = id;
     text(loadMode.bookmark);
 }
 
-export default {
-    mode: loadMode,
-    text: text,
-    hitlistClick: hitSection,
-    currentHitSection: currentHitSection,
-    contextSwitch: contextSwitch,
-    prevSection: prevSection,
-    nextSection: nextSection,
-    prevHit: prevHit,
-    nextHit: nextHit,
-    contextPrev: contextPrev,
-    contextNext: contextNext,
-    continuation: continuation,
-    bookmark: bookmark
+export {
+    loadMode as mode,
+    hitSection as hitlistClick
 };

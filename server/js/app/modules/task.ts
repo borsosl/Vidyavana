@@ -1,7 +1,7 @@
 
-import util from './util';
+import * as util from './util';
 
-function searchDialog() {
+export function searchDialog() {
     if(util.dialog(0, true)) {
         const el = $('#searchInput')[0] as HTMLInputElement;
         el.focus();
@@ -11,7 +11,7 @@ function searchDialog() {
 
 let origFontSize: number, fontSize: string, viewMsgShown: boolean;
 
-function initView() {
+export function initView() {
     const size: string = $(':root').css('font-size').replace('px', '');
     origFontSize = Math.round(parseFloat(size) * 72 / 96);
     fontSize = '' + origFontSize;
@@ -31,7 +31,7 @@ function initView() {
     });
 }
 
-function viewDialog() {
+export function viewDialog() {
     if(util.dialog(2, true)) {
         $('#view-msg').hide();
         viewMsgShown = false;
@@ -43,7 +43,7 @@ function viewDialog() {
     }
 }
 
-function applyView() {
+export function applyView() {
     const size: string = $('#viewFontInput').val();
     const val = parseFloat(size);
     if(isNaN(val) || val < 6 || val > 24) {
@@ -69,7 +69,7 @@ function setSizes() {
 }
 
 
-function logout() {
+export function logout() {
     $.ajax({
         url: '/app/auth/logout',
         dataType: 'json',
@@ -93,12 +93,3 @@ function logout() {
         util.ajaxError('Sikertelen művelet.', logout);
     }
 }
-
-
-export default {
-    searchDialog: searchDialog,
-    initView: initView,
-    viewDialog: viewDialog,
-    applyView: applyView,
-    logout: logout
-};

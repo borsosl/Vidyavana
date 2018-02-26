@@ -1,8 +1,8 @@
 
 import * as main from './main';
-import util from './modules/util';
-import html, {ContentPageData} from './modules/html-content';
-import access, {BookPackageMap} from './modules/admin-access';
+import * as util from './modules/util';
+import * as html from './modules/html-content';
+import * as access from './modules/admin-access';
 
 let books: BookPackageMap;
 
