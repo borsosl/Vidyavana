@@ -4,6 +4,7 @@ import hu.vidyavana.db.dao.UserDao;
 import hu.vidyavana.db.model.BookPackage;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
+import hu.vidyavana.util.MailTask;
 import hu.vidyavana.web.MainPage;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
@@ -33,6 +34,8 @@ public class AdminController
 			listUsers(ri);
 		else if("modify-user".equals(ri.args[1]))
 			modifyUser(ri);
+		else if("resend-reg".equals(ri.args[1]))
+			resendReg(ri);
 		else if("delete-user".equals(ri.args[1]))
 			deleteUser(ri);
 		else if("init-access".equals(ri.args[1]))
@@ -75,6 +78,23 @@ public class AdminController
 		user.name = ri.req.getParameter("name");
 		user.adminLevel = User.AdminLevel.valueOf(ri.req.getParameter("admin"));
 		UserDao.updateUser(user);
+		PanditServlet.okResult(ri);
+	}
+
+
+	private void resendReg(RequestInfo ri)
+	{
+		if(ri.user.adminLevel != User.AdminLevel.Full) {
+			PanditServlet.failResult(ri);
+			return;
+		}
+		User user = UserDao.findUserByEmail(ri.req.getParameter("email"));
+		if(user.regToken.isEmpty()) {
+			PanditServlet.failResult(ri);
+			return;
+		}
+		if(Globals.serverEnv)
+			Globals.mailExecutor.submit(new MailTask("register", user.email, user.regToken));
 		PanditServlet.okResult(ri);
 	}
 

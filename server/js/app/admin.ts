@@ -98,9 +98,10 @@ function bookRights($row: JQuery) {
 }
 
 
-// noinspection JSUnusedLocalSymbols
 function resendReg($row: JQuery) {
-    alert('Nincs kész.');
+    ajax('/app/admin/resend-reg', 2, {
+        email: $row.data('email')
+    });
 }
 
 
