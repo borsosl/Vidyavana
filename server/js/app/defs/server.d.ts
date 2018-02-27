@@ -21,6 +21,7 @@ interface SearchResponse {
     ordinal: number;
     display: DisplayBlock;
     hits?: HitResponse[];
+    errorText: string;
 }
 
 interface TocTreeItem {

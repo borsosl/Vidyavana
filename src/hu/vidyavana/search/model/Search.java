@@ -8,12 +8,23 @@ import java.util.List;
 
 public class Search implements Serializable
 {
-	public static enum Order
+	public enum Order
 	{
 		Index,
 		Score
 	}
-	
+
+	public enum ErrorCode {
+		TOO_MANY_WILDCARD_HITS("A helyettesítő karakterhez túl sok változat tartozik, fontossági sorrend nem választható.");
+
+		public String text;
+
+		ErrorCode(String text) {
+			this.text = text;
+		}
+	}
+
+
 	public int id;
 	public String user;
 	public Date lastAccess = new Date();
@@ -27,4 +38,5 @@ public class Search implements Serializable
 
 	public transient List<Hit> hits;
 	public int hitCount;
+	public ErrorCode errorCode;
 }

@@ -12,4 +12,5 @@ public class SearchResponse
 	public int endHit;
 	public DisplayBlock display;
 	public List<HitResponse> hits;
+	public String errorText;
 }

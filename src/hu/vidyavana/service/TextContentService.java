@@ -71,8 +71,11 @@ public class TextContentService
 		ri.ajaxResult = res;
 		res.id = details.id;
 		res.hitCount = details.hitCount;
-		if(res.hitCount == 0)
+		if(res.hitCount == 0) {
+			if(details.errorCode != null)
+				res.errorText = details.errorCode.text;
 			return;
+		}
 
 		// we have hits
 		Map<Integer, Search> smap = getSessionSearchMap();

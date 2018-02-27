@@ -1,14 +1,14 @@
 package hu.vidyavana.search.task;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.StoredField;
-import org.apache.lucene.search.*;
 import hu.vidyavana.search.api.Lucene;
 import hu.vidyavana.search.model.Hit;
 import hu.vidyavana.search.model.Search;
 import hu.vidyavana.search.model.Search.Order;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.search.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class SearchTask implements Runnable
 {
@@ -24,6 +24,7 @@ public class SearchTask implements Runnable
 	@Override
 	public void run()
 	{
+		details.hitCount = 0;
 		try
 		{
 			IndexSearcher sr = Lucene.SYSTEM.searcher();
@@ -46,8 +47,10 @@ public class SearchTask implements Runnable
 				}
 			}
 		}
-		catch(IOException ex)
-		{
+		catch(BooleanQuery.TooManyClauses ex) {
+			details.errorCode = Search.ErrorCode.TOO_MANY_WILDCARD_HITS;
+		}
+		catch(IOException ex) {
 			throw new RuntimeException("Lucene search: "+details.queryStr, ex);
 		}
 		
@@ -56,8 +59,8 @@ public class SearchTask implements Runnable
 	
 	public static void hitDataFromDoc(Document doc, Hit hit)
 	{
-		hit.plainBookId = (Integer)((StoredField) doc.getField("bookId")).numericValue();
-		hit.segment = (Integer)((StoredField) doc.getField("segment")).numericValue();
-		hit.ordinal = (Integer)((StoredField) doc.getField("ordinal")).numericValue();
+		hit.plainBookId = (Integer) doc.getField("bookId").numericValue();
+		hit.segment = (Integer) doc.getField("segment").numericValue();
+		hit.ordinal = (Integer) doc.getField("ordinal").numericValue();
 	}
 }

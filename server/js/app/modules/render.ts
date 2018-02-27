@@ -33,7 +33,7 @@ export function text(json: DisplayBlock | SearchResponse, mode: number) {
             search.getInstance().last = resp;
         }
         else
-            return search.message('Nincs találat.');
+            return search.message(resp.errorText ? resp.errorText : 'Nincs találat.');
         util.showHitsPanel();
         page.hits.init(display);
     } else {
