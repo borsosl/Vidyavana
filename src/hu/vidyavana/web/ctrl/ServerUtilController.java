@@ -1,18 +1,23 @@
 package hu.vidyavana.web.ctrl;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
-import javax.servlet.ServletException;
 import hu.vidyavana.db.AddBook;
 import hu.vidyavana.db.model.User;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.web.PanditServlet;
 import hu.vidyavana.web.RequestInfo;
+
+import javax.servlet.ServletException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class ServerUtilController
 {
@@ -41,6 +46,10 @@ public class ServerUtilController
 		else if("monitor".equals(ri.args[1]))
 		{
 			monitorBackgroundTask(ri);
+		}
+		else if("rmindex".equals(ri.args[1]))
+		{
+			rmIndex(ri);
 		}
 		else
 			ri.resp.setStatus(404);
@@ -133,5 +142,19 @@ public class ServerUtilController
 		Globals.downtime = time;
 		Globals.maintenance = "most".equalsIgnoreCase(time);
 		PanditServlet.okResult(ri);
+	}
+
+	private void rmIndex(final RequestInfo ri) {
+		Path path = Globals.cwd.toPath().resolve("system/index");
+		try {
+			Files.walk(path)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+                    .forEach(File::delete);
+			ri.ajaxText = "{\"success\": true, \"path\": \""+path.toString()+"\"}";
+		} catch (IOException e) {
+			ri.ajaxText = "{\"fail\": \""+e.getClass().getName()+" "+e.getMessage()+"\", \"path\": \""
+					+path.toString()+"\"}";
+		}
 	}
 }
