@@ -4,18 +4,20 @@ import java.util.*;
 
 public enum BookPackage
 {
-	Sraddha("BhG|NoI|SSR"),
-	SadhuSanga("SB|KB|Cc|TLC|NoD|Īśo|PQPA|Jsd|EJ|RV|BBD|OWK|PoP|Top|CB|PLs"),
-	BhajanaKriya("BB|MBh|MBhs|RY|VÉn"),
-	Ruci("SBC|VG|NPH|KS|NVM");
+	Sraddha("BhG|NoI|SSR", "Śraddhā"),
+	SadhuSanga("SB|KB|Cc|TLC|NoD|Īśo|PQPA|Jsd|EJ|RV|BBD|OWK|PoP|Top|CB|PLs", "Sādhu-saṅga"),
+	BhajanaKriya("BB|MBh|MBhs|RY|VÉn", "Bhajana-kriyā"),
+	Ruci("SBC|VG|NPH|KS|NVM", "Ruci");
 
 	public Set<Integer> plainBookIdSet;
+	public String displayName;
 	public List<String> abbrevList = new ArrayList<>();
 
 	
-	BookPackage(String accessStr)
+	BookPackage(String accessStr, String displayName)
 	{
 		plainBookIdSet = BookAccess.parseAccessStr(accessStr, this);
+		this.displayName = displayName;
 	}
 	
 	

@@ -20,7 +20,8 @@ interface BookMap {
 
 declare var client: {
     browser: {
-        ie: number
+        ie: number,
+        firefox: number
     },
     system: {
         mac: boolean,

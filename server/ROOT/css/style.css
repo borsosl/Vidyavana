@@ -266,6 +266,10 @@ a {
     border: 1px solid #292207;
 }
 
+.maxwid500 {
+	max-width: 500px;
+}
+
 .font85
 {
 	font-size: 85%;
@@ -399,10 +403,10 @@ a {
 .fillAbs10
 {
     position: absolute;
-    top: 10;
-    left: 10;
-    bottom: 10;
-	right: 10;
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+	right: 10px;
 }
 
 .hgt100
@@ -471,8 +475,8 @@ a {
 .clickMask
 {
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     z-index: 10;
@@ -658,4 +662,8 @@ button:focus {
 .bm-spaced button {
 	margin-right: 0.3em;
 	margin-top: 0.3em;
+}
+
+#pf-form > div {
+	margin-bottom: 0.7em;
 }

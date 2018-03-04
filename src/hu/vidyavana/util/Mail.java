@@ -98,4 +98,19 @@ public class Mail
 		}
 		send(email, "pandit.hu regisztráció megerősítése", sb.toString());
 	}
+
+	public static void changeEmail(String email, String token)
+	{
+		List<String> lines = FileUtil.readTextFile(new File(Globals.cwd, "../../admin/change-email.html"), "UTF-8");
+		StringBuilder sb = new StringBuilder();
+		for(String line : lines)
+		{
+			line = line.trim();
+			int ix = line.indexOf("?token=");
+			if(ix > -1)
+				line = line.substring(0, ix+7) + token + line.substring(ix+7);
+			sb.append(line);
+		}
+		send(email, "pandit.hu e-mail cím változtatás megerősítése", sb.toString());
+	}
 }

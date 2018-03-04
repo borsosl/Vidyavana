@@ -56,14 +56,17 @@ User user = (User) session.getAttribute("user");
         </span>
 
         <%-- Left aligned, extra --%>
+        <span id="help-link" class="inblk">
+            Súgó
+        </span>
         <span id="logout-link" class="inblk">
             Kilé<u>p</u>
         </span>
         <span id="view-link" class="inblk">
             Nézet
         </span>
-        <span id="help-link" class="inblk">
-            Súgó
+        <span id="profile-link" class="inblk">
+            Profil
         </span>
 	</div>
 
@@ -175,9 +178,10 @@ User user = (User) session.getAttribute("user");
             <div id="menu-search-link" class="mitem"><u>K</u>eres</div>
             <div id="menu-section-link" class="mitem"><u>S</u>zakasz</div>
             <div id="menu-bookmark-link" class="mitem">Könyvj<u>e</u>lző</div>
+            <div id="menu-help-link" class="mitem">Súgó</div>
             <div id="menu-logout-link" class="mitem">Kilé<u>p</u>és</div>
             <div id="menu-view-link" class="mitem">Nézet</div>
-            <div id="menu-help-link" class="mitem">Súgó</div>
+            <div id="menu-profile-link" class="mitem">Profil</div>
 <% if(ri.admin) { %>
     	    <div id="users-link" class="mitem">Felhasználók</div>
 <% } %>

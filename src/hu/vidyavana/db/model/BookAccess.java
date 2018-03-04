@@ -89,4 +89,29 @@ public class BookAccess extends HashSet<Integer>
 		res.fullAccess = numbers == 4;
 		return res;
 	}
+
+	public static String displayedAccessString(String accessStr) {
+		StringBuilder except = new StringBuilder();
+		StringBuilder plus = new StringBuilder();
+		String[] parts = accessStr.split("\\|");
+		BookPackage max = null;
+		for(String part : parts)
+		{
+			if("1".equals(part))
+				max = BookPackage.Sraddha;
+			else if("2".equals(part))
+				max = BookPackage.SadhuSanga;
+			else if("3".equals(part))
+				max = BookPackage.BhajanaKriya;
+			else if("4".equals(part))
+				max = BookPackage.Ruci;
+			else if(part.startsWith("-"))
+				except.append(", ").append(part.substring(1));
+			else
+				plus.append(", ").append(part.substring(1));
+		}
+		return (max != null ? max.displayName : "Csomag nélkül")
+				+ (except.length() > 0 ? ", kivéve "+except.substring(2) : "")
+				+ (plus.length() > 0 ? ", plusz "+plus.substring(2) : "");
+	}
 }

@@ -5,6 +5,7 @@ import * as task from './task';
 import * as html from './html-content';
 import * as load from './load';
 import * as bookmark from './bookmark';
+import * as profile from './profile';
 
 export function init() {
     $('#pandit-icon').click(function()
@@ -43,6 +44,13 @@ export function init() {
     {
         util.toggleMenu(true);
         task.viewDialog();
+    });
+
+    $('#profile-link, #menu-profile-link').click(function()
+    {
+        util.toggleMenu(true);
+        util.dialog(-1, false);
+        profile.loadPage();
     });
 
     $('#help-link, #menu-help-link').click(function()

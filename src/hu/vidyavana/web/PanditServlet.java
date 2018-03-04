@@ -114,6 +114,8 @@ public class PanditServlet extends HttpServlet
 						new TocTreeController().service(ri);
 					else if("bookmark".equals(args[0]))
 						new BookmarkController().service(ri);
+					else if("profile".equals(args[0]))
+						new ProfileController().service(ri);
 					else if("dialog".equals(args[0]))
 						new DialogController().service(ri);
 					else if("util".equals(args[0]))

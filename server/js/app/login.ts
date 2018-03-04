@@ -1,4 +1,6 @@
 
+import * as validate from './modules/validate';
+
 let activeTab = 0;
 let $msg: JQuery;
 
@@ -31,126 +33,96 @@ function switchTabs() {
 }
 
 
-/**
- * @return parsed email or null if invalid
- */
-function validateEmail(): string {
-    let email = $('#email').val();
-    email = email.replace(/^ */, '').replace(/ *$/, '');
-    if(!/\S+@\S+\.\S+/.test(email)) {
-        message('Helytelen e-mail formátum');
-        return null;
-    }
-    return email;
-}
-
-
-/**
- * @return password or null if invalid
- */
-function validatePassword(): string {
-    const pwd1 = $('#password').val();
-    const pwd2 = $('#password2').val();
-    if(activeTab == 1 && pwd1 !== pwd2) {
-        message('A jelszók nem egyeznek');
-        return null;
-    }
-    if(!pwd1.length) {
-        message('Hiányzik a jelszó');
-        return null;
-    }
-    const res = /\S+.*\S+/.exec(pwd1);
-    if(!res || res[0].length < 5) {
-        message('A jelszó minimum 5 karakter');
-        return null;
-    }
-    return pwd1;
-}
-
-
 function login() {
-    const email = validateEmail();
-    if(!email)
-        return;
-    let pwd = validatePassword();
-    if(!pwd)
-        return;
-    if(pwd.length === 33 && pwd.charAt(0) === '@')
-        pwd = pwd.substring(1);
-    else
-        pwd = window.md5(pwd);
+    try {
+        const email = validate.email($('#email').val());
+        let pwd = validate.password($('#password').val());
+        if(pwd.length === 33 && pwd.charAt(0) === '@')
+            pwd = pwd.substring(1);
+        else
+            pwd = window.md5(pwd);
 
-    $.ajax({
-        url: '/app/auth/authenticate',
-        method: 'POST',
-        dataType: 'json',
-        data: {
-            email: email,
-            password: pwd
-        },
+        $.ajax({
+            url: '/app/auth/authenticate',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                email: email,
+                password: pwd
+            },
 
-        success: function(json)
-        {
-            if(json.message)
-                message(json.message);
-            else if(json.fail)
-                message('Sikertelen belépés');
-            else if(json.error)
-                errorMsg(json.error);
-            else
-                post(location.href, {
-                    username: email,
-                    password: '@' + pwd
-                });
-        },
+            success: function(json)
+            {
+                if(json.message)
+                    message(json.message);
+                else if(json.fail)
+                    message('Sikertelen belépés');
+                else if(json.error)
+                    errorMsg(json.error);
+                else
+                    post(location.href, {
+                        username: email,
+                        password: '@' + pwd
+                    });
+            },
 
-        error: function(/*xhr, status*/)
-        {
-            message('Hálózati hiba');
-        }
-    });
+            error: function(/*xhr, status*/)
+            {
+                message('Hálózati hiba');
+            }
+        });
+    } catch(e) {
+        handleValidationError(e);
+    }
 }
 
 
 function register() {
-    const email = validateEmail();
-    if(!email)
-        return;
-    let pwd = validatePassword();
-    if(!pwd)
-        return;
-    pwd = window.md5(pwd);
+    try {
+        const email = validate.email($('#email').val());
+        let pwd = validate.password($('#password').val(), $('#password2').val());
+        pwd = window.md5(pwd);
 
-    $.ajax({
-        url: '/app/auth/register',
-        method: 'POST',
-        dataType: 'json',
-        data: {
-            email: email,
-            password: pwd,
-            name: $('#name').val()
-        },
+        $.ajax({
+            url: '/app/auth/register',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                email: email,
+                password: pwd,
+                name: $('#name').val()
+            },
 
-        success: function(json)
-        {
-            if(json.message)
-                message(json.message);
-            else if(json.error)
-                errorMsg(json.error);
-            else
-                post('/app', {
-                    username: email,
-                    password: '@' + pwd
-                });
-        },
+            success: function(json)
+            {
+                if(json.message)
+                    message(json.message);
+                else if(json.error)
+                    errorMsg(json.error);
+                else
+                    post('/app', {
+                        username: email,
+                        password: '@' + pwd
+                    });
+            },
 
-        error: function(/*xhr, status*/)
-        {
-            message('Hálózati hiba');
-        }
-    });
+            error: function(/*xhr, status*/)
+            {
+                message('Hálózati hiba');
+            }
+        });
+    } catch(e) {
+        handleValidationError(e);
+    }
 }
 
+function handleValidationError(e: Error) {
+    if(!e || !e.message)
+        return;
+    let msg = validate.errorCode[e.message];
+    if(msg)
+        message(msg);
+}
 
 function message(s: string) {
     $msg.html(s).show();

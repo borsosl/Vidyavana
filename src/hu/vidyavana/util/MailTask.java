@@ -20,5 +20,7 @@ public class MailTask implements Runnable
 	{
 		if("register".equals(template))
 			Mail.register(email, token);
+		else if("change-email".equals(template))
+			Mail.changeEmail(email, token);
 	}
 }
