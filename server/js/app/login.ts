@@ -2,21 +2,18 @@
 import * as validate from './modules/validate';
 
 let activeTab = 0;
+let activeForgottenLink = false;
 let $msg: JQuery;
 
 function setActiveTab() {
-    if(activeTab == 0) {
-        $('.loginitem').show();
-        $('.regitem').hide();
-    }
-    else {
-        $('.loginitem').hide();
-        $('.regitem').show();
-    }
+    $('.loginitem').toggle(activeTab == 0 && !activeForgottenLink);
+    $('.regitem').toggle(activeTab == 1);
+    $('.forgotitem').toggle(activeTab == 0 && activeForgottenLink);
+    $('#pass-div').toggle(!activeForgottenLink);
 
     setTimeout(function() {
         const $e = $('#email');
-        if(!$e.val() && !client.browser.ie)
+        if(!$e.val() || activeForgottenLink)
             $e[0].focus();
         else
             $('#loginBtn')[0].focus();
@@ -116,6 +113,50 @@ function register() {
     }
 }
 
+function forgottenPassword(e: JQueryEventObject) {
+    activeForgottenLink = true;
+    setActiveTab();
+    e.preventDefault();
+}
+
+function forgotOk() {
+    try {
+        const email = validate.email($('#email').val());
+
+        $.ajax({
+            url: '/app/auth/forgotten',
+            dataType: 'json',
+            data: {
+                email: email
+            },
+
+            success: function(json)
+            {
+                if(json.message)
+                    message(json.message);
+                else if(json.error)
+                    errorMsg(json.error);
+                else {
+                    message('Az emailt kiküldtük.<br />(Spam mappát is figyeld.)');
+                    forgotCancel();
+                }
+            },
+
+            error: function(/*xhr, status*/)
+            {
+                message('Hálózati hiba');
+            }
+        });
+    } catch(e) {
+        handleValidationError(e);
+    }
+}
+
+function forgotCancel() {
+    activeForgottenLink = false;
+    setActiveTab();
+}
+
 function handleValidationError(e: Error) {
     if(!e || !e.message)
         return;
@@ -153,6 +194,9 @@ $(function() {
     $('.tab').click(switchTabs);
     $('#loginBtn').click(login);
     $('#regBtn').click(register);
+    $('#forgot-link').click(forgottenPassword);
+    $('#forgot-ok').click(forgotOk);
+    $('#forgot-cancel').click(forgotCancel);
     $(window).keydown(keydown);
     $msg = $('#loginMsg');
 });

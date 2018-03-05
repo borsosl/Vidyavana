@@ -1,7 +1,10 @@
 package hu.vidyavana.web.ctrl;
 
+import hu.vidyavana.db.dao.ForgottenPasswordDao;
 import hu.vidyavana.db.dao.UserDao;
+import hu.vidyavana.db.model.ForgottenPassword;
 import hu.vidyavana.db.model.User;
+import hu.vidyavana.util.Encrypt;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.util.MailTask;
@@ -33,6 +36,10 @@ public class AuthController
 			decline(ri);
 		else if("logout".equals(ri.args[1]))
 			logout(ri);
+		else if("forgotten".equals(ri.args[1]))
+			forgotten(ri);
+		else if("accept-new-password".equals(ri.args[1]))
+			acceptNewPassword(ri);
 		else
 			ri.resp.setStatus(404);
 	}
@@ -45,7 +52,7 @@ public class AuthController
 	}
 
 
-	public void authenticate(RequestInfo ri) throws Exception
+	public void authenticate(RequestInfo ri)
 	{
 		String email = ri.req.getParameter("email").trim();
 		if(!verifyEmail(email))
@@ -66,7 +73,7 @@ public class AuthController
 	}
 
 
-	public void register(RequestInfo ri) throws Exception
+	public void register(RequestInfo ri)
 	{
 		// one at a time
 		synchronized(AuthController.class)
@@ -168,7 +175,7 @@ public class AuthController
 	}
 
 	
-	public void logout(RequestInfo ri) throws Exception
+	public void logout(RequestInfo ri)
 	{
 		User user = (User) ri.ses.getAttribute("user");
 		if(user == null)
@@ -183,5 +190,61 @@ public class AuthController
 		}
 		Sessions.removeUserFromSessionMap(ri.ses, user);
 		PanditServlet.okResult(ri);
+	}
+
+	private void forgotten(RequestInfo ri)
+	{
+		String email = ri.req.getParameter("email").trim();
+		if(!verifyEmail(email))
+		{
+			PanditServlet.messageResult(ri, "Helytelen e-mail formátum.");
+			return;
+		}
+		User user = UserDao.findUserByEmail(email);
+		if(user != null)
+		{
+			StringBuilder password = new StringBuilder();
+			for(int i=0; i<8; ++i)
+				password.append(generatePasswordChar());
+			ForgottenPassword fp = new ForgottenPassword();
+			fp.email = email;
+			fp.password = Encrypt.md5(password.toString());
+			ForgottenPasswordDao.delete(email);
+			ForgottenPasswordDao.insert(fp);
+			if(Globals.serverEnv)
+				Globals.mailExecutor.submit(new MailTask("forgotten", user.email, password.toString()));
+			PanditServlet.okResult(ri);
+		}
+		else
+			PanditServlet.messageResult(ri, "Ismeretlen e-mail cím.");
+	}
+
+	private void acceptNewPassword(RequestInfo ri) throws IOException {
+		String email = ri.req.getParameter("email").trim();
+		if(!verifyEmail(email))
+		{
+			ri.resp.setStatus(403);
+			return;
+		}
+		User user = UserDao.findUserByEmail(email);
+		ForgottenPassword fp = ForgottenPasswordDao.find(email);
+		if(user == null || fp == null)
+		{
+			ri.resp.setStatus(403);
+			return;
+		}
+		user.password = fp.password;
+		UserDao.updateUser(user);
+		ForgottenPasswordDao.delete(email);
+		ri.ajax = false;
+		ri.resp.getWriter().write("A jelszó változtatása sikeres volt.");
+	}
+
+	private char generatePasswordChar() {
+		int c = Double.valueOf(Math.random() * 62.0).intValue();
+		if(c<10) c+=48;
+		else if(c<36) c+=55;
+		else c+=61;
+		return (char) c;
 	}
 }

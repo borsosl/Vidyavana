@@ -22,5 +22,7 @@ public class MailTask implements Runnable
 			Mail.register(email, token);
 		else if("change-email".equals(template))
 			Mail.changeEmail(email, token);
+		else if("forgotten".equals(template))
+			Mail.forgottenPassword(email, token);
 	}
 }

@@ -29,10 +29,14 @@ ri.check();
             </div>
         </div>
         <div class="form">
+            <div class="forgotitem top10">
+                Add meg az email címet, amivel regisztráltál. Az új jelszót és a cseréhez
+                szükséges linket elküldjük oda.
+            </div>
             <div>
                 <input type="email" id="email" class="top10 textInput100" placeholder="E-mail*">
             </div>
-            <div>
+            <div id="pass-div">
                 <input type="password" id="password" class="top10 textInput100" placeholder="Jelszó*">
             </div>
             <div class="regitem">
@@ -43,11 +47,16 @@ ri.check();
             </div>
             <div id="loginMsg" class="hidden form-row">
             </div>
-            <div class="loginitem form-row button-row center">
-                <button id="loginBtn">Belépek</button>
+            <div class="loginitem form-row button-row center" style="height: 4rem;">
+                <button id="loginBtn">Belépek</button><br />
+                <a id="forgot-link" href="">Elfelejtett jelszó?</a>
             </div>
             <div class="regitem form-row button-row center">
                 <button id="regBtn">Regisztrálok</button>
+            </div>
+            <div class="forgotitem form-row center">
+                <button id="forgot-ok">OK</button>&nbsp;&nbsp;
+                <button id="forgot-cancel">Mégsem</button>
             </div>
         </div>
     </div>

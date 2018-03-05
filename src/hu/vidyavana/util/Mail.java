@@ -90,7 +90,9 @@ public class Mail
 			line = line.trim();
 			int ix = line.indexOf("?email=");
 			if(ix > -1)
-				line = line.substring(0, ix+7) + email + line.substring(ix+7);
+				line = line.substring(0, ix+7)
+						+ (email.replaceAll("@", "%40"))
+						+ line.substring(ix+7);
 			ix = line.indexOf("&token=");
 			if(ix > -1)
 				line = line.substring(0, ix+7) + token + line.substring(ix+7);
@@ -112,5 +114,27 @@ public class Mail
 			sb.append(line);
 		}
 		send(email, "pandit.hu e-mail cím változtatás megerősítése", sb.toString());
+	}
+
+	public static void forgottenPassword(String email, String password)
+	{
+		List<String> lines = FileUtil.readTextFile(new File(Globals.cwd, "../../admin/forgotten-password.html"), "UTF-8");
+		StringBuilder sb = new StringBuilder();
+		for(String line : lines)
+		{
+			line = line.trim();
+			int ix = line.indexOf("?email=");
+			if(ix > -1) {
+				line = line.substring(0, ix+7)
+						+ (email.replaceAll("@", "%40"))
+						+ line.substring(ix+7);
+			}
+			ix = line.indexOf("${pass}");
+			if(ix > -1) {
+				line = line.substring(0, ix) + password;
+			}
+			sb.append(line);
+		}
+		send(email, "pandit.hu új jelszó igénylése", sb.toString());
 	}
 }
