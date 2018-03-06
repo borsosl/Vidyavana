@@ -1,5 +1,6 @@
 const path = require('path');
 const entry = require('webpack-glob-entry');
+const watchTimePlugin = require('webpack-watch-time-plugin');
 
 const commonDef = {
     resolve: {
@@ -16,6 +17,9 @@ const commonDef = {
             }
         ]
     },
+    plugins: [
+        watchTimePlugin,
+    ],
     externals: ['jquery'],
     devtool: "source-map",
     watchOptions: {
