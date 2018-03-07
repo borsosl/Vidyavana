@@ -36,6 +36,3 @@ declare var client: {
 interface Window {
     md5(input: string): string;
 }
-
-declare function ok(test: boolean): void;
-declare function test(name: string, fn: Function): void;
