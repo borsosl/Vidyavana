@@ -13,11 +13,11 @@ class Dom {
     $shortRef: JQuery;
     $menuShortRef: JQuery;
     $loading: JQuery;
-    
+
     constructor() {
         this.nowarn = 0;
     }
-    
+
     init() {
         /** top action bar */
         this.$header = $('#header');

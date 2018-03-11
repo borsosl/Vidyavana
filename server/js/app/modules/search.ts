@@ -54,27 +54,21 @@ export function init() {
         $('input[value="'+spage+'"]', $searchPaging).prop('checked', true);
     }
 
-    $inp.keydown(function(e)
-    {
-        if(searchMsgShown)
-        {
+    $inp.keydown(function(e) {
+        if(searchMsgShown) {
             $('#search-msg').hide();
             searchMsgShown = false;
         }
-        if(e.keyCode == 13)
-        {
+        if(e.keyCode === 13) {
             search();
-        }
-        else if(e.keyCode == 27)
-        {
+        } else if(e.keyCode === 27) {
             util.dialog(-1, false);
             util.focusContent();
         }
         if(!util.menuModifier(e))
             e.stopPropagation();
     });
-    $('#searchGo').click(function()
-    {
+    $('#searchGo').click(function() {
         search();
     });
 
@@ -85,8 +79,7 @@ export function init() {
 
 
 function newSearch(text: string, scoreOrder: boolean, page: string) {
-    if(searchMsgShown)
-    {
+    if(searchMsgShown) {
         $('#search-msg').hide();
         searchMsgShown = false;
     }

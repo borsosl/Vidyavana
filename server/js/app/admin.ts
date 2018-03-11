@@ -42,7 +42,7 @@ function initListUsers(data: UserListResponse) {
     const users = data.users;
     books = data.books;
     let notConfirmed = 0;
-    let len = users.length;
+    const len = users.length;
     for(let i=0; i<len; ++i) {
         const drow = users[i];
         if(drow.regToken)
@@ -116,13 +116,12 @@ function deleteUser($row: JQuery) {
 
 function ajax(url: string, type: number, data: any) {
     $.ajax({
-        url: url,
-        method: type==1 ? 'post' : 'get',
+        url,
+        method: type===1 ? 'post' : 'get',
         dataType: 'json',
-        data: data,
+        data,
 
-        success: function(json)
-        {
+        success(json) {
             if(util.javaError(json))
                 return;
             if(json.fail) {
@@ -135,8 +134,7 @@ function ajax(url: string, type: number, data: any) {
                 util.message('Siker', true);
         },
 
-        error: function(/*xhr, status*/)
-        {
+        error(/*xhr, status*/) {
             util.ajaxError(/*xhr, status,*/ 'Hálózati hiba.', ajax.bind(null, url, data, type));
         }
     });

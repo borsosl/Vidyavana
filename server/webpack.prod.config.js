@@ -21,7 +21,12 @@ const commonDef = {
     plugins: [
         new UglifyJsPlugin({
             uglifyOptions: {
-                ecma: 6
+                ecma: 6,
+                cache: true,
+                compress: {
+                    collapse_vars: true,
+                    reduce_vars: false
+                }
             }
         })
     ],

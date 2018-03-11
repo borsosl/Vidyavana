@@ -11,7 +11,6 @@ let packageCb: JQuery[];
 let packageState: boolean[];
 
 
-
 /**
  * Fetch user book access, then fill dialog
  */
@@ -23,18 +22,16 @@ export function open(email: string, books: BookPackageMap) {
         url: '/app/admin/init-access',
         method: 'post',
         data: {
-            email: email
+            email
         },
 
-        success: function(json)
-        {
+        success(json) {
             if(util.javaError(json))
                 return;
             initCheckboxes(books, json);
         },
 
-        error: function(/*xhr, status*/)
-        {
+        error(/*xhr, status*/) {
             util.ajaxError(/*xhr, status,*/ 'Hálózati hiba.', open.bind(null, email));
         }
     });
@@ -58,7 +55,7 @@ function initCheckboxes(books: BookPackageMap, access: string) {
     markAllPackages(false, false);
     gAccess = access;
     const parts = access.split('|');
-    for(let p in parts) {
+    for(const p in parts) {
         const pt = parts[p];
         const pkg = parseInt(pt);
         if(!isNaN(pkg))
@@ -79,7 +76,7 @@ function drawCheckboxes(books: BookPackageMap) {
     if(checkboxesDrawn)
         return;
     const $proto = $('.access-book', $dialog);
-    for(let p in packageNames) {
+    for(const p in packageNames) {
         const pn = packageNames[p];
         packageCb.push($('#'+pn+'-cb'));
         packageState.push(false);
@@ -88,9 +85,8 @@ function drawCheckboxes(books: BookPackageMap) {
         books[pn] = [] as BookSpanArray;
         let i = 0;
         const len = parts.length;
-        for(; i<len; i+=2)
-        {
-            let abbr = parts[i];
+        for(; i<len; i+=2) {
+            const abbr = parts[i];
             if(!abbr)
                 continue;
             const id = parseInt(parts[i + 1]);
@@ -99,9 +95,9 @@ function drawCheckboxes(books: BookPackageMap) {
             $('.access-abbrev', $span).text(abbr);
             (books[pn] as BookSpanArray).push({
                 pkg: parseInt(p) + 1,
-                abbr: abbr,
-                id: id,
-                $span: $span,
+                abbr,
+                id,
+                $span,
                 $cb: $('input', $span),
                 state: false
             });
@@ -143,8 +139,7 @@ function markFull(determine: boolean, state?: boolean) {
     if(determine) {
         (packageCb[4][0] as HTMLInputElement).checked =
             packageState[0] && packageState[1] && packageState[2] && packageState[3];
-    }
-    else {
+    } else {
         markAllPackages(false, state);
     }
 }
@@ -162,8 +157,7 @@ function markPackage(pkg: number, determine: boolean, state?: boolean) {
     if(determine) {
         (packageCb[pkg - 1][0] as HTMLInputElement).checked =
             packageState[pkg-1] = markPackageBooks(pkg, true);
-    }
-    else {
+    } else {
         (packageCb[pkg - 1][0] as HTMLInputElement).checked =
             packageState[pkg-1] = state;
         markPackageBooks(pkg, false, state);
@@ -173,13 +167,12 @@ function markPackage(pkg: number, determine: boolean, state?: boolean) {
 
 function markPackageBooks(pkg: number, determine: boolean, state?: boolean) {
     const pkgBookMaps = gBooks[packageNames[pkg - 1]] as BookSpanArray;
-    for(let i in pkgBookMaps) {
+    for(const i in pkgBookMaps) {
         const bkMap = pkgBookMaps[i] as BookMap;
         if(determine) {
             if(!bkMap.state)
                 return false;
-        }
-        else {
+        } else {
             (bkMap.$cb[0] as HTMLInputElement).checked =
                 bkMap.state = state;
         }
@@ -198,9 +191,9 @@ function markBook(abbr: string, state: boolean) {
 
 
 function getBookMap(abbr: string, id?: number): BookMap {
-    for(let p in packageNames) {
+    for(const p in packageNames) {
         const pkgBk = gBooks[packageNames[p]] as BookSpanArray;
-        for(let i in pkgBk) {
+        for(const i in pkgBk) {
             const bkMap = pkgBk[i] as BookMap;
             if(abbr && bkMap.abbr === abbr || bkMap.id === id)
                 return bkMap;
@@ -217,7 +210,7 @@ function getAccessStr() {
         else {
             const pkgBk = gBooks[packageNames[p]] as BookSpanArray;
             let pkgInc = '', pkgExc = '';
-            for(let i in pkgBk) {
+            for(const i in pkgBk) {
                 const bkMap = pkgBk[i] as BookMap;
                 if(bkMap.state)
                     pkgInc += bkMap.abbr + '|';
@@ -252,18 +245,16 @@ function ok() {
         method: 'post',
         data: {
             email: gEmail,
-            access: access
+            access
         },
 
-        success: function(json)
-        {
+        success(json) {
             if(util.javaError(json))
                 return;
             cancel();
         },
 
-        error: function(/*xhr, status*/)
-        {
+        error(/*xhr, status*/) {
             util.ajaxError(/*xhr, status,*/ 'Hálózati hiba.', ok);
         }
     });

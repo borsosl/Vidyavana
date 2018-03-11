@@ -32,13 +32,11 @@ export function text(mode: number) {
     /**
      * @returns ajax request URI or null if no req needed
      */
-    function getUrl(): string
-    {
+    function getUrl(): string {
         const sectionUrl = '/app/txt/section/';
         const searchUrl = '/app/txt/search';
         const ps = page.section;
-        switch(mode)
-        {
+        switch(mode) {
             case m.section:
                 return sectionUrl + 'go/' + toc.selectedSection();
             case m.next:
@@ -65,11 +63,11 @@ export function text(mode: number) {
             case m.currentHit:
             case m.nextHit:
             case m.prevHit:
-                let sr = search.getInstance();
+                const sr = search.getInstance();
                 if(!sr)
                     return null;
                 const last = sr.last;
-                let hit = last.startHit + (mode == m.nextHit ? sr.page : mode == m.prevHit ? -sr.page : 0);
+                let hit = last.startHit + (mode === m.nextHit ? sr.page : mode === m.prevHit ? -sr.page : 0);
                 if(hit < 0 && hit > -sr.page)     // visszafelé 0 és 1 oldalnyi közöttről indulva
                     hit = 0;
                 if(hit >= 0 && hit < last.hitCount)
@@ -80,28 +78,25 @@ export function text(mode: number) {
         }
     }
 
-    let url = getUrl();
+    const url = getUrl();
     if(!url)
         return;
     lastReqTime = Date.now();
 
     $.ajax({
-        url: url,
+        url,
         dataType: 'json',
-        data: data,
+        data,
 
-        success: function(json)
-        {
+        success(json) {
             lastReqTime = null;
             if(!util.javaError(json))
                 render.text(json, mode);
         },
 
-        error: function(/*xhr, status*/)
-        {
+        error(/*xhr, status*/) {
             lastReqTime = null;
-            util.ajaxError(/*xhr, status,*/ 'Hiba a szöveg letöltésekor.', function()
-            {
+            util.ajaxError(/*xhr, status,*/ 'Hiba a szöveg letöltésekor.', function() {
                 text(mode);
             });
         }
@@ -129,7 +124,7 @@ export function contextSwitch(): void {
         if(!search.isHitlist())
             currentHitSection();
     } else {
-        let sr = search.getInstance();
+        const sr = search.getInstance();
         if(!sr)
             return;
         page.current(page.hits);

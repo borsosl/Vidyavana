@@ -12,28 +12,25 @@ import * as search from './search';
  * @param mode - one of {@link load.mode}
  */
 export function text(json: DisplayBlock | SearchResponse, mode: number) {
-    const initPage = mode != load.mode.down;
+    const initPage = mode !== load.mode.down;
     const resp = json as SearchResponse;
     const isSearch = resp.hitCount !== undefined;
     let isHitlist = false;
     const display: DisplayBlock = isSearch ? resp.display : json as DisplayBlock;
 
     // set page values and select panel
-    if(isSearch)
-    {
+    if(isSearch) {
         if(display && display.downtime)
             util.downtime(display.downtime);
-        if(resp.hitCount)
-        {
-            if(mode == load.mode.search)
-            {
+        if(resp.hitCount) {
+            if(mode === load.mode.search) {
                 search.accept();
                 util.dialog(-1, false);
             }
             search.getInstance().last = resp;
-        }
-        else
+        } else {
             return search.message(resp.errorText ? resp.errorText : 'Nincs találat.');
+        }
         util.showHitsPanel();
         page.hits.init(display);
     } else {
@@ -49,8 +46,7 @@ export function text(json: DisplayBlock | SearchResponse, mode: number) {
         return;
 
     // set content
-    if(initPage)
-    {
+    if(initPage) {
         dom.$formContent.hide();
         dom.$content.scrollTop(0);
         if(isSearch) {
@@ -63,12 +59,12 @@ export function text(json: DisplayBlock | SearchResponse, mode: number) {
             if(isHitlist)
                 h = hitlistMarkup(h);
             dom.$hits.html(ref+h);
-        }
-        else
+        } else {
             dom.$txt.html(h);
-    }
-    else
+        }
+    } else {
         dom.$txt.append(h);
+    }
     util.toggleButtonBars(isSearch, isHitlist);
 
     if(!display.shortRef)
@@ -86,9 +82,9 @@ export function text(json: DisplayBlock | SearchResponse, mode: number) {
         dom.$content.scrollTop(0);
         $('a', dom.$hits).filter(':first').focus();
         page.hits.activeElement = document.activeElement as HTMLElement;
-    }
-    else
+    } else {
         util.focusContent(initPage);
+    }
 }
 
 function hitlistMarkup(h: string) {

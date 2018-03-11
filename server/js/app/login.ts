@@ -6,9 +6,9 @@ let activeForgottenLink = false;
 let $msg: JQuery;
 
 function setActiveTab() {
-    $('.loginitem').toggle(activeTab == 0 && !activeForgottenLink);
-    $('.regitem').toggle(activeTab == 1);
-    $('.forgotitem').toggle(activeTab == 0 && activeForgottenLink);
+    $('.loginitem').toggle(activeTab === 0 && !activeForgottenLink);
+    $('.regitem').toggle(activeTab === 1);
+    $('.forgotitem').toggle(activeTab === 0 && activeForgottenLink);
     $('#pass-div').toggle(!activeForgottenLink);
 
     setTimeout(function() {
@@ -44,12 +44,11 @@ function login() {
             method: 'POST',
             dataType: 'json',
             data: {
-                email: email,
+                email,
                 password: pwd
             },
 
-            success: function(json)
-            {
+            success(json) {
                 if(json.message)
                     message(json.message);
                 else if(json.fail)
@@ -63,8 +62,7 @@ function login() {
                     });
             },
 
-            error: function(/*xhr, status*/)
-            {
+            error(/*xhr, status*/) {
                 message('Hálózati hiba');
             }
         });
@@ -85,13 +83,12 @@ function register() {
             method: 'POST',
             dataType: 'json',
             data: {
-                email: email,
+                email,
                 password: pwd,
                 name: $('#name').val()
             },
 
-            success: function(json)
-            {
+            success(json) {
                 if(json.message)
                     message(json.message);
                 else if(json.error)
@@ -103,8 +100,7 @@ function register() {
                     });
             },
 
-            error: function(/*xhr, status*/)
-            {
+            error(/*xhr, status*/) {
                 message('Hálózati hiba');
             }
         });
@@ -127,11 +123,10 @@ function forgotOk() {
             url: '/app/auth/forgotten',
             dataType: 'json',
             data: {
-                email: email
+                email
             },
 
-            success: function(json)
-            {
+            success(json) {
                 if(json.message)
                     message(json.message);
                 else if(json.error)
@@ -142,8 +137,7 @@ function forgotOk() {
                 }
             },
 
-            error: function(/*xhr, status*/)
-            {
+            error(/*xhr, status*/) {
                 message('Hálózati hiba');
             }
         });
@@ -160,7 +154,7 @@ function forgotCancel() {
 function handleValidationError(e: Error) {
     if(!e || !e.message)
         return;
-    let msg = validate.errorCode[e.message];
+    const msg = validate.errorCode[e.message];
     if(msg)
         message(msg);
 }
@@ -203,8 +197,7 @@ $(function() {
 
 
 // http://stackoverflow.com/questions/2382329/how-can-i-get-browser-to-prompt-to-save-password
-function post(path: string, params: any, method?: string)
-{
+function post(path: string, params: any, method?: string) {
     method = method || "post"; // Set method to post by default if not specified.
 
     // The rest of this code assumes you are not using a library.
@@ -218,13 +211,11 @@ function post(path: string, params: any, method?: string)
     // Internet Explorer needs this
     form.setAttribute("onsubmit", "window.external.AutoCompleteSaveForm(document.getElementById('" + form.id + "'))");
 
-    for (const key in params)
-    {
-        if (params.hasOwnProperty(key))
-        {
+    for (const key in params) {
+        if (params.hasOwnProperty(key)) {
             const hiddenField = document.createElement("input");
             // Internet Explorer needs a "password"-field to show the store-password-dialog
-            hiddenField.setAttribute("type", key == "password" ? "password" : "text");
+            hiddenField.setAttribute("type", key === "password" ? "password" : "text");
             hiddenField.setAttribute("name", key);
             hiddenField.setAttribute("value", params[key]);
 
@@ -239,6 +230,6 @@ function post(path: string, params: any, method?: string)
 
     document.body.appendChild(form);
 
-    //form.submit(); does not work on Internet Explorer
+    // form.submit(); does not work on Internet Explorer
     submitButton.click(); // "click" on submit-button needed for Internet Explorer
 }

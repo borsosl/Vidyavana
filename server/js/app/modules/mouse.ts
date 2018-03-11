@@ -8,53 +8,45 @@ import * as bookmark from './bookmark';
 import * as profile from './profile';
 
 export function init() {
-    $('#pandit-icon').click(function()
-    {
+    $('#pandit-icon').click(function() {
         util.toggleMenu();
     });
 
-    $('#search-link, #menu-search-link').click(function()
-    {
+    $('#search-link, #menu-search-link').click(function() {
         util.toggleMenu(true);
         task.searchDialog();
     });
 
-    $('#section-link, #menu-section-link').click(function()
-    {
+    $('#section-link, #menu-section-link').click(function() {
         util.toggleMenu(true);
         util.dialog(1, true);
         $('#sect1')[0].focus();
     });
 
-    $('#bookmark-link, #menu-bookmark-link').click(function()
-    {
+    $('#bookmark-link, #menu-bookmark-link').click(function() {
         util.toggleMenu(true);
         util.dialog(-1, false);
         bookmark.loadPage();
     });
 
-    $('#logout-link, #menu-logout-link').click(function()
-    {
+    $('#logout-link, #menu-logout-link').click(function() {
         util.toggleMenu(true);
         util.dialog(-1, false);
         task.logout();
     });
 
-    $('#view-link, #menu-view-link').click(function()
-    {
+    $('#view-link, #menu-view-link').click(function() {
         util.toggleMenu(true);
         task.viewDialog();
     });
 
-    $('#profile-link, #menu-profile-link').click(function()
-    {
+    $('#profile-link, #menu-profile-link').click(function() {
         util.toggleMenu(true);
         util.dialog(-1, false);
         profile.loadPage();
     });
 
-    $('#help-link, #menu-help-link').click(function()
-    {
+    $('#help-link, #menu-help-link').click(function() {
         util.toggleMenu(true);
         util.dialog(-1, false);
         html.load('/app/dialog/html/help');
@@ -68,13 +60,11 @@ export function init() {
 
     dom.$sectDown.click(load.continuation);
 
-    $('#viewGo').click(function()
-    {
+    $('#viewGo').click(function() {
         task.applyView();
     });
 
-    $('#info-icon').click(function()
-    {
+    $('#info-icon').click(function() {
         util.downtimeMsg();
     });
 

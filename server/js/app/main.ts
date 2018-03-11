@@ -11,8 +11,7 @@ import * as touch from './modules/touch';
 
 let initd = false;
 
-export function init()
-{
+export function init() {
     if(pg.afterLogin) {
         window.location.href = '/app';
         return;
@@ -40,7 +39,6 @@ export function init()
     initd = true;
 }
 
-$(function()
-{
+$(function() {
     init();
 });

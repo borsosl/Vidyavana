@@ -3,10 +3,10 @@ import * as util from './util';
 import * as load from './load';
 
 interface NodeInfo {
-    sel:HTMLSelectElement;
-    level:number;
-    id:number;
-    node:TocTreeItem
+    sel: HTMLSelectElement;
+    level: number;
+    id: number;
+    node: TocTreeItem;
 }
 
 /** Stores info about current section selection. */
@@ -21,13 +21,10 @@ let maxTocId: number;
 /**
  * Get unloaded children of selected node. Redraw selects when they are available.
  */
-function updateTocNode()
-{
+function updateTocNode() {
     const o = nodeToUpdate;
-    if(o.node.partial)
-    {
-        getTocChildren(o.id, updateTocNode, function(fullNode: TocTreeItem)
-        {
+    if(o.node.partial) {
+        getTocChildren(o.id, updateTocNode, function(fullNode: TocTreeItem) {
             o.node.children = fullNode.children;
             o.node.partial = false;
             replacePipes(o.node);
@@ -46,14 +43,12 @@ function updateTocNode()
  * @param id - TOC id to find
  * @return found node or its parent
  */
-function findTocNodeById(parent: TocTreeItem, id: number): TocTreeItem
-{
+function findTocNodeById(parent: TocTreeItem, id: number): TocTreeItem {
     const ch = parent.children;
     if(ch == null)
         return parent;
     const len = ch.length;
-    for(let i=0; i<len; ++i)
-    {
+    for(let i=0; i<len; ++i) {
         const ti = ch[i];
         if(id > ti.id)
             continue;
@@ -71,20 +66,17 @@ function findTocNodeById(parent: TocTreeItem, id: number): TocTreeItem
  * @param retryFn - on failed ajax, call to retry
  * @param cb - call back on success
  */
-function getTocChildren(id: number, retryFn: Function, cb: Function)
-{
+function getTocChildren(id: number, retryFn: () => void, cb: (json: TocTreeItem) => void) {
     $.ajax({
         url: '/app/toc/get/'+id,
         dataType: 'json',
 
-        success: function(json)
-        {
+        success(json) {
             if(!util.javaError(json))
                 cb.call(this, json);
         },
 
-        error: function(/*xhr, status*/)
-        {
+        error(/*xhr, status*/) {
             util.ajaxError(/*xhr, status,*/ 'Hiba a tartalomjegyzék ág letöltésekor.', retryFn);
         }
     });
@@ -95,12 +87,10 @@ function getTocChildren(id: number, retryFn: Function, cb: Function)
 /**
  * Replaces pipe characters in TOC node text.
  */
-function replacePipes(node: TocTreeItem)
-{
+function replacePipes(node: TocTreeItem) {
     const ch = node.children;
     const rex = /ǀ/;
-    for(let i in ch)
-    {
+    for(const i in ch) {
         const it = ch[i];
         it.title = it.title.replace(rex, ' – ');
         if(it.children)
@@ -115,23 +105,21 @@ function replacePipes(node: TocTreeItem)
 /**
  * One-time setup of event handlers.
  */
-export function initSectionSelect()
-{
+export function initSectionSelect() {
     replacePipes(pg.toc);
     updateSectionSelects(pg.toc, 1);
     maxTocId = pg.maxTocId;
 
     // event handlers
-    $('.sectionSelect').change(function(this: HTMLSelectElement)
-    {
+    $('.sectionSelect').change(function(this: HTMLSelectElement) {
         const level = parseInt(this.id.substr(4));
         const id = parseInt(this.value);
         const node = findTocNodeById(pg.toc, id);
         nodeToUpdate = {
             sel: this,
-            level: level,
-            id: id,
-            node: node
+            level,
+            id,
+            node
         };
         updateTocNode();
     });
@@ -144,11 +132,9 @@ export function initSectionSelect()
  * @param parent - the children of which are a level's items
  * @param level - to update, with child levels
  */
-function updateSectionSelects(parent: TocTreeItem, level: number)
-{
-    while(parent)
-    {
-        let ch = parent.children;
+function updateSectionSelects(parent: TocTreeItem, level: number) {
+    while(parent) {
+        const ch = parent.children;
         selSection = parent.id;
         if(parent.parentStart)
             --selSection;
@@ -157,8 +143,7 @@ function updateSectionSelects(parent: TocTreeItem, level: number)
             break;
         const $e = $('#sect' + (level++));
         const opt = [];
-        for(let i in ch)
-        {
+        for(const i in ch) {
             if(!ch.hasOwnProperty(i))
                 continue;
             const it = ch[i];
@@ -168,8 +153,7 @@ function updateSectionSelects(parent: TocTreeItem, level: number)
         $e.show();
         parent = ch[0];
     }
-    while(level <= 9)
-    {
+    while(level <= 9) {
         $('#sect'+(level++)).hide();
     }
 }
@@ -178,8 +162,7 @@ function updateSectionSelects(parent: TocTreeItem, level: number)
 /**
  * Start loading of selected section.
  */
-function gotoSection()
-{
+function gotoSection() {
     $('#sectionPop').hide();
     selSection = guiSelSection;
     load.text(load.mode.section);

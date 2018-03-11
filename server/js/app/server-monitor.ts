@@ -1,12 +1,10 @@
 
-function poll()
-{
+function poll() {
     $.ajax({
         url: '/app/util/monitor/'+pg.serviceTag,
         dataType: 'json',
 
-        success: function(json)
-        {
+        success(json) {
             if(json.text)
                 $('#content').append(json.text);
             if(!json.finished)
@@ -15,14 +13,12 @@ function poll()
                 $('#content').append('Finished.');
         },
 
-        error: function()
-        {
+        error() {
             poll();
         }
     });
 }
 
-$(function()
-{
+$(function() {
     poll();
 });

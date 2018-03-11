@@ -12,12 +12,11 @@ const TRANS = "āīūḍḥḷḹṁṅṇñṛṝṣśṭ";
 const PLAIN = "aiudhllmnnnrrsst";
 
 interface CharMap {
-    [key: string]: string
+    [key: string]: string;
 }
 
 const lowerMap: CharMap = {};
-for(let i=0; i<LOWER.length; ++i)
-{
+for(let i=0; i<LOWER.length; ++i) {
     const low = LOWER.charAt(i);
     lowerMap[low] = low;
     lowerMap[UPPER.charAt(i)] = low;
@@ -38,8 +37,7 @@ class Highlight {
     /**
      * @param queryStr - current search term
      */
-    constructor(queryStr: string)
-    {
+    constructor(queryStr: string) {
         const paraRex = /<p.*?>([^]*?)<\/p>/gm;
         const htmlRex = /(.*?)(<.*?>|&.*;|$)/gm;
         const whiteRex = /(.*?)( |$)/gm;
@@ -47,25 +45,22 @@ class Highlight {
 
         const q = lowercase(queryStr);
         let soughtArrArr: WordsItem[] = words(q, true);
-        for(const i in soughtArrArr)
-        {
+        for(const i in soughtArrArr) {
             const soughtArr = soughtArrArr[i] as WordsItemRex;
             let word = soughtArr[0];
             // if entered word has translit, take it literally
             soughtArr[1] = plain(word) !== word;
-            if(hasWildcard(word))
-            {
+            if(hasWildcard(word)) {
                 word = word.replace(/\?/g, '.');
                 word = word.replace(/\*/g, '.*');
                 soughtArr[2] = new RegExp(word);
-            }
-            else
+            } else {
                 soughtArr[2] = null;
+            }
         }
 
 
-        function lowercase(s: string): string
-        {
+        function lowercase(s: string): string {
             let t = '';
             for(let i=0; i<s.length; ++i)
                 t += lowerChar(s.charAt(i));
@@ -73,12 +68,9 @@ class Highlight {
         }
 
 
-        function lowerChar(c: string): string
-        {
+        function lowerChar(c: string): string {
             if(c >= 'a' && c <= 'z' || c >= '0' && c <= '9') {
-            }
-            else
-            {
+            } else {
                 const ch = lowerMap[c];
                 if(ch)
                     c = ch;
@@ -89,13 +81,11 @@ class Highlight {
         }
 
 
-        function plain(s: string): string
-        {
+        function plain(s: string): string {
             let t = '';
-            for(let i=0; i<s.length; ++i)
-            {
+            for(let i=0; i<s.length; ++i) {
                 let c = s.charAt(i);
-                let ch = plainMap[c];
+                const ch = plainMap[c];
                 if(ch)
                     c = ch;
                 t += c;
@@ -104,11 +94,10 @@ class Highlight {
         }
 
 
-        function hasWildcard(s: string): boolean
-        {
+        function hasWildcard(s: string): boolean {
             const ixAst = s.indexOf('*');
             const ixQm = s.indexOf('?');
-            return (ixAst > 1 && (ixQm == -1 || ixQm > 1)) || ixQm > 1 && ixAst == -1;
+            return (ixAst > 1 && (ixQm === -1 || ixQm > 1)) || ixQm > 1 && ixAst === -1;
         }
 
 
@@ -117,27 +106,21 @@ class Highlight {
          * @return array of words from string as [word, start, end], where indexes are relative to q
          * @param isQuery - tokenizing for the queried words
          */
-        function words(s: string, isQuery: boolean): WordsItemIndexes[]
-        {
+        function words(s: string, isQuery: boolean): WordsItemIndexes[] {
             const res: WordsItemIndexes[] = [];
             let inWord = false;
             let word = '';
             let start = 0;
             let i, len;
-            for(i = 0, len = s.length; i < len; ++i)
-            {
+            for(i = 0, len = s.length; i < len; ++i) {
                 const c = s.charAt(i);
-                const wc = isLowerWordChar(c) || isQuery && (c == '*' || c == '?');
-                if(!inWord && wc)
-                {
+                const wc = isLowerWordChar(c) || isQuery && (c === '*' || c === '?');
+                if(!inWord && wc) {
                     inWord = true;
                     start = i;
-                }
-                else if(inWord && !wc)
-                {
+                } else if(inWord && !wc) {
                     inWord = false;
-                    if(word)
-                    {
+                    if(word) {
                         res.push([word, start, i]);
                         word = '';
                     }
@@ -151,8 +134,7 @@ class Highlight {
         }
 
 
-        function isLowerWordChar(c: string): boolean
-        {
+        function isLowerWordChar(c: string): boolean {
             return c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || !!lowerMap[c];
         }
 
@@ -162,16 +144,14 @@ class Highlight {
          * @param text - html chunk
          * @param $rootElement - container of modified para's
          */
-        function run(text: string, $rootElement: JQuery): void
-        {
+        function run(text: string, $rootElement: JQuery): void {
             $root = $rootElement;
             paraRex.lastIndex = 0;
             nextPara(text);
         }
 
 
-        function nextPara(text: string): void
-        {
+        function nextPara(text: string): void {
             const res = paraRex.exec(text);
             if(!res)
                 return;
@@ -179,19 +159,15 @@ class Highlight {
         }
 
 
-        function paraText(text: string, pText: string, pContent: string): void
-        {
+        function paraText(text: string, pText: string, pContent: string): void {
             const highlightIxPairArr = highlightIndexes(pContent);
-            if(highlightIxPairArr.length > 0)
-            {
+            if(highlightIxPairArr.length > 0) {
                 const res = /data-ix="(\d+)"/.exec(pText);
-                if(res)
-                {
+                if(res) {
                     const paraId = res[1];
                     const chunks = [];
                     let pos = 0;
-                    for(const i in highlightIxPairArr)
-                    {
+                    for(const i in highlightIxPairArr) {
                         const ixPair = highlightIxPairArr[i];
                         if(pos < ixPair[0])
                             chunks.push(pContent.substring(pos, ixPair[0]));
@@ -207,12 +183,10 @@ class Highlight {
         }
 
 
-        function highlightIndexes(pContent: string): IndexPair[]
-        {
+        function highlightIndexes(pContent: string): IndexPair[] {
             const ret: IndexPair[] = [];
             htmlRex.lastIndex = 0;
-            while(true)
-            {
+            while(true) {
                 const htmlStart = htmlRex.lastIndex;
                 let res = htmlRex.exec(pContent);
                 if(!res || !res[0] && htmlRex.lastIndex >= pContent.length)
@@ -223,8 +197,7 @@ class Highlight {
                     continue;
                 const toNextTag = res[1];
                 whiteRex.lastIndex = 0;
-                while(true)
-                {
+                while(true) {
                     const whiteStart = htmlStart + whiteRex.lastIndex;
                     res = whiteRex.exec(toNextTag);
                     if(!res || !res[0])
@@ -234,8 +207,7 @@ class Highlight {
                     const toNextWhite = res[1];
                     const q = lowercase(toNextWhite);
                     const whiteWordArrArr = words(q, false);
-                    for(const i in whiteWordArrArr)
-                    {
+                    for(const i in whiteWordArrArr) {
                         const whiteWordArr: WordsItemIndexes = whiteWordArrArr[i];
                         if(sought(whiteWordArr))
                             ret.push([whiteStart+whiteWordArr[1], whiteStart+whiteWordArr[2]]);
@@ -246,29 +218,24 @@ class Highlight {
         }
 
 
-        function sought(wordArr: WordsItemIndexes): boolean
-        {
-            for(const i in soughtArrArr)
-            {
+        function sought(wordArr: WordsItemIndexes): boolean {
+            for(const i in soughtArrArr) {
                 const soughtArr = soughtArrArr[i] as WordsItemRex;
                 const word = soughtArr[0];
                 const hasTrans = soughtArr[1];
                 const re = soughtArr[2];
-                if(re)
-                {
+                if(re) {
                     let paraWord = wordArr[0];
                     if(!hasTrans)
                         paraWord = plain(paraWord);
                     if(re.test(paraWord))
                         return true;
-                }
-                else if(hasTrans)
-                {
+                } else if(hasTrans) {
                     if(word === wordArr[0])
                         return true;
-                }
-                else if(word === plain(wordArr[0]))
+                } else if(word === plain(wordArr[0])) {
                     return true;
+                }
             }
             return false;
         }

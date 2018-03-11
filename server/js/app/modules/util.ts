@@ -1,6 +1,6 @@
 
 import dom from './dom';
-import * as page from './page'
+import * as page from './page';
 
 /** points to menu box, lazy init'd */
 let $menu: JQuery;
@@ -22,7 +22,7 @@ let downtimeText: string;
 export function toggleMenu(close?: boolean, onEmpty?: boolean) {
     if(!$menu)
         $menu = $('#menu');
-    let visible = $menu.css('display') === 'block';
+    const visible = $menu.css('display') === 'block';
     const hgt = $menu.height();
     if(close) {
         if(!visible)
@@ -89,8 +89,7 @@ export function toggleButtonBars(isHits: boolean, hitlist: boolean) {
  */
 export function javaError(json: any): boolean {
     loading(false);
-    if(json.error)
-    {
+    if(json.error) {
         if(json.error === 'expired')
             document.location.href = '/app';
         else if(json.error === 'maintenance')
@@ -112,7 +111,7 @@ export function javaError(json: any): boolean {
  * @param msg - error text
  * @param retryFn - callback for retrying operation that had failed
  */
-export function ajaxError(/*xhr, status,*/ msg: string, retryFn: Function) {
+export function ajaxError(/*xhr, status,*/ msg: string, retryFn: () => void) {
     loading(false);
     message(msg + '...<br><a href="#" id="retry">Ismétlés</a>&nbsp;&nbsp;<a href="#" id="cancelMsg">Mégse</a>', false);
     $('#retry', $msg).click(function() {
@@ -140,9 +139,9 @@ export function message(msg: string, needsCloser: boolean) {
     });
     const $win = $(window);
     $msg.css({
-        'top': Math.floor(($win.height() - $msg.height() - 20) / 2) + 'px',
-        'left': Math.floor(($win.width() - $msg.width() - 20) / 2) + 'px',
-        'display': 'block'
+        top: Math.floor(($win.height() - $msg.height() - 20) / 2) + 'px',
+        left: Math.floor(($win.width() - $msg.width() - 20) / 2) + 'px',
+        display: 'block'
     });
 }
 
@@ -169,16 +168,16 @@ export function dialog(index: number, toggle: boolean): boolean {
     const ids = [$('#searchPop'), $('#sectionPop'), $('#viewPop')];
     let ret = false;
     const ix = ''+index;
-    for(let i in ids)
+    for(const i in ids)
         if(i === ix) {
             if(toggle)
                 ids[i].toggle();
             else
                 ids[i].show();
             ret = ids[i].is(':visible');
-        }
-        else
+        } else {
             ids[i].hide();
+        }
     return ret;
 }
 
@@ -243,7 +242,7 @@ export function resizeContent() {
     const winWid = $m.width();
     const headHgt = $('#header').height();
     const arr = [dom.$content, dom.$formContent];
-    for(let i in arr) {
+    for(const i in arr) {
         const $e = arr[i];
         $e[0].style.top = headHgt + 'px';
         $e.innerHeight(winHgt - headHgt);
@@ -254,7 +253,7 @@ export function resizeContent() {
 
 export function cookie(key: string, value?: string) {
     if(value === undefined) {
-        let getvalue = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
+        const getvalue = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
         return getvalue ? getvalue.pop() : '';
     }
     document.cookie = encodeURIComponent(key) + "=" + encodeURIComponent(value) + '; path=/';
@@ -273,11 +272,10 @@ export function bookOrdinalOnTop() {
     const top = dom.$content.scrollTop();
     const $ch = dom.$txt.children();
     let $prev;
-    for(let i in $ch) {
-        // noinspection JSUnfilteredForInLoop
+    for(const i in $ch) {
         const $e = $($ch[i]);
         const pos = $e.position().top;
-        if(pos == top) {
+        if(pos === top) {
             $prev = $e;
             break;
         }

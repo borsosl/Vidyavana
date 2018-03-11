@@ -21,10 +21,8 @@ export function initView() {
         setSizes();
     }
 
-    $('#viewPop').keydown(function()
-    {
-        if(viewMsgShown)
-        {
+    $('#viewPop').keydown(function() {
+        if(viewMsgShown) {
             $('#view-msg').hide();
             viewMsgShown = false;
         }
@@ -74,7 +72,7 @@ export function logout() {
         url: '/app/auth/logout',
         dataType: 'json',
 
-        success: function(json) {
+        success(json) {
             if(util.javaError(json))
                 return;
             if(!json.ok)
@@ -83,7 +81,7 @@ export function logout() {
                 document.location.href = '/app';
         },
 
-        error: function(/*xhr, status*/) {
+        error(/*xhr, status*/) {
             failed();
         }
     });

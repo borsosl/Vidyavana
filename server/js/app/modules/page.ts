@@ -5,7 +5,7 @@ class Page {
     /** current TOC id */
     public tocId: number;
     /** 1-based index of the next, unloaded paragraph in current section.
-     *      0=fully loaded section. -1=search render. */
+      *      0=fully loaded section. -1=search render.*/
     private last: number;
     /** saved scroll position for repositioning */
     public scrollPos?: number;
@@ -20,8 +20,7 @@ class Page {
      * @param json - loaded section info
      * @returns was reset
      */
-    init(json: DisplayBlock): boolean
-    {
+    init(json: DisplayBlock): boolean {
         current = this;
         this.last = json.last;
         this.scrollPos = -1;
@@ -42,8 +41,7 @@ class Page {
      * Sets last request data.
      * @param json - loaded chunk and book info
      */
-    down(json: DisplayBlock)
-    {
+    down(json: DisplayBlock) {
         this.last = json.last;
     }
 
@@ -52,8 +50,7 @@ class Page {
      * Gets next para ordinal, if section has more to load.
      * @return next para ordinal or null
      */
-    next(): number
-    {
+    next(): number {
         return this.last ? this.last : null;
     }
 }

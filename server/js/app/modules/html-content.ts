@@ -3,31 +3,25 @@ import dom from './dom';
 import * as util from './util';
 
 
-interface ContentPageCallback<T extends ContentPageData> {
-    // noinspection JSUnusedLocalSymbols
-    (data: T, html: string): void;
-}
+type ContentPageCallback<T extends ContentPageData> = (data: T, html: string) => void;
 
 /**
  * Sends ajax request to get html content page.
  */
-export function load<T extends ContentPageData>(url: string, data?: any, cb?: ContentPageCallback<T>)
-{
+export function load<T extends ContentPageData>(url: string, data?: any, cb?: ContentPageCallback<T>) {
     $.ajax({
-        url: url,
+        url,
         dataType: 'json',
-        data: data,
+        data,
 
-        success: function(json)
-        {
+        success(json) {
             if(util.javaError(json))
                 return;
             if(json.html || json.data)
                 init(json, cb);
         },
 
-        error: function(/*xhr, status*/)
-        {
+        error(/*xhr, status*/) {
             util.ajaxError(/*xhr, status,*/ 'Hiba az oldal letöltésekor.', load.bind(null, url, data, cb));
         }
     });

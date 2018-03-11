@@ -57,7 +57,7 @@ export function initPage(data: BookmarksResult, html: string) {
     linkEntityMap = data.recentEntityMap;
 
     const arr = [];
-    for(let i in recent10) {
+    for(const i in recent10) {
         const id = recent10[i];
         const r = linkEntityMap[id];
         arr.push('<a href="#" data-bm-id="', id, '">', r.name, '</a><br/>');
@@ -160,7 +160,7 @@ function filterRequest() {
     }
     replaceChooseOptions('<option value="0">--- töltés ---</option>');
     const req = {
-        filter: filter
+        filter
     };
     ajax('/app/bookmark/filter', req, filterRequest, filterResponse);
 }
@@ -202,7 +202,7 @@ function newClick() {
 }
 
 function editClick() {
-    let id = parseInt($('#bm-choose').val());
+    const id = parseInt($('#bm-choose').val());
     if(!id || isNaN(id))
         return;
     editedBookmarkId = id;
@@ -219,7 +219,7 @@ function editClick() {
 }
 
 function deleteClick() {
-    let id = parseInt($('#bm-choose').val());
+    const id = parseInt($('#bm-choose').val());
     if(!id || isNaN(id))
         return;
     editedBookmarkId = id;
@@ -228,7 +228,7 @@ function deleteClick() {
 }
 
 function storeClick() {
-    let id = parseInt($('#bm-choose').val());
+    const id = parseInt($('#bm-choose').val());
     if(!id || isNaN(id))
         return;
     const bookmark = filteredEntityMap[id];
@@ -237,7 +237,7 @@ function storeClick() {
 }
 
 function goClick() {
-    let id = parseInt($('#bm-choose').val());
+    const id = parseInt($('#bm-choose').val());
     if(!id || isNaN(id))
         return;
     load.bookmark(id);
@@ -267,7 +267,7 @@ function saveRequest(bookmark: Bookmark) {
     const filter = $f ? $f.val() : null;
     const req = {
         bookmark: JSON.stringify(bookmark),
-        filter: filter
+        filter
     };
 
     ajax('/app/bookmark/save', req, saveClick, function(json: ContentPageResult<any>) {
@@ -280,7 +280,7 @@ function doDeleteClick() {
     const filter = $f ? $f.val() : null;
     const req = {
         id: editedBookmarkId,
-        filter: filter
+        filter
     };
     ajax('/app/bookmark/delete', req, doDeleteClick, function(json: ContentPageResult<BookmarksResult>) {
         initPage(json.data, json.html);
@@ -295,9 +295,10 @@ function closeClick() {
     dom.$formContent.hide();
 }
 
-function filteredOptionsHtml(indexList: number[], entityMap: EntityMap, mostRecentId: number, filteredCount: number): string {
+function filteredOptionsHtml(indexList: number[], entityMap: EntityMap,
+                             mostRecentId: number, filteredCount: number): string {
     const arr = [];
-    for(let i in indexList) {
+    for(const i in indexList) {
         const id = indexList[i];
         const bm = entityMap[id];
         const selected = id === mostRecentId ? '" selected>' : '">';
@@ -323,7 +324,7 @@ function replaceChooseOptions(optionsHtml: string) {
 
 function toggleState(state: string) {
     currentState = state;
-    for(let i in pageState)
+    for(const i in pageState)
         $('#bm-state-'+ pageState[i]).toggle(currentState === pageState[i]);
 }
 
@@ -332,20 +333,18 @@ function toggleButtons() {
     $('#bm-buttons').toggle(show);
 }
 
-function ajax<T>(url: string, data: any, retryFn: Function, cb: AjaxResultCallback<T>) {
+function ajax<T>(url: string, data: any, retryFn: () => void, cb: AjaxResultCallback<T>) {
     $.ajax({
-        url: url,
+        url,
         dataType: 'json',
-        data: data,
+        data,
 
-        success: function(json: T)
-        {
+        success(json: T) {
             if(!util.javaError(json) && cb)
                 cb.call(null, json);
         },
 
-        error: function(/*xhr, status*/)
-        {
+        error(/*xhr, status*/) {
             util.ajaxError(/*xhr, status,*/ 'Hálózati hiba.', retryFn);
         }
     });

@@ -34,10 +34,7 @@ interface TocTreeItem {
     partial: boolean;
 }
 
-interface AjaxResultCallback<T> {
-    // noinspection JSUnusedLocalSymbols
-    (json: T): void;
-}
+type AjaxResultCallback<T> = (json: T) => void;
 
 interface ContentPageData {
     skipRender?: boolean;

@@ -79,7 +79,7 @@ function saveClick() {
         return;
     }
 
-    let data: SaveProfileRequest = {
+    const data: SaveProfileRequest = {
         email,
         oldPassword: null,
         newPassword: null,
@@ -124,27 +124,25 @@ function closeClick() {
 }
 
 function message(text?: string) {
-    let $msg = $('#pf-msg');
+    const $msg = $('#pf-msg');
     if(text)
         $msg.html(text).show();
     else
         $msg.hide();
 }
 
-function ajax<T>(url: string, data: any, retryFn: Function, cb?: AjaxResultCallback<T>) {
+function ajax<T>(url: string, data: any, retryFn: () => void, cb?: AjaxResultCallback<T>) {
     $.ajax({
-        url: url,
+        url,
         dataType: 'json',
-        data: data,
+        data,
 
-        success: function(json: T)
-        {
-            if(!util.javaError(json) && cb)
+        success(json: T) {
+            if (!util.javaError(json) && cb)
                 cb.call(null, json);
         },
 
-        error: function(/*xhr, status*/)
-        {
+        error(/*xhr, status*/) {
             util.ajaxError(/*xhr, status,*/ 'Hálózati hiba.', retryFn);
         }
     });

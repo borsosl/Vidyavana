@@ -33,6 +33,8 @@ declare var client: {
     }
 };
 
+// noinspection JSUnusedGlobalSymbols
 interface Window {
+    // noinspection JSUnusedLocalSymbols
     md5(input: string): string;
 }
