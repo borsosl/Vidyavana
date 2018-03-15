@@ -59,14 +59,10 @@ export function init() {
             $('#search-msg').hide();
             searchMsgShown = false;
         }
-        if(e.keyCode === 13) {
-            search();
-        } else if(e.keyCode === 27) {
+        if(e.keyCode === 27) {
             util.dialog(-1, false);
             util.focusContent();
         }
-        if(!util.menuModifier(e))
-            e.stopPropagation();
     });
     $('#searchGo').click(function() {
         search();

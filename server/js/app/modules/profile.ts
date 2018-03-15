@@ -33,11 +33,9 @@ export function loadPage() {
 
 export function initPage(data: ProfileResult) {
     profile = data;
-    const $form = $('#pf-form');
     $('#pf-email').val(data.email);
     $('#pf-name').val(data.name);
     $('#pf-access').text(data.access);
-    $('input', $form).keydown(util.textKeyDefaults);
 
     $('#pf-save').click(saveClick);
     $('#pf-close').click(closeClick);
@@ -112,14 +110,18 @@ function profileSaved(resp: SaveProfileResponse) {
         msgArr.push(`A ${p ? 'jelszó ' : ''}${p && n ? 'és a ' : ''}${n ? 'név' : ''} változása elmentve.`);
     }
     message(msgArr.join(''));
-    if(p) {
-        $('#pf-password-old').val('');
-        $('#pf-password1').val('');
-        $('#pf-password2').val('');
-    }
+    if(p)
+        emptyPasswordFields();
+}
+
+function emptyPasswordFields() {
+    $('#pf-password-old').val('');
+    $('#pf-password1').val('');
+    $('#pf-password2').val('');
 }
 
 function closeClick() {
+    emptyPasswordFields();
     dom.$formContent.hide();
 }
 

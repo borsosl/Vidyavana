@@ -112,7 +112,6 @@ export function initPage(data: BookmarksResult, html: string) {
     $('#bm-delete').click(deleteClick);
     $('#bm-store').click(storeClick);
     $('#bm-go').click(goClick);
-    $('#bm-name').keydown(util.textKeyDefaults);
     $('#bm-save').click(saveClick);
     $('.bm-cancel').click(cancelClick);
     $('#bm-del-ok').click(doDeleteClick);
@@ -143,7 +142,6 @@ function filterChange(e: JQueryKeyEventObject) {
         else
             filterTimer = setTimeout(filterRequest, 800);
     }, 0);
-    util.textKeyDefaults(e);
 }
 
 function filterRequest() {

@@ -288,8 +288,3 @@ export function bookOrdinalOnTop() {
     }
     return $prev.data('ix') + 1;    // ix 0-based, ordinal in toc tree 1-based
 }
-
-export function textKeyDefaults(e: JQueryKeyEventObject) {
-    if(!menuModifier(e))
-        e.stopPropagation();
-}
