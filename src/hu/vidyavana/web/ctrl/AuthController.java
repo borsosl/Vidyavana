@@ -96,6 +96,7 @@ public class AuthController
 			}
 			try {
 				UserDao.insertUser(user);
+				user = UserDao.findUserByEmail(user.email);		// fetch created user id
 				setUserInSession(ri, user);
 				ri.ses.setAttribute("justRegistered", true);
 				if(Globals.serverEnv)

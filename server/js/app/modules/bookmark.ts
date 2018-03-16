@@ -249,8 +249,12 @@ function saveClick() {
     } else {
         bookmark = filteredEntityMap[editedBookmarkId];
     }
-    bookmark.name = $('#bm-name').val();
+    bookmark.name = $('#bm-name').val().trim();
     bookmark.follow = $('#bm-follow').prop('checked');
+    if(bookmark.name.length < 2) {
+        util.message('A név legalább 2 karakter legyen.', true);
+        return;
+    }
     saveRequest(bookmark);
 }
 
