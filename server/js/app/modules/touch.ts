@@ -2,9 +2,12 @@
 import * as page from './page';
 import * as load from './load';
 
+let mobile: boolean;
+
 export function init() {
     const cs = client.system;
-    if(cs.android || cs.ios || cs.iphone || cs.ipad || cs.winMobile) {
+    mobile = cs.android || cs.ios || cs.iphone || cs.ipad || cs.winMobile;
+    if(mobile) {
         $(window).on('swipeleft', function() {
             if(page.isSearchResult())
                 load.nextHit();
@@ -18,4 +21,8 @@ export function init() {
                 load.prevSection();
         });
     }
+}
+
+export function isMobile() {
+    return mobile;
 }

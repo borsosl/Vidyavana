@@ -25,10 +25,10 @@ export function init() {
     if(pg.downtime)
         util.downtime(pg.downtime);
     search.init();
+    touch.init();
     toc.initSectionSelect();
     keyboard.init();
     mouse.init();
-    touch.init();
     util.resizeEvent();
     util.refreshMenu();
     task.initView();

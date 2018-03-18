@@ -154,6 +154,9 @@ User user = (User) session.getAttribute("user");
             <div>
                 <select id="sect9" class="sectionSelect"></select>
             </div>
+            <div class="form-row center">
+                <input type="checkbox" id="section-abbrev">&nbsp;Rövidített címek
+            </div>
             <div class="form-row button-row center">
                 <button id="sectionGo">Mehet</button>
             </div>

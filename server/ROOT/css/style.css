@@ -189,6 +189,9 @@ a {
 	html
 	{
 		font-size: 11pt;
+		-webkit-text-size-adjust: none;
+		-moz-text-size-adjust: none;
+		-ms-text-size-adjust: none;
 	}
 
 	#content, #form-content

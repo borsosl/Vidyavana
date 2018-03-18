@@ -32,6 +32,8 @@ interface TocTreeItem {
     parent: TocTreeItem;
     children: TocTreeItem[];
     partial: boolean;
+    // client-only
+    shortTitle: string;
 }
 
 type AjaxResultCallback<T> = (json: T) => void;

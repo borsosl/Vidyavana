@@ -1,6 +1,7 @@
 
 import * as util from './util';
 import * as load from './load';
+import * as touch from './touch';
 
 interface NodeInfo {
     sel: HTMLSelectElement;
@@ -17,6 +18,19 @@ let selSection: number;
 let guiSelSection: number;
 /** last section of the database */
 let maxTocId: number;
+/** how many select boxes are visible */
+let levelsShown: number;
+/** abbrev cb set? */
+let shortTitles: boolean;
+
+const whiteRex = /(.{15,}?)\s/;
+const ordinals = [
+    'TIZEN', '1', 'TIZEDIK', '10.', 'HUSZON', '2', 'HUSZADIK', '20.', 'HARMINC', '3', 'NEGYVEN', '4',
+    'ÖTVEN', '5', 'HATVAN', '6', 'HETVEN', '7', 'NYOLCVAN', '8', 'KILENCVEN', '9',
+    'NEGYEDIK', '4.', 'ELSŐ', '1.', 'EGYEDIK', '1.', 'MÁSODIK', '2.', 'KETTEDIK', '2.', 'HARMADIK', '3.',
+    'ÖTÖDIK', '5.', 'HATODIK', '6.', 'HETEDIK', '7.', 'NYOLCADIK', '8.', 'KILENCEDIK', '9.',
+    'ADIK', '0.', 'EDIK', '0.'];
+let ordinalsRex: RegExp[];
 
 /**
  * Get unloaded children of selected node. Redraw selects when they are available.
@@ -106,6 +120,7 @@ function replacePipes(node: TocTreeItem) {
  * One-time setup of event handlers.
  */
 export function initSectionSelect() {
+    shortTitles = touch.isMobile();
     replacePipes(pg.toc);
     updateSectionSelects(pg.toc, 1);
     maxTocId = pg.maxTocId;
@@ -123,6 +138,15 @@ export function initSectionSelect() {
         };
         updateTocNode();
     });
+
+    const $abbrev = $('#section-abbrev');
+    if(shortTitles)
+        $abbrev.prop('checked', shortTitles);
+    $abbrev.click(function(this: HTMLInputElement) {
+        shortTitles = this.checked;
+        redrawSelectBoxes();
+    });
+
     $('#sectionGo').click(gotoSection);
 }
 
@@ -141,16 +165,9 @@ function updateSectionSelects(parent: TocTreeItem, level: number) {
         guiSelSection = selSection;
         if(!ch)
             break;
-        const $e = $('#sect' + (level++));
-        const opt = [];
-        for(const i in ch) {
-            if(!ch.hasOwnProperty(i))
-                continue;
-            const it = ch[i];
-            opt.push('<option value="', it.id, '">', it.title, '</option>');
-        }
-        $e.html(opt.join(''));
+        const $e = fillSelectBox(level, ch);
         $e.show();
+        levelsShown = level++;
         parent = ch[0];
     }
     while(level <= 9) {
@@ -158,6 +175,77 @@ function updateSectionSelects(parent: TocTreeItem, level: number) {
     }
 }
 
+function fillSelectBox(level: number, ch: TocTreeItem[], $e?: JQuery): JQuery {
+    $e = $e || $('#sect' + level);
+    const opt = [];
+    let maxLen = 0;
+    const shorten = shortTitles && !ch[0].shortTitle;
+    if(shorten && level > 1)
+        for(const i in ch) {
+            const len = ch[i].title.length;
+            if(len > maxLen)
+                maxLen = len;
+        }
+    for(const i in ch) {
+        const it = ch[i];
+        if(shorten) {
+            if(level === 1 || maxLen < 22)
+                it.shortTitle = it.title;
+            else
+                shortenTitle(it);
+        }
+        opt.push('<option value="', it.id, '">', shortTitles ? it.shortTitle : it.title, '</option>');
+    }
+    $e.html(opt.join(''));
+    return $e;
+}
+
+function shortenTitle(item: TocTreeItem): void {
+    if(!ordinalsRex) {
+        ordinalsRex = [];
+        for(let i = 0; i < ordinals.length; i += 2)
+            ordinalsRex[i] = new RegExp(ordinals[i], 'i');
+    }
+
+    const sep = ' – ';
+    const parts = item.title.split(sep);
+    let s = parts[0];
+    let ix: number;
+    for(let i = 0; i < ordinals.length; i += 2) {
+        if(s.length < ordinals[i].length)
+            continue;
+        ix = s.search(ordinalsRex[i]);
+        if(ix > -1)
+            s = s.substr(0, ix) + ordinals[i+1] + s.substr(ix+ordinals[i].length);
+    }
+    ix = s.indexOf('.');
+    if(ix > -1 && s.length - ix < 10)       // if there is a lot more after dot, don't cut
+        s = s.substr(0, ix);
+    if(parts.length === 1) {
+        item.shortTitle = s[0] !== parts[0][0] ? s : parts[0];      // only if ordinal was the first word
+    } else {
+        parts[0] = s;
+        s = parts.slice(1).join(sep);
+        const res = whiteRex.exec(s);
+        if(res)
+            s = res[1] + '…';
+        item.shortTitle = parts[0] + sep + s;
+    }
+}
+
+function redrawSelectBoxes() {
+    let parent: TocTreeItem = pg.toc;
+    for(let level = 1; level <= levelsShown; level++) {
+        const $e = $('#sect' + level);
+        const el = $e[0] as HTMLSelectElement;
+        const ix = el.selectedIndex;
+        if(level > 1) {
+            fillSelectBox(level, parent.children, $e);
+            el.selectedIndex = ix;
+        }
+        parent = parent.children[ix];
+    }
+}
 
 /**
  * Start loading of selected section.
