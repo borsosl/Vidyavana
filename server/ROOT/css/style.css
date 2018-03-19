@@ -146,7 +146,7 @@ a {
 	cursor: pointer;
 }
 
-#short-ref
+#short-ref, #book-title
 {
 	display: inline-block;
 	float: right;
@@ -209,7 +209,7 @@ a {
 		margin-left: 0.2em;
 	}
 
-	#short-ref
+	#short-ref, #book-title
 	{
 		margin-right: 0.3em;
 	}

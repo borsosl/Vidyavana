@@ -11,6 +11,7 @@ class Dom {
     $sectDown: JQuery;
     $thisSect: JQuery;
     $shortRef: JQuery;
+    $bookTitle: JQuery;
     $menuShortRef: JQuery;
     $loading: JQuery;
 
@@ -38,6 +39,7 @@ class Dom {
 
         this.$thisSect = $('#this-sect');
         this.$shortRef = $('#short-ref');
+        this.$bookTitle = $('#book-title');
         this.$menuShortRef = $('#menu-short-ref');
         this.$loading = $('#loading');
     }

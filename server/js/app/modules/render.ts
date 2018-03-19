@@ -6,6 +6,8 @@ import * as highlight from './highlight';
 import * as load from './load';
 import * as search from './search';
 
+let bookTitle: string;
+
 /**
  * On successful load, add text into DOM.
  * @param json - loaded text details
@@ -67,6 +69,14 @@ export function text(json: DisplayBlock | SearchResponse, mode: number) {
     }
     util.toggleButtonBars(isSearch, isHitlist);
 
+    bookTitle = '';
+    if(display.bookTocId) {
+        const item = pg.toc.children.find((item: TocTreeItem) => item.id === display.bookTocId);
+        if(item)
+            bookTitle = item.title;
+    }
+    dom.$bookTitle.text(bookTitle);
+
     if(!display.shortRef)
         display.shortRef = '';
     page.current().shortRef = display.shortRef;
@@ -92,4 +102,8 @@ function hitlistMarkup(h: string) {
     h = h.replace(/<\/td><td (\d+)>/g, '</td><td><p data-ix="$1">');
     h = h.replace(/<\/td><\/tr>/g, '</p></td></tr>');
     return h;
+}
+
+export function displayBookTitle() {
+    util.message(bookTitle, true);
 }

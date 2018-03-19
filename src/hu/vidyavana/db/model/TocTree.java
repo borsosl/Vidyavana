@@ -271,13 +271,17 @@ public class TocTree
 	}
 
 
-	public static String[] refs(TocTreeItem node, boolean needLong)
+	public static DisplayBlock refs(TocTreeItem node, boolean needLong, DisplayBlock response)
 	{
+		if(response == null)
+			response = new DisplayBlock();
 		List<String> abbrevs = new ArrayList<>();
 		List<String> titles = new ArrayList<>();
 		int len = 0;
 		do
 		{
+			if(node.id != 0)
+		        response.bookTocId = node.id;
 			if(node.abbrev != null)
 				abbrevs.add(node.abbrev);
 			if(needLong && node.title != null)
@@ -297,15 +301,16 @@ public class TocTree
 			sbShort.append(abbrevs.get(i)).append('.');
 		if(sbShort.length() > 1)
 			sbShort.setLength(sbShort.length()-1);
+		response.shortRef = sbShort.toString();
 
-		StringBuilder sbLong = null;
 		if(needLong) {
-			sbLong = new StringBuilder(len);
+			StringBuilder sbLong = new StringBuilder(len);
 			for(int i = titles.size()-1; i>=0; --i)
 				sbLong.append(titles.get(i)).append(", ");
 			if(sbLong.length() > 2)
 				sbLong.setLength(sbLong.length()-2);
+			response.longRef = sbLong.toString();
 		}
-		return new String[]{sbShort.toString(), needLong ? sbLong.toString() : null};
+		return response;
 	}
 }

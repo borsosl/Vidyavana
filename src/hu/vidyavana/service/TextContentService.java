@@ -217,7 +217,7 @@ public class TextContentService
 			Sessions.updateUserAccessTime(ri.ses, ri.user);
 		}
 		else
-			BookmarkService.updateFollowedBookmark(ri, ri.toc.bookSegmentId(node), ord, TocTree.refs(node, false)[0]);
+			BookmarkService.updateFollowedBookmark(ri, ri.toc.bookSegmentId(node), ord, TocTree.refs(node, false, null).shortRef);
 		ri.ajaxResult = text(ri.toc, node, ord);
 	}
 
@@ -261,7 +261,7 @@ public class TextContentService
 				start = 0;
 			db.bookSegmentId = bookSegmentId;
 			db.tocId = origTocNode.id;
-			db.shortRef = TocTree.refs(node, false)[0];
+			TocTree.refs(node, false, db);
 			StringBuilder sb = new StringBuilder(RESPONSE_CHARS + 20000);
 			int last = start;
 			int len = 0;
@@ -341,9 +341,7 @@ public class TextContentService
 		db.bookSegmentId = bookSegmentId;
 		db.tocId = tocNode.id;
 		db.last = -1;
-		String[] refs = TocTree.refs(tocNode, true);
-		db.shortRef = refs[0];
-		db.longRef = refs[1];
+		TocTree.refs(tocNode, true, db);
 		Storage store = Storage.SYSTEM;
 		BookSegment seg = store.segment(bookSegmentId);
 		try
@@ -410,7 +408,7 @@ public class TextContentService
 			Hit hit = details.hits.get(i);
 			int bookSegmentId = hit.segment<<16 | hit.plainBookId;
 			TocTreeItem tocNode = toc.findNodeByOrdinal(bookSegmentId, hit.ordinal);
-			String shortRef = TocTree.refs(tocNode, false)[0];
+			String shortRef = TocTree.refs(tocNode, false, null).shortRef;
 			sb.append("<tr><td><a ")
 					.append(tocNode.id)
 					.append(">")

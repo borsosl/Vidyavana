@@ -6,6 +6,7 @@ import * as html from './html-content';
 import * as load from './load';
 import * as bookmark from './bookmark';
 import * as profile from './profile';
+import * as render from './render';
 
 export function init() {
     $('#pandit-icon').click(function() {
@@ -53,10 +54,10 @@ export function init() {
     });
 
     $('.prev-page').click(load.contextPrev);
-
     $('.next-page').click(load.contextNext);
-
     $('.switch-view').click(load.contextSwitch);
+    dom.$shortRef.click(render.displayBookTitle);
+    dom.$menuShortRef.click(render.displayBookTitle);
 
     dom.$sectDown.click(load.continuation);
 

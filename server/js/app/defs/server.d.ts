@@ -4,6 +4,7 @@ interface DisplayBlock {
     tocId?: number;
     last: number;
     text: string;
+    bookTocId?: number;
     shortRef?: string;
     longRef?: string;
     downtime?: string;

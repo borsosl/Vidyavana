@@ -52,8 +52,7 @@ User user = (User) session.getAttribute("user");
         </span>
 
         <%-- Right aligned, extra --%>
-        <span id="short-ref">
-        </span>
+        <span id="short-ref"></span>
 
         <%-- Left aligned, extra --%>
         <span id="help-link" class="inblk">
@@ -68,6 +67,9 @@ User user = (User) session.getAttribute("user");
         <span id="profile-link" class="inblk">
             Profil
         </span>
+
+        <%-- Right aligned, extra --%>
+        <span id="book-title"></span>
 	</div>
 
 	<div id="content" class="autoScroll" tabindex="0">
