@@ -66,4 +66,7 @@ public class StoragePara
 			}
 	}
 
+	public static long rangeFilterOrdinal(long plainBookId, long segment, long ordinal) {
+		return plainBookId << 40 | segment << 32 | ordinal;
+	}
 }

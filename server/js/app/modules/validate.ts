@@ -1,5 +1,5 @@
 
-export const errorCode: {[key: string]: string} = {
+export const errorCode = {
     EML: 'Helytelen e-mail formátum',
     PASS_DIFFER: 'A jelszók nem egyeznek',
     PASS_EMPTY: 'Hiányzik a jelszó',

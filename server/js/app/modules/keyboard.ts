@@ -4,13 +4,14 @@ import * as util from './util';
 import * as task from './task';
 import * as load from './load';
 import * as bookmark from './bookmark';
+import * as toc from './toc';
 
 export function init() {
     $(window).keydown(function(e: JQueryEventObject) {
         const c = e.keyCode;
         const menuModifier = util.menuModifier(e);
         const ae = document.activeElement as HTMLElement;
-        if(!menuModifier && ae && ae.tagName.toLowerCase() !== 'div' && c !== 13)
+        if(!menuModifier && ae && ae.tagName.toLowerCase() !== 'div' && c !== 13 && c !== 27)
             return;
         if(c === 39) {                  // right
             if(!page.isSearchResult())
@@ -23,9 +24,14 @@ export function init() {
                 if(ae.onclick)
                     ae.onclick(undefined);
                 else {
-                    const $btn = util.findClickableButton(ae);
-                    if($btn)
-                        $btn.click();
+                    const ev = ($ as any)._data(ae, 'events');
+                    if(ev && ev.click)
+                        $(ae).click();
+                    else {
+                        const $btn = util.findClickableButton(ae);
+                        if($btn)
+                            $btn.click();
+                    }
                 }
                 e.preventDefault();
             }
@@ -35,18 +41,20 @@ export function init() {
             task.searchDialog();
             e.preventDefault();
         } else if(c === 83) {           // s
-            util.dialog(1, true);
+            toc.openForJumpToSection();
             $('#sect1')[0].focus();
             e.preventDefault();
         } else if(c === 69) {           // e
-            util.dialog(-1, false);
+            util.hideAllDialogs();
             bookmark.loadPage();
             e.preventDefault();
         } else if(c === 27) {		    // esc
             if(util.isMenuVisible())
                 util.toggleMenu(true);
+            else if(toc.mode === toc.modes.filter)
+                toc.closeFilterMode();
             else
-                util.dialog(-1, false);
+                util.hideAllDialogs();
             util.focusContent();
         } else if(c === 188 || c === 109)		    // , or -
             load.contextPrev();

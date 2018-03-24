@@ -27,7 +27,7 @@ export function text(json: DisplayBlock | SearchResponse, mode: number) {
         if(resp.hitCount) {
             if(mode === load.mode.search) {
                 search.accept();
-                util.dialog(-1, false);
+                util.hideAllDialogs();
             }
             search.getInstance().last = resp;
         } else {

@@ -9,11 +9,7 @@ public class StorageTocItem
 	public String title;
 	public String abbrev;
 	public short paraOrdinal;
-	
-	// derived
-	public int startPara;
-	public int endPara;			// TODO used for searching checked branches only
-	
+
 
 	public void write(RandomAccessFile out) throws IOException
 	{

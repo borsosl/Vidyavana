@@ -68,7 +68,7 @@ function saveClick() {
         if(name !== profile.name)
             isChanged = true;
     } catch(e) {
-        message(validate.errorCode[e.message]);
+        message((validate.errorCode as StringEnum)[e.message]);
         return;
     }
 

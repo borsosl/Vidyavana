@@ -85,7 +85,7 @@ User user = (User) session.getAttribute("user");
 			</div>
 			<div id="hit-buttons">
 				<span class="btn prev-page">&laquo; Előző (,)</span>
-				<span id="this-sect" class="btn">Teljes szakasz (&#8626;)</span></span>
+				<span id="this-sect" class="btn">Teljes szakasz (&#8626;)</span>
 				<span class="btn next-page">Következő (.) &raquo;</span>
 			</div>
 		</div>
@@ -118,6 +118,9 @@ User user = (User) session.getAttribute("user");
                 &nbsp;
                 <input type="radio" name="spage" value="50">&nbsp;50
             </div>
+            <div class="top10">
+                Könyvek:&nbsp;<a href="#" id="search-sect-link">Minden könyv</a>
+            </div>
             <div id="search-msg">
             </div>
             <div class="form-row button-row center">
@@ -126,8 +129,24 @@ User user = (User) session.getAttribute("user");
         </div>
 
         <div id="sectionPop" class="has-button">
-            <div style="margin-top: 10px; text-align: center;">
+            <div class="goto-sect form-row center">
                 Ugrás a választott szakaszra:
+            </div>
+            <div class="search-sect">
+                <div class="form-row font80">
+                    Szűrés a könyvek között: vagy az összes könyvből indulsz ki, és kizárod
+                    a nem szükségeseket, vagy fordítva: csak a hozzáadott szakaszokban fog keresni.
+                </div>
+                <div class="form-row">
+                    Kiindulás:&nbsp;
+                    <input type="radio" name="search-sect-base" value="all">&nbsp;Összes
+                    &nbsp;
+                    <input type="radio" name="search-sect-base" value="none" checked>&nbsp;Semmi
+                </div>
+                <div id="search-sect-list" class="form-row hidden">
+                    <div id="search-sect-list-btn" class="font85"></div>
+                    <div class="font80">Kattints a törléshez. Kiindulás váltása üríti.</div>
+                </div>
             </div>
             <div>
                 <select id="sect1" class="sectionSelect"></select>
@@ -156,11 +175,18 @@ User user = (User) session.getAttribute("user");
             <div>
                 <select id="sect9" class="sectionSelect"></select>
             </div>
+            <div class="search-sect form-row center" style="margin-bottom: 20px;">
+                <button id="search-sect-add">Hozzáadás</button>
+            </div>
             <div class="form-row center">
                 <input type="checkbox" id="section-abbrev">&nbsp;Rövidített címek
             </div>
-            <div class="form-row button-row center">
+            <div  class="form-row center">
                 <button id="sectionGo">Mehet</button>
+                <span class="search-sect">
+                    &nbsp;&nbsp;
+                    <button id="search-sect-cancel">Mégsem</button>
+                </span>
             </div>
         </div>
 

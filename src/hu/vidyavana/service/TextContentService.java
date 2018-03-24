@@ -9,6 +9,7 @@ import hu.vidyavana.search.model.Search.Order;
 import hu.vidyavana.search.model.SearchResponse;
 import hu.vidyavana.search.task.SearchTask;
 import hu.vidyavana.search.util.HitListEntry;
+import hu.vidyavana.search.util.SearchRangeUtil;
 import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.util.Timing;
@@ -18,7 +19,10 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
 
@@ -39,6 +43,7 @@ public class TextContentService
 		String q = ri.req.getParameter("q");
 		String sortStr = ri.req.getParameter("sort");
 		String pageStr = ri.req.getParameter("page");
+		String nodeFilterStr = ri.req.getParameter("nodeFilter");
 		Log.activity("Search task: " + q);
 		Sessions.updateUserAccessTime(ri.ses, ri.user);
 		
@@ -63,6 +68,7 @@ public class TextContentService
 		} catch (NumberFormatException ex) {
 			details.page = 1;
 		}
+		details.searchRanges = SearchRangeUtil.nodeFilterStringToSearchRangeList(nodeFilterStr, ri.toc);
 		Timing.start();
 		Globals.searchExecutors.submit(new SearchTask(details)).get();
 		Timing.stop("Search", Log.instance());

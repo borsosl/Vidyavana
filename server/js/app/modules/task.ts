@@ -2,7 +2,7 @@
 import * as util from './util';
 
 export function searchDialog() {
-    if(util.dialog(0, true)) {
+    if(util.dialog(util.dialog.id.search, true)) {
         const el = $('#searchInput')[0] as HTMLInputElement;
         el.focus();
         el.select();
@@ -15,7 +15,7 @@ export function initView() {
     const size: string = $(':root').css('font-size').replace('px', '');
     origFontSize = Math.round(parseFloat(size) * 72 / 96);
     fontSize = '' + origFontSize;
-    const storedSize = util.cookie('fontsize');
+    const storedSize = localStorage.getItem('fontsize');
     if(storedSize) {
         fontSize = storedSize;
         setSizes();
@@ -30,7 +30,7 @@ export function initView() {
 }
 
 export function viewDialog() {
-    if(util.dialog(2, true)) {
+    if(util.dialog(util.dialog.id.view, true)) {
         $('#view-msg').hide();
         viewMsgShown = false;
         const $e = $('#viewFontInput');
@@ -51,8 +51,8 @@ export function applyView() {
     }
     fontSize = size;
     setSizes();
-    util.cookie('fontsize', fontSize);
-    util.dialog(-1, false);
+    localStorage.setItem('fontsize', fontSize);
+    util.hideAllDialogs();
     util.refreshMenu();
     util.focusContent(true);
 }

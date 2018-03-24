@@ -141,8 +141,6 @@ a {
 	margin-left: 5px;
 	vertical-align: middle;
 	border-radius: 0.3em;
-	-moz-border-radius: 0.3em;
-	-webkit-border-radius: 0.3em;
 	cursor: pointer;
 }
 
@@ -271,6 +269,11 @@ a {
 
 .maxwid500 {
 	max-width: 500px;
+}
+
+.font80
+{
+	font-size: 80%;
 }
 
 .font85
@@ -524,8 +527,6 @@ a {
 	padding: 0.2em 1em;
 	border: 1px solid #7D4A17;
 	border-radius: 0.3em;
-	-moz-border-radius: 0.3em;
-	-webkit-border-radius: 0.3em;
 	background-color: #F2E6BB;
 	cursor: pointer;
 	max-height: 1.4em;
@@ -543,8 +544,6 @@ button
     padding: 0.2em 1em;
     border: 1px solid #7D4A17;
     border-radius: 0.3em;
-    -moz-border-radius: 0.3em;
-    -webkit-border-radius: 0.3em;
     background-color: #F2E6BB;
     cursor: pointer;
     line-height: normal;
@@ -669,4 +668,19 @@ button:focus {
 
 #pf-form > div {
 	margin-bottom: 0.7em;
+}
+
+#search-sect-list-btn {
+	line-height: 200%;
+}
+
+#search-sect-list-btn .ssitem {
+	display: inline-block;
+	margin-right: 0.5em;
+	padding: 0.15em 0.25em;
+	border: 1px solid #7D4A17;
+	border-radius: 0.3em;
+	background-color: #F2E6BB;
+	cursor: pointer;
+	line-height: normal;
 }

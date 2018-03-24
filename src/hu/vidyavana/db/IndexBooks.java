@@ -1,16 +1,19 @@
 package hu.vidyavana.db;
 
-import static hu.vidyavana.convert.api.ParagraphCategory.*;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import hu.vidyavana.convert.api.ParagraphCategory;
+import hu.vidyavana.convert.api.ParagraphClass;
+import hu.vidyavana.db.model.StoragePara;
+import hu.vidyavana.search.api.Lucene;
 import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
-import hu.vidyavana.convert.api.ParagraphCategory;
-import hu.vidyavana.convert.api.ParagraphClass;
-import hu.vidyavana.search.api.Lucene;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static hu.vidyavana.convert.api.ParagraphCategory.*;
 
 public class IndexBooks
 {
@@ -71,6 +74,8 @@ public class IndexBooks
 		doc.add(new NumericDocValuesField("bookId", plainBookId));
 		doc.add(new IntField("segment", segment, Store.YES));
 		doc.add(new IntField("ordinal", ordinal, Store.YES));
+		doc.add(new NumericDocValuesField("rangeFilterOrdinal",
+				StoragePara.rangeFilterOrdinal(plainBookId, segment, ordinal)));
 		Field textField = new Field("text", txt, txtFieldType);
 		float boost = 1f;
 		ParagraphCategory paraCateg = ParagraphCategory.mapFromClass.get(cls);

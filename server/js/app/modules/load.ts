@@ -8,7 +8,7 @@ import * as search from './search';
 import * as toc from './toc';
 
 /** text request modes */
-const loadMode: {[key: string]: number} = {
+const loadMode = {
     section: 1, down: 2, next: 3, prev: 4, search: 5, currentHit: 6,
     nextHit: 7, prevHit: 8, bookmark: 9
 };
@@ -57,7 +57,8 @@ export function text(mode: number) {
                 data = {
                     q: psr.query,
                     sort: psr.sort,
-                    page: psr.page
+                    page: psr.page,
+                    nodeFilter: psr.nodeFilter
                 };
                 return searchUrl;
             case m.currentHit:

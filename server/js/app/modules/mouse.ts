@@ -7,6 +7,7 @@ import * as load from './load';
 import * as bookmark from './bookmark';
 import * as profile from './profile';
 import * as render from './render';
+import * as toc from './toc';
 
 export function init() {
     $('#pandit-icon').click(function() {
@@ -20,19 +21,18 @@ export function init() {
 
     $('#section-link, #menu-section-link').click(function() {
         util.toggleMenu(true);
-        util.dialog(1, true);
-        $('#sect1')[0].focus();
+        toc.openForJumpToSection();
     });
 
     $('#bookmark-link, #menu-bookmark-link').click(function() {
         util.toggleMenu(true);
-        util.dialog(-1, false);
+        util.hideAllDialogs();
         bookmark.loadPage();
     });
 
     $('#logout-link, #menu-logout-link').click(function() {
         util.toggleMenu(true);
-        util.dialog(-1, false);
+        util.hideAllDialogs();
         task.logout();
     });
 
@@ -43,13 +43,13 @@ export function init() {
 
     $('#profile-link, #menu-profile-link').click(function() {
         util.toggleMenu(true);
-        util.dialog(-1, false);
+        util.hideAllDialogs();
         profile.loadPage();
     });
 
     $('#help-link, #menu-help-link').click(function() {
         util.toggleMenu(true);
-        util.dialog(-1, false);
+        util.hideAllDialogs();
         html.load('/app/dialog/html/help');
     });
 

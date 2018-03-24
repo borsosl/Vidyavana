@@ -6,7 +6,7 @@ import * as html from './html-content';
 import * as load from './load';
 
 /** bookmark page display states */
-const pageState: {[key: string]: string} = {list: 'list', edit: 'edit', delete: 'delete'};
+const pageState = {list: 'list', edit: 'edit', delete: 'delete'};
 /** displayed state */
 let currentState: string;
 /** for which bookmark was the subpage opened */
@@ -326,8 +326,10 @@ function replaceChooseOptions(optionsHtml: string) {
 
 function toggleState(state: string) {
     currentState = state;
-    for(const i in pageState)
-        $('#bm-state-'+ pageState[i]).toggle(currentState === pageState[i]);
+    for(const i in pageState) {
+        const ps = (pageState as StringEnum)[i];
+        $('#bm-state-'+ ps).toggle(currentState === ps);
+    }
 }
 
 function toggleButtons() {

@@ -31,7 +31,7 @@ export function toggleMenu(close?: boolean, onEmpty?: boolean) {
             return;
     }
     if($menu.height() > 5 || visible) {
-        dialog(-1, false);
+        hideAllDialogs();
         $menu.toggle();
         menuVisible = !visible;
     }
@@ -157,6 +157,7 @@ function throttle(init: boolean, delay: number, cb: () => void) {
     };
 }
 
+let $dialogs: JQuery[];
 
 /**
  * Shows/hides dialogs.
@@ -165,20 +166,31 @@ function throttle(init: boolean, delay: number, cb: () => void) {
  * @return true if dialog is now visible
  */
 export function dialog(index: number, toggle: boolean): boolean {
-    const ids = [$('#searchPop'), $('#sectionPop'), $('#viewPop')];
+    if(!$dialogs)
+        $dialogs = [$('#searchPop'), $('#sectionPop'), $('#viewPop')];
     let ret = false;
     const ix = ''+index;
-    for(const i in ids)
+    for(const i in $dialogs)
         if(i === ix) {
             if(toggle)
-                ids[i].toggle();
+                $dialogs[i].toggle();
             else
-                ids[i].show();
-            ret = ids[i].is(':visible');
+                $dialogs[i].show();
+            ret = $dialogs[i].is(':visible');
         } else {
-            ids[i].hide();
+            $dialogs[i].hide();
         }
     return ret;
+}
+
+export namespace dialog {
+    export const enum id {
+        all = -1, search, section, view
+    }
+}
+
+export function hideAllDialogs() {
+    dialog(dialog.id.all, false);
 }
 
 
@@ -249,16 +261,6 @@ export function resizeContent() {
         $e.innerWidth(winWid);
     }
 }
-
-
-export function cookie(key: string, value?: string) {
-    if(value === undefined) {
-        const getvalue = document.cookie.match('(^|;)\\s*' + key + '\\s*=\\s*([^;]+)');
-        return getvalue ? getvalue.pop() : '';
-    }
-    document.cookie = encodeURIComponent(key) + "=" + encodeURIComponent(value) + '; path=/';
-}
-
 
 export function findClickableButton(e: Element) {
     const $group = $(e).closest('.has-button');

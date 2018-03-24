@@ -9,6 +9,10 @@ declare var pg: {
     afterLogin: boolean
 };
 
+interface StringEnum {
+    [key: string]: string;
+}
+
 interface BookMap {
     pkg: number;
     abbr: string;
@@ -16,6 +20,21 @@ interface BookMap {
     $span: JQuery;      // ctnr of book CB
     $cb: JQuery;        // book CB
     state: boolean;     // of the book CB
+}
+
+interface SearchSectionNode {
+    op: string;
+    abbrev: string;
+    tocId: number;
+    nextSiblingTocId: number;
+}
+
+interface SearchSection {
+    nodeFilter: string;
+    displayText: string;
+    base: string;
+    nodes: SearchSectionNode[];
+    changed: boolean;
 }
 
 declare var client: {

@@ -29,7 +29,7 @@ interface TocTreeItem {
     id: number;         // Ordinal in the whole TOC for each TOC node.
     parentStart: boolean;
     title: string;
-    ordinal: number;
+    abbrev: string;
     parent: TocTreeItem;
     children: TocTreeItem[];
     partial: boolean;

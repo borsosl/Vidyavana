@@ -1,8 +1,13 @@
 
 import * as load from './load';
 import * as util from './util';
+import * as toc from './toc';
 
 let search: Search, pendingSearch: Search;
+
+/** last selection of sections */
+let searchSections: SearchSection;
+let $searchSectionLink: JQuery;
 
 /** if a search-related message is visible */
 let searchMsgShown: boolean;
@@ -20,6 +25,10 @@ class Search {
      * hitlist page size
      */
     public page: number;
+    /**
+     * selected sections
+     */
+    public nodeFilter: string;
     /**
      * details of last hit shown
      */
@@ -46,13 +55,20 @@ export function accept() {
  */
 export function init() {
     const $inp = $('#searchInput');
-    const $scoreOrder: JQuery = $('#score-order');
-    const $searchPaging: JQuery = $('#search-paging');
+    const $scoreOrder = $('#score-order');
+    const $searchPaging = $('#search-paging');
+    $searchSectionLink = $('#search-sect-link');
 
-    const spage = util.cookie('spage');
-    if(spage) {
+    const spage = localStorage.getItem('spage');
+    if(spage)
         $('input[value="'+spage+'"]', $searchPaging).prop('checked', true);
-    }
+
+    const storedSections = sessionStorage.getItem('search-sections');
+    if(storedSections)
+        searchSections = JSON.parse(storedSections);
+    else
+        resetSearchSections('none');
+    searchSectionLinkTitle();
 
     $inp.keydown(function(e) {
         if(searchMsgShown) {
@@ -60,38 +76,63 @@ export function init() {
             searchMsgShown = false;
         }
         if(e.keyCode === 27) {
-            util.dialog(-1, false);
+            util.hideAllDialogs();
             util.focusContent();
         }
     });
-    $('#searchGo').click(function() {
-        search();
+    $searchSectionLink.click((e: JQueryEventObject) => {
+        toc.openForSearchSection();
+        e.preventDefault();
     });
-
-    function search() {
-        newSearch($inp.val(), ($scoreOrder[0] as HTMLInputElement).checked, $('input:checked', $searchPaging).val());
-    }
+    $('#searchGo').click(() => {
+        newSearch($inp.val(), ($scoreOrder[0] as HTMLInputElement).checked,
+            $('input:checked', $searchPaging).val(), searchSections.nodeFilter);
+    });
 }
 
 
-function newSearch(text: string, scoreOrder: boolean, page: string) {
+function newSearch(text: string, scoreOrder: boolean, page: string, nodeFilter: string) {
     if(searchMsgShown) {
         $('#search-msg').hide();
         searchMsgShown = false;
     }
-    const ps = pendingSearch = new Search();
-    ps.query = text;
-    ps.sort = scoreOrder ? 'Score' : 'Index';
-    ps.setPage(page);
+    pendingSearch = new Search();
+    pendingSearch.query = text;
+    pendingSearch.sort = scoreOrder ? 'Score' : 'Index';
+    pendingSearch.setPage(page);
+    pendingSearch.nodeFilter = nodeFilter;
     load.text(load.mode.search);
-    util.cookie('spage', page);
+    localStorage.setItem('spage', page);
+}
+
+export function resetSearchSections(base: string) {
+    searchSections = {
+        nodeFilter: '',
+        displayText: 'Minden könyv',
+        base,
+        nodes: [],
+        changed: false
+    };
+}
+
+export function updateSearchSections() {
+    searchSections.changed = false;
+    sessionStorage.setItem('search-sections', JSON.stringify(searchSections));
+    searchSectionLinkTitle();
+}
+
+export function restoreSearchSections(ss: SearchSection) {
+    searchSections = ss;
+}
+
+function searchSectionLinkTitle() {
+    $searchSectionLink.text(searchSections.nodeFilter ? searchSections.displayText : 'Mindegyik');
 }
 
 
 export function message(msg: string) {
     $('#search-msg').text(msg).show();
     searchMsgShown = true;
-
 }
 
 /** search page shows multiple results */
@@ -106,3 +147,7 @@ export function getInstance(): Search {
 export function getPendingInstance(): Search {
     return pendingSearch;
 }
+
+export {
+    searchSections as sections
+};

@@ -35,6 +35,7 @@ public class Search implements Serializable
 	public Order order = Order.Score;
 	public int page = 1;
 	public transient BookAccess bookAccess;
+	public List<SearchRange> searchRanges;
 
 	public transient List<Hit> hits;
 	public int hitCount;

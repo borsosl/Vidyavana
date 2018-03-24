@@ -133,9 +133,9 @@ public class TocTree
 		TocTreeItem tti = new TocTreeItem();
 		tti.id = id;
 		tti.title = title;
+		tti.abbrev = abbrev;
 		if(server)
 		{
-			tti.abbrev = abbrev;
 			tti.prev = prevItem;
 			if(prevItem != null)
 				prevItem.next = tti;
@@ -162,7 +162,7 @@ public class TocTree
 	public TocTreeItem treeNode(int id)
 	{
 		TocTreeItem srvNode = findNodeById(root, id, false);
-		TocTreeItem cliNode = treeItem(srvNode.id, srvNode.title, null, false);
+		TocTreeItem cliNode = treeItem(srvNode.id, srvNode.title, srvNode.abbrev, false);
 		cliNode.children = new ArrayList<TocTreeItem>();
 		addChildren(srvNode, cliNode);
 		return cliNode;
@@ -224,14 +224,14 @@ public class TocTree
 		dest.children = new ArrayList<TocTreeItem>();
 		if(src != root)
 		{
-			TocTreeItem ti = treeItem(src.id+1, "Kezdete", null, false);
+			TocTreeItem ti = treeItem(src.id+1, "Kezdete", src.abbrev, false);
 			ti.parentStart = true;
 			dest.children.add(ti);
 		}
 		for(int i=0; i<src.children.size(); ++i)
 		{
 			TocTreeItem it = src.children.get(i);
-			TocTreeItem ch = treeItem(it.id, it.title, null, false);
+			TocTreeItem ch = treeItem(it.id, it.title, it.abbrev, false);
 			dest.children.add(ch);
 			if(it.children != null)
 				if(src == root && i==0)
@@ -268,6 +268,20 @@ public class TocTree
 			prev = br;
 		}
 		return prev.tocIdEnd - 1;
+	}
+
+	public TocTreeItem nextSibling(TocTreeItem node) {
+		if(node == root)
+			return null;
+		boolean nodeReached = false;
+		for(TocTreeItem pnode : node.parent.children) {
+			if(nodeReached)
+				return pnode;
+			if(pnode == node)
+				nodeReached = true;
+		}
+		// node is last item of its parent
+		return nextSibling(node.parent);
 	}
 
 

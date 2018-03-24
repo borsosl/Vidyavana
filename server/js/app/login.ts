@@ -11,13 +11,10 @@ function setActiveTab() {
     $('.forgotitem').toggle(activeTab === 0 && activeForgottenLink);
     $('#pass-div').toggle(!activeForgottenLink);
 
-    setTimeout(function() {
-        const $e = $('#email');
-        if(!$e.val() || activeForgottenLink)
-            $e[0].focus();
-        else
-            $('#loginBtn')[0].focus();
-    }, 100);
+    if(activeForgottenLink)
+        $('#email')[0].focus();
+    else
+        $('#loginBtn')[0].focus();
 }
 
 
@@ -154,7 +151,7 @@ function forgotCancel() {
 function handleValidationError(e: Error) {
     if(!e || !e.message)
         return;
-    const msg = validate.errorCode[e.message];
+    const msg = (validate.errorCode as StringEnum)[e.message];
     if(msg)
         message(msg);
 }

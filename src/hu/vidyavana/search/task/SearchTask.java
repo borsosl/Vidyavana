@@ -28,7 +28,7 @@ public class SearchTask implements Runnable
 		try
 		{
 			IndexSearcher sr = Lucene.SYSTEM.searcher();
-			Query query = VedabaseQueryParser.parse(details.queryStr, details.bookAccess, details.order);
+			Query query = VedabaseQueryParser.parse(details.queryStr, details.bookAccess, details.order, details.searchRanges);
 			TopDocs res = sr.search(query, details.fetchHits,
 				details.order == Order.Score ? Sort.RELEVANCE : Sort.INDEXORDER);
 			if(res.totalHits > 0)
