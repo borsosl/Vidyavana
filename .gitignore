@@ -8,6 +8,7 @@
 /server/app/WEB-INF/runtime/
 /server/app/WEB-INF/work/
 /server/conf/
+/server/dist/
 font/
 X.*
 **/orig-pandit-apache-conf.txt

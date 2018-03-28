@@ -5,7 +5,6 @@ import hu.vidyavana.util.Globals;
 import hu.vidyavana.util.Log;
 import hu.vidyavana.web.ctrl.*;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +22,7 @@ public class PanditServlet extends HttpServlet
 
 
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+	protected void service(HttpServletRequest req, HttpServletResponse resp)
 	{
 		try
 		{
@@ -54,9 +53,7 @@ public class PanditServlet extends HttpServlet
     		if(ri.user == null && ri.ses != null)
     			ri.user = (User) ri.ses.getAttribute("user");
 			
-    		ri.resp.setContentType("text/html; charset=UTF-8");
     		ri.resp.setHeader("Cache-Control", "no-store");
-    		ri.resp.setHeader("Expires", "-1");
 
     		String userInfo = ri.user == null ? "" : "["+ri.user.email+"] ";
     		Log.activity(userInfo + ri.uri);
@@ -186,7 +183,7 @@ public class PanditServlet extends HttpServlet
 	
 	public static HashMap<String, Object> ajaxMap()
 	{
-		return new HashMap<String, Object>();
+		return new HashMap<>();
 	}
 	
 	

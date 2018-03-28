@@ -1,4 +1,9 @@
-AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json
+#SetOutputFilter DEFLATE
+#SetEnvIfNoCase Request_URI  \.(?:ico|gif|jpg|png)$ no-gzip dont-vary
+
+Header set Cache-Control "must-revalidate"
+
 ExpiresActive On
-ExpiresDefault "access plus 10 minutes"
+ExpiresDefault "access plus 1 year"
+
 Header unset ETag

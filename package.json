@@ -11,6 +11,8 @@
   "devDependencies": {
     "@types/jquery": "^2.0.48",
     "@types/qunit": "^2.5.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.1",
     "qunit": "^2.5.1",
     "ts-loader": "^3.5.0",
     "uglifyjs-webpack-plugin": "^1.1.8",
