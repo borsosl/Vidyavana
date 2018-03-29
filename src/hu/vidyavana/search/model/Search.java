@@ -36,6 +36,7 @@ public class Search implements Serializable
 	public int page = 1;
 	public transient BookAccess bookAccess;
 	public List<SearchRange> searchRanges;
+	public int paraTypesBits;
 
 	public transient List<Hit> hits;
 	public int hitCount;

@@ -238,7 +238,7 @@ a {
 	cursor: pointer;
 }
 
-#searchPop, #sectionPop, #viewPop
+#searchPop, #sectionPop, #viewPop, #typesPop
 {
 	position: absolute;
 	top: 64px;

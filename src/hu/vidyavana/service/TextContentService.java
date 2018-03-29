@@ -44,6 +44,7 @@ public class TextContentService
 		String sortStr = ri.req.getParameter("sort");
 		String pageStr = ri.req.getParameter("page");
 		String nodeFilterStr = ri.req.getParameter("nodeFilter");
+		String paraTypes = ri.req.getParameter("paraTypes");
 		Log.activity("Search task: " + q);
 		Sessions.updateUserAccessTime(ri.ses, ri.user);
 		
@@ -69,6 +70,7 @@ public class TextContentService
 			details.page = 1;
 		}
 		details.searchRanges = SearchRangeUtil.nodeFilterStringToSearchRangeList(nodeFilterStr, ri.toc);
+		details.paraTypesBits = SearchRangeUtil.paraTypesBits(paraTypes);
 		Timing.start();
 		Globals.searchExecutors.submit(new SearchTask(details)).get();
 		Timing.stop("Search", Log.instance());

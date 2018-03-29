@@ -1,10 +1,7 @@
 package hu.vidyavana.search.task;
 
 import hu.vidyavana.db.model.BookAccess;
-import hu.vidyavana.search.api.FilterByIntegerSetQuery;
-import hu.vidyavana.search.api.FilterBySearchRangesQuery;
-import hu.vidyavana.search.api.QueryAnalyzer;
-import hu.vidyavana.search.api.SeparateQueryOperatorFilter;
+import hu.vidyavana.search.api.*;
 import hu.vidyavana.search.model.Search.Order;
 import hu.vidyavana.search.model.SearchRange;
 import org.apache.lucene.analysis.Analyzer;
@@ -23,7 +20,7 @@ public class VedabaseQueryParser
 	private static Analyzer analyzer = new QueryAnalyzer();
 	
 	
-	public static Query parse(String s, BookAccess bookAccess, Order order, List<SearchRange> searchRanges)
+	public static Query parse(String s, BookAccess bookAccess, Order order, List<SearchRange> searchRanges, int paraTypesBits)
 	{
 		List<String> words = analyze(s);
 		BooleanQuery.Builder bqb = new BooleanQuery.Builder();
@@ -50,6 +47,8 @@ public class VedabaseQueryParser
 			bqb.add(new FilterByIntegerSetQuery("bookId", bookAccess), BooleanClause.Occur.MUST);
 		if(searchRanges != null)
 			bqb.add(new FilterBySearchRangesQuery("rangeFilterOrdinal", searchRanges), BooleanClause.Occur.MUST);
+		if(paraTypesBits > 0)
+			bqb.add(new FilterByParagraphTypesQuery("paraCategory", paraTypesBits), BooleanClause.Occur.MUST);
 		return bqb.build();
 	}
 

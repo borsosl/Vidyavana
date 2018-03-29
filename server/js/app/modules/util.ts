@@ -167,7 +167,7 @@ let $dialogs: JQuery[];
  */
 export function dialog(index: number, toggle: boolean): boolean {
     if(!$dialogs)
-        $dialogs = [$('#searchPop'), $('#sectionPop'), $('#viewPop')];
+        $dialogs = [$('#searchPop'), $('#sectionPop'), $('#viewPop'), $('#typesPop')];
     let ret = false;
     const ix = ''+index;
     for(const i in $dialogs)
@@ -185,7 +185,7 @@ export function dialog(index: number, toggle: boolean): boolean {
 
 export namespace dialog {
     export const enum id {
-        all = -1, search, section, view
+        all = -1, search, section, view, types
     }
 }
 

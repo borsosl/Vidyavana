@@ -121,10 +121,35 @@ User user = (User) session.getAttribute("user");
             <div class="top10">
                 Könyvek:&nbsp;<a href="#" id="search-sect-link">Minden könyv</a>
             </div>
+            <div class="top10">
+                Bekezdések:&nbsp;<a href="#" id="para-types-link">Minden típus</a>
+            </div>
             <div id="search-msg">
             </div>
             <div class="form-row button-row center">
                 <button id="searchGo">Mehet</button>
+            </div>
+        </div>
+
+        <div id="typesPop">
+            <div class="form-row center">
+                Keresett bekezdés-típusok
+            </div>
+            <div class="form-row"><input type="checkbox" name="types-0"> Cím</div>
+            <div class="form-row"><input type="checkbox" name="types-1"> Alcím, versszám</div>
+            <div class="form-row"><input type="checkbox" name="types-2"> Vers</div>
+            <div class="form-row"><input type="checkbox" name="types-3"> Szavankénti fordítás</div>
+            <div class="form-row"><input type="checkbox" name="types-4"> Versfordítás</div>
+            <div class="form-row"><input type="checkbox" name="types-5"> Magyarázat, törzsszöveg</div>
+            <div class="form-row"><input type="checkbox" name="types-6"> Vers a magyarázatban</div>
+            <div class="form-row"><input type="checkbox" name="types-7"> Tárgymutató</div>
+            <div  class="form-row button-row center">
+                <button id="types-all">Mind</button>&nbsp;&nbsp;
+                <button id="types-none">Egyik sem</button>
+            </div>
+            <div class="form-row button-row center">
+                <button id="types-go">Mehet</button>&nbsp;&nbsp;
+                <button id="types-cancel">Mégsem</button>
             </div>
         </div>
 

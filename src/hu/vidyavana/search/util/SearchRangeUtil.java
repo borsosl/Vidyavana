@@ -100,4 +100,8 @@ public class SearchRangeUtil {
         return ranges;
     }
 
+    public static int paraTypesBits(String types) {
+        return types.chars().reduce(0, (sum, numberAscii) -> sum + (1 << (numberAscii-48)));
+    }
+
 }

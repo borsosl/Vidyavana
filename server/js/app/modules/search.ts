@@ -2,12 +2,14 @@
 import * as load from './load';
 import * as util from './util';
 import * as toc from './toc';
+import * as paraTypes from "./paragraph-types";
 
 let search: Search, pendingSearch: Search;
 
 /** last selection of sections */
 let searchSections: SearchSection;
 let $searchSectionLink: JQuery;
+let $paraTypesLink: JQuery;
 
 /** if a search-related message is visible */
 let searchMsgShown: boolean;
@@ -29,6 +31,10 @@ class Search {
      * selected sections
      */
     public nodeFilter: string;
+    /**
+     * selected sections
+     */
+    public paraTypes: string;
     /**
      * details of last hit shown
      */
@@ -58,6 +64,7 @@ export function init() {
     const $scoreOrder = $('#score-order');
     const $searchPaging = $('#search-paging');
     $searchSectionLink = $('#search-sect-link');
+    $paraTypesLink = $('#para-types-link');
 
     const spage = localStorage.getItem('spage');
     if(spage)
@@ -69,6 +76,7 @@ export function init() {
     else
         resetSearchSections('none');
     searchSectionLinkTitle();
+    paraTypesLinkTitle();
 
     $inp.keydown(function(e) {
         if(searchMsgShown) {
@@ -84,14 +92,18 @@ export function init() {
         toc.openForSearchSection();
         e.preventDefault();
     });
+    $paraTypesLink.click((e: JQueryEventObject) => {
+        paraTypes.open();
+        e.preventDefault();
+    });
     $('#searchGo').click(() => {
         newSearch($inp.val(), ($scoreOrder[0] as HTMLInputElement).checked,
-            $('input:checked', $searchPaging).val(), searchSections.nodeFilter);
+            $('input:checked', $searchPaging).val(), searchSections.nodeFilter, paraTypes.types);
     });
 }
 
 
-function newSearch(text: string, scoreOrder: boolean, page: string, nodeFilter: string) {
+function newSearch(text: string, scoreOrder: boolean, page: string, nodeFilter: string, paraTypes: string) {
     if(searchMsgShown) {
         $('#search-msg').hide();
         searchMsgShown = false;
@@ -101,6 +113,7 @@ function newSearch(text: string, scoreOrder: boolean, page: string, nodeFilter: 
     pendingSearch.sort = scoreOrder ? 'Score' : 'Index';
     pendingSearch.setPage(page);
     pendingSearch.nodeFilter = nodeFilter;
+    pendingSearch.paraTypes = paraTypes;
     load.text(load.mode.search);
     localStorage.setItem('spage', page);
 }
@@ -108,7 +121,7 @@ function newSearch(text: string, scoreOrder: boolean, page: string, nodeFilter: 
 export function resetSearchSections(base: string) {
     searchSections = {
         nodeFilter: '',
-        displayText: 'Minden könyv',
+        displayText: '',
         base,
         nodes: [],
         changed: false
@@ -126,7 +139,11 @@ export function restoreSearchSections(ss: SearchSection) {
 }
 
 function searchSectionLinkTitle() {
-    $searchSectionLink.text(searchSections.nodeFilter ? searchSections.displayText : 'Mindegyik');
+    $searchSectionLink.text(searchSections.nodeFilter ? searchSections.displayText : 'Minden könyv');
+}
+
+export function paraTypesLinkTitle() {
+    $paraTypesLink.text(paraTypes.types === '' ? 'Minden típus' : paraTypes.types.length + '-féle típus');
 }
 
 

@@ -4,6 +4,7 @@ import * as util from './modules/util';
 import * as task from './modules/task';
 import * as toc from './modules/toc';
 import * as search from './modules/search';
+import * as paraTypes from "./modules/paragraph-types";
 import * as load from './modules/load';
 import * as keyboard from './modules/keyboard';
 import * as mouse from './modules/mouse';
@@ -24,8 +25,9 @@ export function init() {
         util.message('A regisztráció véglegesítéséhez<br/>kiküldtünk egy ellenőrző e-mailt.<br/>', true);
     if(pg.downtime)
         util.downtime(pg.downtime);
-    search.init();
     touch.init();
+    search.init();
+    paraTypes.init();
     toc.initSectionSelect();
     keyboard.init();
     mouse.init();

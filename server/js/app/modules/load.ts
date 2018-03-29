@@ -58,7 +58,8 @@ export function text(mode: number) {
                     q: psr.query,
                     sort: psr.sort,
                     page: psr.page,
-                    nodeFilter: psr.nodeFilter
+                    nodeFilter: psr.nodeFilter,
+                    paraTypes: psr.paraTypes
                 };
                 return searchUrl;
             case m.currentHit:
