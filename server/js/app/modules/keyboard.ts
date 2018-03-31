@@ -11,15 +11,16 @@ export function init() {
         const c = e.keyCode;
         const menuModifier = util.menuModifier(e);
         const ae = document.activeElement as HTMLElement;
-        if(!menuModifier && ae && ae.tagName.toLowerCase() !== 'div' && c !== 13 && c !== 27)
+        const tagname = ae ? ae.tagName.toLowerCase() : null;
+        if(!menuModifier && ae && tagname !== 'div' && tagname !== 'a' && c !== 13 && c !== 27)
             return;
         if(c === 39) {                  // right
             if(!page.isSearchResult())
                 load.continuation();
         } else if(c === 13) {           // enter
-            if(!ae || ae.tagName.toLowerCase() === 'div') {
+            if(!ae || tagname === 'div') {
                 load.contextSwitch();
-                e.preventDefault();
+                e.preventDefault();     // must have
             } else if(ae) {
                 if(ae.onclick)
                     ae.onclick(undefined);
@@ -28,7 +29,7 @@ export function init() {
                     if(ev && ev.click)
                         $(ae).click();
                     else {
-                        const $btn = util.findClickableButton(ae);
+                        const $btn = util.findButtonClass(ae, 'ok');
                         if($btn)
                             $btn.click();
                     }
@@ -49,12 +50,17 @@ export function init() {
             bookmark.loadPage();
             e.preventDefault();
         } else if(c === 27) {		    // esc
-            if(util.isMenuVisible())
+            const $btn = ae ? util.findButtonClass(ae, 'cancel') : null;
+            if($btn && $btn.length)
+                $btn.click();
+            else if(util.isMenuVisible())
                 util.toggleMenu(true);
-            else if(toc.mode === toc.modes.filter)
-                toc.closeFilterMode();
-            else
+            else if(util.dialog.shown > util.dialog.id.none)
                 util.hideAllDialogs();
+            else if(util.hitsPanelShown) {
+                util.showSectionPanel();
+                page.current(page.section);
+            }
             util.focusContent();
         } else if(c === 188 || c === 109)		    // , or -
             load.contextPrev();

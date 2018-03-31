@@ -125,6 +125,10 @@ export function contextSwitch(): void {
     if(page.isSearchResult()) {
         if(!search.isHitlist())
             currentHitSection();
+        else if(page.section.tocId) {
+            util.showSectionPanel();
+            page.current(page.section);
+        }
     } else {
         const sr = search.getInstance();
         if(!sr)

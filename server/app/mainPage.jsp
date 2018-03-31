@@ -127,11 +127,11 @@ User user = (User) session.getAttribute("user");
             <div id="search-msg">
             </div>
             <div class="form-row button-row center">
-                <button id="searchGo">Mehet</button>
+                <button id="searchGo" class="ok-button">Mehet</button>
             </div>
         </div>
 
-        <div id="typesPop">
+        <div id="typesPop" class="has-button">
             <div class="form-row center">
                 Keresett bekezdés-típusok
             </div>
@@ -148,8 +148,8 @@ User user = (User) session.getAttribute("user");
                 <button id="types-none">Egyik sem</button>
             </div>
             <div class="form-row button-row center">
-                <button id="types-go">Mehet</button>&nbsp;&nbsp;
-                <button id="types-cancel">Mégsem</button>
+                <button id="types-go" class="ok-button">Mehet</button>&nbsp;&nbsp;
+                <button id="types-cancel" class="cancel-button">Mégsem</button>
             </div>
         </div>
 
@@ -207,10 +207,10 @@ User user = (User) session.getAttribute("user");
                 <input type="checkbox" id="section-abbrev">&nbsp;Rövidített címek
             </div>
             <div  class="form-row center">
-                <button id="sectionGo">Mehet</button>
+                <button id="sectionGo" class="ok-button">Mehet</button>
                 <span class="search-sect">
                     &nbsp;&nbsp;
-                    <button id="search-sect-cancel">Mégsem</button>
+                    <button id="search-sect-cancel" class="cancel-button">Mégsem</button>
                 </span>
             </div>
         </div>
@@ -225,7 +225,7 @@ User user = (User) session.getAttribute("user");
             <div id="view-msg" class="top10">
             </div>
             <div class="form-row button-row center">
-                <button id="viewGo">Beállítás</button>
+                <button id="viewGo" class="ok-button">Beállítás</button>
             </div>
         </div>
 

@@ -23,7 +23,6 @@ export function init() {
     $('#types-none').click(none);
     $('#types-go').click(go);
     $('#types-cancel').click(cancel);
-    $root.keydown(handleLocalKeys);
 }
 
 function setCheckboxes() {
@@ -72,14 +71,4 @@ function go() {
 function cancel() {
     types = backupTypes;
     task.searchDialog();
-}
-
-function handleLocalKeys(e: JQueryEventObject) {
-    if(e.keyCode === 13) {
-        go();
-        e.stopPropagation();
-    } else if(e.keyCode === 27) {
-        cancel();
-        e.stopPropagation();
-    }
 }

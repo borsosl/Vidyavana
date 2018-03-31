@@ -1,6 +1,5 @@
 
 import * as load from './load';
-import * as util from './util';
 import * as toc from './toc';
 import * as paraTypes from "./paragraph-types";
 
@@ -78,14 +77,10 @@ export function init() {
     searchSectionLinkTitle();
     paraTypesLinkTitle();
 
-    $inp.keydown(function(e) {
+    $inp.keydown(function() {
         if(searchMsgShown) {
             $('#search-msg').hide();
             searchMsgShown = false;
-        }
-        if(e.keyCode === 27) {
-            util.hideAllDialogs();
-            util.focusContent();
         }
     });
     $searchSectionLink.click((e: JQueryEventObject) => {
@@ -104,6 +99,9 @@ export function init() {
 
 
 function newSearch(text: string, scoreOrder: boolean, page: string, nodeFilter: string, paraTypes: string) {
+    text = text.trim();
+    if(!text)
+        return;
     if(searchMsgShown) {
         $('#search-msg').hide();
         searchMsgShown = false;

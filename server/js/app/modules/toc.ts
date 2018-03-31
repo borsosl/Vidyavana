@@ -278,7 +278,7 @@ function redrawSelectBoxes() {
  */
 function gotoSection() {
     if(mode === TocMode.jump) {
-        $('#sectionPop').hide();
+        util.hideAllDialogs();
         selSection = selTocNode.id;
         load.text(load.mode.section);
     } else {
@@ -323,7 +323,7 @@ function setFilterOperation() {
     for (const node of search.sections.nodes)
         if(selTocNode.id >= node.tocId && selTocNode.id < node.nextSiblingTocId)
             filterOperation = node.op === '+' ? '-' : '+';
-    $('#search-sect-add').text(filterOperation === '+' ? 'Hozzáadás' : 'Elvétel');
+    $('#search-sect-add').text(filterOperation === '+' ? 'Hozzáadás' : 'Kizárás');
 }
 
 export function closeFilterMode(cancel = true) {
@@ -354,26 +354,27 @@ function resetFilterModeSettings(modifyRadio = true) {
 }
 
 function addFilter() {
-    if(removeFilterNode(selTocNode.id))
-        return;
-    const ss = search.sections;
-    const node: SearchSectionNode = {
-        op: filterOperation,
-        abbrev: selTocNodeAbbrev(),
-        tocId: selTocNode.id,
-        nextSiblingTocId: nextSiblingTocId(selTocNode)
-    };
-    ss.nodes.push(node);
-    ss.changed = true;
-    ss.nodes.sort((a, b) => a.tocId - b.tocId);
-    setNodeFilter();
-    if(ss.nodes[ss.nodes.length-1] === node) {
-        addFilterTagSpan(node);
-        $('#search-sect-list').toggle(!!ss.nodes.length);
-    } else {
-        resetFilterModeSettings(false);
+    if(!removeFilterNode(selTocNode.id)) {
+        const ss = search.sections;
+        const node: SearchSectionNode = {
+            op: filterOperation,
+            abbrev: selTocNodeAbbrev(),
+            tocId: selTocNode.id,
+            nextSiblingTocId: nextSiblingTocId(selTocNode)
+        };
+        ss.nodes.push(node);
+        ss.changed = true;
+        ss.nodes.sort((a, b) => a.tocId - b.tocId);
+        setNodeFilter();
+        if(ss.nodes[ss.nodes.length-1] === node) {
+            addFilterTagSpan(node);
+            $('#search-sect-list').toggle(!!ss.nodes.length);
+        } else {
+            resetFilterModeSettings(false);
+        }
+        setFilterOperation();
     }
-    setFilterOperation();
+    $('#sect1').focus();
 }
 
 function selTocNodeAbbrev() {
@@ -449,7 +450,3 @@ function setNodeFilter() {
     ss.nodeFilter = f;
     ss.displayText = d.trim();
 }
-
-export {
-    TocMode as modes
-};

@@ -53,6 +53,8 @@ export function refreshMenu() {
     }, 1);
 }
 
+export let hitsPanelShown = false;
+
 export function showSectionPanel() {
     toggleContent(1);
 }
@@ -62,8 +64,9 @@ export function showHitsPanel() {
 }
 
 function toggleContent(mode: number) {
-    dom.$txt.toggle(mode === 1);
-    dom.$hits.toggle(mode === 2);
+    hitsPanelShown = mode === 2;
+    dom.$txt.toggle(!hitsPanelShown);
+    dom.$hits.toggle(hitsPanelShown);
 }
 
 
@@ -169,6 +172,7 @@ export function dialog(index: number, toggle: boolean): boolean {
     if(!$dialogs)
         $dialogs = [$('#searchPop'), $('#sectionPop'), $('#viewPop'), $('#typesPop')];
     let ret = false;
+    dialog.shown = dialog.id.none;
     const ix = ''+index;
     for(const i in $dialogs)
         if(i === ix) {
@@ -177,6 +181,8 @@ export function dialog(index: number, toggle: boolean): boolean {
             else
                 $dialogs[i].show();
             ret = $dialogs[i].is(':visible');
+            if(ret)
+                dialog.shown = index;
         } else {
             $dialogs[i].hide();
         }
@@ -185,12 +191,17 @@ export function dialog(index: number, toggle: boolean): boolean {
 
 export namespace dialog {
     export const enum id {
-        all = -1, search, section, view, types
+        all = -1, none = -1, search, section, view, types
     }
+    export let shown: id;
 }
 
 export function hideAllDialogs() {
     dialog(dialog.id.all, false);
+    if(hitsPanelShown)
+        $('a', dom.$hits).filter(':first').focus();
+    else
+        focusContent();
 }
 
 
@@ -262,9 +273,9 @@ export function resizeContent() {
     }
 }
 
-export function findClickableButton(e: Element) {
+export function findButtonClass(e: Element, cls: string) {
     const $group = $(e).closest('.has-button');
-    return $group ? $('button', $group) : null;
+    return $group ? $('.'+cls+'-button:visible', $group) : null;
 }
 
 export function bookOrdinalOnTop() {
