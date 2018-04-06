@@ -14,6 +14,7 @@ class Dom {
     $bookTitle: JQuery;
     $menuShortRef: JQuery;
     $loading: JQuery;
+    $searchInput: JQuery;
 
     constructor() {
         this.nowarn = 0;
@@ -42,6 +43,7 @@ class Dom {
         this.$bookTitle = $('#book-title');
         this.$menuShortRef = $('#menu-short-ref');
         this.$loading = $('#loading');
+        this.$searchInput = $('#searchInput');
     }
 }
 

@@ -301,3 +301,33 @@ export function bookOrdinalOnTop() {
     }
     return $prev.data('ix') + 1;    // ix 0-based, ordinal in toc tree 1-based
 }
+
+
+export function binarySearch<T>(arr: T[], comparator: (item: T) => number): number {
+    let first = 0;
+    let last = arr.length - 1;
+    while(first <= last) {
+        const mid = Math.floor((last + first) / 2);
+        const cmp = comparator(arr[mid]);
+        if(cmp > 0)
+            first = mid + 1;
+        else if(cmp < 0)
+            last = mid - 1;
+        else
+            return mid;
+    }
+    return -first - 1;
+}
+
+export function findStartIndexBefore<T>(arr: T[], ix: number, comparator: (item: T) => number) {
+    while(ix > 0) {
+        if(comparator(arr[ix-1]) !== 0)
+            break;
+        ix--;
+    }
+    return ix;
+}
+
+export function compare<T>(a: T, b: T) {
+    return a < b ? -1 : a > b ? 1 : 0;
+}

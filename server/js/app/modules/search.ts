@@ -1,7 +1,9 @@
 
+import dom from './dom';
 import * as load from './load';
 import * as toc from './toc';
 import * as paraTypes from "./paragraph-types";
+import * as mru from './mru';
 
 let search: Search, pendingSearch: Search;
 
@@ -59,7 +61,6 @@ export function accept() {
  * One-time setup of event handlers.
  */
 export function init() {
-    const $inp = $('#searchInput');
     const $scoreOrder = $('#score-order');
     const $searchPaging = $('#search-paging');
     $searchSectionLink = $('#search-sect-link');
@@ -76,13 +77,9 @@ export function init() {
         resetSearchSections('none');
     searchSectionLinkTitle();
     paraTypesLinkTitle();
+    mru.init();
 
-    $inp.keydown(function() {
-        if(searchMsgShown) {
-            $('#search-msg').hide();
-            searchMsgShown = false;
-        }
-    });
+    dom.$searchInput.keydown(inputKeydown).click(() => mru.show(false));
     $searchSectionLink.click((e: JQueryEventObject) => {
         toc.openForSearchSection();
         e.preventDefault();
@@ -92,11 +89,18 @@ export function init() {
         e.preventDefault();
     });
     $('#searchGo').click(() => {
-        newSearch($inp.val(), ($scoreOrder[0] as HTMLInputElement).checked,
+        newSearch(dom.$searchInput.val(), ($scoreOrder[0] as HTMLInputElement).checked,
             $('input:checked', $searchPaging).val(), searchSections.nodeFilter, paraTypes.types);
     });
 }
 
+function inputKeydown(this: HTMLInputElement, e: JQueryEventObject) {
+    if(searchMsgShown) {
+        $('#search-msg').hide();
+        searchMsgShown = false;
+    }
+    mru.inputKeydown.call(this, e);
+}
 
 function newSearch(text: string, scoreOrder: boolean, page: string, nodeFilter: string, paraTypes: string) {
     text = text.trim();
@@ -114,6 +118,7 @@ function newSearch(text: string, scoreOrder: boolean, page: string, nodeFilter: 
     pendingSearch.paraTypes = paraTypes;
     load.text(load.mode.search);
     localStorage.setItem('spage', page);
+    mru.addNewSearchWords(text);
 }
 
 export function resetSearchSections(base: string) {

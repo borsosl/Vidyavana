@@ -2,6 +2,7 @@
 declare var pg: {
     toc: TocTreeItem,
     maxTocId: number,
+    userId: number,
     justRegistered: boolean,
     downtime: string,
     serviceTag: string,

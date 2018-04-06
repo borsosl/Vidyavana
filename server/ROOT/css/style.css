@@ -684,3 +684,28 @@ button:focus {
 	cursor: pointer;
 	line-height: normal;
 }
+
+#mru {
+	position: absolute;
+	top: 2px;
+	background-color: #FFF6DB;
+	border: 1px solid #7D4A17;
+	border-radius: 2px;
+	min-width: 150px;
+	max-width: 250px;
+	max-height: 200px;
+	padding: 2px;
+	overflow: auto;
+	display: none;
+}
+
+#mru div {
+	padding: 2px 4px;
+	cursor: pointer;
+}
+
+#mru .sel {
+	background-color: #7D4A17;
+	color: #F2E6BB;
+	border-radius: 2px;
+}

@@ -20,6 +20,7 @@ public class MainPage
 			TocTreeItem initialShortTree = toc.initialShortTree();
 			res.put("toc", initialShortTree);
 			res.put("maxTocId", toc.maxId);
+			res.put("userId", ri.user.id);
 			res.put("justRegistered", ri.ses.getAttribute("justRegistered"));
 			res.put("downtime", Globals.downtime);
 			ri.ses.removeAttribute("justRegistered");

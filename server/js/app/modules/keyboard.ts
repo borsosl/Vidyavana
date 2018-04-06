@@ -26,7 +26,7 @@ export function init() {
                     ae.onclick(undefined);
                 else {
                     const ev = ($ as any)._data(ae, 'events');
-                    if(ev && ev.click)
+                    if(ev && ev.click && ae.tagName === 'button')
                         $(ae).click();
                     else {
                         const $btn = util.findButtonClass(ae, 'ok');

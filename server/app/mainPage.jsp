@@ -102,6 +102,9 @@ User user = (User) session.getAttribute("user");
             <div>
                 <input type="text" id="searchInput" class="top10 textInput100">
             </div>
+            <div style="position: relative;">
+                <div id="mru"></div>
+            </div>
             <div class="top10 font85">
                 Sorrend:&nbsp;
                 <input type="radio" name="sort" value="Score" id="score-order" checked>&nbsp;Fontosság
