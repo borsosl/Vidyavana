@@ -14,15 +14,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
-import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.Ebook.BBD;
-import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.Ebook.OWK;
-import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.Ebook.SSR;
+import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.Ebook.*;
 import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.StyleNameMapping.m;
 
 public class BbtXhtmlFileProcessor implements FileProcessor
 {
-	enum Ebook { SSR, BBD, OWK }
-	private Ebook ebook = BBD;
+	enum Ebook { SSR, BBD, OWK, TOP }
+	private Ebook ebook = TOP;
 
 	static class StyleNameMapping {
 		String css;
