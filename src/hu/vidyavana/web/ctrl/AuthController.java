@@ -65,8 +65,10 @@ public class AuthController
 		{
 			if(!user.regToken.isEmpty())
 				PanditServlet.messageResult(ri, "Az e-mail cím megerősítése nem történt meg. A regisztrációkor küldött levélben van a link.");
-			else
+			else {
 				setUserInSession(ri, user);
+				UserDao.updateLastLogin(user.id);
+			}
 		}
 		else
 			PanditServlet.failResult(ri);
@@ -159,6 +161,7 @@ public class AuthController
 		if(Sessions.addUserToSessionMap(ri.ses, user))
 		{
 			user.setAccess();
+			user.setDates();
 			ri.ses.setAttribute("user", user);
 			Log.activity("Login: "+user.toString());
 			PanditServlet.okResult(ri);

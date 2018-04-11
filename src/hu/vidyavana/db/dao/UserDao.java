@@ -8,6 +8,7 @@ import hu.vidyavana.db.model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +56,8 @@ public class UserDao
 	public static void insertUser(final User user)
 	{
 		Sql.System.wrapPreparedStatement("insert into user " +
-			"(admin, email, password, name, reg_token, access) " +
-			"values (?,?,?,?,?,?)", new StatementCallback()
+			"(admin, email, password, name, reg_token, reg_date, access) " +
+			"values (?,?,?,?,?,now(),?)", new StatementCallback()
 		{
 			@Override
 			public void usePreparedStatement(PreparedStatement stmt) throws SQLException
@@ -93,7 +94,22 @@ public class UserDao
 			}
 		});
 	}
-	
+
+	public static void updateLastLogin(final int userId)
+	{
+		Sql.System.wrapPreparedStatement("update user " +
+				"set last_login=now() " +
+				"where id=?", new StatementCallback()
+		{
+			@Override
+			public void usePreparedStatement(PreparedStatement stmt) throws SQLException
+			{
+				stmt.setInt(1, userId);
+				stmt.executeUpdate();
+			}
+		});
+	}
+
 	
 	public static void deleteUser(final String email)
 	{
@@ -140,6 +156,16 @@ public class UserDao
 			}
 			try {
 				user.regToken = rs.getString("reg_token");
+			} catch (SQLException ex) {
+			}
+			try {
+                Timestamp ts = rs.getTimestamp("reg_date");
+				user.regDateLong = ts == null ? 0 : ts.getTime();
+			} catch (SQLException ex) {
+			}
+			try {
+                Timestamp ts = rs.getTimestamp("last_login");
+                user.lastLoginLong = ts == null ? 0 : ts.getTime();
 			} catch (SQLException ex) {
 			}
 		} else {
