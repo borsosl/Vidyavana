@@ -19,8 +19,8 @@ import static hu.vidyavana.convert.epub.BbtXhtmlFileProcessor.StyleNameMapping.m
 
 public class BbtXhtmlFileProcessor implements FileProcessor
 {
-	enum Ebook { SSR, BBD, OWK, TOP }
-	private Ebook ebook = TOP;
+	enum Ebook { SSR, BBD, OWK, TOP, MBH }
+	private Ebook ebook = MBH;
 
 	static class StyleNameMapping {
 		String css;
@@ -57,7 +57,17 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 			m("sanskrit", Vers)
 	};
 
-	StyleNameMapping[] styleNameMappings = ebook == SSR ? inddStyleNameMappings : edStyleNameMappings;
+	StyleNameMapping[] mbhStyleNameMappings = {
+			m("noind", TorzsKezdet),
+			m("ast", Kozepen),
+			m("bef1_noind", Labjegyzet),
+			m("bef3_cen_ind10", Kozepen)
+	};
+
+	StyleNameMapping[] styleNameMappings =
+			ebook == SSR ? inddStyleNameMappings :
+			ebook == MBH ? mbhStyleNameMappings :
+					edStyleNameMappings;
 
 	private static final Pattern FILENAME_CHAPTER = Pattern.compile("(\\d\\d)(\\D\\D)");
 	private static final Pattern BODY_LINE = Pattern.compile("^\\s*<body(.*?)>");
@@ -423,12 +433,14 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 		if(bbdOwk)
 			return;
 		XhtmlTagInfo bodyTag = tagStack.get(0);
-		if(CHAPTER_PAGE_BODY_ID.matcher(bodyTag.id).matches())
+		if(bodyTag.id != null && CHAPTER_PAGE_BODY_ID.matcher(bodyTag.id).matches())
 			return;
 		if("h1".equals(tag.name)) {
 			para.cls = Fejezetcim;
 			if(ebook == SSR && "xt".equals(body.id))
 				para.tocLevel = 2;
+			else if(ebook == MBH)
+				para.cls = Konyvcim;
 		}
 		else if("h2".equals(tag.name) && para.cls == null) {
 			++h2count;
@@ -442,6 +454,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 				} else {
 					para.cls = Alcim;
 				}
+			} else if(ebook == MBH) {
+				para.cls = Fejezetcim;
 			}
 		} else if("h3".equals(tag.name)) {
 			if(ebook == SSR) {
@@ -450,6 +464,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 					para.text.insert(0, "<b>");
 					para.text.append("</b>");
 				}
+			} else if(ebook == MBH) {
+				para.cls = Fejezetszam;
 			}
 		}
 	}
