@@ -1,18 +1,18 @@
 package hu.vidyavana.search.api;
 
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.util.AttributeSource;
 
-public class SeparateQueryOperatorFilter extends TokenStream
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public final class SeparateQueryOperatorFilter extends TokenStream
 {
 	public static final Pattern OPERATOR_CHAR = Pattern.compile("[-\"!|()/~^]");
-	public static final String OPERATOR_TOKENS_STR = "\"-!|()/~^";
-	
+
 	private TokenStream input;
 	private CharTermAttribute termAttr = addAttribute(CharTermAttribute.class);
 	private PositionIncrementAttribute incrAttr = addAttribute(PositionIncrementAttribute.class);
