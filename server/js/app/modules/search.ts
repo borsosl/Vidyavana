@@ -85,12 +85,12 @@ export function init() {
         e.preventDefault();
     });
     $paraTypesLink.click((e: JQueryEventObject) => {
-        paraTypes.open();
+        paraTypes.open(paraTypes.Mode.Search);
         e.preventDefault();
     });
     $('#searchGo').click(() => {
         newSearch(dom.$searchInput.val(), ($scoreOrder[0] as HTMLInputElement).checked,
-            $('input:checked', $searchPaging).val(), searchSections.nodeFilter, paraTypes.types);
+            $('input:checked', $searchPaging).val(), searchSections.nodeFilter, paraTypes.searchTypes);
     });
 }
 
@@ -146,7 +146,7 @@ function searchSectionLinkTitle() {
 }
 
 export function paraTypesLinkTitle() {
-    $paraTypesLink.text(paraTypes.types === '' ? 'Minden típus' : paraTypes.types.length + '-féle típus');
+    $paraTypesLink.text(paraTypes.searchTypes === '' ? 'Minden típus' : paraTypes.searchTypes.length + '-féle típus');
 }
 
 

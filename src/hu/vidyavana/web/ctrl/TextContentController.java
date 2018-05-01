@@ -24,6 +24,8 @@ public class TextContentController {
                 service.search();
         else if("section".equals(ri.args[1]))
             service.section();
+        else if("filter".equals(ri.args[1]))
+            service.filter();
         else if("follow".equals(ri.args[1]))
             service.follow();
         else

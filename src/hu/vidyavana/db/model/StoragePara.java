@@ -1,7 +1,7 @@
 package hu.vidyavana.db.model;
 
+import hu.vidyavana.convert.api.ParagraphCategory;
 import hu.vidyavana.convert.api.ParagraphClass;
-import hu.vidyavana.search.model.ParaCategory;
 import hu.vidyavana.util.Encrypt;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class StoragePara
 	byte[] encText;
 	
 	// derived
-	public ParaCategory displayCategory;
+	private ParagraphCategory paragraphCategory;
 	public int ordinal;
 	public String text;
 	
@@ -64,6 +64,12 @@ public class StoragePara
 			{
 				throw new RuntimeException("Decoding para", ex);
 			}
+	}
+
+	public ParagraphCategory getParagraphCategory() {
+		if(paragraphCategory == null)
+			paragraphCategory = ParagraphCategory.mapFromClass.get(cls);
+		return paragraphCategory;
 	}
 
 	public static long rangeFilterOrdinal(long plainBookId, long segment, long ordinal) {

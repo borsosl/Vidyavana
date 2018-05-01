@@ -136,7 +136,7 @@ User user = (User) session.getAttribute("user");
 
         <div id="typesPop" class="has-button">
             <div class="form-row center">
-                Keresett bekezdés-típusok
+                Bekezdés-típusok
             </div>
             <div class="form-row"><input type="checkbox" name="types-0"> Cím</div>
             <div class="form-row"><input type="checkbox" name="types-1"> Alcím, versszám</div>
@@ -224,6 +224,12 @@ User user = (User) session.getAttribute("user");
             </div>
             <div>
                 <input type="number" min="6" max="30" id="viewFontInput" class="top10 textInput100">
+            </div>
+            <div class="top10">
+                Megjelenő bekezdések:
+            </div>
+            <div>
+                <a href="#" id="view-para-types-link">Minden típus</a>
             </div>
             <div id="view-msg" class="top10">
             </div>

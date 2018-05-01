@@ -34,11 +34,11 @@ export function text(json: DisplayBlock | SearchResponse, mode: number) {
             return search.message(resp.errorText ? resp.errorText : 'Nincs találat.');
         }
         util.showHitsPanel();
-        page.hits.init(display);
+        page.hits.init(display, mode);
     } else {
         util.showSectionPanel();
         if(initPage)
-            page.section.init(display);
+            page.section.init(display, mode);
         else
             page.section.down(display);
     }

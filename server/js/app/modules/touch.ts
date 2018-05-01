@@ -1,5 +1,4 @@
 
-import * as page from './page';
 import * as load from './load';
 
 let mobile: boolean;
@@ -9,16 +8,9 @@ export function init() {
     mobile = cs.android || cs.ios || cs.iphone || cs.ipad || cs.winMobile;
     if(mobile) {
         $(window).on('swipeleft', function() {
-            if(page.isSearchResult())
-                load.nextHit();
-            else if(page.section.bookId)
-                load.nextSection();
-
+            load.contextNext();
         }).on('swiperight', function() {
-            if(page.isSearchResult())
-                load.prevHit();
-            else if(page.section.bookId)
-                load.prevSection();
+            load.contextPrev();
         });
     }
 }

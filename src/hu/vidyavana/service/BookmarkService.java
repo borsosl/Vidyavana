@@ -80,6 +80,7 @@ public class BookmarkService {
 
     public void gotoBookmark() {
         int id = Integer.parseInt(ri.args[2]);
+        String paraTypes = ri.args.length > 3 ? ri.args[3] : null;
         Bookmark bookmark = BookmarkDao.findById(id);
         if(bookmark.userId != ri.user.id) {
             ri.resp.setStatus(404);
@@ -104,7 +105,7 @@ public class BookmarkService {
         int ord = node.ordinal;
         if(ord < 0)
             ord = 1;
-        ri.ajaxResult = new TextContentService(ri).text(ri.toc, node, ord);
+        ri.ajaxResult = new TextContentService(ri).text(ri.toc, node, ord, paraTypes);
     }
 
     public void filter() {

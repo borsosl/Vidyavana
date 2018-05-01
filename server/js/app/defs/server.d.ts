@@ -2,6 +2,8 @@
 interface DisplayBlock {
     bookSegmentId: number;
     tocId?: number;
+    filtered: boolean;
+    first: number;
     last: number;
     text: string;
     bookTocId?: number;

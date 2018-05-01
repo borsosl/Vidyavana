@@ -1,5 +1,6 @@
 package hu.vidyavana.convert.api;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +33,14 @@ public enum ParagraphCategory
 	}
 	
 	
-	private ParagraphCategory(ParagraphClass... classes)
+	ParagraphCategory(ParagraphClass... classes)
 	{
 		this.classes = classes;
+	}
+
+	public static EnumSet<ParagraphCategory> enumSetOf(String types) {
+		EnumSet<ParagraphCategory> set = EnumSet.noneOf(ParagraphCategory.class);
+		types.chars().forEach(c -> set.add(ParagraphCategory.values()[c-48]));
+		return set;
 	}
 }

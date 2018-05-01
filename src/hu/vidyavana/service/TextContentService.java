@@ -1,5 +1,6 @@
 package hu.vidyavana.service;
 
+import hu.vidyavana.convert.api.ParagraphCategory;
 import hu.vidyavana.convert.api.ParagraphClass;
 import hu.vidyavana.db.model.*;
 import hu.vidyavana.search.api.Lucene;
@@ -19,10 +20,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static hu.vidyavana.convert.api.ParagraphClass.*;
 
@@ -178,7 +176,7 @@ public class TextContentService
 			return;
 		}
 		TocTreeItem node = ri.toc.findNodeById(tocId);
-		ri.ajaxResult = text(ri.toc, node, start);
+		ri.ajaxResult = text(ri.toc, node, start, null);
 	}
 
 
@@ -186,7 +184,8 @@ public class TextContentService
 	{
 		String dir = ri.args[2];
 		int id = Integer.parseInt(ri.args[3]);
-		TocTreeItem node = null;
+		String paraTypes = ri.args.length > 4 ? ri.args[4] : null;
+		TocTreeItem node;
         boolean go = true;
 		switch(dir)
 		{
@@ -215,6 +214,8 @@ public class TextContentService
 					node = ri.toc.findNodeById(id);
                 go = false;
 				break;
+			default:
+				return;
 		}
 
 		int ord = node.ordinal;
@@ -226,11 +227,41 @@ public class TextContentService
 		}
 		else
 			BookmarkService.updateFollowedBookmark(ri, ri.toc.bookSegmentId(node), ord, TocTree.refs(node, false, null).shortRef);
-		ri.ajaxResult = text(ri.toc, node, ord);
+		ri.ajaxResult = text(ri.toc, node, ord, paraTypes);
+	}
+
+	public void filter()
+	{
+		int bookSegmentId = Integer.parseInt(ri.args[2]);
+		int ord = Integer.parseInt(ri.args[3]);
+		String paraTypes = ri.args.length > 4 ? ri.args[4] : null;
+
+		TocTreeItem node;
+		if(ord == 0) {
+			// move to next book
+			node = ri.toc.nextSibling(ri.toc.findBookNode(bookSegmentId));
+			// no more: last section of this last book
+			if(node == null) {
+				node = ri.toc.findNodeById(ri.toc.maxId);
+				ord = node.ordinal;
+			} else
+				ord = 1;
+		} else {
+			node = ri.toc.findNodeByOrdinal(bookSegmentId, ord);
+			while(node.next != null && node.next.parent == node &&
+					(node.ordinal < 0 || node.ordinal >= node.next.ordinal-3))
+				node = node.next;
+		}
+		int id = ri.toc.checkTocIdRange(node.id, true);
+		if(id != node.id)
+			node = ri.toc.findNodeById(id);
+
+		BookmarkService.updateFollowedBookmark(ri, ri.toc.bookSegmentId(node), ord, TocTree.refs(node, false, null).shortRef);
+		ri.ajaxResult = text(ri.toc, node, ord, paraTypes);
 	}
 
 
-	public DisplayBlock text(TocTree toc, TocTreeItem node, int start)
+	public DisplayBlock text(TocTree toc, TocTreeItem node, int start, String paraTypes)
 	{
 		DisplayBlock db = new DisplayBlock();
 		Storage store = Storage.SYSTEM;
@@ -249,6 +280,10 @@ public class TextContentService
 		node = origTocNode;
 		try
 		{
+			db.first = start;
+			db.filtered = paraTypes != null && !paraTypes.isEmpty();
+			EnumSet<ParagraphCategory> displayTypes = db.filtered ? ParagraphCategory.enumSetOf(paraTypes) : null;
+
 			int end = start + FIRST_FETCH_PARA_COUNT;
 			// merge titles with text: find text block TOC node
 			while(node.next != null && node.next.parent == node &&
@@ -258,7 +293,7 @@ public class TextContentService
 				++end;
 			}
 			int nodeEnd;
-			if(node.next != null && node.next.ordinal > node.ordinal)
+			if(!db.filtered && node.next != null && node.next.ordinal > node.ordinal)
 				nodeEnd = node.next.ordinal;
 			else
 				nodeEnd = seg.paraNum + 1;
@@ -267,9 +302,7 @@ public class TextContentService
 			--nodeEnd;
 			if(start < 0)
 				start = 0;
-			db.bookSegmentId = bookSegmentId;
-			db.tocId = origTocNode.id;
-			TocTree.refs(node, false, db);
+			int firstStart = start;
 			StringBuilder sb = new StringBuilder(RESPONSE_CHARS + 20000);
 			int last = start;
 			int len = 0;
@@ -281,8 +314,21 @@ public class TextContentService
 			{
 				if(end > nodeEnd-2)
 					end = nodeEnd;
-				if(start >= end)
+				if(db.filtered) {
+                    if(end > firstStart+100)
+                        end = firstStart+100;
+                    if(start >= end) {
+						if(len == 0) {
+							String part = end == nodeEnd ? "A kötet végéig már" : "100 bekezdésen belül";
+							sb.append("<p class=\"TorzsKezdet\">")
+									.append(part)
+									.append(" nem volt megjeleníthető bekezdés-típus.</p>");
+						}
+						break;
+					}
+				} else if(start >= end) {
 					break;
+				}
 
 				List<StoragePara> para = seg.readRange(store.handle, start, end);
 				int pix = 0;
@@ -291,6 +337,15 @@ public class TextContentService
 				for(int i=start; i<end; ++i)
 				{
 					p = para.get(pix++);
+					if(db.filtered) {
+						if(!displayTypes.contains(p.getParagraphCategory())) {
+							last = i;
+							continue;
+						} else if(len == 0) {
+							db.first = i+1;
+							node = ri.toc.findNodeByOrdinal(bookSegmentId, i+1);
+						}
+					}
 					verse = verseBlock(p);
 					if(prevVerse && !verse)
 						sb.append("</div></div>");
@@ -312,31 +367,30 @@ public class TextContentService
 					prevVerse = verse;
 				}
 				start = last+1;
-				if(start >= nodeEnd || !verse && len > RESPONSE_CHARS)
+				if(!db.filtered && start >= nodeEnd || !verse && len > RESPONSE_CHARS)
 					break;
-				if(len > RESPONSE_CHARS)
-				{
+				if(len > RESPONSE_CHARS) {
 					// if inside verse, prolong range, and stop at the end of verse inside inner loop
 					end = start+3;
 					firstPass = false;
-				}
-				else
-				{
+				} else if(len > 0) {
 					int avgParaLen = len / cPara;
 					int predict = ((RESPONSE_CHARS - len) / avgParaLen) + 1;
 					end = start + predict;
+				} else {
+					end = start + 3*FIRST_FETCH_PARA_COUNT;
 				}
 			}
-			if(last == nodeEnd-1)
-				db.last = 0;
-			else
-				db.last = last+2;
+			db.last = !db.filtered && last >= nodeEnd-1 || last >= seg.paraNum-1 ? 0 : last+2;
 			db.text = sb.toString();
 		}
 		catch(IOException ex)
 		{
 			throw new RuntimeException("Text request", ex);
 		}
+		db.bookSegmentId = bookSegmentId;
+		db.tocId = origTocNode.id;
+		TocTree.refs(node, false, db);
 		db.downtime = Globals.downtime;
 		return db;
 	}
@@ -348,7 +402,6 @@ public class TextContentService
 		TocTreeItem tocNode = toc.findNodeByOrdinal(bookSegmentId, ordinal);
 		db.bookSegmentId = bookSegmentId;
 		db.tocId = tocNode.id;
-		db.last = -1;
 		TocTree.refs(tocNode, true, db);
 		Storage store = Storage.SYSTEM;
 		BookSegment seg = store.segment(bookSegmentId);
@@ -406,7 +459,6 @@ public class TextContentService
 	private DisplayBlock textForHitList(Search details, int start, int end, TocTree toc) {
 		Timing.start();
 		DisplayBlock db = new DisplayBlock();
-		db.last = -1;
 		Storage store = Storage.SYSTEM;
 
 		StringBuilder sb = new StringBuilder((end-start) * 500);
@@ -458,6 +510,7 @@ public class TextContentService
 
 	private Map<Integer, Search> getSessionSearchMap()
 	{
+		@SuppressWarnings("unchecked")
 		Map<Integer, Search> smap = (Map<Integer, Search>) ri.ses.getAttribute("searchMap");
 		if(smap == null)
 		{

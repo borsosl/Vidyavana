@@ -4,7 +4,9 @@ public class DisplayBlock
 {
 	public int bookSegmentId;
 	public Integer tocId;
-	public int last;
+	public boolean filtered;
+	public int first = -1;
+	public int last = -1;
 	public String text;
 	public Integer bookTocId;
 	public String shortRef;

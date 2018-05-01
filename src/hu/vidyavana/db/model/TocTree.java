@@ -206,6 +206,12 @@ public class TocTree
 		return findNodeById(bookRoot, ordinal, true);
 	}
 
+
+	public TocTreeItem findBookNode(int bookSegmentId)
+	{
+		return findBookRoot(bookSegmentId, root);
+	}
+
 	
 	private TocTreeItem findBookRoot(int bookSegmentId, TocTreeItem parent)
 	{

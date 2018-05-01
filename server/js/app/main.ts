@@ -4,6 +4,7 @@ import * as util from './modules/util';
 import * as task from './modules/task';
 import * as toc from './modules/toc';
 import * as search from './modules/search';
+import * as view from './modules/view';
 import * as paraTypes from "./modules/paragraph-types";
 import * as load from './modules/load';
 import * as keyboard from './modules/keyboard';
@@ -33,7 +34,7 @@ export function init() {
     mouse.init();
     util.resizeEvent();
     util.refreshMenu();
-    task.initView();
+    view.init();
     task.searchDialog();
     dom.$loading.hide();
     // to preload image, it is hidden only by negative left in css, position now

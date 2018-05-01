@@ -8,6 +8,7 @@ import * as bookmark from './bookmark';
 import * as profile from './profile';
 import * as render from './render';
 import * as toc from './toc';
+import * as view from './view';
 
 export function init() {
     $('#pandit-icon').click(function() {
@@ -38,7 +39,7 @@ export function init() {
 
     $('#view-link, #menu-view-link').click(function() {
         util.toggleMenu(true);
-        task.viewDialog();
+        view.showDialog();
     });
 
     $('#profile-link, #menu-profile-link').click(function() {
@@ -60,10 +61,6 @@ export function init() {
     dom.$menuShortRef.click(render.displayBookTitle);
 
     dom.$sectDown.click(load.continuation);
-
-    $('#viewGo').click(function() {
-        task.applyView();
-    });
 
     $('#info-icon').click(function() {
         util.downtimeMsg();

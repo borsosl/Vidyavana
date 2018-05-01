@@ -80,8 +80,9 @@ export function focusContent(scrollToTop?: boolean) {
 export function toggleButtonBars(isHits: boolean, hitlist: boolean) {
     dom.$textBtns.toggle(!isHits);
     dom.$hitBtns.toggle(isHits);
-    dom.$sectDown.toggle(page.current().next() !== null);
+    dom.$sectDown.toggle(page.current().downOrdinal() !== null);
     dom.$thisSect.toggle(page.isSearchResult() && !hitlist);
+    dom.$prevPage.toggle(page.section.isBackAvailable());
 }
 
 

@@ -8,6 +8,7 @@ class Dom {
     $hits: JQuery;
     $textBtns: JQuery;
     $hitBtns: JQuery;
+    $prevPage: JQuery;
     $sectDown: JQuery;
     $thisSect: JQuery;
     $shortRef: JQuery;
@@ -35,6 +36,8 @@ class Dom {
         this.$textBtns = $('#text-buttons');
         /** button row */
         this.$hitBtns = $('#hit-buttons');
+        /** previous page button */
+        this.$prevPage = $('.prev-page', this.$textBtns);
         /** buttons to load more of section or go to full section */
         this.$sectDown = $('#sect-down');
 

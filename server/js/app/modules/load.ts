@@ -6,16 +6,21 @@ import * as highlight from './highlight';
 import * as render from './render';
 import * as search from './search';
 import * as toc from './toc';
+import * as view from './view';
 
 /** text request modes */
-const loadMode = {
-    section: 1, down: 2, next: 3, prev: 4, search: 5, currentHit: 6,
-    nextHit: 7, prevHit: 8, bookmark: 9
-};
+const enum loadMode {
+    section, down, next, prev, search, currentHit, nextHit,
+    prevHit, bookmark, filterStart, filterNext, filterPrev
+}
 /** timestamp of last request to throttle connections */
 let lastReqTime: number;
 /** id of bookmark to load */
 let bookmarkId: number;
+
+const sectionUrl = '/app/txt/section/';
+const filterUrl = '/app/txt/filter/';
+const searchUrl = '/app/txt/search';
 
 
 /**
@@ -26,33 +31,33 @@ let bookmarkId: number;
 export function text(mode: number) {
     if(lastReqTime && lastReqTime > Date.now()-60000)
         return;
-    const m = loadMode;
     let data = null;
 
     /**
      * @returns ajax request URI or null if no req needed
      */
     function getUrl(): string {
-        const sectionUrl = '/app/txt/section/';
-        const searchUrl = '/app/txt/search';
         const ps = page.section;
         switch(mode) {
-            case m.section:
-                return sectionUrl + 'go/' + toc.selectedSection();
-            case m.next:
-                if(!ps.bookId)
-                    return null;
-                return sectionUrl + 'next/' + ps.tocId;
-            case m.prev:
-                if(!ps.bookId)
-                    return null;
-                return sectionUrl + 'prev/' + ps.tocId;
-            case m.down:
-                const next = ps.next();
+            case loadMode.section:
+                return sectionUrl + 'go/' + toc.selectedSection() + view.urlSegment();
+            case loadMode.next:
+                return sectionUrl + 'next/' + ps.tocId + view.urlSegment();
+            case loadMode.prev:
+                return sectionUrl + 'prev/' + ps.tocId + view.urlSegment();
+            case loadMode.filterStart:
+                return filterUrl + ps.bookId + '/' + ps.first + view.urlSegment();
+            case loadMode.filterNext:
+                return filterUrl + ps.bookId + '/' + ps.last + view.urlSegment();
+            case loadMode.filterPrev:
+                const prev = page.prevFilteredPage();
+                return filterUrl + prev.bookSegmentId + '/' + prev.ordinal + view.urlSegment();
+            case loadMode.down:
+                const next = ps.downOrdinal();
                 if(next === null)
                     return null;
                 return '/app/txt/follow/'+ps.tocId+'/'+next;
-            case m.search:
+            case loadMode.search:
                 const psr = search.getPendingInstance();
                 data = {
                     q: psr.query,
@@ -62,21 +67,22 @@ export function text(mode: number) {
                     paraTypes: psr.paraTypes
                 };
                 return searchUrl;
-            case m.currentHit:
-            case m.nextHit:
-            case m.prevHit:
+            case loadMode.currentHit:
+            case loadMode.nextHit:
+            case loadMode.prevHit:
                 const sr = search.getInstance();
                 if(!sr)
                     return null;
                 const last = sr.last;
-                let hit = last.startHit + (mode === m.nextHit ? sr.page : mode === m.prevHit ? -sr.page : 0);
+                let hit = last.startHit + (mode === loadMode.nextHit ? sr.page :
+                    mode === loadMode.prevHit ? -sr.page : 0);
                 if(hit < 0 && hit > -sr.page)     // visszafelé 0 és 1 oldalnyi közöttről indulva
                     hit = 0;
                 if(hit >= 0 && hit < last.hitCount)
                     return searchUrl + '/hit/' + last.id + '/' + hit;
                 return null;
-            case m.bookmark:
-                return '/app/bookmark/go/'+bookmarkId;
+            case loadMode.bookmark:
+                return '/app/bookmark/go/'+bookmarkId+view.urlSegment();
         }
     }
 
@@ -146,38 +152,35 @@ export function contextSwitch(): void {
     }
 }
 
-export function prevSection() {
-    text(loadMode.prev);
-}
-
-export function nextSection() {
-    text(loadMode.next);
-}
-
-export function prevHit() {
-    text(loadMode.prevHit);
-}
-
-export function nextHit() {
-    text(loadMode.nextHit);
-}
-
 export function contextPrev() {
     if(page.isSearchResult())
-        prevHit();
-    else
-        prevSection();
+        text(loadMode.prevHit);
+    else if(page.section.bookId) {
+        if(page.section.filtered) {
+            if(page.section.isBackAvailable())
+                text(loadMode.filterPrev);
+        } else
+            text(loadMode.prev);
+    }
 }
 
 export function contextNext() {
     if(page.isSearchResult())
-        nextHit();
-    else
-        nextSection();
+        text(loadMode.nextHit);
+    else if(page.section.bookId) {
+        if(page.section.filtered)
+            text(loadMode.filterNext);
+        else
+            text(loadMode.next);
+    }
 }
 
 export function continuation() {
     text(loadMode.down);
+}
+
+export function filterStart() {
+    text(loadMode.filterStart);
 }
 
 export function bookmark(id: number) {
