@@ -118,7 +118,7 @@ p
 	font-weight: bold;
 }
 
-.TorzsKezdet
+.TorzsKezdet, .TorzsKezdetDolt
 {
 	margin-top: 0.5em;
 	text-indent: 1.5em;
@@ -131,24 +131,14 @@ p
 	text-align: justify;
 }
 
-.TorzsKoveto
+.TorzsKoveto, .TorzsKovetoDolt
 {
 	text-indent: 1.5em;
 	text-align: justify;
 }
 
-.TorzsKezdetDolt
+.TorzsKezdetDolt, .TorzsKovetoDolt, .KozepenDolt, .KozepenKovetoDolt, .MegjegyzesKovetoDolt
 {
-	margin-top: 0.5em;
-	text-indent: 1.5em;
-	text-align: justify;
-	font-style: italic;
-}
-
-.TorzsKovetoDolt
-{
-	text-indent: 1.5em;
-	text-align: justify;
 	font-style: italic;
 }
 
@@ -183,7 +173,7 @@ p
 	margin-top: 0.2em;
 }
 
-.KozepenVers
+.KozepenVers, .TorzsKozepenVers
 {
 	margin-top: 0.5em;
 	text-align: center;
@@ -208,20 +198,13 @@ p
 	text-align: left;
 }
 
-.Kozepen
+.Kozepen, .KozepenDolt
 {
 	margin-top: 0.5em;
 	text-align: center;
 }
 
-.KozepenDolt
-{
-	margin-top: 0.5em;
-	text-align: center;
-	font-style: italic;
-}
-
-.KozepenKoveto
+.KozepenKoveto, .KozepenKovetoDolt
 {
 	text-align: center;
 	margin-top: 0;
@@ -232,21 +215,14 @@ p
 	margin-top: -1em;
 }
 
-.KozepenKovetoDolt
-{
-	text-align: center;
-	font-style: italic;
-}
-
 .Jobbra
 {
 	text-align: right;
 }
 
-.MegjegyzesKezdet, .MegjegyzesKoveto, .MegjegyzesKozepen, .MegjegyzesJobbra
+.MegjegyzesKezdet, .MegjegyzesKoveto, .MegjegyzesKovetoDolt, .MegjegyzesKozepen, .MegjegyzesJobbra
 {
 	margin-left: 3em;
-	margin-right: 3em;
 	font-size: 95%;
 }
 
@@ -256,7 +232,7 @@ p
 	text-align: justify;
 }
 
-.MegjegyzesKoveto
+.MegjegyzesKoveto, .MegjegyzesKovetoDolt
 {
 	text-indent: 1.5em;
 	text-align: justify;

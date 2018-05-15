@@ -21,6 +21,7 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 {
 	enum Ebook { SSR, BBD, OWK, TOP, MBH }
 	private Ebook ebook = MBH;
+	private boolean panditSourceFormat = true;
 
 	static class StyleNameMapping {
 		String css;
@@ -71,6 +72,7 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 
 	private static final Pattern FILENAME_CHAPTER = Pattern.compile("(\\d\\d)(\\D\\D)");
 	private static final Pattern BODY_LINE = Pattern.compile("^\\s*<body(.*?)>");
+	private static final Pattern PANDIT_STYLE_BODY_LINE = Pattern.compile("^\\s*<chapter>");
 	private static final Pattern HTML_TAG_LINE = Pattern.compile("^\\s*(<(p|div|h\\d|ol|ul|li)(.*?)>)?(.*?)(</(p|div|h\\d|body|ol|ul|li)>)?\\s*$");
 	private static final Pattern HTML_ATTR = Pattern.compile("([a-zA-Z-]+)\\s*=\\s*\"(.*?)\"");
 	private static final Pattern WHITE_SPLITTER = Pattern.compile("\\s+");
@@ -138,7 +140,8 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	{
 		srcFileName = fileName;
 		writerInfo.specialFile = SpecialFile.fnameMap.get(fileName);
-		File destFile = new File(destDir.getAbsolutePath() + "/" + fileName + ".xml");
+		String extraExtension = panditSourceFormat ? "" : ".xml";
+		File destFile = new File(destDir.getAbsolutePath() + "/" + fileName + extraExtension);
 		process(srcFile, destFile);
 	}
 
@@ -228,9 +231,9 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 		if(line.trim().isEmpty())
 			return;
 		if(!inBody) {
-			Matcher m = BODY_LINE.matcher(line);
+			Matcher m = (panditSourceFormat ? PANDIT_STYLE_BODY_LINE : BODY_LINE).matcher(line);
 			if(m.find()) {
-				Map<String, String> attrMap = parseAttributes(m.group(1));
+				Map<String, String> attrMap = panditSourceFormat ? new HashMap<>() : parseAttributes(m.group(1));
 				body = new XhtmlTagInfo("body");
 				body.id = attrMap.get("id");
 				body.classes = classNamesSet(attrMap.get("class"));
@@ -309,6 +312,10 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	}
 
 	private String normalizeContent(String content) {
+		if(panditSourceFormat) {
+			white = false;
+			return content;
+		}
 		ncsb.setLength(0);
 		int ptr = 0;
 		int entityStart = -1;
@@ -394,6 +401,11 @@ public class BbtXhtmlFileProcessor implements FileProcessor
 	private void mappedClassNames() {
 		if(tag.classes == null || tag.classes.isEmpty())
 			return;
+		if(panditSourceFormat) {
+			para.cls = ParagraphClass.valueOf(
+					tag.classes.toArray(new String[tag.classes.size()])[0]);
+			return;
+		}
 		Optional<StyleNameMapping> mapping = Stream.of(styleNameMappings)
 				.filter(snm -> tag.classes.contains(snm.css))
 				.findFirst();

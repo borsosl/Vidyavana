@@ -11,20 +11,20 @@ public enum ParagraphClass
 	Szakaszcim(4),
 	Alcim(5),
 	Versszam(6),
-	Uvaca(7),
-	Vers(8),
-	KozepenVers(131),
+	Uvaca(7, false, true),
+	Vers(8, false, true),
+	KozepenVers(131, false, true),
 	Proza(9, true),
 	Szavak(10, true),
 	Forditas(11, true),
 	TorzsKezdet(12, true),
 	BalraKezdet(50),
 	TorzsKoveto(13, true),
-	TorzsUvaca(14),
-	TorzsVers(15),
-	TorzsKozepenVers(132),
-	Hivatkozas(16),
-	NemDoltVers(130),
+	TorzsUvaca(14, false, true),
+	TorzsVers(15, false, true),
+	TorzsKozepenVers(132, false, true),
+	Hivatkozas(16, false, true),
+	NemDoltVers(130, false, true),
 	Balra(17),
 	Kozepen(18),
 	Jobbra(19),
@@ -46,7 +46,7 @@ public enum ParagraphClass
 	TorzsKezdet0Bek(103),
 	TorzsKezdetDolt(104),
 	TorzsKovetoDolt(105),
-	TorzsVersszam(106),
+	TorzsVersszam(106, false, true),
 	KozepenDolt(107),
 	KozepenKoveto(108),
 	KozepenKovetoDolt(109),
@@ -82,12 +82,14 @@ public enum ParagraphClass
 	
 	public final int code;
 	public final boolean defaultIndent;
+	public final boolean verse;
 
 	
 	ParagraphClass(int code)
 	{
 		this.code = code;
 		defaultIndent = false;
+		this.verse = false;
 	}
 
 	
@@ -95,8 +97,17 @@ public enum ParagraphClass
 	{
 		this.code = code;
 		this.defaultIndent = defaultIndent;
+		this.verse = false;
 	}
-	
+
+
+	ParagraphClass(int code, boolean defaultIndent, boolean verse)
+	{
+		this.code = code;
+		this.defaultIndent = defaultIndent;
+		this.verse = verse;
+	}
+
 	
 	public static ParagraphClass byCode(int code)
 	{

@@ -5,7 +5,7 @@ import java.util.*;
 public enum BookPackage
 {
 	Sraddha("BhG|NoI|SSR", "Śraddhā"),
-	SadhuSanga("SB|KB|Cc|TLC|NoD|Īśo|PQPA|Jsd|EJ|RV|BBD|OWK|PoP|Top|CB|PLs", "Sādhu-saṅga"),
+	SadhuSanga("SB|KB|Cc|TLC|NoD|Īśo|PQPA|Jsd|EJ|RV|BBD|OWK|PoP|Top|CB|PLs|PL", "Sādhu-saṅga"),
 	BhajanaKriya("BB|MBh|MBhs|RY|VÉn", "Bhajana-kriyā"),
 	Ruci("SBC|VG|NPH|KS|NVM", "Ruci");
 

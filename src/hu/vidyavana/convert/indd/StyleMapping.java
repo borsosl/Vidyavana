@@ -1,16 +1,18 @@
 package hu.vidyavana.convert.indd;
 
-import static hu.vidyavana.convert.api.ParagraphClass.*;
 import hu.vidyavana.convert.api.Align;
 import hu.vidyavana.convert.api.Paragraph;
 import hu.vidyavana.convert.api.ParagraphClass;
 import hu.vidyavana.convert.api.ParagraphStyle;
+
 import java.io.*;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static hu.vidyavana.convert.api.ParagraphClass.*;
 
 public class StyleMapping
 {
@@ -197,7 +199,8 @@ public class StyleMapping
 				return;
 		}
 		if(ps.emptyRowsBefore > 0 || para.prev != null && 
-			para.prev.cls != TorzsKezdet && para.prev.cls != TorzsKoveto)
+			para.prev.cls != TorzsKezdet && para.prev.cls != TorzsKoveto &&
+			para.prev.cls != TorzsKezdetDolt && para.prev.cls != TorzsKovetoDolt)
 		{
 			para.cls = TorzsKezdet;
 		}

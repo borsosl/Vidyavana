@@ -18,6 +18,7 @@ public class InddFileProcessor implements FileProcessor
 	private static boolean skipConnect = true;
 	private static boolean markStrippedFormatting = true;
 	private static boolean removeOptionalHyphens = false;
+	private static boolean isLFbyteLinebreak = true;
 	
 	// book-specific settings
 	private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{}));
@@ -31,6 +32,7 @@ public class InddFileProcessor implements FileProcessor
 	// NVM eng 1: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{26}));
 	// NVM eng 6: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{806}));
 	// NVM hun 1: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{28,628}));
+	// SPL: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{22,1112,1116,1120,1124,1152}));
 	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{}));
 	// NPH hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
 	// KS eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,64,121,171,443,481,508}));
@@ -39,6 +41,7 @@ public class InddFileProcessor implements FileProcessor
 	// SG eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{65}));
 	// NVM eng 1: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18}));
 	// NVM hun 1: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{24}));
+	// SPL: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,1108}));
 	private int chapterDigits = 2;
 	private String endNoteFileName = "99";
 	// NPH: private String endNoteFileName = "22";
@@ -400,10 +403,9 @@ public class InddFileProcessor implements FileProcessor
 				}
 				else
 					torzsVersLineNum = 1;
-			}
-			if(para.cls == ParagraphClass.KozepenVers)
-			{
-				if(prev != null && prev.cls == ParagraphClass.KozepenVers && !verseBreak)
+			} else if(para.cls == ParagraphClass.KozepenVers || para.cls == ParagraphClass.TorzsKozepenVers) {
+				if(prev != null && (prev.cls == ParagraphClass.KozepenVers
+						|| prev.cls == ParagraphClass.TorzsKozepenVers) && !verseBreak)
 				{
 					prev.text.append(BR);
 					prev.text.append(para.text);
@@ -632,12 +634,10 @@ public class InddFileProcessor implements FileProcessor
 			else if(tag.startsWith("cFont:"))
 			{
 				String font = tag.substring(6).trim();
-				if(font.length() > 0)
-				{
-					style.font = font;
-					if(style != defineParaStyle)
-						charMaps.selectFont(styleFont(style));
-				}
+				boolean resetParaFont = font.length() == 0;
+				style.font = resetParaFont && style.basedOn != null ? styleSheet.get(style.basedOn).font : font;
+				if(style != defineParaStyle)
+					charMaps.selectFont(styleFont(style));
 			}
 			else if(tag.startsWith("cSize:"))
 			{
@@ -778,15 +778,20 @@ public class InddFileProcessor implements FileProcessor
 		else if(c == 10)
 		{
 			StringBuilder sb = text[textLevel];
-			if(sb.length() == 0)
-				c = '÷';
-			else
-			{
-				char prev = sb.charAt(sb.length()-1);
-				if(prev != ' ')
-					c = ' ';
+			if(isLFbyteLinebreak) {
+				sb.append(BR);
+				return;
+			} else {
+				if(sb.length() == 0)
+					c = '÷';
 				else
-					return;
+				{
+					char prev = sb.charAt(sb.length()-1);
+					if(prev != ' ')
+						c = ' ';
+					else
+						return;
+				}
 			}
 		}
 		if(textLevel == 0)
