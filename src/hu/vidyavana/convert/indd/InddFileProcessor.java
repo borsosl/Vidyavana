@@ -33,6 +33,7 @@ public class InddFileProcessor implements FileProcessor
 	// NVM eng 6: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{806}));
 	// NVM hun 1: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{28,628}));
 	// SPL: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{22,1112,1116,1120,1124,1152}));
+	// RY: private Set<Integer> forceNewFile = new HashSet(Arrays.asList(new Integer[]{11, 508}));
 	private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{}));
 	// NPH hun: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{522}));
 	// KS eng: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,64,121,171,443,481,508}));
@@ -42,6 +43,7 @@ public class InddFileProcessor implements FileProcessor
 	// NVM eng 1: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18}));
 	// NVM hun 1: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{24}));
 	// SPL: private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{18,1108}));
+	// RY private Set<Integer> noNewFile = new HashSet(Arrays.asList(new Integer[]{8}));
 	private int chapterDigits = 2;
 	private String endNoteFileName = "99";
 	// NPH: private String endNoteFileName = "22";

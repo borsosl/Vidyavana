@@ -18,7 +18,7 @@ public class CharacterMapManager
 	static String cmProp = System.getProperty("cmapDir", "c:\\Wk\\prg\\Java\\vidyavana\\meta\\cmap");//\\eng
 //	static String cmProp = System.getProperty("cmapDir", "c:\\backup\\Sastra\\1\\cmap");
 //	static String DEFAULT_TEXT_MAP_FILE = "pala-vg.cmap.txt";
-	static String DEFAULT_TEXT_MAP_FILE = "bbt-unicode-2017.cmap.txt";
+	static String DEFAULT_TEXT_MAP_FILE = "bbt-unicode-2017.cmap.txt";      // older files: pala-sans-otf.cmap.txt
 	static String DEFAULT_STYLENAME_MAP_FILE = "hun-legacy-ce.cmap.txt";
 //	static String DEFAULT_TEXT_MAP_FILE = "Balaram.cmap.txt";
 	static File cmapDir;
