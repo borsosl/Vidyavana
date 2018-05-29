@@ -182,14 +182,61 @@
     <p>A beviteli mezőbe írd be azokat a szavakat, amiknek szerepelnie kell a keresett bekezdésben. A szavak
         tartalmazhatnak helyettesítő karaktereket (*, ?), azzal a megkötéssel, hogy az első két betű helyén nem
         állhatnak, valamint ha együttesen 1000 szóvariációnál többet eredményeznek, akkor a "Fontosság" szerinti
-        rendezés nem fog működni. A "Sorrend" opciók közül a "Fontosság" azt jelenti, hogy a találatok rangsorolásra
+        rendezés nem fog működni.</p>
+
+    <p><i>Sorrend</i>: a "Fontosság" azt jelenti, hogy a találatok rangsorolásra
         kerülnek olyan szempontok szerint, mint hogy Srila Prabhupada által írott fejezetben, fejezet- és alcímekben,
         versfordításban, versben találhatók-e a szavak, illetve milyen sokszor fordulnak elő az adott bekezdésben.
         A "Szakasz" szerinti sorrend a könyvek megjelenítési sorrendjét jelenti, ahogy az a Szakasz panelben
-        kiválasztható, és egy könyvön belül is megjelenési sorrendet jelent. Az "Oldalanként"-i jelölőkkel
+        kiválasztható, és egy könyvön belül is megjelenési sorrendet jelent.</p>
+
+    <p><i>Oldalanként</i>:
         a találati oldalak megjelenési módja (egy-találatos vagy találati lista) választható meg, illetve a találati
-        lista bejegyzéseinek darabszáma. Amikor a weboldal lassú, érdemes kisebb értékeket választani.
+        lista bejegyzéseinek darabszáma. Amikor a szerver lassú, érdemes kisebb értékeket választani.
         Sikeres keresés után a találati nézetben megjelenik a keresés első (néhány) találata.</p>
+
+    <p><i>Könyvek</i>: a linkre kattintva felugró ablakban kiválasztható, hogy pontosan melyik könyvekben
+        történjen a keresés, illetve melyikben nem. Kétféle módon történhet: 1. vagy a legtöbb könyvet
+        meghagyjuk kereshetőnek, és kiválasztunk egy-kettőt, amit kizárunk a keresésből, vagy
+        2. csak konkrét könyvekben/fejezetekben akarunk keresni. Az 1. esetben a Kiindulás = "Összes" módot
+        kell választani, és a kiválasztott szakaszok kizáródnak a keresésből. A 2. esetben a "Semmi" legyen
+        a kiindulási alap és a kiválasztottak lesznek az egyedüli keresendők. Fontos, hogy egy könyv választása
+        esetén is használni kell a Hozzáadás gombot, hogy egy + jeles kis doboz megjelenjen, másképp a Mehet
+        gomb csak a kiindulási alap kiválasztását veszi figyelembe. A szakaszok kikeresése a Szakasz
+        választóval azonos módon történik.</p>
+
+    <p><i>Bekezdések</i>: a keresésben milyen típusú (versszám, vers, fordítás, magyarázat, stb) bekezdéseket
+        kell figyelembe venni. A linkre kattintva, felugró ablakban lehet kiválasztani a kívántakat.
+        Csak akkor lép érvénybe, ha a kiválasztó ablakot a Mehet gombbal zárjuk be.</p>
+
+    <h2>Haladó keresések</h2>
+
+    <p>A keresendő szavak közé ún. logikai kapcsolókat írhatunk.</p>
+
+    <p><i>ÉS-kapcsolat</i>: azokat a bekezdéseket keressük, amikben mindkét szó szerepel. Írásmódok:
+        <b>1.</b>&nbsp;szó1&nbsp;szó2 <b>2.</b>&nbsp;szó1+szó2</p>
+
+    <p><i>VAGY-kapcsolat</i>: azokat a bekezdéseket keressük, amikben vagy az egyik, vagy a másik, vagy mindkét
+        szó szerepel. Írásmódok: <b>1.</b>&nbsp;szó1|szó2 <b>2.</b>&nbsp;szó1/szó2
+        <b>3.</b>&nbsp;szó1&nbsp;or&nbsp;szó2</p>
+
+    <p><i>NEM-művelet</i>: az utána szereplő szó nem szerepelhet a bekezdésben. Írásmódok:
+        <b>1.</b>&nbsp;szó1&nbsp;-szó2 <b>2.</b>&nbsp;szó1&nbsp;!szó2 <b>3.</b>&nbsp;szó1&nbsp;not&nbsp;szó2</p>
+
+    <p><i>Egymás utáni szavak</i>: írásmódja "szó1&nbsp;szó2". A szavaknak változatlan formában, ilyen sorrendben,
+        egymás után kell szerepelniük a bekezdésben. A helyettesító karakterek (*, ?) ez esetben nem működnek.</p>
+
+    <p><i>Közel álló szavak</i>: írásmódja "szó1&nbsp;szó2"~N, ahol N egy szám. A szavaknak úgy kell szerepelniük
+        a bekezdésben, hogy köztük nem állhat több, mint N szó. A helyettesító karakterek (*, ?) ez esetben
+        sem működnek.</p>
+
+    <p><i>Csoportosítás</i>: a kapcsolók egyenlő erősségűek, balról-jobbra haladva egyesével kapcsolódnak
+        a találatok csoportjához. Pl.&nbsp;szó1&nbsp;|szó2&nbsp;+szó3 : a szó1 és szó2 bekezdések unióját veszi először,
+        aztán a szó3 bekezdések azzal alkotott metszete lesz az eredmény. Ezt a sorrendet zárójelezéssel
+        lehet befolyásolni. pl.&nbsp;szó1&nbsp;|(szó2+szó3) az utóbbiak metszete mellett minden szó1 tartalmú
+        bekezdést is megtalál. Minden zárójeles csoportban, és a teljes keresési kifejezésben az első
+        szóhoz csak ÉS művelet (csoporthoz hozzáadás) értelmezett, NEM illetve VAGY csak rákövetkező
+        szavak előtt állhat.</p>
 
     <h2>Szakasz panel</h2>
 
@@ -205,23 +252,42 @@
         (a Bezárás gombbal nem).</p>
 
     <p><i>Olvasás folytatása:</i> 1. könyvjelző menüpont; 2. a 10 előzőleg használt könyvjelző linkje közvetlenül elérhető,
-        kattintással a követés is egyből indul; 3. a régebbieket név szerint ki kell keresni a szűrő mezőbe gépelve;
+        kattintással a követés is egyből indul; 3. a régebbieket név szerint ki kell keresni a szűrő mezőbe gépelve,
+        és a lenyíló mezőben kiválasztva;
         4. Ugrás gombbal bejön a tartalom és indul a követés, Szerkesztés gombbal módosítható a név vagy a követés,
         illetve ellenőrizhető, hol tartunk.</p>
 
     <p><i>Követés leállítása:</i> a követő üzemmód addig folytatódik, amíg kizárólag a következő/előző szakaszra ugrást
         használjuk, vagyis amíg folyamatosan olvasunk. Bármilyen más szakasz kikeresése leállítja a követést,
-        és a könyvjelző linkjével indítható újra.</p>
+        és a fenti "Olvasás folytatása" rész szerint indítható újra.</p>
+
+    <h2>Nézet menüpont</h2>
+
+    <p>A megjelenéssel kapcsolatos beállításokat tartalmazza.</p>
+
+    <p><i>Betűméret:</i> a szövegek méretét állíthatja. Az eszköztől függően a fel-le nyilakkal (billentyűzettel,
+        vagy ikonokkal) kényelmesebben állítható, vagy az érték beírható. A Beállítás gomb megnyomásával lép
+        érvénybe az új érték.</p>
+
+    <p><i>Megjelenő bekezdések:</i> szakasz nézetben milyen típusú (versszám, vers, fordítás, magyarázat, stb)
+        bekezdések jelenjenek meg. A linkre kattintva, felugró ablakban lehet kiválasztani a kívántakat.
+        Csak akkor lép érvénybe, ha a kiválasztó ablakot a Mehet gombbal, a Nézet oldalt pedig a Beállítás
+        gombbal zárjuk be.<br/>
+        Ebben a nézetben nem a tartalomjegyzékbeli elemi szakaszok jelennek meg egyszerre, hanem ahol éppen
+        járunk, onnantól kezdve a következő 100 bekezdésben keresi a megjelenítendőket, és ezekből max.
+        10 kB-nyi szöveget tölt le egyszerre. Alapvetően előre haladva tudja ezt keresni, a vissza irányba
+        lépkedés korlátozva van az előre haladva bejárt oldalakra. Másképp a Szakasz keresővel kell ugrani.</p>
+
+    <h2>Felhasználói profil</h2>
+
+    <p>A belépett felhasználó itt változtathatja meg a társított e-mail címét, jelszavát, megjelentési nevét
+        (ez az adminisztrátoroknak segítség), valamint ellenőrizheti az előfizetési csomagot.</p>
+
+    <p>Az e-mail cím megváltoztatása biztonsági okoból két lépcsőben történik: először az eredeti e-mail
+        címre küldött e-mail-ből kell megerősíteni a változtatás szándékát, majd az új e-mail címre kimegy
+        egy ugyanolyan megerősítő e-mail, mint a regisztrációkor.</p>
 
     <h2>Új funkciók</h2>
-
-    <ul class="left2">
-        <li>Betűméret állítás mobil eszközön</li>
-        <li>Automatikus könyvjelző: lejárt munkamenet után olvasás folytatása ugyanott</li>
-        <li>Kézi, nevesített könyvjelző: pozíció tárolása másik eszköz számára is</li>
-    </ul>
-
-    <h2>Tervezett funkciók</h2>
 
     <ul class="left2">
         <li>Alapvető keresési operátorok: VAGY, NEM</li>
@@ -230,6 +296,11 @@
         <li>Előző keresések felajánlása</li>
         <li>Speciális keresési operátorok: egymás utáni szavak, közel levők, XOR</li>
         <li>Választott könyvekben/szakaszokban keresés</li>
+    </ul>
+
+    <h2>Tervezett funkciók</h2>
+
+    <ul class="left2">
         <li>Szakasz választó: aktuális szakasz kiválasztása</li>
         <li>Szakasz választó: bemásolt szöveges hivatkozás kikeresése</li>
         <li>Törzsszövegben vers-hivatkozások felismerése és belinkelése</li>
