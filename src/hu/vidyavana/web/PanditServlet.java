@@ -47,6 +47,8 @@ public class PanditServlet extends HttpServlet
         try
 		{
     		ri.uri = ri.req.getPathInfo();
+    		if(ri.uri == null)
+    			ri.uri = "/";
 			String[] args = ri.args = ri.uri.substring(1).split("/");
 			boolean ctxRootReq = args.length == 1 && args[0].isEmpty();
     		ri.ses = ri.req.getSession();
